@@ -518,6 +518,7 @@ window.closeTeamRegModal = () => {
   if (modal) modal.classList.remove("active");
 };
 
+// Render Team Member Input Cards (Members 1-4 Required, Members 5-6 Optional)
 function renderMembersRosterInputs() {
   const container = document.getElementById("members-roster-inputs");
   if (!container) return;
@@ -529,16 +530,16 @@ function renderMembersRosterInputs() {
   const leaderEmail = currentUser ? currentUser.email : "";
 
   let html = `
-    <!-- Member 1: Team Leader -->
+    <!-- Member 1: Team Leader (Required) -->
     <div class="member-input-card leader-card">
       <div class="member-card-header">
-        <span class="member-badge-pill leader"><i class="fa-solid fa-crown"></i> Member 1: Team Leader</span>
+        <span class="member-badge-pill leader"><i class="fa-solid fa-crown"></i> Member 1: Team Leader (Required)</span>
         <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">(Logged In Account)</span>
       </div>
       <div class="form-row-2">
         <div class="form-group-item" style="margin-bottom: 8px;">
           <label class="form-input-label">Full Name *</label>
-          <input type="text" id="m1-name" class="form-text-input" value="${leaderName}" required>
+          <input type="text" id="m1-name" class="form-text-input" value="${leaderName}" required oninput="checkRosterFemaleQuota()">
         </div>
         <div class="form-group-item" style="margin-bottom: 8px;">
           <label class="form-input-label">Roll Number *</label>
@@ -582,26 +583,31 @@ function renderMembersRosterInputs() {
 
   // Members 2 to 6
   for (let i = 2; i <= 6; i++) {
+    const isRequired = i <= 4;
+    const badgeText = isRequired ? `Member ${i} (Required)` : `Member ${i} (Optional - Participant Choice)`;
+    const requiredMarker = isRequired ? " *" : "";
+    const cardBgStyle = isRequired ? "" : "background: #f8fafc; border-style: dashed;";
+
     html += `
-      <div class="member-input-card">
+      <div class="member-input-card" style="${cardBgStyle}">
         <div class="member-card-header">
-          <span class="member-badge-pill">Member ${i}</span>
-          <span style="font-size: 0.72rem; color: #64748b;">TIT Student</span>
+          <span class="member-badge-pill" style="${isRequired ? "" : "background:#f1f5f9; color:#475569;"}">${badgeText}</span>
+          <span style="font-size: 0.72rem; color: #64748b;">${isRequired ? "Required TIT Student" : "Optional 5th/6th Member"}</span>
         </div>
         <div class="form-row-2">
           <div class="form-group-item" style="margin-bottom: 8px;">
-            <label class="form-input-label">Full Name *</label>
-            <input type="text" id="m${i}-name" class="form-text-input" placeholder="Member ${i} Name" required>
+            <label class="form-input-label">Full Name${requiredMarker}</label>
+            <input type="text" id="m${i}-name" class="form-text-input" placeholder="Member ${i} Name" ${isRequired ? "required" : ""} oninput="checkRosterFemaleQuota()">
           </div>
           <div class="form-group-item" style="margin-bottom: 8px;">
-            <label class="form-input-label">Roll Number *</label>
-            <input type="text" id="m${i}-roll" class="form-text-input" placeholder="e.g. 21IT0${i * 4}" required>
+            <label class="form-input-label">Roll Number${requiredMarker}</label>
+            <input type="text" id="m${i}-roll" class="form-text-input" placeholder="e.g. 21IT0${i * 4}" ${isRequired ? "required" : ""}>
           </div>
         </div>
         <div class="form-row-2">
           <div class="form-group-item" style="margin-bottom: 8px;">
-            <label class="form-input-label">Department *</label>
-            <select id="m${i}-dept" class="form-select-input" required>
+            <label class="form-input-label">Department${requiredMarker}</label>
+            <select id="m${i}-dept" class="form-select-input" ${isRequired ? "required" : ""}>
               <option value="CSE">CSE</option>
               <option value="IT" ${i === 2 ? "selected" : ""}>IT</option>
               <option value="ECE" ${i === 3 ? "selected" : ""}>ECE</option>
@@ -612,8 +618,8 @@ function renderMembersRosterInputs() {
             </select>
           </div>
           <div class="form-group-item" style="margin-bottom: 8px;">
-            <label class="form-input-label">Gender *</label>
-            <select id="m${i}-gender" class="form-select-input roster-gender-select" onchange="checkRosterFemaleQuota()" required>
+            <label class="form-input-label">Gender${requiredMarker}</label>
+            <select id="m${i}-gender" class="form-select-input roster-gender-select" onchange="checkRosterFemaleQuota()" ${isRequired ? "required" : ""}>
               <option value="Male">Male</option>
               <option value="Female" ${i === 2 ? "selected" : ""}>Female</option>
               <option value="Other">Other</option>
@@ -622,12 +628,12 @@ function renderMembersRosterInputs() {
         </div>
         <div class="form-row-2">
           <div class="form-group-item" style="margin-bottom: 0;">
-            <label class="form-input-label">Email ID *</label>
-            <input type="email" id="m${i}-email" class="form-text-input" placeholder="member${i}@titagartala.ac.in" required>
+            <label class="form-input-label">Email ID${requiredMarker}</label>
+            <input type="email" id="m${i}-email" class="form-text-input" placeholder="member${i}@titagartala.ac.in" ${isRequired ? "required" : ""}>
           </div>
           <div class="form-group-item" style="margin-bottom: 0;">
-            <label class="form-input-label">Phone Number *</label>
-            <input type="tel" id="m${i}-phone" class="form-text-input" placeholder="10-digit mobile" required>
+            <label class="form-input-label">Phone Number${requiredMarker}</label>
+            <input type="tel" id="m${i}-phone" class="form-text-input" placeholder="10-digit mobile" ${isRequired ? "required" : ""}>
           </div>
         </div>
       </div>
@@ -639,12 +645,26 @@ function renderMembersRosterInputs() {
 }
 
 window.checkRosterFemaleQuota = () => {
-  const genderSelects = document.querySelectorAll(".roster-gender-select");
   let femaleCount = 0;
 
-  genderSelects.forEach((sel) => {
-    if (sel.value === "Female") femaleCount++;
-  });
+  // Check Member 1
+  const m1Gender = document.getElementById("m1-gender");
+  if (m1Gender && m1Gender.value === "Female") femaleCount++;
+
+  // Check Members 2 to 4 (Required)
+  for (let i = 2; i <= 4; i++) {
+    const genderSel = document.getElementById(`m${i}-gender`);
+    if (genderSel && genderSel.value === "Female") femaleCount++;
+  }
+
+  // Check Members 5 and 6 (Only count if name or roll is filled)
+  for (let i = 5; i <= 6; i++) {
+    const nameInput = document.getElementById(`m${i}-name`);
+    const genderSel = document.getElementById(`m${i}-gender`);
+    if (nameInput && nameInput.value.trim() !== "" && genderSel && genderSel.value === "Female") {
+      femaleCount++;
+    }
+  }
 
   const statusEl = document.getElementById("roster-female-status");
   if (statusEl) {
@@ -653,7 +673,7 @@ window.checkRosterFemaleQuota = () => {
       statusEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${femaleCount} Female Member(s) Included (Compliant)`;
     } else {
       statusEl.style.color = "#dc2626";
-      statusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> 0 Female Members (1+ Mandatory for SIH)`;
+      statusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> 0 Female Members (1+ Mandatory)`;
     }
   }
 
@@ -709,18 +729,31 @@ window.handleTeamRegistrationSubmit = (e) => {
     return;
   }
 
-  // Extract and strictly validate all 6 members
+  // Extract and strictly validate 4 required members and optional 5th/6th members
   const members = [];
   const rollSet = new Set();
   const emailSet = new Set();
 
   for (let i = 1; i <= 6; i++) {
-    const name = document.getElementById(`m${i}-name`).value.trim();
-    const roll = document.getElementById(`m${i}-roll`).value.trim().toUpperCase();
-    const dept = document.getElementById(`m${i}-dept`).value;
-    const gender = document.getElementById(`m${i}-gender`).value;
-    const email = document.getElementById(`m${i}-email`).value.trim().toLowerCase();
-    const phone = document.getElementById(`m${i}-phone`).value.trim();
+    const isRequired = i <= 4;
+    const nameEl = document.getElementById(`m${i}-name`);
+    const rollEl = document.getElementById(`m${i}-roll`);
+    const deptEl = document.getElementById(`m${i}-dept`);
+    const genderEl = document.getElementById(`m${i}-gender`);
+    const emailEl = document.getElementById(`m${i}-email`);
+    const phoneEl = document.getElementById(`m${i}-phone`);
+
+    const name = nameEl ? nameEl.value.trim() : "";
+    const roll = rollEl ? rollEl.value.trim().toUpperCase() : "";
+    const dept = deptEl ? deptEl.value : "CSE";
+    const gender = genderEl ? genderEl.value : "Male";
+    const email = emailEl ? emailEl.value.trim().toLowerCase() : "";
+    const phone = phoneEl ? phoneEl.value.trim() : "";
+
+    // For optional members 5 and 6, skip if empty
+    if (!isRequired && !name && !roll && !email) {
+      continue;
+    }
 
     if (!name) {
       alert(`[TIT SIH] Please provide the Full Name for Member ${i}.`);
@@ -733,7 +766,7 @@ window.handleTeamRegistrationSubmit = (e) => {
     }
 
     if (rollSet.has(roll)) {
-      alert(`[TIT SIH Error] Duplicate Roll Number: "${roll}" is entered more than once. All 6 members must be distinct.`);
+      alert(`[TIT SIH Error] Duplicate Roll Number: "${roll}" is entered more than once.`);
       return;
     }
     rollSet.add(roll);
@@ -763,6 +796,19 @@ window.handleTeamRegistrationSubmit = (e) => {
       phone,
       isLeader: i === 1
     });
+  }
+
+  // Validate team size minimum 4 members
+  if (members.length < 4) {
+    alert("[TIT SIH Error] A minimum of 4 members (Member 1 to 4) is required to register a team.");
+    return;
+  }
+
+  // Validate at least 1 female member
+  const hasFemale = members.some((m) => m.gender === "Female");
+  if (!hasFemale) {
+    alert("[TIT SIH Error] Mandatory Rule: Your team must have at least ONE female student member to be eligible.");
+    return;
   }
 
   // Generate Unique Non-Colliding Team ID
@@ -851,10 +897,10 @@ function renderStudentDashboard() {
           Welcome, ${currentUser.name}
         </h3>
         <p style="color: #64748b; font-size: 0.9rem; max-width: 540px; margin: 0 auto 24px; line-height: 1.5;">
-          You are currently not linked to any registered 6-member squad. Assemble your team and register now to participate in the TIT SIH Internal Hackathon.
+          You are currently not linked to any registered team. Assemble your squad (4 to 6 members) and register now to participate in the TIT SIH Internal Hackathon.
         </p>
         <button class="btn-3d-primary" onclick="triggerRegistration()" style="padding: 14px 28px;">
-          <i class="fa-solid fa-plus"></i> Register 6-Member Squad
+          <i class="fa-solid fa-plus"></i> Register Team
         </button>
       </div>
     `;
@@ -918,9 +964,9 @@ function renderStudentDashboard() {
         </p>
       </div>
 
-      <!-- 6-Member Squad Roster Grid -->
+      <!-- Squad Roster Grid -->
       <h4 style="font-size: 1.05rem; font-weight: 800; color: #064e3b; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-        <i class="fa-solid fa-users"></i> Confirmed 6-Member Squad Roster
+        <i class="fa-solid fa-users"></i> Confirmed Squad Roster (${userTeam.members.length} Members)
       </h4>
       <div class="dashboard-team-grid">
         ${userTeam.members
@@ -1200,7 +1246,7 @@ function renderAdminConsole() {
   const totalTeams = registeredTeams.length;
   const swTeams = registeredTeams.filter((t) => t.edition.includes("Software")).length;
   const hwTeams = registeredTeams.filter((t) => t.edition.includes("Hardware")).length;
-  const totalStudents = totalTeams * 6;
+  const totalStudents = registeredTeams.reduce((acc, t) => acc + (t.members ? t.members.length : 0), 0);
   
   let totalFemales = 0;
   registeredTeams.forEach(t => {

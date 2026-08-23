@@ -129,7 +129,7 @@
         <!-- CTA Buttons -->
         <div class="hero-cta-group">
           <button class="btn-3d-primary" onclick="triggerRegistration()">
-            <i class="fa-solid fa-bolt"></i> Register 6-Member Squad ↗
+            <i class="fa-solid fa-bolt"></i> Register Team ↗
           </button>
           <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="btn-3d-secondary">
             <i class="fa-solid fa-arrow-up-right-from-square"></i> Official SIH 2026 PS Portal (sih.gov.in) ↗
@@ -558,13 +558,11 @@
 
         <div class="faq-item">
           <button class="faq-question">
-            <span>Is it mandatory to have exactly 6 members and at least 1 female member?</span>
+            <span>What is the team size and composition requirement?</span>
             <i class="fa-solid fa-chevron-down faq-icon-arrow"></i>
           </button>
           <div class="faq-answer">
-            <p>Yes! Under official Smart India Hackathon guidelines from the Ministry of Education & AICTE, every team
-              must consist of exactly 6 students with at least 1 female member. Teams not meeting this rule cannot be
-              uploaded to the official SIH portal.</p>
+            <p>Teams must consist of a minimum of 4 members and up to 6 members. Having at least <strong>1 female student member</strong> is strictly mandatory. The 5th and 6th members are optional based on participant choice.</p>
           </div>
         </div>
 
@@ -586,7 +584,7 @@
             <i class="fa-solid fa-chevron-down faq-icon-arrow"></i>
           </button>
           <div class="faq-answer">
-            <p>Click on the "Register Team" button on this website. The Team Leader can sign in or create an account, fill in the 6-member squad details and Idea PPT link, and receive an authenticated digital registration pass with an instant verification QR code.</p>
+            <p>Click on the "Register Team" button on this website. The Team Leader can sign in or create an account, fill in the team member details (4 required, up to 2 optional) and Idea PPT link, and receive an authenticated digital registration pass with an instant verification QR code.</p>
           </div>
         </div>
 
@@ -716,7 +714,7 @@
         <!-- Team Leader Notice -->
         <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 8px 12px; font-size: 0.78rem; color: #065f46; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
           <i class="fa-solid fa-crown" style="color: #059669; font-size: 1rem;"></i>
-          <span><strong>Team Leader:</strong> Only the Team Leader registers the 6-member squad.</span>
+          <span><strong>Team Leader:</strong> Only the Team Leader registers the team (4 to 6 members).</span>
         </div>
 
         <!-- Sign In Form -->
@@ -831,7 +829,7 @@
     </div>
   </div>
 
-  <!-- Modal 2: 6-Member Team Registration Wizard -->
+  <!-- Modal 2: Team Registration Wizard (4 to 6 Members) -->
   <div class="modal-overlay" id="team-registration-modal">
     <div class="modal-container" style="max-width: 820px; text-align: left;">
       <button class="modal-close-btn" onclick="closeTeamRegModal()">
@@ -846,7 +844,7 @@
           <p style="color: #64748b; font-size: 0.85rem;">Official Internal Hackathon 2026 Submission</p>
         </div>
         <span class="status-badge status-valid" style="font-size: 0.8rem;">
-          <i class="fa-solid fa-shield-check"></i> Strict SIH 6-Member Rule
+          <i class="fa-solid fa-shield-check"></i> Team Size: 4 to 6 Members
         </span>
       </div>
 
@@ -902,17 +900,17 @@
           </div>
         </div>
 
-        <!-- Step 2: 6-Member Squad Roster -->
+        <!-- Step 2: Team Member Roster -->
         <div class="form-section-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <h4 class="form-section-title" style="margin: 0;"><i class="fa-solid fa-users"></i> 2. Exact 6-Member Squad Roster</h4>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+            <h4 class="form-section-title" style="margin: 0;"><i class="fa-solid fa-users"></i> 2. Team Member Roster (4 Required, 2 Optional)</h4>
             <div id="roster-female-status" style="font-size: 0.8rem; font-weight: 700; color: #dc2626;">
               <i class="fa-solid fa-triangle-exclamation"></i> 1+ Female Member Mandatory
             </div>
           </div>
 
           <div class="members-roster-grid" id="members-roster-inputs">
-            <!-- 6 Member Cards rendered dynamically by script.js -->
+            <!-- Member Cards rendered dynamically by script.js -->
           </div>
         </div>
 
@@ -931,7 +929,7 @@
           <div style="background: #f0fdf4; border: 1px solid #a7f3d0; border-radius: 10px; padding: 12px 14px; margin-top: 14px;">
             <label style="display: flex; gap: 10px; align-items: flex-start; cursor: pointer; font-size: 0.82rem; color: #064e3b;">
               <input type="checkbox" id="reg-declaration" required style="margin-top: 3px;">
-              <span>I hereby certify that all 6 team members are regular enrolled students of Tripura Institute of Technology (TIT) and agree to abide by all Smart India Hackathon & IIC rules.</span>
+              <span>I hereby certify that all registered team members are regular enrolled students of Tripura Institute of Technology (TIT) and agree to abide by all Smart India Hackathon & IIC rules.</span>
             </label>
           </div>
         </div>
