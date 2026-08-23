@@ -23,7 +23,7 @@ const FIREBASE_CONFIG = {
 
 // Global Hackathon Settings
 const CONFIG = {
-  adminPasscode: "TIT-IIC-2026",
+  adminPasscode: "TIT_SIH_2026#SPOC",
   hackathonDate: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000), // 12 days from now
   registrationDeadline: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000) // 6 days from now
 };
@@ -904,6 +904,10 @@ window.closeTeamPassModal = () => {
 /* ==========================================================================
    6. FACULTY & JURY ADMIN REVIEW CONSOLE ENGINE
    ========================================================================== */
+let adminSearchQuery = "";
+let adminEditionFilter = "ALL";
+let adminStatusFilter = "ALL";
+
 window.openAdminModal = () => {
   const modal = document.getElementById("admin-review-modal");
   const passcodeView = document.getElementById("admin-passcode-view");
@@ -921,6 +925,13 @@ window.closeAdminModal = () => {
   if (modal) modal.classList.remove("active");
 };
 
+window.fillDemoAdminPasscode = () => {
+  const input = document.getElementById("admin-passcode-input");
+  if (input) {
+    input.value = CONFIG.adminPasscode;
+  }
+};
+
 window.handleAdminPasscodeSubmit = (e) => {
   e.preventDefault();
   const input = document.getElementById("admin-passcode-input").value.trim();
@@ -934,6 +945,13 @@ window.handleAdminPasscodeSubmit = (e) => {
   }
 };
 
+window.filterAdminTeams = (query, edition, status) => {
+  if (query !== undefined) adminSearchQuery = query.toLowerCase();
+  if (edition !== undefined) adminEditionFilter = edition;
+  if (status !== undefined) adminStatusFilter = status;
+  renderAdminConsole();
+};
+
 function renderAdminConsole() {
   const container = document.getElementById("admin-teams-table-container");
   if (!container) return;
@@ -942,6 +960,38 @@ function renderAdminConsole() {
   const swTeams = registeredTeams.filter((t) => t.edition.includes("Software")).length;
   const hwTeams = registeredTeams.filter((t) => t.edition.includes("Hardware")).length;
   const totalStudents = totalTeams * 6;
+  
+  let totalFemales = 0;
+  registeredTeams.forEach(t => {
+    t.members.forEach(m => {
+      if (m.gender === "Female") totalFemales++;
+    });
+  });
+
+  // Filter teams based on search & filters
+  const filteredTeams = registeredTeams.filter((t) => {
+    const matchesSearch =
+      adminSearchQuery === "" ||
+      t.teamId.toLowerCase().includes(adminSearchQuery) ||
+      t.teamName.toLowerCase().includes(adminSearchQuery) ||
+      t.psId.toLowerCase().includes(adminSearchQuery) ||
+      t.domain.toLowerCase().includes(adminSearchQuery) ||
+      t.title.toLowerCase().includes(adminSearchQuery) ||
+      t.members.some((m) => m.name.toLowerCase().includes(adminSearchQuery) || m.roll.toLowerCase().includes(adminSearchQuery));
+
+    const matchesEdition =
+      adminEditionFilter === "ALL" ||
+      (adminEditionFilter === "Software" && t.edition.includes("Software")) ||
+      (adminEditionFilter === "Hardware" && t.edition.includes("Hardware"));
+
+    const matchesStatus =
+      adminStatusFilter === "ALL" ||
+      (adminStatusFilter === "Review" && t.status.includes("Under Review")) ||
+      (adminStatusFilter === "Shortlisted" && t.status.includes("Shortlisted")) ||
+      (adminStatusFilter === "Nominated" && t.status.includes("Nominated"));
+
+    return matchesSearch && matchesEdition && matchesStatus;
+  });
 
   const dbStatusBadge = isFirebaseActive
     ? `<div style="display: inline-flex; align-items: center; gap: 8px; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; color: #065f46; font-weight: 700; margin-bottom: 16px;">
@@ -954,50 +1004,104 @@ function renderAdminConsole() {
   container.innerHTML = `
     ${dbStatusBadge}
 
-    <!-- Stats Cards -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px;">
-      <div style="background: #f0fdf4; border: 1px solid #a7f3d0; border-radius: 10px; padding: 14px; text-align: center;">
+    <!-- Summary Stats Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px;">
+      <div style="background: #f0fdf4; border: 1px solid #a7f3d0; border-radius: 10px; padding: 12px; text-align: center;">
         <div style="font-size: 1.6rem; font-weight: 900; color: #064e3b;">${totalTeams}</div>
         <div style="font-size: 0.75rem; font-weight: 700; color: #059669;">Total Teams</div>
       </div>
-      <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 14px; text-align: center;">
+      <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px; text-align: center;">
         <div style="font-size: 1.6rem; font-weight: 900; color: #1e40af;">${swTeams}</div>
         <div style="font-size: 0.75rem; font-weight: 700; color: #2563eb;">Software Teams</div>
       </div>
-      <div style="background: #fef3c7; border: 1px solid #fde68a; border-radius: 10px; padding: 14px; text-align: center;">
+      <div style="background: #fef3c7; border: 1px solid #fde68a; border-radius: 10px; padding: 12px; text-align: center;">
         <div style="font-size: 1.6rem; font-weight: 900; color: #92400e;">${hwTeams}</div>
         <div style="font-size: 0.75rem; font-weight: 700; color: #d97706;">Hardware Teams</div>
       </div>
-      <div style="background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 10px; padding: 14px; text-align: center;">
+      <div style="background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 10px; padding: 12px; text-align: center;">
         <div style="font-size: 1.6rem; font-weight: 900; color: #6b21a8;">${totalStudents}</div>
         <div style="font-size: 0.75rem; font-weight: 700; color: #9333ea;">Active Students</div>
       </div>
+      <div style="background: #fff1f2; border: 1px solid #fecdd3; border-radius: 10px; padding: 12px; text-align: center;">
+        <div style="font-size: 1.6rem; font-weight: 900; color: #9f1239;">${totalFemales}</div>
+        <div style="font-size: 0.75rem; font-weight: 700; color: #e11d48;">Female Participants 👩</div>
+      </div>
     </div>
 
-    <!-- Teams Table -->
+    <!-- Search & Filter Toolbar -->
+    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+      <div style="display: flex; gap: 10px; flex-grow: 1; min-width: 240px;">
+        <div style="position: relative; width: 100%;">
+          <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 11px; color: #94a3b8; font-size: 0.85rem;"></i>
+          <input type="text" class="form-text-input" placeholder="Search by team name, ID, leader, roll no, or domain..." 
+            value="${adminSearchQuery}" 
+            oninput="filterAdminTeams(this.value, undefined, undefined)"
+            style="padding-left: 34px; font-size: 0.85rem; height: 38px; margin: 0;">
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <select class="form-select-input" onchange="filterAdminTeams(undefined, this.value, undefined)" style="height: 38px; font-size: 0.82rem; padding: 6px 12px; width: auto; margin: 0;">
+          <option value="ALL" ${adminEditionFilter === "ALL" ? "selected" : ""}>All Editions</option>
+          <option value="Software" ${adminEditionFilter === "Software" ? "selected" : ""}>Software Edition</option>
+          <option value="Hardware" ${adminEditionFilter === "Hardware" ? "selected" : ""}>Hardware Edition</option>
+        </select>
+
+        <select class="form-select-input" onchange="filterAdminTeams(undefined, undefined, this.value)" style="height: 38px; font-size: 0.82rem; padding: 6px 12px; width: auto; margin: 0;">
+          <option value="ALL" ${adminStatusFilter === "ALL" ? "selected" : ""}>All Statuses</option>
+          <option value="Review" ${adminStatusFilter === "Review" ? "selected" : ""}>Under Review ⏳</option>
+          <option value="Shortlisted" ${adminStatusFilter === "Shortlisted" ? "selected" : ""}>Shortlisted 🚀</option>
+          <option value="Nominated" ${adminStatusFilter === "Nominated" ? "selected" : ""}>Nominated 🏆</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Master Teams Table -->
     <div class="admin-table-wrap">
       <table class="admin-table">
         <thead>
           <tr>
             <th>Team ID</th>
-            <th>Team Name</th>
-            <th>Target PS</th>
-            <th>Leader Contact</th>
-            <th>PPT Deck</th>
+            <th>Team Name & Category</th>
+            <th>Target PS & Domain</th>
+            <th>Team Leader</th>
+            <th>Female Quota</th>
             <th>Evaluation Status</th>
-            <th>Actions</th>
+            <th style="text-align: right;">Actions</th>
           </tr>
         </thead>
         <tbody>
-          ${registeredTeams
-            .map(
-              (t, idx) => `
+          ${
+            filteredTeams.length === 0
+              ? `<tr><td colspan="7" style="text-align: center; padding: 32px; color: #64748b;">No registered teams matching your search/filters.</td></tr>`
+              : filteredTeams
+                  .map((t) => {
+                    const femalesInTeam = t.members.filter((m) => m.gender === "Female").length;
+                    const leader = t.members[0] || {};
+                    return `
             <tr>
-              <td><strong style="color: #059669;">${t.teamId}</strong></td>
-              <td><strong>${t.teamName}</strong><br><span style="font-size: 0.72rem; color: #64748b;">${t.edition}</span></td>
-              <td><strong>${t.psId}</strong><br><span style="font-size: 0.72rem; color: #64748b;">${t.domain}</span></td>
-              <td>${t.members[0].name}<br><span style="font-size: 0.72rem; color: #64748b;">${t.members[0].phone}</span></td>
-              <td><a href="${t.pptLink}" target="_blank" rel="noopener" style="color: #059669; font-weight: 700; text-decoration: underline;">View Deck ↗</a></td>
+              <td>
+                <strong style="color: #059669; font-family: var(--font-mono); font-size: 0.88rem;">${t.teamId}</strong>
+                <div style="font-size: 0.7rem; color: #94a3b8;">${t.createdAt || "2026"}</div>
+              </td>
+              <td>
+                <strong style="color: #0f172a; font-size: 0.92rem;">${t.teamName}</strong>
+                <div style="font-size: 0.72rem; color: #64748b;"><span class="badge" style="background:#e0f2fe; color:#0369a1; padding:2px 6px; border-radius:4px;">${t.edition}</span></div>
+              </td>
+              <td>
+                <strong style="color: #064e3b;">${t.psId}</strong>
+                <div style="font-size: 0.72rem; color: #64748b;">${t.domain}</div>
+              </td>
+              <td>
+                <strong style="color: #0f172a;">${leader.name}</strong>
+                <div style="font-size: 0.72rem; color: #64748b;">${leader.roll} (${leader.dept})</div>
+                <div style="font-size: 0.7rem; color: #059669;"><i class="fa-solid fa-phone" style="font-size:0.65rem;"></i> ${leader.phone || "N/A"}</div>
+              </td>
+              <td>
+                <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.75rem; font-weight: 700; color: #059669; background: #ecfdf5; padding: 3px 8px; border-radius: 6px; border: 1px solid #a7f3d0;">
+                  <i class="fa-solid fa-circle-check"></i> ${femalesInTeam} Female
+                </span>
+              </td>
               <td>
                 <select class="admin-status-select" onchange="updateTeamStatus('${t.teamId}', this.value)">
                   <option value="Under Review by IIC Panel" ${t.status.includes("Under Review") ? "selected" : ""}>Under Review ⏳</option>
@@ -1005,20 +1109,141 @@ function renderAdminConsole() {
                   <option value="Nominated for SIH Finals" ${t.status.includes("Nominated") ? "selected" : ""}>Nominated 🏆</option>
                 </select>
               </td>
-              <td>
-                <button class="btn-3d-outline" onclick="openTeamPassModal('${t.teamId}')" style="padding: 4px 10px; font-size: 0.75rem;">
+              <td style="text-align: right; white-space: nowrap;">
+                <button class="btn-3d-primary" onclick="openAdminTeamDetails('${t.teamId}')" style="padding: 6px 12px; font-size: 0.75rem; margin-right: 4px;">
+                  <i class="fa-solid fa-users-viewfinder"></i> View Details
+                </button>
+                <button class="btn-3d-outline" onclick="openTeamPassModal('${t.teamId}')" style="padding: 6px 10px; font-size: 0.75rem; background: #ffffff;" title="Print Digital Pass">
                   <i class="fa-solid fa-id-card"></i> Pass
                 </button>
               </td>
             </tr>
-          `
-            )
-            .join("")}
+          `;
+                  })
+                  .join("")
+          }
         </tbody>
       </table>
     </div>
   `;
 }
+
+/* ==========================================================================
+   7. DETAILED TEAM INSPECTOR MODAL FOR ADMIN
+   ========================================================================== */
+window.openAdminTeamDetails = (teamId) => {
+  const team = registeredTeams.find((t) => t.teamId === teamId);
+  if (!team) return;
+
+  const modal = document.getElementById("admin-team-details-modal");
+  const content = document.getElementById("admin-team-details-content");
+  if (!modal || !content) return;
+
+  const leader = team.members[0] || {};
+  const femaleCount = team.members.filter((m) => m.gender === "Female").length;
+
+  content.innerHTML = `
+    <!-- Header Banner -->
+    <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 18px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <span style="background: #059669; color: #ffffff; font-weight: 800; font-size: 0.85rem; padding: 4px 10px; border-radius: 6px; font-family: var(--font-mono);">
+              ${team.teamId}
+            </span>
+            <span style="background: #ecfdf5; color: #065f46; font-weight: 700; font-size: 0.78rem; padding: 4px 10px; border-radius: 6px; border: 1px solid #a7f3d0;">
+              ${team.edition}
+            </span>
+            <span style="background: #fff1f2; color: #9f1239; font-weight: 700; font-size: 0.78rem; padding: 4px 10px; border-radius: 6px; border: 1px solid #fecdd3;">
+              <i class="fa-solid fa-venus"></i> ${femaleCount} Female Member(s)
+            </span>
+          </div>
+          <h2 style="font-size: 1.6rem; font-weight: 900; color: #0f172a; margin: 0 0 4px;">
+            Team: ${team.teamName}
+          </h2>
+          <div style="color: #64748b; font-size: 0.85rem;">
+            Leader: <strong style="color: #0f172a;">${leader.name}</strong> (${leader.roll} - ${leader.dept}) • Registered on: ${team.createdAt}
+          </div>
+        </div>
+
+        <div style="text-align: right;">
+          <label style="font-size: 0.75rem; font-weight: 700; color: #64748b; display: block; margin-bottom: 4px;">UPDATE EVALUATION STATUS</label>
+          <select class="admin-status-select" style="padding: 6px 12px; font-weight: 700;" onchange="updateTeamStatus('${team.teamId}', this.value)">
+            <option value="Under Review by IIC Panel" ${team.status.includes("Under Review") ? "selected" : ""}>Under Review ⏳</option>
+            <option value="Shortlisted for Demo Day" ${team.status.includes("Shortlisted") ? "selected" : ""}>Shortlisted for Demo Day 🚀</option>
+            <option value="Nominated for SIH Finals" ${team.status.includes("Nominated") ? "selected" : ""}>Nominated for SIH Finals 🏆</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project & Solution Synopsis -->
+    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+        <span style="font-weight: 800; color: #064e3b; font-size: 0.95rem;">
+          <i class="fa-solid fa-bullseye" style="color: #059669;"></i> Target PS: <strong>${team.psId}</strong> (${team.domain})
+        </span>
+        <a href="${team.pptLink}" target="_blank" rel="noopener" class="btn-3d-primary" style="padding: 6px 14px; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+          <i class="fa-solid fa-file-powerpoint"></i> Open Idea PPT Deck ↗
+        </a>
+      </div>
+      <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
+        ${team.title}
+      </h4>
+      <p style="font-size: 0.88rem; color: #475569; line-height: 1.55; margin: 0;">
+        ${team.abstract}
+      </p>
+    </div>
+
+    <!-- Complete 6 Squad Members Table & Details -->
+    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+      <i class="fa-solid fa-users" style="color: #059669;"></i> Full 6-Member Squad Roster
+    </h3>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 24px;">
+      ${team.members
+        .map(
+          (m, idx) => `
+        <div style="background: ${m.isLeader ? "#f0fdf4" : "#ffffff"}; border: 1px solid ${m.isLeader ? "#a7f3d0" : "#e2e8f0"}; border-radius: 10px; padding: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <strong style="color: #0f172a; font-size: 0.9rem;">${m.name}</strong>
+            ${m.isLeader ? '<span class="member-badge-pill leader" style="font-size:0.65rem;">LEADER 👑</span>' : `<span style="font-size:0.7rem; color:#64748b; font-weight:600;">Member ${idx + 1}</span>`}
+          </div>
+          <div style="font-size: 0.78rem; color: #475569; margin-bottom: 3px;">
+            <i class="fa-solid fa-id-badge" style="color: #059669; width: 14px;"></i> Roll: <strong>${m.roll}</strong> (${m.dept})
+          </div>
+          <div style="font-size: 0.78rem; color: #475569; margin-bottom: 3px;">
+            <i class="fa-solid fa-venus-mars" style="color: #059669; width: 14px;"></i> Gender: <strong>${m.gender}</strong>
+          </div>
+          <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 3px; word-break: break-all;">
+            <i class="fa-solid fa-envelope" style="color: #059669; width: 14px;"></i> ${m.email}
+          </div>
+          <div style="font-size: 0.75rem; color: #64748b;">
+            <i class="fa-solid fa-phone" style="color: #059669; width: 14px;"></i> ${m.phone || "N/A"}
+          </div>
+        </div>
+      `
+        )
+        .join("")}
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #e2e8f0; padding-top: 16px;">
+      <button class="btn-3d-outline" onclick="openTeamPassModal('${team.teamId}')" style="padding: 8px 16px; font-size: 0.82rem; background: #ffffff;">
+        <i class="fa-solid fa-id-card"></i> View Digital Pass & QR
+      </button>
+      <button class="btn-3d-secondary" onclick="closeAdminTeamDetails()">
+        Close Inspector
+      </button>
+    </div>
+  `;
+
+  modal.classList.add("active");
+};
+
+window.closeAdminTeamDetails = () => {
+  const modal = document.getElementById("admin-team-details-modal");
+  if (modal) modal.classList.remove("active");
+};
 
 window.updateTeamStatus = (teamId, newStatus) => {
   const team = registeredTeams.find((t) => t.teamId === teamId);
