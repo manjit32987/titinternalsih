@@ -155,7 +155,7 @@ function initRegistrationModal() {
 }
 
 /* ==========================================================================
-   5. SCROLL REVEAL & STICKY DOCK
+   5. SCROLL REVEAL & STICKY DOCK & MOBILE NAV
    ========================================================================== */
 function initScrollEffects() {
   const floatingDock = document.getElementById("floating-reg-dock");
@@ -168,6 +168,20 @@ function initScrollEffects() {
       floatingDock.classList.remove("visible");
     }
   });
+
+  // Mobile menu toggle
+  const mobileBtn = document.getElementById("mobile-menu-toggle");
+  const mobileMenu = document.getElementById("mobile-nav-dropdown");
+
+  if (mobileBtn && mobileMenu) {
+    mobileBtn.addEventListener("click", () => {
+      mobileMenu.classList.toggle("open");
+    });
+  }
+
+  window.closeMobileMenu = () => {
+    if (mobileMenu) mobileMenu.classList.remove("open");
+  };
 }
 
 /* ==========================================================================
