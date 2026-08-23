@@ -197,10 +197,15 @@ function initCountdownTimer() {
 /* ==========================================================================
    2. STUDENT AUTHENTICATION SYSTEM (LOGIN / SIGN UP / LOGOUT)
    ========================================================================== */
-window.openAuthModal = (tab = "login") => {
+window.openAuthModal = (mode = "student", studentTab = "login") => {
   const modal = document.getElementById("auth-modal");
   if (!modal) return;
-  switchAuthTab(tab);
+  if (mode === "admin") {
+    switchAuthRole("admin");
+  } else {
+    switchAuthRole("student");
+    switchStudentAuthTab(studentTab);
+  }
   modal.classList.add("active");
 };
 
@@ -209,42 +214,61 @@ window.closeAuthModal = () => {
   if (modal) modal.classList.remove("active");
 };
 
-window.switchAuthTab = (tab) => {
+window.switchAuthRole = (role) => {
+  const studentRoleBtn = document.getElementById("role-student-btn");
+  const adminRoleBtn = document.getElementById("role-admin-btn");
+  const studentSection = document.getElementById("auth-student-section");
+  const adminSection = document.getElementById("auth-admin-section");
+  const title = document.getElementById("auth-modal-title");
+
+  if (role === "admin") {
+    if (adminRoleBtn) adminRoleBtn.classList.add("active");
+    if (studentRoleBtn) studentRoleBtn.classList.remove("active");
+    if (adminSection) adminSection.style.display = "block";
+    if (studentSection) studentSection.style.display = "none";
+    if (title) title.textContent = "SPOC & Faculty Portal";
+    const passInput = document.getElementById("admin-tab-passcode-input");
+    if (passInput) passInput.value = "";
+  } else {
+    if (studentRoleBtn) studentRoleBtn.classList.add("active");
+    if (adminRoleBtn) adminRoleBtn.classList.remove("active");
+    if (studentSection) studentSection.style.display = "block";
+    if (adminSection) adminSection.style.display = "none";
+    if (title) title.textContent = "Student & Leader Portal";
+  }
+};
+
+window.switchStudentAuthTab = (tab) => {
   const loginBtn = document.getElementById("tab-login-btn");
   const signupBtn = document.getElementById("tab-signup-btn");
-  const adminBtn = document.getElementById("tab-admin-btn");
   const loginForm = document.getElementById("login-form");
   const signupForm = document.getElementById("signup-form");
   const resetForm = document.getElementById("reset-password-form");
-  const adminForm = document.getElementById("admin-login-tab-form");
-  const title = document.getElementById("auth-modal-title");
 
-  // Deactivate all
   if (loginBtn) loginBtn.classList.remove("active");
   if (signupBtn) signupBtn.classList.remove("active");
-  if (adminBtn) adminBtn.classList.remove("active");
   if (loginForm) loginForm.style.display = "none";
   if (signupForm) signupForm.style.display = "none";
   if (resetForm) resetForm.style.display = "none";
-  if (adminForm) adminForm.style.display = "none";
 
   if (tab === "login") {
     if (loginBtn) loginBtn.classList.add("active");
     if (loginForm) loginForm.style.display = "block";
-    if (title) title.textContent = "Student & Leader Sign In";
   } else if (tab === "signup") {
     if (signupBtn) signupBtn.classList.add("active");
     if (signupForm) signupForm.style.display = "block";
-    if (title) title.textContent = "Create Leader Account";
   } else if (tab === "reset") {
     if (resetForm) resetForm.style.display = "block";
-    if (title) title.textContent = "Reset Password";
-  } else if (tab === "admin") {
-    if (adminBtn) adminBtn.classList.add("active");
-    if (adminForm) adminForm.style.display = "block";
-    if (title) title.textContent = "SPOC / Faculty Admin Login";
-    const passInput = document.getElementById("admin-tab-passcode-input");
-    if (passInput) passInput.value = "";
+  }
+};
+
+// Backwards compatibility alias
+window.switchAuthTab = (tab) => {
+  if (tab === "admin") {
+    switchAuthRole("admin");
+  } else {
+    switchAuthRole("student");
+    switchStudentAuthTab(tab);
   }
 };
 

@@ -702,133 +702,156 @@
     <div class="modal-container" style="max-width: 480px; text-align: left;">
       <button class="modal-close-btn" onclick="closeAuthModal()">
         <i class="fa-solid fa-xmark"></i>
+  <!-- Modal 1: Unified Authentication (Student Login/Register & SPOC/Admin) -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-container" style="max-width: 480px; text-align: left;">
+      <button class="modal-close-btn" onclick="closeAuthModal()">
+        <i class="fa-solid fa-xmark"></i>
       </button>
 
       <div style="text-align: center; margin-bottom: 16px;">
-        <div style="font-size: 2.5rem; margin-bottom: 8px;">🎓</div>
-        <h3 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;" id="auth-modal-title">Student Portal</h3>
-        <p style="color: #64748b; font-size: 0.85rem;">TIT SIH Internal Hackathon 2026</p>
+        <div style="font-size: 2.4rem; margin-bottom: 6px;">🏛️</div>
+        <h3 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;" id="auth-modal-title">TIT SIH Portal</h3>
+        <p style="color: #64748b; font-size: 0.85rem;">Tripura Institute of Technology • SIH 2026</p>
       </div>
 
-      <!-- Team Leader Notice -->
-      <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 8px 12px; font-size: 0.78rem; color: #065f46; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-        <i class="fa-solid fa-crown" style="color: #059669; font-size: 1rem;"></i>
-        <span><strong>Team Leaders:</strong> Only the Team Leader needs an account to register the 6-member squad.</span>
+      <!-- Top-Level Role Switcher -->
+      <div class="role-switch-container">
+        <button class="role-switch-btn active" id="role-student-btn" onclick="switchAuthRole('student')">
+          <i class="fa-solid fa-graduation-cap"></i> Student
+        </button>
+        <button class="role-switch-btn" id="role-admin-btn" onclick="switchAuthRole('admin')">
+          <i class="fa-solid fa-user-shield"></i> SPOC / Admin
+        </button>
       </div>
 
-      <!-- Unified Auth Tabs -->
-      <div class="auth-tabs-bar">
-        <button class="auth-tab-btn active" id="tab-login-btn" onclick="switchAuthTab('login')">Student Sign In</button>
-        <button class="auth-tab-btn" id="tab-signup-btn" onclick="switchAuthTab('signup')">Leader Sign Up</button>
-        <button class="auth-tab-btn" id="tab-admin-btn" onclick="switchAuthTab('admin')">SPOC / Admin</button>
-      </div>
-
-      <!-- Sign In Form -->
-      <form id="login-form" onsubmit="handleLoginSubmit(event)">
-        <div class="form-group-item">
-          <label class="form-input-label">College Email or Roll Number</label>
-          <input type="text" id="login-identifier" class="form-text-input" placeholder="e.g. 2101004 or name@titagartala.ac.in" required>
-        </div>
-        <div class="form-group-item" style="margin-bottom: 4px;">
-          <label class="form-input-label">Password</label>
-          <input type="password" id="login-password" class="form-text-input" placeholder="Enter your password" required>
-        </div>
-        <div style="display: flex; justify-content: flex-end; margin-bottom: 14px;">
-          <button type="button" class="btn-text-link" style="font-size: 0.78rem;" onclick="switchAuthTab('reset')">
-            Forgot Password?
+      <!-- SECTION 1: STUDENT / LEADER PORTAL -->
+      <div id="auth-student-section">
+        <!-- Sub-tabs: Sign In vs Register -->
+        <div class="sub-auth-tabs">
+          <button class="sub-auth-btn active" id="tab-login-btn" onclick="switchStudentAuthTab('login')">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In
+          </button>
+          <button class="sub-auth-btn" id="tab-signup-btn" onclick="switchStudentAuthTab('signup')">
+            <i class="fa-solid fa-user-plus"></i> Register
           </button>
         </div>
-        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 4px;">
-          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to Portal
-        </button>
-      </form>
 
-      <!-- Reset Password Form -->
-      <form id="reset-password-form" style="display: none;" onsubmit="handlePasswordResetSubmit(event)">
-        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; color: #1e40af; margin-bottom: 14px; line-height: 1.4;">
-          <i class="fa-solid fa-envelope" style="color: #2563eb;"></i> Enter your registered college email. We will send a secure password reset link directly to your email inbox.
+        <!-- Team Leader Notice -->
+        <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 8px 12px; font-size: 0.78rem; color: #065f46; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-crown" style="color: #059669; font-size: 1rem;"></i>
+          <span><strong>Team Leader:</strong> Only the Team Leader registers the 6-member squad.</span>
         </div>
-        <div class="form-group-item">
-          <label class="form-input-label">Registered College Email</label>
-          <input type="email" id="reset-email" class="form-text-input" placeholder="e.g. yourname@titagartala.ac.in" required autocomplete="email">
-        </div>
-        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
-          <i class="fa-solid fa-paper-plane"></i> Send Password Reset Email
-        </button>
-        <div style="text-align: center; margin-top: 14px;">
-          <button type="button" class="btn-text-link" onclick="switchAuthTab('login')">← Back to Sign In</button>
-        </div>
-      </form>
 
-      <!-- Sign Up Form -->
-      <form id="signup-form" style="display: none;" onsubmit="handleSignupSubmit(event)">
-        <div class="form-group-item">
-          <label class="form-input-label">Full Name</label>
-          <input type="text" id="signup-name" class="form-text-input" placeholder="e.g. Student Name" required maxlength="60">
-        </div>
-        <div class="form-row-2">
+        <!-- Sign In Form -->
+        <form id="login-form" onsubmit="handleLoginSubmit(event)">
           <div class="form-group-item">
-            <label class="form-input-label">Roll / Enrollment No.</label>
-            <input type="text" id="signup-roll" class="form-text-input" placeholder="e.g. 21CSE042" required maxlength="20">
+            <label class="form-input-label">College Email or Roll Number</label>
+            <input type="text" id="login-identifier" class="form-text-input" placeholder="e.g. 2101004 or name@titagartala.ac.in" required>
           </div>
-          <div class="form-group-item">
-            <label class="form-input-label">Department</label>
-            <select id="signup-dept" class="form-select-input" required>
-              <option value="CSE">CSE</option>
-              <option value="IT">IT</option>
-              <option value="ECE">ECE</option>
-              <option value="EE">EE</option>
-              <option value="ME">ME</option>
-              <option value="CE">CE</option>
-              <option value="AI&DS">AI & DS</option>
-            </select>
+          <div class="form-group-item" style="margin-bottom: 4px;">
+            <label class="form-input-label">Password</label>
+            <input type="password" id="login-password" class="form-text-input" placeholder="Enter your password" required>
           </div>
-        </div>
-        <div class="form-row-2">
-          <div class="form-group-item">
-            <label class="form-input-label">Year of Study</label>
-            <select id="signup-year" class="form-select-input" required>
-              <option value="1st Year">1st Year</option>
-              <option value="2nd Year">2nd Year</option>
-              <option value="3rd Year" selected>3rd Year</option>
-              <option value="4th Year">4th Year</option>
-            </select>
+          <div style="display: flex; justify-content: flex-end; margin-bottom: 14px;">
+            <button type="button" class="btn-text-link" style="font-size: 0.78rem;" onclick="switchStudentAuthTab('reset')">
+              Forgot Password?
+            </button>
           </div>
-          <div class="form-group-item">
-            <label class="form-input-label">Gender</label>
-            <select id="signup-gender" class="form-select-input" required>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group-item">
-          <label class="form-input-label">College Email ID</label>
-          <input type="email" id="signup-email" class="form-text-input" placeholder="e.g. student@titagartala.ac.in" required autocomplete="email">
-        </div>
-        <div class="form-group-item">
-          <label class="form-input-label">Create Password (Min. 6 chars)</label>
-          <input type="password" id="signup-password" class="form-text-input" placeholder="Minimum 6 characters" minlength="6" required autocomplete="new-password">
-        </div>
-        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
-          <i class="fa-solid fa-user-plus"></i> Create Student Account
-        </button>
-      </form>
+          <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 4px;">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to Portal
+          </button>
+        </form>
 
-      <!-- SPOC / Admin Form -->
-      <form id="admin-login-tab-form" style="display: none;" onsubmit="handleAdminTabPasscodeSubmit(event)">
-        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; color: #1e40af; margin-bottom: 14px; line-height: 1.4;">
-          <i class="fa-solid fa-shield-halved" style="color: #2563eb;"></i> Authorized access for Faculty Coordinators, Jury, and SIH SPOC to review registrations, evaluate teams, and export AICTE spreadsheets.
+        <!-- Reset Password Form -->
+        <form id="reset-password-form" style="display: none;" onsubmit="handlePasswordResetSubmit(event)">
+          <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; color: #1e40af; margin-bottom: 14px; line-height: 1.4;">
+            <i class="fa-solid fa-envelope" style="color: #2563eb;"></i> Enter your registered college email to receive a password reset link.
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Registered College Email</label>
+            <input type="email" id="reset-email" class="form-text-input" placeholder="e.g. yourname@titagartala.ac.in" required autocomplete="email">
+          </div>
+          <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
+            <i class="fa-solid fa-paper-plane"></i> Send Password Reset Email
+          </button>
+          <div style="text-align: center; margin-top: 14px;">
+            <button type="button" class="btn-text-link" onclick="switchStudentAuthTab('login')">← Back to Sign In</button>
+          </div>
+        </form>
+
+        <!-- Sign Up Form -->
+        <form id="signup-form" style="display: none;" onsubmit="handleSignupSubmit(event)">
+          <div class="form-group-item">
+            <label class="form-input-label">Full Name</label>
+            <input type="text" id="signup-name" class="form-text-input" placeholder="e.g. Student Name" required maxlength="60">
+          </div>
+          <div class="form-row-2">
+            <div class="form-group-item">
+              <label class="form-input-label">Roll / Enrollment No.</label>
+              <input type="text" id="signup-roll" class="form-text-input" placeholder="e.g. 21CSE042" required maxlength="20">
+            </div>
+            <div class="form-group-item">
+              <label class="form-input-label">Department</label>
+              <select id="signup-dept" class="form-select-input" required>
+                <option value="CSE">CSE</option>
+                <option value="IT">IT</option>
+                <option value="ECE">ECE</option>
+                <option value="EE">EE</option>
+                <option value="ME">ME</option>
+                <option value="CE">CE</option>
+                <option value="AI&DS">AI & DS</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group-item">
+              <label class="form-input-label">Year of Study</label>
+              <select id="signup-year" class="form-select-input" required>
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year" selected>3rd Year</option>
+                <option value="4th Year">4th Year</option>
+              </select>
+            </div>
+            <div class="form-group-item">
+              <label class="form-input-label">Gender</label>
+              <select id="signup-gender" class="form-select-input" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">College Email ID</label>
+            <input type="email" id="signup-email" class="form-text-input" placeholder="e.g. student@titagartala.ac.in" required autocomplete="email">
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Create Password (Min. 6 chars)</label>
+            <input type="password" id="signup-password" class="form-text-input" placeholder="Minimum 6 characters" minlength="6" required autocomplete="new-password">
+          </div>
+          <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
+            <i class="fa-solid fa-user-plus"></i> Create Student Account
+          </button>
+        </form>
+      </div>
+
+      <!-- SECTION 2: SPOC / FACULTY ADMIN PORTAL -->
+      <div id="auth-admin-section" style="display: none;">
+        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px; font-size: 0.82rem; color: #1e40af; margin-bottom: 16px; line-height: 1.45;">
+          <i class="fa-solid fa-shield-halved" style="color: #2563eb;"></i> <strong>Authorized Faculty & Jury Portal:</strong> Enter the SPOC passcode to evaluate registered teams, inspect rosters, and export AICTE spreadsheets.
         </div>
-        <div class="form-group-item">
-          <label class="form-input-label">SPOC / Admin Passcode</label>
-          <input type="password" id="admin-tab-passcode-input" class="form-text-input" placeholder="Enter SPOC Passcode" autocomplete="off" required style="text-align: center; font-weight: 700;">
-        </div>
-        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
-          <i class="fa-solid fa-key"></i> Access Master Evaluation Console
-        </button>
-      </form>
+        <form id="admin-login-tab-form" onsubmit="handleAdminTabPasscodeSubmit(event)">
+          <div class="form-group-item">
+            <label class="form-input-label">SPOC / Admin Passcode</label>
+            <input type="password" id="admin-tab-passcode-input" class="form-text-input" placeholder="Enter SPOC Passcode" autocomplete="off" required style="text-align: center; font-weight: 700; font-size: 1rem; letter-spacing: 1px;">
+          </div>
+          <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
+            <i class="fa-solid fa-key"></i> Access Master Evaluation Console
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 
