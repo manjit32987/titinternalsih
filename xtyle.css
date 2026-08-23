@@ -713,41 +713,45 @@ button {
   margin-bottom: 40px;
 }
 
-.tilt-card-3d {
+.prize-card, .tilt-card-3d {
   position: relative;
   background: #ffffff;
   border-radius: var(--radius-xl);
   padding: 38px 32px;
   border: 1px solid var(--border-subtle);
-  box-shadow: var(--shadow-md);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+  overflow: hidden;
 }
 
-.tilt-card-3d:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+.prize-card:hover, .tilt-card-3d:hover {
+  transform: translateY(-8px);
 }
 
 /* Grand Cash Prize Card */
 .prize-card-grand {
   background: #ffffff;
   border: 2px solid #fde68a;
-  box-shadow: var(--shadow-gold);
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.12);
 }
 
 .prize-card-grand:hover {
+  transform: translateY(-8px);
   border-color: #f59e0b;
+  box-shadow: 0 20px 40px rgba(245, 158, 11, 0.22);
 }
 
 /* Special Ignite ChatGPT Plus Award Card */
 .prize-card-ignite {
   background: #ffffff;
-  border: 2px solid var(--border-emerald);
-  box-shadow: var(--shadow-md);
+  border: 2px solid #a7f3d0;
+  box-shadow: 0 8px 24px rgba(5, 150, 105, 0.1);
 }
 
 .prize-card-ignite:hover {
-  border-color: var(--primary);
+  transform: translateY(-8px);
+  border-color: #059669;
+  box-shadow: 0 20px 40px rgba(5, 150, 105, 0.22);
 }
 
 .prize-badge-ribbon {
