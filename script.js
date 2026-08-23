@@ -1756,7 +1756,31 @@ function triggerConfettiBurst(colorMix) {
 }
 
 /* ==========================================================================
-   11. DOWNLOAD PPT TEMPLATE TRIGGER
+   12. DEPARTMENTAL BRANCH COORDINATOR FILTER
+   ========================================================================== */
+window.filterDepartmentBranch = (branch) => {
+  const blocks = document.querySelectorAll(".dept-branch-block");
+  const tabBtns = document.querySelectorAll(".branch-filter-btn");
+  
+  tabBtns.forEach((btn) => {
+    if (btn.getAttribute("data-branch") === branch) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
+
+  blocks.forEach((block) => {
+    if (branch === "all" || block.getAttribute("data-branch") === branch) {
+      block.style.display = "block";
+    } else {
+      block.style.display = "none";
+    }
+  });
+};
+
+/* ==========================================================================
+   13. DOWNLOAD PPT TEMPLATE TRIGGER
    ========================================================================== */
 window.downloadPptTemplate = () => {
   const link = document.createElement("a");
@@ -1767,4 +1791,5 @@ window.downloadPptTemplate = () => {
   document.body.removeChild(link);
   triggerConfettiBurst();
 };
+
 
