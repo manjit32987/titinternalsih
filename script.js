@@ -1108,10 +1108,13 @@ function renderAdminConsole() {
               </td>
               <td style="text-align: right; white-space: nowrap;">
                 <button class="btn-3d-primary" onclick="openAdminTeamDetails('${t.teamId}')" style="padding: 6px 12px; font-size: 0.75rem; margin-right: 4px;">
-                  <i class="fa-solid fa-users-viewfinder"></i> View Details
+                  <i class="fa-solid fa-users-viewfinder"></i> Details
                 </button>
-                <button class="btn-3d-outline" onclick="openTeamPassModal('${t.teamId}')" style="padding: 6px 10px; font-size: 0.75rem; background: #ffffff;" title="Print Digital Pass">
-                  <i class="fa-solid fa-id-card"></i> Pass
+                <button class="btn-3d-outline" onclick="openTeamPassModal('${t.teamId}')" style="padding: 6px 8px; font-size: 0.75rem; background: #ffffff; margin-right: 4px;" title="Print Digital Pass">
+                  <i class="fa-solid fa-id-card"></i>
+                </button>
+                <button class="btn-3d-outline" onclick="deleteTeamByAdmin('${t.teamId}')" style="padding: 6px 8px; font-size: 0.75rem; background: #fff1f2; color: #dc2626; border-color: #fecdd3;" title="Delete Team">
+                  <i class="fa-solid fa-trash-can"></i>
                 </button>
               </td>
             </tr>
@@ -1224,10 +1227,17 @@ window.openAdminTeamDetails = (teamId) => {
         .join("")}
     </div>
 
-    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #e2e8f0; padding-top: 16px;">
-      <button class="btn-3d-outline" onclick="openTeamPassModal('${team.teamId}')" style="padding: 8px 16px; font-size: 0.82rem; background: #ffffff;">
-        <i class="fa-solid fa-id-card"></i> View Digital Pass & QR
-      </button>
+    <!-- Inspector Actions -->
+    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #e2e8f0; padding-top: 16px; flex-wrap: wrap; gap: 10px;">
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-3d-outline" onclick="openTeamPassModal('${team.teamId}')" style="padding: 8px 14px; font-size: 0.82rem; background: #ffffff;">
+          <i class="fa-solid fa-id-card"></i> View Pass & QR
+        </button>
+        <button class="btn-3d-outline" onclick="deleteTeamByAdmin('${team.teamId}')" style="padding: 8px 14px; font-size: 0.82rem; background: #fff1f2; color: #dc2626; border-color: #fecdd3;">
+          <i class="fa-solid fa-trash-can"></i> Delete Team
+        </button>
+      </div>
+
       <button class="btn-3d-secondary" onclick="closeAdminTeamDetails()">
         Close Inspector
       </button>
@@ -1240,6 +1250,42 @@ window.openAdminTeamDetails = (teamId) => {
 window.closeAdminTeamDetails = () => {
   const modal = document.getElementById("admin-team-details-modal");
   if (modal) modal.classList.remove("active");
+};
+
+/* ==========================================================================
+   8. ADMIN TEAM DELETION LOGIC (LOCAL & FIREBASE CLOUD)
+   ========================================================================== */
+window.deleteTeamByAdmin = (teamId) => {
+  const team = registeredTeams.find((t) => t.teamId === teamId);
+  if (!team) return;
+
+  const confirmPrompt = `⚠️ CONFIRM PERMANENT DELETION\n\nAre you sure you want to delete this team?\n• Team Name: ${team.teamName}\n• Team ID: ${team.teamId}\n• Leader: ${team.members[0]?.name || "N/A"}\n\nThis will remove the team from the registry and Google Firebase Cloud. This action cannot be undone.`;
+
+  if (confirm(confirmPrompt)) {
+    // 1. Remove from local array
+    registeredTeams = registeredTeams.filter((t) => t.teamId !== teamId);
+    localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
+
+    // 2. Delete from Google Firebase Firestore if active
+    if (isFirebaseActive && db) {
+      db.collection("teams")
+        .doc(teamId)
+        .delete()
+        .then(() => {
+          console.log(`✅ Team ${teamId} permanently deleted from Firestore.`);
+        })
+        .catch((err) => {
+          console.error("Error deleting team from Firestore:", err);
+        });
+    }
+
+    // 3. Close inspector modal if open and re-render
+    closeAdminTeamDetails();
+    renderAdminConsole();
+    renderStudentDashboard();
+
+    alert(`🗑️ Team "${team.teamName}" (${teamId}) has been successfully deleted.`);
+  }
 };
 
 window.updateTeamStatus = (teamId, newStatus) => {
