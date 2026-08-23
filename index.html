@@ -736,17 +736,14 @@
           <label class="form-input-label">Password</label>
           <input type="password" id="login-password" class="form-text-input" placeholder="Enter your password" required>
         </div>
-        <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 14px;">
           <button type="button" class="btn-text-link" style="font-size: 0.78rem;" onclick="switchAuthTab('reset')">
             Forgot Password?
           </button>
         </div>
-        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 6px;">
+        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 4px;">
           <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to Portal
         </button>
-        <div style="text-align: center; margin-top: 14px;">
-          <button type="button" class="btn-text-link" onclick="fillDemoStudent()">💡 Fill Demo Student Login</button>
-        </div>
       </form>
 
       <!-- Reset Password Form -->
@@ -756,7 +753,7 @@
         </div>
         <div class="form-group-item">
           <label class="form-input-label">Registered College Email</label>
-          <input type="email" id="reset-email" class="form-text-input" placeholder="e.g. rahul.cse@titagartala.ac.in" required>
+          <input type="email" id="reset-email" class="form-text-input" placeholder="e.g. yourname@titagartala.ac.in" required autocomplete="email">
         </div>
         <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
           <i class="fa-solid fa-paper-plane"></i> Send Password Reset Email
@@ -770,12 +767,12 @@
       <form id="signup-form" style="display: none;" onsubmit="handleSignupSubmit(event)">
         <div class="form-group-item">
           <label class="form-input-label">Full Name</label>
-          <input type="text" id="signup-name" class="form-text-input" placeholder="e.g. Rahul Debbarma" required>
+          <input type="text" id="signup-name" class="form-text-input" placeholder="e.g. Student Name" required maxlength="60">
         </div>
         <div class="form-row-2">
           <div class="form-group-item">
             <label class="form-input-label">Roll / Enrollment No.</label>
-            <input type="text" id="signup-roll" class="form-text-input" placeholder="e.g. 21CSE042" required>
+            <input type="text" id="signup-roll" class="form-text-input" placeholder="e.g. 21CSE042" required maxlength="20">
           </div>
           <div class="form-group-item">
             <label class="form-input-label">Department</label>
@@ -794,11 +791,10 @@
           <div class="form-group-item">
             <label class="form-input-label">Year of Study</label>
             <select id="signup-year" class="form-select-input" required>
-              <option value="3rd Year">3rd Year (B.Tech)</option>
-              <option value="4th Year">4th Year (B.Tech)</option>
-              <option value="2nd Year">2nd Year (B.Tech)</option>
-              <option value="1st Year">1st Year (B.Tech)</option>
-              <option value="Diploma">Diploma Engineering</option>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year" selected>3rd Year</option>
+              <option value="4th Year">4th Year</option>
             </select>
           </div>
           <div class="form-group-item">
@@ -811,12 +807,12 @@
           </div>
         </div>
         <div class="form-group-item">
-          <label class="form-input-label">Email ID</label>
-          <input type="email" id="signup-email" class="form-text-input" placeholder="student@titagartala.ac.in" required>
+          <label class="form-input-label">College Email ID</label>
+          <input type="email" id="signup-email" class="form-text-input" placeholder="e.g. student@titagartala.ac.in" required autocomplete="email">
         </div>
         <div class="form-group-item">
-          <label class="form-input-label">Create Password</label>
-          <input type="password" id="signup-password" class="form-text-input" placeholder="At least 6 characters" minlength="6" required>
+          <label class="form-input-label">Create Password (Min. 6 chars)</label>
+          <input type="password" id="signup-password" class="form-text-input" placeholder="Minimum 6 characters" minlength="6" required autocomplete="new-password">
         </div>
         <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
           <i class="fa-solid fa-user-plus"></i> Create Student Account

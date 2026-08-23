@@ -38,47 +38,35 @@ let registeredStudents = JSON.parse(localStorage.getItem("tit_sih_students") || 
 let db = null;
 let isFirebaseActive = false;
 
-// Seed initial demo data if local storage is clean
-if (registeredStudents.length === 0) {
-  registeredStudents = [
-    {
-      name: "Rahul Debbarma",
-      roll: "21CSE042",
-      dept: "CSE",
-      year: "3rd Year",
-      gender: "Male",
-      email: "rahul.cse@titagartala.ac.in",
-      password: "password123"
-    }
-  ];
-  localStorage.setItem("tit_sih_students", JSON.stringify(registeredStudents));
+/* ==========================================================================
+   PRODUCTION SECURITY & VALIDATION HELPERS
+   ========================================================================== */
+function isValidEmail(email) {
+  return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(String(email).trim());
 }
 
-if (registeredTeams.length === 0) {
-  registeredTeams = [
-    {
-      teamId: "TIT-SIH26-1084",
-      teamName: "NeuralNortheast",
-      edition: "Software Edition",
-      psId: "SIH2601",
-      domain: "Disaster Management",
-      title: "AI-Powered Real-Time Early Disaster Warning & Rescue System",
-      abstract: "Automated early warning and citizen SOS mesh network designed for landslide and flood risk mitigation in Tripura.",
-      pptLink: "https://drive.google.com/file/d/sampleDemoLinkTITSIH2026/view",
-      status: "Shortlisted for Demo Day",
-      createdAt: new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }),
-      leaderEmail: "rahul.cse@titagartala.ac.in",
-      members: [
-        { name: "Rahul Debbarma", roll: "21CSE042", dept: "CSE", gender: "Male", email: "rahul.cse@titagartala.ac.in", phone: "9436123456", isLeader: true },
-        { name: "Ananya Saha", roll: "21CSE018", dept: "CSE", gender: "Female", email: "ananya.saha@titagartala.ac.in", phone: "9862123456", isLeader: false },
-        { name: "Suman Bhowmik", roll: "21IT029", dept: "IT", gender: "Male", email: "suman.it@titagartala.ac.in", phone: "9436987654", isLeader: false },
-        { name: "Priyanka Roy", roll: "21ECE015", dept: "ECE", gender: "Female", email: "priyanka.ece@titagartala.ac.in", phone: "9862554433", isLeader: false },
-        { name: "Joydeep Das", roll: "21EE008", dept: "EE", gender: "Male", email: "joydeep.ee@titagartala.ac.in", phone: "9436778899", isLeader: false },
-        { name: "Tanmoy Paul", roll: "21ME034", dept: "ME", gender: "Male", email: "tanmoy.me@titagartala.ac.in", phone: "9862332211", isLeader: false }
-      ]
-    }
-  ];
-  localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
+function isValidPhone(phone) {
+  const digits = String(phone).replace(/[\s-+()]/g, '');
+  return /^[6-9]\d{9}$/.test(digits);
+}
+
+function isValidUrl(url) {
+  try {
+    const parsed = new URL(url.trim());
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch (_) {
+    return false;
+  }
+}
+
+function escapeHtml(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 // Initialize Everything on DOM Load
@@ -283,19 +271,15 @@ window.handlePasswordResetSubmit = (e) => {
   }
 };
 
-window.fillDemoStudent = () => {
-  const identifier = document.getElementById("login-identifier");
-  const password = document.getElementById("login-password");
-  if (identifier && password) {
-    identifier.value = "rahul.cse@titagartala.ac.in";
-    password.value = "password123";
-  }
-};
-
 window.handleLoginSubmit = (e) => {
   e.preventDefault();
   const identifier = document.getElementById("login-identifier").value.trim().toLowerCase();
   const password = document.getElementById("login-password").value;
+
+  if (!identifier || !password) {
+    alert("⚠️ Please enter your College Email / Roll Number and Password.");
+    return;
+  }
 
   const student = registeredStudents.find(
     (s) => (s.email.toLowerCase() === identifier || s.roll.toLowerCase() === identifier) && s.password === password
@@ -308,7 +292,7 @@ window.handleLoginSubmit = (e) => {
     updateNavAuthState();
     renderStudentDashboard();
     triggerConfettiBurst();
-    alert(`🎉 Welcome back, ${student.name}! You are signed in.`);
+    alert(`🎉 Welcome back, ${student.name}! You are signed in as Team Leader.`);
   } else {
     alert("❌ Invalid credentials. Please check your email/roll number and password, or create a new student account.");
   }
@@ -323,6 +307,27 @@ window.handleSignupSubmit = (e) => {
   const gender = document.getElementById("signup-gender").value;
   const email = document.getElementById("signup-email").value.trim().toLowerCase();
   const password = document.getElementById("signup-password").value;
+
+  // Production Validation Checks
+  if (!name || name.length < 2) {
+    alert("⚠️ Please enter a valid full name.");
+    return;
+  }
+
+  if (!roll || roll.length < 3) {
+    alert("⚠️ Please enter a valid college roll number (e.g. 21CSE042).");
+    return;
+  }
+
+  if (!isValidEmail(email)) {
+    alert("⚠️ Please enter a valid email address (e.g. student@titagartala.ac.in).");
+    return;
+  }
+
+  if (!password || password.length < 6) {
+    alert("⚠️ Password must be at least 6 characters long for account security.");
+    return;
+  }
 
   // Check if roll or email already exists
   const existing = registeredStudents.find(
@@ -591,7 +596,7 @@ window.handleTeamRegistrationSubmit = (e) => {
   e.preventDefault();
 
   if (!currentUser) {
-    alert("Please sign in before registering.");
+    alert("Please sign in as Team Leader before registering.");
     return;
   }
 
@@ -610,15 +615,76 @@ window.handleTeamRegistrationSubmit = (e) => {
   const abstract = document.getElementById("reg-abstract").value.trim();
   const pptLink = document.getElementById("reg-ppt-link").value.trim();
 
-  // Extract all 6 members
+  // Basic Project Validations
+  if (!teamName || teamName.length < 3) {
+    alert("⚠️ Please enter a valid Team Name (at least 3 characters).");
+    return;
+  }
+
+  if (!psId || psId.length < 3) {
+    alert("⚠️ Please enter the Target SIH Problem Statement ID (e.g. SIH2601).");
+    return;
+  }
+
+  if (!title || title.length < 5) {
+    alert("⚠️ Please enter your Solution Title (at least 5 characters).");
+    return;
+  }
+
+  if (!abstract || abstract.length < 15) {
+    alert("⚠️ Please provide a clear Solution Abstract (at least 15 characters).");
+    return;
+  }
+
+  if (!isValidUrl(pptLink)) {
+    alert("⚠️ Please provide a valid link to your Idea Presentation Deck (e.g. https://drive.google.com/file/d/... or Canva / OneDrive link).");
+    return;
+  }
+
+  // Extract and strictly validate all 6 members
   const members = [];
+  const rollSet = new Set();
+  const emailSet = new Set();
+
   for (let i = 1; i <= 6; i++) {
     const name = document.getElementById(`m${i}-name`).value.trim();
     const roll = document.getElementById(`m${i}-roll`).value.trim().toUpperCase();
     const dept = document.getElementById(`m${i}-dept`).value;
     const gender = document.getElementById(`m${i}-gender`).value;
-    const email = document.getElementById(`m${i}-email`).value.trim();
+    const email = document.getElementById(`m${i}-email`).value.trim().toLowerCase();
     const phone = document.getElementById(`m${i}-phone`).value.trim();
+
+    if (!name) {
+      alert(`⚠️ Please provide the Full Name for Member ${i}.`);
+      return;
+    }
+
+    if (!roll) {
+      alert(`⚠️ Please provide the Roll Number for Member ${i}.`);
+      return;
+    }
+
+    if (rollSet.has(roll)) {
+      alert(`❌ Duplicate Roll Number: "${roll}" is entered more than once. All 6 members must be distinct students.`);
+      return;
+    }
+    rollSet.add(roll);
+
+    if (!isValidEmail(email)) {
+      alert(`⚠️ Please enter a valid Email address for Member ${i} (${name || "Member"}).`);
+      return;
+    }
+
+    if (emailSet.has(email)) {
+      alert(`❌ Duplicate Email: "${email}" is entered more than once. All 6 members must have unique emails.`);
+      return;
+    }
+    emailSet.add(email);
+
+    if (!isValidPhone(phone)) {
+      alert(`⚠️ Please enter a valid 10-digit mobile phone number for Member ${i} (${name || "Member"}).`);
+      return;
+    }
 
     members.push({
       name,
@@ -631,9 +697,13 @@ window.handleTeamRegistrationSubmit = (e) => {
     });
   }
 
-  // Generate Unique Team ID
-  const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-  const teamId = `TIT-SIH26-${randomSuffix}`;
+  // Generate Unique Non-Colliding Team ID
+  let randomSuffix = Math.floor(1000 + Math.random() * 9000);
+  let teamId = `TIT-SIH26-${randomSuffix}`;
+  while (registeredTeams.some((t) => t.teamId === teamId)) {
+    randomSuffix = Math.floor(1000 + Math.random() * 9000);
+    teamId = `TIT-SIH26-${randomSuffix}`;
+  }
 
   const newTeam = {
     teamId,
@@ -650,9 +720,10 @@ window.handleTeamRegistrationSubmit = (e) => {
     members
   };
 
-  // Check if team with same name or leader already exists
+  // Check if team with same leader already exists (allow leader to update their squad)
   const existingIdx = registeredTeams.findIndex((t) => t.leaderEmail.toLowerCase() === currentUser.email.toLowerCase());
   if (existingIdx > -1) {
+    newTeam.teamId = registeredTeams[existingIdx].teamId; // Preserve original team ID
     registeredTeams[existingIdx] = newTeam;
   } else {
     registeredTeams.unshift(newTeam);
@@ -678,7 +749,7 @@ window.handleTeamRegistrationSubmit = (e) => {
     dashSection.scrollIntoView({ behavior: "smooth" });
   }
 
-  alert(`🎉 Team "${teamName}" registered successfully!\nYour Team ID is: ${teamId}\nCheck your dashboard below to view/print your official registration pass.`);
+  alert(`🎉 Success! Team "${teamName}" registered successfully!\nYour Official Team ID is: ${newTeam.teamId}\nCheck your dashboard below to view and print your digital registration pass.`);
 };
 
 /* ==========================================================================
