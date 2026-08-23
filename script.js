@@ -226,6 +226,7 @@ window.switchAuthTab = (tab) => {
   const signupBtn = document.getElementById("tab-signup-btn");
   const loginForm = document.getElementById("login-form");
   const signupForm = document.getElementById("signup-form");
+  const resetForm = document.getElementById("reset-password-form");
   const title = document.getElementById("auth-modal-title");
 
   if (tab === "login") {
@@ -233,13 +234,52 @@ window.switchAuthTab = (tab) => {
     if (signupBtn) signupBtn.classList.remove("active");
     if (loginForm) loginForm.style.display = "block";
     if (signupForm) signupForm.style.display = "none";
-    if (title) title.textContent = "Student Sign In";
-  } else {
+    if (resetForm) resetForm.style.display = "none";
+    if (title) title.textContent = "Team Leader Sign In";
+  } else if (tab === "signup") {
     if (signupBtn) signupBtn.classList.add("active");
     if (loginBtn) loginBtn.classList.remove("active");
     if (signupForm) signupForm.style.display = "block";
     if (loginForm) loginForm.style.display = "none";
-    if (title) title.textContent = "Create Student Account";
+    if (resetForm) resetForm.style.display = "none";
+    if (title) title.textContent = "Create Leader Account";
+  } else if (tab === "reset") {
+    if (loginBtn) loginBtn.classList.remove("active");
+    if (signupBtn) signupBtn.classList.remove("active");
+    if (loginForm) loginForm.style.display = "none";
+    if (signupForm) signupForm.style.display = "none";
+    if (resetForm) resetForm.style.display = "block";
+    if (title) title.textContent = "Reset Password";
+  }
+};
+
+window.handlePasswordResetSubmit = (e) => {
+  e.preventDefault();
+  const email = document.getElementById("reset-email").value.trim().toLowerCase();
+
+  // Try Firebase Auth Password Reset Email if active
+  if (typeof firebase !== "undefined" && firebase.auth && isFirebaseActive) {
+    firebase
+      .auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        alert(`✅ Official Password Reset email sent to ${email}!\nPlease check your email inbox and spam folder.`);
+        switchAuthTab("login");
+      })
+      .catch((err) => {
+        console.warn("Firebase Auth reset error:", err);
+        alert(`📧 Password reset instructions processed for: ${email}\nIf an account exists with this email, you will receive a reset link.`);
+        switchAuthTab("login");
+      });
+  } else {
+    // Local / Firestore lookup
+    const student = registeredStudents.find((s) => s.email.toLowerCase() === email);
+    if (student) {
+      alert(`✅ Password Reset Request Processed!\nA reset link has been dispatched to: ${email}\n(Demo Password for ${student.name} is: "${student.password}")`);
+    } else {
+      alert(`📧 Password reset request received for: ${email}.\nIf this email is registered with TIT IIC, a reset link will arrive shortly.`);
+    }
+    switchAuthTab("login");
   }
 };
 

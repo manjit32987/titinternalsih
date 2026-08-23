@@ -706,16 +706,22 @@
         <i class="fa-solid fa-xmark"></i>
       </button>
 
-      <div style="text-align: center; margin-bottom: 20px;">
+      <div style="text-align: center; margin-bottom: 16px;">
         <div style="font-size: 2.5rem; margin-bottom: 8px;">🎓</div>
         <h3 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;" id="auth-modal-title">Student Portal</h3>
         <p style="color: #64748b; font-size: 0.85rem;">TIT SIH Internal Hackathon 2026</p>
       </div>
 
+      <!-- Team Leader Notice -->
+      <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 8px 12px; font-size: 0.78rem; color: #065f46; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-crown" style="color: #059669; font-size: 1rem;"></i>
+        <span><strong>Team Leaders:</strong> Only the Team Leader needs an account to register the 6-member squad.</span>
+      </div>
+
       <!-- Auth Tabs -->
       <div class="auth-tabs-bar">
         <button class="auth-tab-btn active" id="tab-login-btn" onclick="switchAuthTab('login')">Sign In</button>
-        <button class="auth-tab-btn" id="tab-signup-btn" onclick="switchAuthTab('signup')">New Student Sign Up</button>
+        <button class="auth-tab-btn" id="tab-signup-btn" onclick="switchAuthTab('signup')">Leader Sign Up</button>
       </div>
 
       <!-- Sign In Form -->
@@ -724,15 +730,37 @@
           <label class="form-input-label">College Email or Roll Number</label>
           <input type="text" id="login-identifier" class="form-text-input" placeholder="e.g. 2101004 or name@titagartala.ac.in" required>
         </div>
-        <div class="form-group-item">
+        <div class="form-group-item" style="margin-bottom: 4px;">
           <label class="form-input-label">Password</label>
           <input type="password" id="login-password" class="form-text-input" placeholder="Enter your password" required>
         </div>
-        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+          <button type="button" class="btn-text-link" style="font-size: 0.78rem;" onclick="switchAuthTab('reset')">
+            Forgot Password?
+          </button>
+        </div>
+        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 6px;">
           <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to Portal
         </button>
         <div style="text-align: center; margin-top: 14px;">
           <button type="button" class="btn-text-link" onclick="fillDemoStudent()">💡 Fill Demo Student Login</button>
+        </div>
+      </form>
+
+      <!-- Reset Password Form -->
+      <form id="reset-password-form" style="display: none;" onsubmit="handlePasswordResetSubmit(event)">
+        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; color: #1e40af; margin-bottom: 14px; line-height: 1.4;">
+          <i class="fa-solid fa-envelope" style="color: #2563eb;"></i> Enter your registered college email. We will send a secure password reset link directly to your email inbox.
+        </div>
+        <div class="form-group-item">
+          <label class="form-input-label">Registered College Email</label>
+          <input type="email" id="reset-email" class="form-text-input" placeholder="e.g. rahul.cse@titagartala.ac.in" required>
+        </div>
+        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
+          <i class="fa-solid fa-paper-plane"></i> Send Password Reset Email
+        </button>
+        <div style="text-align: center; margin-top: 14px;">
+          <button type="button" class="btn-text-link" onclick="switchAuthTab('login')">← Back to Sign In</button>
         </div>
       </form>
 
