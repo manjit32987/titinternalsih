@@ -912,8 +912,10 @@ window.openAdminModal = () => {
   const modal = document.getElementById("admin-review-modal");
   const passcodeView = document.getElementById("admin-passcode-view");
   const consoleView = document.getElementById("admin-console-view");
+  const passInput = document.getElementById("admin-passcode-input");
 
   if (!modal) return;
+  if (passInput) passInput.value = ""; // Always blank by default
   if (passcodeView) passcodeView.style.display = "block";
   if (consoleView) consoleView.style.display = "none";
 
@@ -922,14 +924,9 @@ window.openAdminModal = () => {
 
 window.closeAdminModal = () => {
   const modal = document.getElementById("admin-review-modal");
+  const passInput = document.getElementById("admin-passcode-input");
+  if (passInput) passInput.value = "";
   if (modal) modal.classList.remove("active");
-};
-
-window.fillDemoAdminPasscode = () => {
-  const input = document.getElementById("admin-passcode-input");
-  if (input) {
-    input.value = CONFIG.adminPasscode;
-  }
 };
 
 window.handleAdminPasscodeSubmit = (e) => {
