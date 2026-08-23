@@ -2634,28 +2634,49 @@ button {
 }
 
 /* ==========================================================================
-   RESPONSIVE MEDIA QUERIES (FINE-TUNED FOR ALL MOBILE VIEWPORTS)
+   RESPONSIVE MEDIA QUERIES (COMPREHENSIVE MULTI-DEVICE OPTIMIZATION)
    ========================================================================== */
 
+/* --- TABLET & SMALL LAPTOPS (<= 1024px) --- */
 @media (max-width: 1024px) {
   .prizes-grid {
     grid-template-columns: 1fr;
+    gap: 24px;
   }
   
   .footer-top {
     grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .committee-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+
+  .hero-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 }
 
+/* --- MOBILE LANDSCAPE & TABLETS (<= 768px) --- */
 @media (max-width: 768px) {
-  /* Global Section & Container Spacing */
+  /* Global Page & Container Bounds */
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+
   section {
-    padding: 48px 0 !important;
+    padding: 44px 0 !important;
   }
 
   .container {
     padding-left: 16px;
     padding-right: 16px;
+    width: 100%;
+    max-width: 100%;
   }
 
   /* Navigation Bar */
@@ -2664,18 +2685,21 @@ button {
   }
 
   .nav-links {
-    display: none;
+    display: none !important;
   }
 
   .mobile-menu-btn {
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     border-radius: 8px;
     background: #f1f5f9;
     color: #1e293b;
+    border: 1px solid #e2e8f0;
+    font-size: 1.1rem;
+    cursor: pointer;
   }
 
   .brand-logo-img {
@@ -2684,7 +2708,8 @@ button {
   }
 
   .brand-title {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
+    line-height: 1.2;
   }
 
   .brand-subtitle {
@@ -2692,41 +2717,51 @@ button {
   }
 
   .btn-nav-register {
-    padding: 7px 14px;
-    font-size: 0.78rem;
+    padding: 8px 14px;
+    font-size: 0.8rem;
   }
 
   /* Top Announcement Banner */
   .top-announcement {
-    padding: 6px 0;
+    padding: 8px 0;
   }
 
   .announcement-inner {
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     flex-direction: column;
     gap: 4px;
     text-align: center;
+    line-height: 1.4;
   }
 
   .announcement-badge {
     font-size: 0.65rem;
     padding: 2px 8px;
+    margin-bottom: 2px;
   }
 
   /* Hero Section */
   .hero-section {
-    padding: 32px 0 44px !important;
+    padding: 28px 0 40px !important;
     min-height: auto;
   }
 
   .hero-badge-container {
     margin-bottom: 14px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
   .hero-council-badge {
-    padding: 5px 12px;
+    padding: 6px 12px;
     font-size: 0.68rem;
     gap: 6px;
+    max-width: 100%;
+    text-align: center;
+    line-height: 1.35;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .badge-mini-logo {
@@ -2735,15 +2770,16 @@ button {
   }
 
   .hero-headline {
-    font-size: 1.85rem;
+    font-size: clamp(1.75rem, 6vw, 2.4rem);
     line-height: 1.22;
     margin-bottom: 12px;
   }
 
   .hero-subtitle {
-    font-size: 0.88rem;
-    line-height: 1.5;
-    margin-bottom: 22px;
+    font-size: clamp(0.85rem, 2.8vw, 0.95rem);
+    line-height: 1.55;
+    margin-bottom: 20px;
+    padding: 0 4px;
   }
 
   .hero-cta-group {
@@ -2758,11 +2794,13 @@ button {
     justify-content: center;
     padding: 12px 18px;
     font-size: 0.88rem;
+    min-height: 44px;
   }
 
   /* Countdown Widget */
   .hero-countdown-wrap {
-    margin-bottom: 22px;
+    margin-bottom: 20px;
+    width: 100%;
     max-width: 100%;
   }
 
@@ -2772,8 +2810,8 @@ button {
   }
 
   .countdown-label {
-    font-size: 0.72rem;
-    margin-bottom: 10px;
+    font-size: 0.75rem;
+    margin-bottom: 8px;
     gap: 6px;
   }
 
@@ -2783,29 +2821,33 @@ button {
   }
 
   .timer-item {
-    padding: 8px 2px;
+    padding: 8px 4px;
     border-radius: 8px;
   }
 
   .timer-value {
-    font-size: 1.35rem;
+    font-size: 1.3rem;
     margin-bottom: 2px;
   }
 
   .timer-unit {
-    font-size: 0.6rem;
+    font-size: 0.62rem;
   }
 
-  /* Hero 4 Metric Badges */
+  /* Hero 4 Metric Badges (2x2 Grid) */
   .hero-metrics-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 8px;
     margin-top: 6px;
+    width: 100%;
   }
 
   .metric-card-3d {
-    padding: 10px 14px;
-    gap: 10px;
+    padding: 10px 12px;
+    gap: 8px;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
   }
 
   .metric-icon-wrap {
@@ -2816,11 +2858,12 @@ button {
   }
 
   .metric-info h4 {
-    font-size: 0.92rem;
+    font-size: 0.88rem;
   }
 
   .metric-info p {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
+    line-height: 1.3;
   }
 
   /* Section Headers */
@@ -2835,8 +2878,9 @@ button {
   }
 
   .section-title {
-    font-size: 1.5rem;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
     margin-bottom: 6px;
+    line-height: 1.25;
   }
 
   .section-subtitle {
@@ -2867,7 +2911,7 @@ button {
   }
 
   .prize-amount-hero {
-    font-size: 2rem;
+    font-size: clamp(1.8rem, 5vw, 2.3rem);
     margin-bottom: 2px;
   }
 
@@ -2894,11 +2938,6 @@ button {
     border-radius: var(--radius-md);
   }
 
-  .perk-card-small .perk-emoji {
-    font-size: 1.5rem;
-    margin-bottom: 4px;
-  }
-
   .perk-card-small h4 {
     font-size: 0.92rem;
     margin-bottom: 3px;
@@ -2908,9 +2947,17 @@ button {
     font-size: 0.78rem;
   }
 
-  /* Official SIH Portal Hub Banner */
-  .ps-explorer-section {
-    padding: 48px 0 !important;
+  /* Official SIH Central Repository Banner */
+  .ps-explorer-section div[style*="border-radius: 20px"] {
+    padding: 24px 18px !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+
+  .ps-explorer-section div[style*="border-radius: 20px"] a {
+    width: 100% !important;
+    justify-content: center !important;
+    white-space: normal !important;
   }
 
   /* Resources Hub */
@@ -2944,11 +2991,12 @@ button {
     width: 100%;
     padding: 10px 14px;
     font-size: 0.82rem;
+    justify-content: center;
   }
 
   /* Organizing Committee */
   .committee-category-title {
-    font-size: 1rem;
+    font-size: 0.95rem;
     margin: 20px 0 12px;
     padding-bottom: 6px;
   }
@@ -2970,7 +3018,7 @@ button {
   }
 
   .committee-name {
-    font-size: 1.02rem;
+    font-size: 1rem;
   }
 
   .committee-designation {
@@ -2984,28 +3032,27 @@ button {
     margin-bottom: 10px;
   }
 
-  /* FAQ */
-  .faq-section {
-    padding: 48px 0 !important;
-  }
-
+  /* FAQ Accordion */
   .faq-container {
     max-width: 100%;
   }
 
   .faq-question {
-    padding: 13px 16px;
+    padding: 14px 16px;
     font-size: 0.86rem;
+    gap: 10px;
+    text-align: left;
   }
 
   .faq-answer p {
     padding: 0 16px 14px;
     font-size: 0.82rem;
+    line-height: 1.5;
   }
 
   /* Footer */
   .footer {
-    padding: 40px 0 20px;
+    padding: 36px 0 20px;
   }
 
   .footer-top {
@@ -3019,6 +3066,7 @@ button {
 
   .footer-brand p {
     font-size: 0.8rem;
+    line-height: 1.5;
   }
 
   .footer-col h4 {
@@ -3034,63 +3082,146 @@ button {
     font-size: 0.74rem;
   }
 
-  /* Floating Reg Dock */
-  .floating-reg-dock {
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-    padding: 7px 12px;
-    transform: none;
-    max-width: calc(100% - 20px);
-    width: auto;
-    justify-content: space-between;
+  /* Modals Touch Optimization */
+  .modal-overlay {
+    padding: 8px;
+    align-items: center;
+    justify-content: center;
   }
 
-  .dock-text {
-    font-size: 0.72rem;
-  }
-
-  .dock-btn {
-    padding: 5px 12px;
-    font-size: 0.75rem;
-  }
-
-  /* Modal */
   .modal-container {
-    max-width: 94%;
-    padding: 22px 16px;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 94vh;
+    padding: 20px 14px !important;
+    border-radius: 14px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 auto;
+  }
+
+  .modal-close-btn {
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Mobile Inputs Font Scaling (Prevents iOS Zoom) */
+  .form-text-input, .form-select-input, .form-textarea-input {
+    font-size: 16px !important;
+    height: 42px;
+  }
+
+  .form-textarea-input {
+    height: auto !important;
+    min-height: 70px;
   }
 
   /* Form & Roster Grid Mobile Scaling */
   .form-row-2 {
-    grid-template-columns: 1fr;
-    gap: 0;
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
   }
 
   .members-roster-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
+    grid-template-columns: 1fr !important;
+    gap: 12px;
   }
 
+  .role-switch-container, .sub-auth-tabs {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .role-switch-btn, .sub-auth-btn {
+    flex: 1;
+    min-width: 0;
+    padding: 9px 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    text-align: center;
+    justify-content: center;
+  }
+
+  /* Dashboard Mobile Adjustments */
   .dashboard-header-row {
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+    gap: 14px;
   }
 
   .dashboard-team-grid {
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  /* Pass Card Scaling */
+  .team-pass-card {
+    padding: 16px 12px !important;
+  }
+
+  .pass-header {
+    gap: 10px !important;
+    padding-bottom: 10px !important;
+  }
+
+  .pass-seal {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .pass-header h3 {
+    font-size: 1.05rem !important;
   }
 
   .pass-qr-row {
     flex-direction: column;
     text-align: center;
+    gap: 10px;
+    padding: 12px !important;
+  }
+
+  .pass-qr-img {
+    width: 90px !important;
+    height: 90px !important;
+  }
+
+  /* Admin Console Master Table Horizontal Scroll */
+  .admin-table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  .admin-table {
+    min-width: 720px !important;
   }
 }
 
+/* --- SMALL MOBILE DEVICES (<= 480px) --- */
 @media (max-width: 480px) {
   .hero-headline {
-    font-size: 1.65rem;
+    font-size: 1.6rem;
+  }
+
+  .hero-metrics-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .metric-card-3d {
+    padding: 8px 6px;
+  }
+
+  .metric-info h4 {
+    font-size: 0.8rem;
+  }
+
+  .metric-info p {
+    font-size: 0.65rem;
   }
 
   .countdown-timer-grid {
@@ -3099,7 +3230,7 @@ button {
   }
 
   .timer-value {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
   }
 
   .timer-unit {
@@ -3108,7 +3239,31 @@ button {
 
   .hero-council-badge {
     font-size: 0.62rem;
-    padding: 4px 10px;
+    padding: 4px 8px;
+  }
+}
+
+/* --- ULTRA COMPACT SCREENS (<= 360px) --- */
+@media (max-width: 360px) {
+  .brand-text .brand-title {
+    font-size: 0.82rem;
+  }
+
+  .hero-headline {
+    font-size: 1.45rem;
+  }
+
+  .hero-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-nav-register {
+    padding: 6px 10px;
+    font-size: 0.72rem;
+  }
+
+  .modal-container {
+    padding: 16px 10px !important;
   }
 }
 
