@@ -842,10 +842,10 @@
         <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px; font-size: 0.82rem; color: #1e40af; margin-bottom: 16px; line-height: 1.45;">
           <i class="fa-solid fa-shield-halved" style="color: #2563eb;"></i> <strong>Authorized Faculty & Jury Portal:</strong> Enter the SPOC passcode to evaluate registered teams, inspect rosters, and export AICTE spreadsheets.
         </div>
-        <form id="admin-login-tab-form" onsubmit="handleAdminTabPasscodeSubmit(event)">
+        <form id="admin-login-tab-form" onsubmit="handleAdminTabPasscodeSubmit(event)" autocomplete="off">
           <div class="form-group-item">
             <label class="form-input-label">SPOC / Admin Passcode</label>
-            <input type="password" id="admin-tab-passcode-input" class="form-text-input" placeholder="Enter SPOC Passcode" autocomplete="off" required style="text-align: center; font-weight: 700; font-size: 1rem; letter-spacing: 1px;">
+            <input type="password" id="admin-tab-passcode-input" class="form-text-input" placeholder="Enter SPOC Passcode" autocomplete="new-password" data-lpignore="true" data-1p-ignore="true" readonly onfocus="this.removeAttribute('readonly');" required style="text-align: center; font-weight: 700; font-size: 1rem; letter-spacing: 1px;">
           </div>
           <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
             <i class="fa-solid fa-key"></i> Access Master Evaluation Console
@@ -1005,8 +1005,8 @@
           Authorized access to view every registered team, inspect all 6 member details, download PPTs, evaluate, and export AICTE CSV files.
         </p>
         
-        <form onsubmit="handleAdminPasscodeSubmit(event)" style="max-width: 340px; margin: 0 auto;">
-          <input type="password" id="admin-passcode-input" class="form-text-input" placeholder="Enter SPOC / Admin Passcode" autocomplete="off" required style="text-align: center; margin-bottom: 14px; font-weight: 700;">
+        <form onsubmit="handleAdminPasscodeSubmit(event)" style="max-width: 340px; margin: 0 auto;" autocomplete="off">
+          <input type="password" id="admin-passcode-input" class="form-text-input" placeholder="Enter SPOC / Admin Passcode" autocomplete="new-password" data-lpignore="true" data-1p-ignore="true" readonly onfocus="this.removeAttribute('readonly');" required style="text-align: center; margin-bottom: 14px; font-weight: 700;">
           <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center;">
             <i class="fa-solid fa-key"></i> Log In to Admin Console
           </button>

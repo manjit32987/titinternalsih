@@ -197,6 +197,17 @@ function initCountdownTimer() {
 /* ==========================================================================
    2. STUDENT AUTHENTICATION SYSTEM (LOGIN / SIGN UP / LOGOUT)
    ========================================================================== */
+function clearAdminInputs() {
+  const ids = ["admin-tab-passcode-input", "admin-passcode-input"];
+  ids.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.value = "";
+      el.setAttribute("readonly", "true");
+    }
+  });
+}
+
 window.openAuthModal = (mode = "student", studentTab = "login") => {
   const modal = document.getElementById("auth-modal");
   if (!modal) return;
@@ -206,11 +217,15 @@ window.openAuthModal = (mode = "student", studentTab = "login") => {
     switchAuthRole("student");
     switchStudentAuthTab(studentTab);
   }
+  clearAdminInputs();
+  setTimeout(clearAdminInputs, 80);
+  setTimeout(clearAdminInputs, 250);
   modal.classList.add("active");
 };
 
 window.closeAuthModal = () => {
   const modal = document.getElementById("auth-modal");
+  clearAdminInputs();
   if (modal) modal.classList.remove("active");
 };
 
@@ -221,14 +236,16 @@ window.switchAuthRole = (role) => {
   const adminSection = document.getElementById("auth-admin-section");
   const title = document.getElementById("auth-modal-title");
 
+  clearAdminInputs();
+
   if (role === "admin") {
     if (adminRoleBtn) adminRoleBtn.classList.add("active");
     if (studentRoleBtn) studentRoleBtn.classList.remove("active");
     if (adminSection) adminSection.style.display = "block";
     if (studentSection) studentSection.style.display = "none";
     if (title) title.textContent = "SPOC & Faculty Portal";
-    const passInput = document.getElementById("admin-tab-passcode-input");
-    if (passInput) passInput.value = "";
+    setTimeout(clearAdminInputs, 80);
+    setTimeout(clearAdminInputs, 250);
   } else {
     if (studentRoleBtn) studentRoleBtn.classList.add("active");
     if (adminRoleBtn) adminRoleBtn.classList.remove("active");
@@ -1034,10 +1051,12 @@ window.openAdminModal = () => {
   const modal = document.getElementById("admin-review-modal");
   const passcodeView = document.getElementById("admin-passcode-view");
   const consoleView = document.getElementById("admin-console-view");
-  const passInput = document.getElementById("admin-passcode-input");
 
   if (!modal) return;
-  if (passInput) passInput.value = ""; // Always blank by default
+  clearAdminInputs();
+  setTimeout(clearAdminInputs, 80);
+  setTimeout(clearAdminInputs, 250);
+
   if (passcodeView) passcodeView.style.display = "block";
   if (consoleView) consoleView.style.display = "none";
 
@@ -1046,8 +1065,7 @@ window.openAdminModal = () => {
 
 window.closeAdminModal = () => {
   const modal = document.getElementById("admin-review-modal");
-  const passInput = document.getElementById("admin-passcode-input");
-  if (passInput) passInput.value = "";
+  clearAdminInputs();
   if (modal) modal.classList.remove("active");
 };
 
