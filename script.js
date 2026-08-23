@@ -1015,7 +1015,7 @@ window.openTeamPassModal = (teamId) => {
             TRIPURA INSTITUTE OF TECHNOLOGY
           </h3>
           <p style="font-size: 0.78rem; color: #059669; font-weight: 700; margin: 0;">
-            Institution's Innovation Council (IIC) • SIH Internal Hackathon 2026
+            Institution Innovation Council (IIC) • SIH Internal Hackathon 2026
           </p>
         </div>
       </div>
