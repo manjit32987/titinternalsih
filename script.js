@@ -1,9 +1,26 @@
 /**
  * TIT IIC - SIH INTERNAL HACKATHON 2026
- * Full Dynamic Logic Engine (Auth, Registration, Dashboard, Digital Pass & Jury Panel)
+ * Full Dynamic Logic Engine with Google Firebase Cloud Firestore Integration
  */
 
-// Global Configuration
+// ==========================================================================
+// 1. GOOGLE FIREBASE CLOUD FIRESTORE CONFIGURATION
+// ==========================================================================
+// 💡 HOW TO CONNECT YOUR REAL CLOUD DATABASE IN 1 MINUTE:
+// 1. Go to https://console.firebase.google.com/ and create a free project (e.g. "tit-sih-2026").
+// 2. Click "Cloud Firestore" -> "Create database" -> Start in test mode.
+// 3. Go to Project Settings (⚙️) -> "General" -> Under "Your apps", click Web (</>) and copy the firebaseConfig.
+// 4. Replace the values below with your Firebase project keys.
+const FIREBASE_CONFIG = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+// Global Hackathon Settings
 const CONFIG = {
   adminPasscode: "TIT-IIC-2026",
   hackathonDate: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000), // 12 days from now
@@ -11,13 +28,16 @@ const CONFIG = {
 };
 
 /* ==========================================================================
-   STATE MANAGEMENT & STORAGE ENGINE
+   STATE MANAGEMENT & FIREBASE CLOUD SYNC
    ========================================================================== */
 let currentUser = JSON.parse(localStorage.getItem("tit_sih_current_user") || "null");
 let registeredTeams = JSON.parse(localStorage.getItem("tit_sih_teams") || "[]");
 let registeredStudents = JSON.parse(localStorage.getItem("tit_sih_students") || "[]");
 
-// Seed initial demo data if clean
+let db = null;
+let isFirebaseActive = false;
+
+// Seed initial demo data if local storage is clean
 if (registeredStudents.length === 0) {
   registeredStudents = [
     {
@@ -62,6 +82,7 @@ if (registeredTeams.length === 0) {
 
 // Initialize Everything on DOM Load
 document.addEventListener("DOMContentLoaded", () => {
+  initFirebaseCloud();
   initCountdownTimer();
   init3DCardTilt();
   initFaqAccordion();
@@ -70,6 +91,80 @@ document.addEventListener("DOMContentLoaded", () => {
   updateNavAuthState();
   renderStudentDashboard();
 });
+
+/* ==========================================================================
+   2. GOOGLE FIREBASE INITIALIZER & REAL-TIME LISTENERS
+   ========================================================================== */
+function initFirebaseCloud() {
+  try {
+    if (
+      typeof firebase !== "undefined" &&
+      FIREBASE_CONFIG.apiKey &&
+      FIREBASE_CONFIG.apiKey !== "YOUR_API_KEY"
+    ) {
+      if (!firebase.apps.length) {
+        firebase.initializeApp(FIREBASE_CONFIG);
+      }
+      db = firebase.firestore();
+      isFirebaseActive = true;
+      console.log("✅ Google Firebase Cloud Firestore connected successfully!");
+
+      // Start Real-Time Snapshot Listeners from Cloud Database
+      startFirebaseRealtimeListeners();
+    } else {
+      console.log("ℹ️ Running in Local Storage Mode. (To enable multi-device live cloud sync, add your free Firebase config in script.js).");
+    }
+  } catch (err) {
+    console.warn("Firebase initialization note:", err);
+  }
+}
+
+function startFirebaseRealtimeListeners() {
+  if (!db) return;
+
+  // Real-time listener for all Teams
+  db.collection("teams").onSnapshot(
+    (snapshot) => {
+      const cloudTeams = [];
+      snapshot.forEach((doc) => {
+        cloudTeams.push(doc.data());
+      });
+
+      if (cloudTeams.length > 0) {
+        registeredTeams = cloudTeams;
+        localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
+        renderStudentDashboard();
+        
+        // If admin console is open, re-render it live
+        const adminView = document.getElementById("admin-console-view");
+        if (adminView && adminView.style.display !== "none") {
+          renderAdminConsole();
+        }
+      }
+    },
+    (error) => {
+      console.warn("Firestore teams sync listener error:", error);
+    }
+  );
+
+  // Real-time listener for Students
+  db.collection("students").onSnapshot(
+    (snapshot) => {
+      const cloudStudents = [];
+      snapshot.forEach((doc) => {
+        cloudStudents.push(doc.data());
+      });
+
+      if (cloudStudents.length > 0) {
+        registeredStudents = cloudStudents;
+        localStorage.setItem("tit_sih_students", JSON.stringify(registeredStudents));
+      }
+    },
+    (error) => {
+      console.warn("Firestore students sync listener error:", error);
+    }
+  );
+}
 
 /* ==========================================================================
    1. LIVE COUNTDOWN TIMER ENGINE
@@ -202,6 +297,13 @@ window.handleSignupSubmit = (e) => {
   const newStudent = { name, roll, dept, year, gender, email, password };
   registeredStudents.push(newStudent);
   localStorage.setItem("tit_sih_students", JSON.stringify(registeredStudents));
+
+  // Sync with Firebase Firestore if active
+  if (isFirebaseActive && db) {
+    db.collection("students").doc(newStudent.roll).set(newStudent).catch((err) => {
+      console.warn("Firestore student write notice:", err);
+    });
+  }
 
   currentUser = newStudent;
   localStorage.setItem("tit_sih_current_user", JSON.stringify(currentUser));
@@ -517,6 +619,13 @@ window.handleTeamRegistrationSubmit = (e) => {
 
   localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
 
+  // Save to Firebase Cloud Firestore if active
+  if (isFirebaseActive && db) {
+    db.collection("teams").doc(newTeam.teamId).set(newTeam).catch((err) => {
+      console.warn("Firestore team write notice:", err);
+    });
+  }
+
   closeTeamRegModal();
   renderStudentDashboard();
   triggerConfettiBurst();
@@ -793,7 +902,17 @@ function renderAdminConsole() {
   const hwTeams = registeredTeams.filter((t) => t.edition.includes("Hardware")).length;
   const totalStudents = totalTeams * 6;
 
+  const dbStatusBadge = isFirebaseActive
+    ? `<div style="display: inline-flex; align-items: center; gap: 8px; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; color: #065f46; font-weight: 700; margin-bottom: 16px;">
+        <i class="fa-solid fa-cloud-check" style="color: #059669;"></i> Connected to Google Firebase Cloud Firestore (Live Multi-Device Sync Active)
+      </div>`
+    : `<div style="display: inline-flex; align-items: center; gap: 8px; background: #fef3c7; border: 1px solid #fde68a; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; color: #92400e; font-weight: 700; margin-bottom: 16px;">
+        <i class="fa-solid fa-database" style="color: #d97706;"></i> Local Browser Database Mode (Paste your free Firebase project keys in script.js to enable live cloud sync across all phones & PCs)
+      </div>`;
+
   container.innerHTML = `
+    ${dbStatusBadge}
+
     <!-- Stats Cards -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px;">
       <div style="background: #f0fdf4; border: 1px solid #a7f3d0; border-radius: 10px; padding: 14px; text-align: center;">
@@ -865,6 +984,14 @@ window.updateTeamStatus = (teamId, newStatus) => {
   if (team) {
     team.status = newStatus;
     localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
+    
+    // Sync status change to Firebase Firestore if active
+    if (isFirebaseActive && db) {
+      db.collection("teams").doc(teamId).update({ status: newStatus }).catch((err) => {
+        console.warn("Firestore status update notice:", err);
+      });
+    }
+
     renderStudentDashboard();
     alert(`Status for team ${team.teamName} updated to: "${newStatus}"`);
   }
