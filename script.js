@@ -1073,7 +1073,7 @@ window.openTeamPassModal = (teamId) => {
           <div style="font-weight: 800; color: #0f172a; margin-bottom: 2px;">AUTHENTICATED REGISTRATION PASS</div>
           <div>Status: <strong style="color: #059669;">${team.status}</strong></div>
           <div>Verified Date: ${team.createdAt}</div>
-          <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 4px;">Present this digital slip at the TIT Campus Hackathon Helpdesk during Demo Day.</div>
+          <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 4px;">Present this digital slip at the TIT Campus Hackathon Helpdesk during the Internal Hackathon.</div>
         </div>
       </div>
     </div>
@@ -1337,7 +1337,7 @@ function renderAdminConsole() {
         <select class="form-select-input" onchange="filterAdminTeams(undefined, undefined, this.value)" style="height: 38px; font-size: 0.82rem; padding: 6px 12px; width: auto; margin: 0;">
           <option value="ALL" ${adminStatusFilter === "ALL" ? "selected" : ""}>All Statuses</option>
           <option value="Review" ${adminStatusFilter === "Review" ? "selected" : ""}>Under Review</option>
-          <option value="Shortlisted" ${adminStatusFilter === "Shortlisted" ? "selected" : ""}>Shortlisted for Demo Day</option>
+          <option value="Shortlisted" ${adminStatusFilter === "Shortlisted" ? "selected" : ""}>Shortlisted for Internal Hackathon</option>
           <option value="Nominated" ${adminStatusFilter === "Nominated" ? "selected" : ""}>Nominated for SIH Finals</option>
         </select>
       </div>
@@ -1392,7 +1392,7 @@ function renderAdminConsole() {
               <td>
                 <select class="admin-status-select" onchange="updateTeamStatus('${t.teamId}', this.value)">
                   <option value="Under Review by IIC Panel" ${t.status.includes("Under Review") ? "selected" : ""}>Under Review</option>
-                  <option value="Shortlisted for Demo Day" ${t.status.includes("Shortlisted") ? "selected" : ""}>Shortlisted for Demo Day</option>
+                  <option value="Shortlisted for Internal Hackathon" ${t.status.includes("Shortlisted") ? "selected" : ""}>Shortlisted for Internal Hackathon</option>
                   <option value="Nominated for SIH Finals" ${t.status.includes("Nominated") ? "selected" : ""}>Nominated for SIH Finals</option>
                 </select>
               </td>
@@ -1460,7 +1460,7 @@ window.openAdminTeamDetails = (teamId) => {
           <label style="font-size: 0.75rem; font-weight: 700; color: #64748b; display: block; margin-bottom: 4px;">UPDATE EVALUATION STATUS</label>
           <select class="admin-status-select" style="padding: 6px 12px; font-weight: 700;" onchange="updateTeamStatus('${team.teamId}', this.value)">
             <option value="Under Review by IIC Panel" ${team.status.includes("Under Review") ? "selected" : ""}>Under Review</option>
-            <option value="Shortlisted for Demo Day" ${team.status.includes("Shortlisted") ? "selected" : ""}>Shortlisted for Demo Day</option>
+            <option value="Shortlisted for Internal Hackathon" ${team.status.includes("Shortlisted") ? "selected" : ""}>Shortlisted for Internal Hackathon</option>
             <option value="Nominated for SIH Finals" ${team.status.includes("Nominated") ? "selected" : ""}>Nominated for SIH Finals</option>
           </select>
         </div>
