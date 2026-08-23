@@ -212,32 +212,59 @@ window.closeAuthModal = () => {
 window.switchAuthTab = (tab) => {
   const loginBtn = document.getElementById("tab-login-btn");
   const signupBtn = document.getElementById("tab-signup-btn");
+  const adminBtn = document.getElementById("tab-admin-btn");
   const loginForm = document.getElementById("login-form");
   const signupForm = document.getElementById("signup-form");
   const resetForm = document.getElementById("reset-password-form");
+  const adminForm = document.getElementById("admin-login-tab-form");
   const title = document.getElementById("auth-modal-title");
+
+  // Deactivate all
+  if (loginBtn) loginBtn.classList.remove("active");
+  if (signupBtn) signupBtn.classList.remove("active");
+  if (adminBtn) adminBtn.classList.remove("active");
+  if (loginForm) loginForm.style.display = "none";
+  if (signupForm) signupForm.style.display = "none";
+  if (resetForm) resetForm.style.display = "none";
+  if (adminForm) adminForm.style.display = "none";
 
   if (tab === "login") {
     if (loginBtn) loginBtn.classList.add("active");
-    if (signupBtn) signupBtn.classList.remove("active");
     if (loginForm) loginForm.style.display = "block";
-    if (signupForm) signupForm.style.display = "none";
-    if (resetForm) resetForm.style.display = "none";
-    if (title) title.textContent = "Team Leader Sign In";
+    if (title) title.textContent = "Student & Leader Sign In";
   } else if (tab === "signup") {
     if (signupBtn) signupBtn.classList.add("active");
-    if (loginBtn) loginBtn.classList.remove("active");
     if (signupForm) signupForm.style.display = "block";
-    if (loginForm) loginForm.style.display = "none";
-    if (resetForm) resetForm.style.display = "none";
     if (title) title.textContent = "Create Leader Account";
   } else if (tab === "reset") {
-    if (loginBtn) loginBtn.classList.remove("active");
-    if (signupBtn) signupBtn.classList.remove("active");
-    if (loginForm) loginForm.style.display = "none";
-    if (signupForm) signupForm.style.display = "none";
     if (resetForm) resetForm.style.display = "block";
     if (title) title.textContent = "Reset Password";
+  } else if (tab === "admin") {
+    if (adminBtn) adminBtn.classList.add("active");
+    if (adminForm) adminForm.style.display = "block";
+    if (title) title.textContent = "SPOC / Faculty Admin Login";
+    const passInput = document.getElementById("admin-tab-passcode-input");
+    if (passInput) passInput.value = "";
+  }
+};
+
+window.handleAdminTabPasscodeSubmit = (e) => {
+  e.preventDefault();
+  const input = document.getElementById("admin-tab-passcode-input").value.trim();
+
+  if (input === CONFIG.adminPasscode) {
+    closeAuthModal();
+    const adminModal = document.getElementById("admin-review-modal");
+    const passcodeView = document.getElementById("admin-passcode-view");
+    const consoleView = document.getElementById("admin-console-view");
+
+    if (passcodeView) passcodeView.style.display = "none";
+    if (consoleView) consoleView.style.display = "block";
+    if (adminModal) adminModal.classList.add("active");
+
+    renderAdminConsole();
+  } else {
+    alert("❌ Invalid SPOC / Admin Passcode. Access restricted to authorized faculty and organizers.");
   }
 };
 
@@ -410,7 +437,7 @@ function updateNavAuthState() {
     // Logged Out State
     navAuthContainer.innerHTML = `
       <button class="btn-nav-auth" onclick="openAuthModal('login')">
-        <i class="fa-solid fa-user-lock"></i> Student Sign In
+        <i class="fa-solid fa-user-lock"></i> Sign In / Portal
       </button>
       <button class="btn-nav-register" onclick="triggerRegistration()">
         <i class="fa-solid fa-file-pen"></i> Register Team
@@ -420,7 +447,7 @@ function updateNavAuthState() {
     if (navDashLink) navDashLink.style.display = "none";
     if (mobDashLink) mobDashLink.style.display = "none";
     if (mobAuthLink) {
-      mobAuthLink.innerHTML = `<a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); openAuthModal('login');"><i class="fa-solid fa-user-lock"></i> Student Login / Sign Up</a>`;
+      mobAuthLink.innerHTML = `<a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); openAuthModal('login');"><i class="fa-solid fa-user-lock"></i> Sign In / Portal (Student / SPOC)</a>`;
     }
   }
 }

@@ -70,7 +70,6 @@
           <li><a href="#resources" class="nav-link"><i class="fa-solid fa-download"></i> Resources</a></li>
           <li><a href="#committee" class="nav-link"><i class="fa-solid fa-users"></i> Committee</a></li>
           <li><a href="#faq" class="nav-link"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
-          <li><a href="#" onclick="openAdminModal(); return false;" class="nav-link" style="color: #6366f1; font-weight: 700;"><i class="fa-solid fa-user-shield"></i> Admin Portal 🔒</a></li>
           <li id="nav-dashboard-link" style="display:none;"><a href="#student-dashboard" class="nav-link" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-gauge-high"></i> Dashboard</a></li>
         </ul>
 
@@ -88,8 +87,7 @@
       <!-- Mobile Navigation Dropdown Menu -->
       <div class="mobile-nav-dropdown" id="mobile-nav-dropdown">
         <ul class="mobile-nav-links">
-          <li id="mob-auth-link"><a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); openAuthModal('login');"><i class="fa-solid fa-user-lock"></i> Student Login / Sign Up</a></li>
-          <li><a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); openAdminModal();" style="color: #6366f1; font-weight: 700;"><i class="fa-solid fa-user-shield"></i> Faculty & Jury Admin Portal 🔒</a></li>
+          <li id="mob-auth-link"><a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); openAuthModal('login');"><i class="fa-solid fa-user-lock"></i> Portal Login / Sign Up</a></li>
           <li id="mob-dashboard-link" style="display:none;"><a href="#student-dashboard" class="mobile-nav-link" onclick="closeMobileMenu();" style="color:#059669; font-weight:700;"><i class="fa-solid fa-gauge-high"></i> My Team Dashboard</a></li>
           <li><a href="#prizes" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-trophy"></i> Prizes & Awards</a></li>
           <li><a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="mobile-nav-link" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-arrow-up-right-from-square"></i> SIH 2026 PS ↗</a></li>
@@ -133,7 +131,7 @@
         <!-- CTA Buttons -->
         <div class="hero-cta-group">
           <button class="btn-3d-primary" onclick="triggerRegistration()">
-            <i class="fa-solid fa-bolt"></i> Register on Google Form ↗
+            <i class="fa-solid fa-bolt"></i> Register 6-Member Squad ↗
           </button>
           <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="btn-3d-secondary">
             <i class="fa-solid fa-arrow-up-right-from-square"></i> Official SIH 2026 PS Portal (sih.gov.in) ↗
@@ -607,9 +605,7 @@
             <i class="fa-solid fa-chevron-down faq-icon-arrow"></i>
           </button>
           <div class="faq-answer">
-            <p>Click on the "Register on Google Form" button on this website. You will be prompted with the team
-              checklist and redirected to the official Google Form where the Team Leader can fill in member details and
-              upload your Idea PPT presentation.</p>
+            <p>Click on the "Register Team" button on this website. The Team Leader can sign in or create an account, fill in the 6-member squad details and Idea PPT link, and receive an authenticated digital registration pass with an instant verification QR code.</p>
           </div>
         </div>
 
@@ -687,8 +683,8 @@
             <button class="btn-3d-primary" style="padding: 7px 14px; font-size: 0.8rem;" onclick="triggerRegistration()">
               <i class="fa-solid fa-bolt"></i> Register Team
             </button>
-            <button class="btn-3d-outline" style="padding: 7px 14px; font-size: 0.8rem; background: #1e293b; color: #94a3b8; border-color: #334155;" onclick="openAdminModal()">
-              <i class="fa-solid fa-lock"></i> Jury / Admin
+            <button class="btn-3d-outline" style="padding: 7px 14px; font-size: 0.8rem; background: #1e293b; color: #94a3b8; border-color: #334155;" onclick="openAuthModal('login')">
+              <i class="fa-solid fa-user-lock"></i> Sign In / Portal
             </button>
           </div>
         </div>
@@ -720,10 +716,11 @@
         <span><strong>Team Leaders:</strong> Only the Team Leader needs an account to register the 6-member squad.</span>
       </div>
 
-      <!-- Auth Tabs -->
+      <!-- Unified Auth Tabs -->
       <div class="auth-tabs-bar">
-        <button class="auth-tab-btn active" id="tab-login-btn" onclick="switchAuthTab('login')">Sign In</button>
+        <button class="auth-tab-btn active" id="tab-login-btn" onclick="switchAuthTab('login')">Student Sign In</button>
         <button class="auth-tab-btn" id="tab-signup-btn" onclick="switchAuthTab('signup')">Leader Sign Up</button>
+        <button class="auth-tab-btn" id="tab-admin-btn" onclick="switchAuthTab('admin')">SPOC / Admin</button>
       </div>
 
       <!-- Sign In Form -->
@@ -816,6 +813,20 @@
         </div>
         <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
           <i class="fa-solid fa-user-plus"></i> Create Student Account
+        </button>
+      </form>
+
+      <!-- SPOC / Admin Form -->
+      <form id="admin-login-tab-form" style="display: none;" onsubmit="handleAdminTabPasscodeSubmit(event)">
+        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; color: #1e40af; margin-bottom: 14px; line-height: 1.4;">
+          <i class="fa-solid fa-shield-halved" style="color: #2563eb;"></i> Authorized access for Faculty Coordinators, Jury, and SIH SPOC to review registrations, evaluate teams, and export AICTE spreadsheets.
+        </div>
+        <div class="form-group-item">
+          <label class="form-input-label">SPOC / Admin Passcode</label>
+          <input type="password" id="admin-tab-passcode-input" class="form-text-input" placeholder="Enter SPOC Passcode" autocomplete="off" required style="text-align: center; font-weight: 700;">
+        </div>
+        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
+          <i class="fa-solid fa-key"></i> Access Master Evaluation Console
         </button>
       </form>
     </div>
