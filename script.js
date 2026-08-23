@@ -79,7 +79,21 @@ document.addEventListener("DOMContentLoaded", () => {
   initConfettiTriggers();
   updateNavAuthState();
   renderStudentDashboard();
+  checkUrlHashRouting();
 });
+
+function checkUrlHashRouting() {
+  const hash = window.location.hash.toLowerCase();
+  if (hash === "#admin" || hash === "#spoc" || hash === "#jury") {
+    setTimeout(() => openDedicatedAdminModal(), 300);
+  } else if (hash === "#rulebook" || hash === "#rules") {
+    setTimeout(() => openRulebookModal(), 300);
+  } else if (hash === "#samples" || hash === "#case-studies") {
+    setTimeout(() => openSamplePSModal(), 300);
+  } else if (hash === "#register") {
+    setTimeout(() => triggerRegistration(), 300);
+  }
+}
 
 /* ==========================================================================
    2. GOOGLE FIREBASE INITIALIZER & REAL-TIME LISTENERS
@@ -209,50 +223,84 @@ function clearAdminInputs() {
 }
 
 window.openAuthModal = (mode = "student", studentTab = "login") => {
+  if (mode === "admin") {
+    openDedicatedAdminModal();
+    return;
+  }
   const modal = document.getElementById("auth-modal");
   if (!modal) return;
-  if (mode === "admin") {
-    switchAuthRole("admin");
-  } else {
-    switchAuthRole("student");
-    switchStudentAuthTab(studentTab);
-  }
-  clearAdminInputs();
-  setTimeout(clearAdminInputs, 80);
-  setTimeout(clearAdminInputs, 250);
+  switchStudentAuthTab(studentTab);
   modal.classList.add("active");
 };
 
 window.closeAuthModal = () => {
   const modal = document.getElementById("auth-modal");
-  clearAdminInputs();
   if (modal) modal.classList.remove("active");
 };
 
-window.switchAuthRole = (role) => {
-  const studentRoleBtn = document.getElementById("role-student-btn");
-  const adminRoleBtn = document.getElementById("role-admin-btn");
-  const studentSection = document.getElementById("auth-student-section");
-  const adminSection = document.getElementById("auth-admin-section");
-  const title = document.getElementById("auth-modal-title");
+window.openDedicatedAdminModal = () => {
+  const modal = document.getElementById("admin-gateway-modal");
+  const input = document.getElementById("dedicated-admin-passcode-input");
+  if (input) input.value = "";
+  if (modal) modal.classList.add("active");
+};
 
-  clearAdminInputs();
+window.closeDedicatedAdminModal = () => {
+  const modal = document.getElementById("admin-gateway-modal");
+  if (modal) modal.classList.remove("active");
+};
 
-  if (role === "admin") {
-    if (adminRoleBtn) adminRoleBtn.classList.add("active");
-    if (studentRoleBtn) studentRoleBtn.classList.remove("active");
-    if (adminSection) adminSection.style.display = "block";
-    if (studentSection) studentSection.style.display = "none";
-    if (title) title.textContent = "SPOC & Faculty Portal";
-    setTimeout(clearAdminInputs, 80);
-    setTimeout(clearAdminInputs, 250);
+window.togglePasscodeVisibility = (inputId) => {
+  const input = document.getElementById(inputId);
+  const icon = document.getElementById("passcode-eye-icon");
+  if (!input) return;
+  if (input.type === "password") {
+    input.type = "text";
+    if (icon) icon.className = "fa-solid fa-eye-slash";
   } else {
-    if (studentRoleBtn) studentRoleBtn.classList.add("active");
-    if (adminRoleBtn) adminRoleBtn.classList.remove("active");
-    if (studentSection) studentSection.style.display = "block";
-    if (adminSection) adminSection.style.display = "none";
-    if (title) title.textContent = "Student & Leader Portal";
+    input.type = "password";
+    if (icon) icon.className = "fa-solid fa-eye";
   }
+};
+
+window.handleDedicatedAdminPasscodeSubmit = (e) => {
+  e.preventDefault();
+  const input = document.getElementById("dedicated-admin-passcode-input").value.trim();
+
+  if (input === CONFIG.adminPasscode) {
+    closeDedicatedAdminModal();
+    const adminModal = document.getElementById("admin-review-modal");
+    const passcodeView = document.getElementById("admin-passcode-view");
+    const consoleView = document.getElementById("admin-console-view");
+
+    if (passcodeView) passcodeView.style.display = "none";
+    if (consoleView) consoleView.style.display = "block";
+    if (adminModal) adminModal.classList.add("active");
+
+    renderAdminConsole();
+  } else {
+    alert("[TIT SIH Security Alert] Invalid Passcode: Access restricted to authorized SPOC and Evaluation Committee.");
+  }
+};
+
+window.openRulebookModal = () => {
+  const modal = document.getElementById("rulebook-modal");
+  if (modal) modal.classList.add("active");
+};
+
+window.closeRulebookModal = () => {
+  const modal = document.getElementById("rulebook-modal");
+  if (modal) modal.classList.remove("active");
+};
+
+window.openSamplePSModal = () => {
+  const modal = document.getElementById("sample-ps-modal");
+  if (modal) modal.classList.add("active");
+};
+
+window.closeSamplePSModal = () => {
+  const modal = document.getElementById("sample-ps-modal");
+  if (modal) modal.classList.remove("active");
 };
 
 window.switchStudentAuthTab = (tab) => {
@@ -279,34 +327,20 @@ window.switchStudentAuthTab = (tab) => {
   }
 };
 
-// Backwards compatibility alias
+// Backwards compatibility aliases
+window.switchAuthRole = (role) => {
+  if (role === "admin") openDedicatedAdminModal();
+};
 window.switchAuthTab = (tab) => {
   if (tab === "admin") {
-    switchAuthRole("admin");
+    openDedicatedAdminModal();
   } else {
-    switchAuthRole("student");
     switchStudentAuthTab(tab);
   }
 };
 
 window.handleAdminTabPasscodeSubmit = (e) => {
-  e.preventDefault();
-  const input = document.getElementById("admin-tab-passcode-input").value.trim();
-
-  if (input === CONFIG.adminPasscode) {
-    closeAuthModal();
-    const adminModal = document.getElementById("admin-review-modal");
-    const passcodeView = document.getElementById("admin-passcode-view");
-    const consoleView = document.getElementById("admin-console-view");
-
-    if (passcodeView) passcodeView.style.display = "none";
-    if (consoleView) consoleView.style.display = "block";
-    if (adminModal) adminModal.classList.add("active");
-
-    renderAdminConsole();
-  } else {
-    alert("[TIT SIH] Invalid Passcode: Access restricted to authorized faculty and organizers.");
-  }
+  handleDedicatedAdminPasscodeSubmit(e);
 };
 
 window.handlePasswordResetSubmit = (e) => {
@@ -1653,6 +1687,47 @@ window.exportTeamsToCSV = () => {
 };
 
 /* ==========================================================================
+   6.5 LIVE HERO REGISTRATION COUNTDOWN TIMER
+   ========================================================================== */
+function initCountdownTimer() {
+  const daysEl = document.getElementById("countdown-days");
+  const hoursEl = document.getElementById("countdown-hours");
+  const minsEl = document.getElementById("countdown-mins");
+  const secsEl = document.getElementById("countdown-secs");
+
+  if (!daysEl || !hoursEl || !minsEl || !secsEl) return;
+
+  // Deadline: September 15, 2026, 23:59:59 IST (UTC+05:30)
+  const deadlineDate = new Date("2026-09-15T23:59:59+05:30").getTime();
+
+  function updateTimer() {
+    const now = new Date().getTime();
+    const distance = deadlineDate - now;
+
+    if (distance <= 0) {
+      daysEl.textContent = "00";
+      hoursEl.textContent = "00";
+      minsEl.textContent = "00";
+      secsEl.textContent = "00";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    daysEl.textContent = String(days).padStart(2, "0");
+    hoursEl.textContent = String(hours).padStart(2, "0");
+    minsEl.textContent = String(minutes).padStart(2, "0");
+    secsEl.textContent = String(seconds).padStart(2, "0");
+  }
+
+  updateTimer();
+  setInterval(updateTimer, 1000);
+}
+
+/* ==========================================================================
    7. VANILLA 3D CARD TILT ENGINE
    ========================================================================== */
 function init3DCardTilt() {
@@ -1756,12 +1831,18 @@ function triggerConfettiBurst(colorMix) {
 }
 
 /* ==========================================================================
-   12. DEPARTMENTAL BRANCH COORDINATOR FILTER
+   12. DEPARTMENTAL BRANCH ACCORDION & FILTER CONTROLLER
    ========================================================================== */
+window.toggleBranchAccordion = (branch) => {
+  const block = document.querySelector(`.dept-branch-block[data-branch="${branch}"]`);
+  if (!block) return;
+  block.classList.toggle("open");
+};
+
 window.filterDepartmentBranch = (branch) => {
   const blocks = document.querySelectorAll(".dept-branch-block");
   const tabBtns = document.querySelectorAll(".branch-filter-btn");
-  
+
   tabBtns.forEach((btn) => {
     if (btn.getAttribute("data-branch") === branch) {
       btn.classList.add("active");
@@ -1771,8 +1852,11 @@ window.filterDepartmentBranch = (branch) => {
   });
 
   blocks.forEach((block) => {
-    if (branch === "all" || block.getAttribute("data-branch") === branch) {
+    if (branch === "all") {
       block.style.display = "block";
+    } else if (block.getAttribute("data-branch") === branch) {
+      block.style.display = "block";
+      block.classList.add("open"); // Auto-expand when explicitly filtered
     } else {
       block.style.display = "none";
     }

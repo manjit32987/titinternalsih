@@ -558,6 +558,100 @@ button {
   transform: translateY(-2px);
 }
 
+/* Hero Registration Deadline & Countdown Widget */
+.hero-deadline-widget {
+  margin: 28px auto 32px;
+  max-width: 580px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(167, 243, 208, 0.8);
+  border-radius: var(--radius-xl);
+  padding: 16px 24px;
+  box-shadow: 0 10px 30px -5px rgba(5, 150, 105, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.deadline-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.deadline-pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 0 rgba(16, 185, 129, 0.4);
+  animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.deadline-countdown-timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.timer-segment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 58px;
+  padding: 8px 6px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.timer-val {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #047857;
+  line-height: 1.1;
+}
+
+.timer-lbl {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #64748b;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+.timer-separator {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #94a3b8;
+  margin-top: -12px;
+}
+
 /* ==========================================================================
    COUNTDOWN TIMER WIDGET (CLEAN WHITE & GREEN)
    ========================================================================== */
@@ -2144,25 +2238,88 @@ button {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: var(--radius-xl);
-  padding: 28px;
-  margin-bottom: 30px;
+  padding: 0;
+  margin-bottom: 20px;
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-fast);
+  overflow: hidden;
 }
 
 .dept-branch-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 2px solid #ecfdf5;
-  padding-bottom: 14px;
-  margin-bottom: 22px;
+  padding: 20px 24px;
+  background: #ffffff;
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--transition-fast);
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
+}
+
+.dept-branch-header:hover {
+  background: #f8fafc;
+}
+
+.dept-branch-block.open .dept-branch-header {
+  background: #f0fdf4;
+  border-bottom: 1px solid #a7f3d0;
+}
+
+.dept-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.dept-badge-summary {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.dept-accordion-chevron {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  transition: all var(--transition-fast);
+  pointer-events: none;
+}
+
+.dept-branch-block.open .dept-accordion-chevron {
+  background: #059669;
+  color: #ffffff;
+  border-color: #059669;
+  transform: rotate(180deg);
+}
+
+.dept-branch-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
+  padding: 0 24px;
+}
+
+.dept-branch-block.open .dept-branch-content {
+  max-height: 3000px;
+  padding: 24px 24px;
 }
 
 .dept-branch-title {
-  font-size: 1.25rem;
+  font-size: 1.22rem;
   font-weight: 800;
   color: #064e3b;
   display: flex;

@@ -11,7 +11,68 @@
     content="Official website for the Smart India Hackathon (SIH) Internal Hackathon organized by the Institution Innovation Council (IIC), Tripura Institute of Technology. Win ₹5,000 Cash Prize, 1-Month OpenAI ChatGPT Plus Ignite Award, and qualify for SIH Nationals.">
   <meta name="keywords"
     content="SIH, Smart India Hackathon, TIT Agartala, Tripura Institute of Technology, IIC TIT, Internal Hackathon, Coding Competition, Innovation, Problem Statements">
-  <meta name="theme-color" content="#2563eb">
+  <meta name="author" content="Institution Innovation Council (IIC), TIT">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#059669">
+  <link rel="canonical" href="https://titinternalsih.vercel.app/">
+
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://titinternalsih.vercel.app/">
+  <meta property="og:title" content="TIT IIC - Smart India Hackathon (SIH) Internal Hackathon 2026">
+  <meta property="og:description" content="Official gateway for TIT students to represent Tripura Institute of Technology at SIH 2026 Nationals. Win ₹5,000 Cash Prize & 1-Month ChatGPT Plus Ignite Award.">
+  <meta property="og:image" content="https://titinternalsih.vercel.app/tit_logo.png">
+  <meta property="og:site_name" content="Tripura Institute of Technology • IIC">
+  <meta property="og:locale" content="en_IN">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://titinternalsih.vercel.app/">
+  <meta name="twitter:title" content="TIT IIC - Smart India Hackathon (SIH) Internal Hackathon 2026">
+  <meta name="twitter:description" content="Represent TIT at SIH 2026 Nationals. Compete for ₹5,000 Cash Prize & 1-Month ChatGPT Plus Ignite Award.">
+  <meta name="twitter:image" content="https://titinternalsih.vercel.app/tit_logo.png">
+
+  <!-- JSON-LD Event Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "Smart India Hackathon (SIH) Internal Hackathon 2026 - Tripura Institute of Technology",
+    "startDate": "2026-09-20T09:00:00+05:30",
+    "endDate": "2026-09-21T18:00:00+05:30",
+    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "location": {
+      "@type": "Place",
+      "name": "Tripura Institute of Technology (TIT)",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "TIT Campus, Narsingarh",
+        "addressLocality": "Agartala",
+        "addressRegion": "Tripura",
+        "postalCode": "799009",
+        "addressCountry": "IN"
+      }
+    },
+    "image": [
+      "https://titinternalsih.vercel.app/tit_logo.png"
+    ],
+    "description": "Internal Hackathon for Smart India Hackathon (SIH) 2026 organized by the Institution Innovation Council (IIC) at Tripura Institute of Technology. Win cash prizes and qualify for SIH Nationals.",
+    "organizer": {
+      "@type": "Organization",
+      "name": "Institution Innovation Council (IIC) - Tripura Institute of Technology",
+      "url": "https://titagartala.ac.in"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": "https://titinternalsih.vercel.app/",
+      "price": "0",
+      "priceCurrency": "INR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-08-01T00:00:00+05:30"
+    }
+  }
+  </script>
 
   <!-- Google Fonts: Space Grotesk + Plus Jakarta Sans + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,7 +103,7 @@
       <nav class="navbar-container">
         <!-- Brand Logo -->
         <a href="#" class="nav-brand">
-          <img src="tit_logo.png" alt="Tripura Institute of Technology Logo" class="brand-logo-img">
+          <img src="tit_logo.png" alt="Tripura Institute of Technology Logo" class="brand-logo-img" width="46" height="46" decoding="async">
           <div class="brand-text">
             <div class="brand-title"><span>Internal Hackathon 2026</span></div>
             <div class="brand-subtitle">Tripura Institute of Technology</div>
@@ -130,9 +191,34 @@
           </a>
         </div>
 
-
-
-        <!-- 4 Key Stat Badges -->
+        <!-- Registration Deadline & Event Countdown Widget -->
+        <div class="hero-deadline-widget" id="hero-countdown-box">
+          <div class="deadline-badge-pill">
+            <span class="deadline-pulse-dot"></span>
+            <span>Registration Deadline: <strong>September 15, 2026 • 23:59 IST</strong></span>
+          </div>
+          <div class="deadline-countdown-timer" id="hero-countdown-timer">
+            <div class="timer-segment">
+              <span class="timer-val" id="countdown-days">--</span>
+              <span class="timer-lbl">Days</span>
+            </div>
+            <span class="timer-separator">:</span>
+            <div class="timer-segment">
+              <span class="timer-val" id="countdown-hours">--</span>
+              <span class="timer-lbl">Hours</span>
+            </div>
+            <span class="timer-separator">:</span>
+            <div class="timer-segment">
+              <span class="timer-val" id="countdown-mins">--</span>
+              <span class="timer-lbl">Mins</span>
+            </div>
+            <span class="timer-separator">:</span>
+            <div class="timer-segment">
+              <span class="timer-val" id="countdown-secs">--</span>
+              <span class="timer-lbl">Secs</span>
+            </div>
+          </div>
+        </div>
         <div class="hero-metrics-grid">
           <div class="metric-card-3d">
             <div class="metric-icon-wrap icon-gold">
@@ -333,8 +419,8 @@
           </div>
           <h4>Internal Hackathon Rulebook</h4>
           <p>Comprehensive document explaining team eligibility, judging rubric, and timelines.</p>
-          <button class="btn-download" onclick="alert('📘 Downloading TIT SIH Internal Hackathon Handbook...')">
-            <i class="fa-solid fa-cloud-arrow-down"></i> Download Rulebook
+          <button class="btn-download" onclick="openRulebookModal()">
+            <i class="fa-solid fa-book-open"></i> View & Download Rulebook
           </button>
         </div>
 
@@ -344,8 +430,8 @@
           </div>
           <h4>Sample Problem Statements PDF</h4>
           <p>Curated list of past SIH winning problem approaches and software architectures.</p>
-          <button class="btn-download" onclick="alert('💡 Downloading Sample SIH Case Studies...')">
-            <i class="fa-solid fa-cloud-arrow-down"></i> Download Samples
+          <button class="btn-download" onclick="openSamplePSModal()">
+            <i class="fa-solid fa-lightbulb"></i> View Case Studies & PS
           </button>
         </div>
       </div>
@@ -369,7 +455,7 @@
       <div class="committee-grid">
         <div class="committee-card">
           <div class="committee-avatar-wrap" style="overflow: hidden; padding: 0;">
-            <img src="principal-patron.jpg" alt="Principal / Director, TIT (Chief Patron)" style="width: 100%; height: 100%; object-fit: cover; object-position: center 15%; border-radius: 50%;">
+            <img src="principal-patron.jpg" alt="Principal / Director, TIT (Chief Patron)" width="96" height="96" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; object-position: center 15%; border-radius: 50%;">
             <span class="committee-badge-icon"><i class="fa-solid fa-crown"></i></span>
           </div>
           <h3 class="committee-name">Principal / Director</h3>
@@ -451,7 +537,7 @@
       <div class="committee-grid">
         <div class="committee-card">
           <div class="committee-avatar-wrap" style="overflow: hidden; padding: 0;">
-            <img src="manjit.png" alt="Manjit Chakraborty - Student Event Head & Convener" style="width: 100%; height: 100%; object-fit: cover; object-position: center 15%; border-radius: 50%;">
+            <img src="manjit.png" alt="Manjit Chakraborty - Student Event Head & Convener" width="96" height="96" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; object-position: center 15%; border-radius: 50%;">
             <span class="committee-badge-icon"><i class="fa-solid fa-star"></i></span>
           </div>
           <h3 class="committee-name">Manjit Chakraborty</h3>
@@ -466,7 +552,7 @@
 
         <div class="committee-card">
           <div class="committee-avatar-wrap" style="overflow: hidden; padding: 0;">
-            <img src="arindam.jpg" alt="Arindam Deb - Technical & Platform Lead" style="width: 100%; height: 100%; object-fit: cover; object-position: center 20%; border-radius: 50%;">
+            <img src="arindam.jpg" alt="Arindam Deb - Technical & Platform Lead" width="96" height="96" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; object-position: center 20%; border-radius: 50%;">
             <span class="committee-badge-icon"><i class="fa-solid fa-terminal"></i></span>
           </div>
           <h3 class="committee-name">Arindam Deb</h3>
@@ -481,7 +567,7 @@
 
         <div class="committee-card">
           <div class="committee-avatar-wrap" style="overflow: hidden; padding: 0;">
-            <img src="Sania.jpeg" alt="Sania Debbarma - Design & Creative Media Lead" style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 50%;">
+            <img src="Sania.jpeg" alt="Sania Debbarma - Design & Creative Media Lead" width="96" height="96" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 50%;">
             <span class="committee-badge-icon"><i class="fa-solid fa-palette"></i></span>
           </div>
           <h3 class="committee-name">Sania Debbarma</h3>
@@ -497,7 +583,7 @@
 
         <div class="committee-card">
           <div class="committee-avatar-wrap" style="overflow: hidden; padding: 0;">
-            <img src="nikita.jpeg" alt="Nikita Choudhury - Outreach & Registrations Lead" style="width: 100%; height: 100%; object-fit: cover; object-position: center 15%; border-radius: 50%;">
+            <img src="nikita.jpeg" alt="Nikita Choudhury - Outreach & Registrations Lead" width="96" height="96" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; object-position: center 15%; border-radius: 50%;">
             <span class="committee-badge-icon"><i class="fa-solid fa-paper-plane"></i></span>
           </div>
           <h3 class="committee-name">Nikita Choudhury</h3>
@@ -511,7 +597,7 @@
 
         <div class="committee-card">
           <div class="committee-avatar-wrap" style="overflow: hidden; padding: 0;">
-            <img src="ANUP.jpeg" alt="Anup Sarkar - PR & Social Media Head" style="width: 100%; height: 100%; object-fit: cover; object-position: center 15%; border-radius: 50%;">
+            <img src="ANUP.jpeg" alt="Anup Sarkar - PR & Social Media Head" width="96" height="96" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; object-position: center 15%; border-radius: 50%;">
             <span class="committee-badge-icon"><i class="fa-solid fa-hashtag"></i></span>
           </div>
           <h3 class="committee-name">Anup Sarkar</h3>
@@ -527,7 +613,7 @@
 
         <div class="committee-card">
           <div class="committee-avatar-wrap" style="overflow: hidden; padding: 0;">
-            <img src="aaniketh.jpeg" alt="Aaniketh Ghosh - Content & Program Lead" style="width: 100%; height: 100%; object-fit: cover; object-position: center 15%; border-radius: 50%;">
+            <img src="aaniketh.jpeg" alt="Aaniketh Ghosh - Content & Program Lead" width="96" height="96" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; object-position: center 15%; border-radius: 50%;">
             <span class="committee-badge-icon"><i class="fa-solid fa-pen-nib"></i></span>
           </div>
           <h3 class="committee-name">Aaniketh Ghosh</h3>
@@ -572,130 +658,139 @@
       </div>
 
       <!-- 1. ECE Branch Block -->
-      <div class="dept-branch-block" data-branch="ece">
-        <div class="dept-branch-header">
-          <h3 class="dept-branch-title">
-            <i class="fa-solid fa-satellite-dish" style="color: #059669;"></i> Electronics & Communication Engineering (ECE)
-          </h3>
-          <span class="committee-designation">Departmental Coordinators (1st to 4th Year)</span>
-        </div>
-
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 4th Year (Final Year)</div>
-        <div class="committee-grid" style="margin-bottom: 20px;">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-microchip"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">4th Year • ECE</span>
-            <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="Contact"><i class="fa-solid fa-phone"></i></a>
-            </div>
+      <div class="dept-branch-block open" data-branch="ece">
+        <div class="dept-branch-header" onclick="toggleBranchAccordion('ece')">
+          <div class="dept-header-left">
+            <h3 class="dept-branch-title">
+              <i class="fa-solid fa-satellite-dish" style="color: #059669;"></i> Electronics & Communication Engineering (ECE)
+            </h3>
+            <span class="dept-badge-summary"><i class="fa-solid fa-users"></i> 8 Coordinators • 1st to 4th Year</span>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-microchip"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">4th Year • ECE</span>
-            <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
+          <div class="dept-header-right">
+            <button class="dept-accordion-chevron" aria-label="Toggle ECE Coordinators">
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
           </div>
         </div>
 
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 3rd Year (Pre-Final Year)</div>
-        <div class="committee-grid" style="margin-bottom: 20px;">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-microchip"></i></span>
+        <div class="dept-branch-content">
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 4th Year (Final Year)</div>
+          <div class="committee-grid" style="margin-bottom: 20px;">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-microchip"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">4th Year • ECE</span>
+              <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ECE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ECE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">3rd Year • ECE</span>
-            <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="Contact"><i class="fa-solid fa-phone"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-microchip"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">4th Year • ECE</span>
+              <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ECE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ECE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-microchip"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">3rd Year • ECE</span>
-            <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-          </div>
-        </div>
 
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 2nd Year</div>
-        <div class="committee-grid" style="margin-bottom: 20px;">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-microchip"></i></span>
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 3rd Year (Pre-Final Year)</div>
+          <div class="committee-grid" style="margin-bottom: 20px;">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-microchip"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">3rd Year • ECE</span>
+              <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ECE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ECE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">2nd Year • ECE</span>
-            <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="Contact"><i class="fa-solid fa-phone"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-microchip"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">3rd Year • ECE</span>
+              <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ECE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ECE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-microchip"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">2nd Year • ECE</span>
-            <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-          </div>
-        </div>
 
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 1st Year</div>
-        <div class="committee-grid">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-microchip"></i></span>
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 2nd Year</div>
+          <div class="committee-grid" style="margin-bottom: 20px;">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-microchip"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">2nd Year • ECE</span>
+              <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ECE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ECE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">1st Year • ECE</span>
-            <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="Contact"><i class="fa-solid fa-phone"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-microchip"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">2nd Year • ECE</span>
+              <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ECE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ECE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-microchip"></i></span>
+
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 1st Year</div>
+          <div class="committee-grid">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-microchip"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">1st Year • ECE</span>
+              <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ECE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ECE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">1st Year • ECE</span>
-            <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-microchip"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">1st Year • ECE</span>
+              <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ECE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ECE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
         </div>
@@ -703,129 +798,138 @@
 
       <!-- 2. CSE Branch Block -->
       <div class="dept-branch-block" data-branch="cse">
-        <div class="dept-branch-header">
-          <h3 class="dept-branch-title">
-            <i class="fa-solid fa-laptop-code" style="color: #059669;"></i> Computer Science & Engineering (CSE)
-          </h3>
-          <span class="committee-designation">Departmental Coordinators (1st to 4th Year)</span>
-        </div>
-
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 4th Year (Final Year)</div>
-        <div class="committee-grid" style="margin-bottom: 20px;">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-laptop-code"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">4th Year • CSE</span>
-            <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="GitHub"><i class="fa-brands fa-github"></i></a>
-            </div>
+        <div class="dept-branch-header" onclick="toggleBranchAccordion('cse')">
+          <div class="dept-header-left">
+            <h3 class="dept-branch-title">
+              <i class="fa-solid fa-laptop-code" style="color: #059669;"></i> Computer Science & Engineering (CSE)
+            </h3>
+            <span class="dept-badge-summary"><i class="fa-solid fa-users"></i> 8 Coordinators • 1st to 4th Year</span>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-laptop-code"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">4th Year • CSE</span>
-            <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
+          <div class="dept-header-right">
+            <button class="dept-accordion-chevron" aria-label="Toggle CSE Coordinators">
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
           </div>
         </div>
 
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 3rd Year (Pre-Final Year)</div>
-        <div class="committee-grid" style="margin-bottom: 20px;">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-laptop-code"></i></span>
+        <div class="dept-branch-content">
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 4th Year (Final Year)</div>
+          <div class="committee-grid" style="margin-bottom: 20px;">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-laptop-code"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">4th Year • CSE</span>
+              <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CSE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CSE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">3rd Year • CSE</span>
-            <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="GitHub"><i class="fa-brands fa-github"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-laptop-code"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">4th Year • CSE</span>
+              <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CSE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CSE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-laptop-code"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">3rd Year • CSE</span>
-            <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-          </div>
-        </div>
 
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 2nd Year</div>
-        <div class="committee-grid" style="margin-bottom: 20px;">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-laptop-code"></i></span>
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 3rd Year (Pre-Final Year)</div>
+          <div class="committee-grid" style="margin-bottom: 20px;">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-laptop-code"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">3rd Year • CSE</span>
+              <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CSE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CSE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">2nd Year • CSE</span>
-            <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="GitHub"><i class="fa-brands fa-github"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-laptop-code"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">3rd Year • CSE</span>
+              <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CSE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CSE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-laptop-code"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">2nd Year • CSE</span>
-            <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-          </div>
-        </div>
 
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 1st Year</div>
-        <div class="committee-grid">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-laptop-code"></i></span>
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 2nd Year</div>
+          <div class="committee-grid" style="margin-bottom: 20px;">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-laptop-code"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">2nd Year • CSE</span>
+              <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CSE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CSE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">1st Year • CSE</span>
-            <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="GitHub"><i class="fa-brands fa-github"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-laptop-code"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">2nd Year • CSE</span>
+              <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CSE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CSE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-laptop-code"></i></span>
+
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 1st Year</div>
+          <div class="committee-grid">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-laptop-code"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">1st Year • CSE</span>
+              <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CSE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CSE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">1st Year • CSE</span>
-            <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-laptop-code"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">1st Year • CSE</span>
+              <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CSE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CSE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
         </div>
@@ -833,129 +937,138 @@
 
       <!-- 3. EE Branch Block -->
       <div class="dept-branch-block" data-branch="ee">
-        <div class="dept-branch-header">
-          <h3 class="dept-branch-title">
-            <i class="fa-solid fa-bolt" style="color: #059669;"></i> Electrical Engineering (EE)
-          </h3>
-          <span class="committee-designation">Departmental Coordinators (1st to 4th Year)</span>
-        </div>
-
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 4th Year (Final Year)</div>
-        <div class="committee-grid" style="margin-bottom: 20px;">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-plug"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">4th Year • EE</span>
-            <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="Contact"><i class="fa-solid fa-phone"></i></a>
-            </div>
+        <div class="dept-branch-header" onclick="toggleBranchAccordion('ee')">
+          <div class="dept-header-left">
+            <h3 class="dept-branch-title">
+              <i class="fa-solid fa-bolt" style="color: #059669;"></i> Electrical Engineering (EE)
+            </h3>
+            <span class="dept-badge-summary"><i class="fa-solid fa-users"></i> 8 Coordinators • 1st to 4th Year</span>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-plug"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">4th Year • EE</span>
-            <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
+          <div class="dept-header-right">
+            <button class="dept-accordion-chevron" aria-label="Toggle EE Coordinators">
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
           </div>
         </div>
 
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 3rd Year (Pre-Final Year)</div>
-        <div class="committee-grid" style="margin-bottom: 20px;">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-plug"></i></span>
+        <div class="dept-branch-content">
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 4th Year (Final Year)</div>
+          <div class="committee-grid" style="margin-bottom: 20px;">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-plug"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">4th Year • EE</span>
+              <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20EE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20EE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">3rd Year • EE</span>
-            <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="Contact"><i class="fa-solid fa-phone"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-plug"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">4th Year • EE</span>
+              <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20EE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20EE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-plug"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">3rd Year • EE</span>
-            <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-          </div>
-        </div>
 
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 2nd Year</div>
-        <div class="committee-grid" style="margin-bottom: 20px;">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-plug"></i></span>
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 3rd Year (Pre-Final Year)</div>
+          <div class="committee-grid" style="margin-bottom: 20px;">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-plug"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">3rd Year • EE</span>
+              <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20EE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20EE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">2nd Year • EE</span>
-            <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="Contact"><i class="fa-solid fa-phone"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-plug"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">3rd Year • EE</span>
+              <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20EE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20EE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-plug"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">2nd Year • EE</span>
-            <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-          </div>
-        </div>
 
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 1st Year</div>
-        <div class="committee-grid">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-plug"></i></span>
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 2nd Year</div>
+          <div class="committee-grid" style="margin-bottom: 20px;">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-plug"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">2nd Year • EE</span>
+              <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20EE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20EE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">1st Year • EE</span>
-            <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="Contact"><i class="fa-solid fa-phone"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-plug"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">2nd Year • EE</span>
+              <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20EE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20EE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-plug"></i></span>
+
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 1st Year</div>
+          <div class="committee-grid">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-plug"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">1st Year • EE</span>
+              <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20EE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20EE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">1st Year • EE</span>
-            <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-plug"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">1st Year • EE</span>
+              <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20EE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20EE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
         </div>
@@ -963,129 +1076,138 @@
 
       <!-- 4. ME Branch Block -->
       <div class="dept-branch-block" data-branch="me">
-        <div class="dept-branch-header">
-          <h3 class="dept-branch-title">
-            <i class="fa-solid fa-wrench" style="color: #059669;"></i> Mechanical Engineering (ME)
-          </h3>
-          <span class="committee-designation">Departmental Coordinators (1st to 4th Year)</span>
-        </div>
-
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 4th Year (Final Year)</div>
-        <div class="committee-grid" style="margin-bottom: 20px;">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-wrench"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">4th Year • ME</span>
-            <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="Contact"><i class="fa-solid fa-phone"></i></a>
-            </div>
+        <div class="dept-branch-header" onclick="toggleBranchAccordion('me')">
+          <div class="dept-header-left">
+            <h3 class="dept-branch-title">
+              <i class="fa-solid fa-wrench" style="color: #059669;"></i> Mechanical Engineering (ME)
+            </h3>
+            <span class="dept-badge-summary"><i class="fa-solid fa-users"></i> 8 Coordinators • 1st to 4th Year</span>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-wrench"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">4th Year • ME</span>
-            <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
+          <div class="dept-header-right">
+            <button class="dept-accordion-chevron" aria-label="Toggle ME Coordinators">
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
           </div>
         </div>
 
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 3rd Year (Pre-Final Year)</div>
-        <div class="committee-grid" style="margin-bottom: 20px;">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-wrench"></i></span>
+        <div class="dept-branch-content">
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 4th Year (Final Year)</div>
+          <div class="committee-grid" style="margin-bottom: 20px;">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-wrench"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">4th Year • ME</span>
+              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ME%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ME%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">3rd Year • ME</span>
-            <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="Contact"><i class="fa-solid fa-phone"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-wrench"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">4th Year • ME</span>
+              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ME%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ME%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap" style="overflow: hidden; padding: 0;">
-              <img src="PURBA.jpeg" alt="Purba Gangopadhyay - 3rd Year ME Student Coordinator" style="width: 100%; height: 100%; object-fit: cover; object-position: center 15%; border-radius: 50%;">
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-wrench"></i></span>
-            </div>
-            <h3 class="committee-name">Purba Gangopadhyay</h3>
-            <span class="committee-designation">3rd Year • ME</span>
-            <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:purbagangopadhyay@gmail.com" title="Email Purba"><i class="fa-solid fa-envelope"></i></a>
-              <a href="mailto:purbagangopadhyay@gmail.com" title="Contact Purba"><i class="fa-solid fa-paper-plane"></i></a>
-            </div>
-          </div>
-        </div>
 
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 2nd Year</div>
-        <div class="committee-grid" style="margin-bottom: 20px;">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-wrench"></i></span>
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 3rd Year (Pre-Final Year)</div>
+          <div class="committee-grid" style="margin-bottom: 20px;">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-wrench"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">3rd Year • ME</span>
+              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ME%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ME%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">2nd Year • ME</span>
-            <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="Contact"><i class="fa-solid fa-phone"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap" style="overflow: hidden; padding: 0;">
+                <img src="PURBA.jpeg" alt="Purba Gangopadhyay - 3rd Year ME Student Coordinator" width="96" height="96" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; object-position: center 15%; border-radius: 50%;">
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-wrench"></i></span>
+              </div>
+              <h3 class="committee-name">Purba Gangopadhyay</h3>
+              <span class="committee-designation">3rd Year • ME</span>
+              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:purbagangopadhyay@gmail.com" title="Email Purba"><i class="fa-solid fa-envelope"></i></a>
+                <a href="mailto:purbagangopadhyay@gmail.com" title="Contact Purba"><i class="fa-solid fa-paper-plane"></i></a>
+              </div>
             </div>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-wrench"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">2nd Year • ME</span>
-            <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-          </div>
-        </div>
 
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 1st Year</div>
-        <div class="committee-grid">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-wrench"></i></span>
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 2nd Year</div>
+          <div class="committee-grid" style="margin-bottom: 20px;">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-wrench"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">2nd Year • ME</span>
+              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ME%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ME%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">1st Year • ME</span>
-            <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="Contact"><i class="fa-solid fa-phone"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-wrench"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">2nd Year • ME</span>
+              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ME%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ME%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-wrench"></i></span>
+
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 1st Year</div>
+          <div class="committee-grid">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-wrench"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">1st Year • ME</span>
+              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ME%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ME%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">1st Year • ME</span>
-            <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-wrench"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">1st Year • ME</span>
+              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ME%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ME%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
         </div>
@@ -1093,129 +1215,138 @@
 
       <!-- 5. CE Branch Block -->
       <div class="dept-branch-block" data-branch="ce">
-        <div class="dept-branch-header">
-          <h3 class="dept-branch-title">
-            <i class="fa-solid fa-compass-drafting" style="color: #059669;"></i> Civil Engineering (CE)
-          </h3>
-          <span class="committee-designation">Departmental Coordinators (1st to 4th Year)</span>
-        </div>
-
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 4th Year (Final Year)</div>
-        <div class="committee-grid" style="margin-bottom: 20px;">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-trowel-bricks"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">4th Year • CE</span>
-            <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="Contact"><i class="fa-solid fa-phone"></i></a>
-            </div>
+        <div class="dept-branch-header" onclick="toggleBranchAccordion('ce')">
+          <div class="dept-header-left">
+            <h3 class="dept-branch-title">
+              <i class="fa-solid fa-compass-drafting" style="color: #059669;"></i> Civil Engineering (CE)
+            </h3>
+            <span class="dept-badge-summary"><i class="fa-solid fa-users"></i> 8 Coordinators • 1st to 4th Year</span>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-trowel-bricks"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">4th Year • CE</span>
-            <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
+          <div class="dept-header-right">
+            <button class="dept-accordion-chevron" aria-label="Toggle CE Coordinators">
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
           </div>
         </div>
 
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 3rd Year (Pre-Final Year)</div>
-        <div class="committee-grid" style="margin-bottom: 20px;">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-trowel-bricks"></i></span>
+        <div class="dept-branch-content">
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 4th Year (Final Year)</div>
+          <div class="committee-grid" style="margin-bottom: 20px;">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-trowel-bricks"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">4th Year • CE</span>
+              <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">3rd Year • CE</span>
-            <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="Contact"><i class="fa-solid fa-phone"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-trowel-bricks"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">4th Year • CE</span>
+              <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-trowel-bricks"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">3rd Year • CE</span>
-            <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-          </div>
-        </div>
 
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 2nd Year</div>
-        <div class="committee-grid" style="margin-bottom: 20px;">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-trowel-bricks"></i></span>
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 3rd Year (Pre-Final Year)</div>
+          <div class="committee-grid" style="margin-bottom: 20px;">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-trowel-bricks"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">3rd Year • CE</span>
+              <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">2nd Year • CE</span>
-            <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="Contact"><i class="fa-solid fa-phone"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-trowel-bricks"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">3rd Year • CE</span>
+              <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-trowel-bricks"></i></span>
-            </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">2nd Year • CE</span>
-            <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-          </div>
-        </div>
 
-        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 1st Year</div>
-        <div class="committee-grid">
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon"><i class="fa-solid fa-trowel-bricks"></i></span>
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 2nd Year</div>
+          <div class="committee-grid" style="margin-bottom: 20px;">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-trowel-bricks"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">2nd Year • CE</span>
+              <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Male)</h3>
-            <span class="committee-designation">1st Year • CE</span>
-            <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="Contact"><i class="fa-solid fa-phone"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-trowel-bricks"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">2nd Year • CE</span>
+              <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
-          <div class="committee-card">
-            <div class="committee-avatar-wrap">
-              <i class="fa-solid fa-user-gear"></i>
-              <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-trowel-bricks"></i></span>
+
+          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 1st Year</div>
+          <div class="committee-grid">
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon"><i class="fa-solid fa-trowel-bricks"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Male)</h3>
+              <span class="committee-designation">1st Year • CE</span>
+              <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
-            <h3 class="committee-name">Student Coordinator (Female)</h3>
-            <span class="committee-designation">1st Year • CE</span>
-            <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
-            <div class="committee-contact-links">
-              <a href="mailto:iic@titagartala.ac.in" title="Email"><i class="fa-solid fa-envelope"></i></a>
-              <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <div class="committee-card">
+              <div class="committee-avatar-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-trowel-bricks"></i></span>
+              </div>
+              <h3 class="committee-name">Student Coordinator (Female)</h3>
+              <span class="committee-designation">1st Year • CE</span>
+              <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
+              <div class="committee-contact-links">
+                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+              </div>
             </div>
           </div>
         </div>
@@ -1302,7 +1433,7 @@
 
         <div class="footer-brand">
           <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
-            <img src="tit_logo.png" alt="TIT Logo"
+            <img src="tit_logo.png" alt="TIT Logo" width="44" height="44" loading="lazy" decoding="async"
               style="width: 44px; height: 44px; object-fit: contain; background: #ffffff; border-radius: 50%; padding: 2px;">
             <h3 style="margin: 0; color: #ffffff;">TIT IIC HACKATHON</h3>
           </div>
@@ -1311,14 +1442,14 @@
             (TIT), Narsingarh, Agartala, Tripura - 799009.
           </p>
           <div style="display: flex; gap: 12px;">
-            <a href="#"
-              style="width: 36px; height: 36px; background: #1e293b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #94a3b8;"><i
+            <a href="https://wa.me/916009236698?text=Hello%20TIT%20SIH%20Helpdesk" target="_blank" rel="noopener"
+              style="width: 36px; height: 36px; background: #1e293b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #10b981; transition: all 0.2s ease;" title="WhatsApp Helpdesk"><i
                 class="fa-brands fa-whatsapp"></i></a>
-            <a href="#"
-              style="width: 36px; height: 36px; background: #1e293b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #94a3b8;"><i
+            <a href="https://www.linkedin.com/school/tripura-institute-of-technology/" target="_blank" rel="noopener"
+              style="width: 36px; height: 36px; background: #1e293b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #38bdf8; transition: all 0.2s ease;" title="TIT LinkedIn"><i
                 class="fa-brands fa-linkedin-in"></i></a>
-            <a href="#"
-              style="width: 36px; height: 36px; background: #1e293b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #94a3b8;"><i
+            <a href="https://github.com/manjit32987/titinternalsih" target="_blank" rel="noopener"
+              style="width: 36px; height: 36px; background: #1e293b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #f1f5f9; transition: all 0.2s ease;" title="GitHub Repository"><i
                 class="fa-brands fa-github"></i></a>
           </div>
         </div>
@@ -1338,18 +1469,19 @@
         <div class="footer-col">
           <h4>Resources</h4>
           <ul class="footer-links">
-            <li><a href="SIH2026-IDEA-Presentation-Format.pptx" download="SIH2026-IDEA-Presentation-Format.pptx">SIH PPT
-                Template (.pptx)</a></li>
-            <li><a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener">SIH 2026 Portal ↗</a></li>
-            <li><a href="#faq">FAQ</a></li>
+            <li><a href="SIH2026-IDEA-Presentation-Format.pptx" download="SIH2026-IDEA-Presentation-Format.pptx"><i class="fa-solid fa-file-powerpoint"></i> SIH PPT Template</a></li>
+            <li><a href="javascript:void(0)" onclick="openRulebookModal()"><i class="fa-solid fa-book-open"></i> Hackathon Rulebook</a></li>
+            <li><a href="javascript:void(0)" onclick="openSamplePSModal()"><i class="fa-solid fa-lightbulb"></i> Sample Problem Statements</a></li>
+            <li><a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> SIH 2026 Portal ↗</a></li>
+            <li><a href="javascript:void(0)" onclick="openDedicatedAdminModal()"><i class="fa-solid fa-lock"></i> SPOC / Jury Gateway</a></li>
           </ul>
         </div>
 
         <div class="footer-col footer-contact-info">
           <h4>IIC Contact Desk</h4>
-          <p><i class="fa-solid fa-location-dot" style="color: #6ee7b7;"></i> TIT Campus, Narsingarh, Agartala</p>
-          <p><i class="fa-solid fa-envelope" style="color: #6ee7b7;"></i> iic@titagartala.ac.in</p>
-          <p><i class="fa-solid fa-phone" style="color: #6ee7b7;"></i> +91 9436X XXXXX / +91 9862X XXXXX</p>
+          <p><i class="fa-solid fa-location-dot" style="color: #6ee7b7;"></i> TIT Campus, Narsingarh, Agartala - 799009</p>
+          <p><i class="fa-solid fa-envelope" style="color: #6ee7b7;"></i> <a href="mailto:iic@titagartala.ac.in" style="color: #e2e8f0; text-decoration: none;">iic@titagartala.ac.in</a></p>
+          <p><i class="fa-solid fa-phone" style="color: #6ee7b7;"></i> <a href="tel:+916009236698" style="color: #e2e8f0; text-decoration: none;">+91 60092 36698</a> / <a href="tel:+919862010701" style="color: #e2e8f0; text-decoration: none;">+91 98620 10701</a></p>
         </div>
 
       </div>
@@ -1360,155 +1492,374 @@
     </div>
   </footer>
 
-  <!-- Modal 1: Unified Authentication (Student Login/Register & SPOC/Admin) -->
+  <!-- Modal 1: Student Authentication (Sign In, Sign Up, Password Reset) -->
   <div class="modal-overlay" id="auth-modal">
     <div class="modal-container" style="max-width: 480px; text-align: left;">
-      <button class="modal-close-btn" onclick="closeAuthModal()">
+      <button class="modal-close-btn" onclick="closeAuthModal()" aria-label="Close Modal">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
       <div style="text-align: center; margin-bottom: 16px;">
-        <div style="font-size: 2.2rem; margin-bottom: 6px; color: #059669;"><i class="fa-solid fa-building-columns"></i></div>
-        <h3 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;" id="auth-modal-title">TIT SIH Portal</h3>
+        <div style="font-size: 2.2rem; margin-bottom: 6px; color: #059669;"><i class="fa-solid fa-graduation-cap"></i></div>
+        <h3 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;" id="auth-modal-title">Student & Team Portal</h3>
         <p style="color: #64748b; font-size: 0.85rem;">Tripura Institute of Technology • SIH 2026</p>
       </div>
 
-      <!-- Top-Level Role Switcher -->
-      <div class="role-switch-container">
-        <button class="role-switch-btn active" id="role-student-btn" onclick="switchAuthRole('student')">
-          <i class="fa-solid fa-graduation-cap"></i> Student
+      <!-- Sub-tabs: Sign In vs Register -->
+      <div class="sub-auth-tabs">
+        <button class="sub-auth-btn active" id="tab-login-btn" onclick="switchStudentAuthTab('login')">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In
         </button>
-        <button class="role-switch-btn" id="role-admin-btn" onclick="switchAuthRole('admin')">
-          <i class="fa-solid fa-user-shield"></i> SPOC / Admin
+        <button class="sub-auth-btn" id="tab-signup-btn" onclick="switchStudentAuthTab('signup')">
+          <i class="fa-solid fa-user-plus"></i> Register
         </button>
       </div>
 
-      <!-- SECTION 1: STUDENT / LEADER PORTAL -->
-      <div id="auth-student-section">
-        <!-- Sub-tabs: Sign In vs Register -->
-        <div class="sub-auth-tabs">
-          <button class="sub-auth-btn active" id="tab-login-btn" onclick="switchStudentAuthTab('login')">
-            <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In
-          </button>
-          <button class="sub-auth-btn" id="tab-signup-btn" onclick="switchStudentAuthTab('signup')">
-            <i class="fa-solid fa-user-plus"></i> Register
+      <!-- Team Leader Notice -->
+      <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 8px 12px; font-size: 0.78rem; color: #065f46; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-crown" style="color: #059669; font-size: 1rem;"></i>
+        <span><strong>Team Leader:</strong> Only the Team Leader registers the team (4 to 6 members).</span>
+      </div>
+
+      <!-- Sign In Form -->
+      <form id="login-form" onsubmit="handleLoginSubmit(event)">
+        <div class="form-group-item">
+          <label class="form-input-label">College Email or Roll Number</label>
+          <input type="text" id="login-identifier" class="form-text-input" placeholder="e.g. 2101004 or name@titagartala.ac.in" required>
+        </div>
+        <div class="form-group-item" style="margin-bottom: 4px;">
+          <label class="form-input-label">Password</label>
+          <input type="password" id="login-password" class="form-text-input" placeholder="Enter your password" required>
+        </div>
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 14px;">
+          <button type="button" class="btn-text-link" style="font-size: 0.78rem;" onclick="switchStudentAuthTab('reset')">
+            Forgot Password?
           </button>
         </div>
+        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 4px;">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to Portal
+        </button>
+      </form>
 
-        <!-- Team Leader Notice -->
-        <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 8px 12px; font-size: 0.78rem; color: #065f46; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-          <i class="fa-solid fa-crown" style="color: #059669; font-size: 1rem;"></i>
-          <span><strong>Team Leader:</strong> Only the Team Leader registers the team (4 to 6 members).</span>
+      <!-- Reset Password Form -->
+      <form id="reset-password-form" style="display: none;" onsubmit="handlePasswordResetSubmit(event)">
+        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; color: #1e40af; margin-bottom: 14px; line-height: 1.4;">
+          <i class="fa-solid fa-envelope" style="color: #2563eb;"></i> Enter your registered college email to receive a password reset link.
         </div>
+        <div class="form-group-item">
+          <label class="form-input-label">Registered College Email</label>
+          <input type="email" id="reset-email" class="form-text-input" placeholder="e.g. yourname@titagartala.ac.in" required autocomplete="email">
+        </div>
+        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
+          <i class="fa-solid fa-paper-plane"></i> Send Password Reset Email
+        </button>
+        <div style="text-align: center; margin-top: 14px;">
+          <button type="button" class="btn-text-link" onclick="switchStudentAuthTab('login')">← Back to Sign In</button>
+        </div>
+      </form>
 
-        <!-- Sign In Form -->
-        <form id="login-form" onsubmit="handleLoginSubmit(event)">
+      <!-- Sign Up Form -->
+      <form id="signup-form" style="display: none;" onsubmit="handleSignupSubmit(event)">
+        <div class="form-group-item">
+          <label class="form-input-label">Full Name</label>
+          <input type="text" id="signup-name" class="form-text-input" placeholder="e.g. Student Name" required maxlength="60">
+        </div>
+        <div class="form-row-2">
           <div class="form-group-item">
-            <label class="form-input-label">College Email or Roll Number</label>
-            <input type="text" id="login-identifier" class="form-text-input" placeholder="e.g. 2101004 or name@titagartala.ac.in" required>
+            <label class="form-input-label">Roll / Enrollment No.</label>
+            <input type="text" id="signup-roll" class="form-text-input" placeholder="e.g. 21CSE042" required maxlength="20">
           </div>
-          <div class="form-group-item" style="margin-bottom: 4px;">
-            <label class="form-input-label">Password</label>
-            <input type="password" id="login-password" class="form-text-input" placeholder="Enter your password" required>
+          <div class="form-group-item">
+            <label class="form-input-label">Department</label>
+            <select id="signup-dept" class="form-select-input" required>
+              <option value="CSE">CSE</option>
+              <option value="IT">IT</option>
+              <option value="ECE">ECE</option>
+              <option value="EE">EE</option>
+              <option value="ME">ME</option>
+              <option value="CE">CE</option>
+              <option value="AI&DS">AI & DS</option>
+            </select>
           </div>
-          <div style="display: flex; justify-content: flex-end; margin-bottom: 14px;">
-            <button type="button" class="btn-text-link" style="font-size: 0.78rem;" onclick="switchStudentAuthTab('reset')">
-              Forgot Password?
+        </div>
+        <div class="form-row-2">
+          <div class="form-group-item">
+            <label class="form-input-label">Year of Study</label>
+            <select id="signup-year" class="form-select-input" required>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year" selected>3rd Year</option>
+              <option value="4th Year">4th Year</option>
+            </select>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Gender</label>
+            <select id="signup-gender" class="form-select-input" required>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group-item">
+          <label class="form-input-label">Email ID</label>
+          <input type="email" id="signup-email" class="form-text-input" placeholder="e.g. student@titagartala.ac.in" required autocomplete="email">
+        </div>
+        <div class="form-group-item">
+          <label class="form-input-label">Create Password (Min. 6 chars)</label>
+          <input type="password" id="signup-password" class="form-text-input" placeholder="Minimum 6 characters" minlength="6" required autocomplete="new-password">
+        </div>
+        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
+          <i class="fa-solid fa-user-plus"></i> Create Student Account
+        </button>
+      </form>
+
+      <!-- Discreet Admin Gateway Trigger -->
+      <div style="text-align: center; margin-top: 18px; padding-top: 12px; border-top: 1px dashed #e2e8f0;">
+        <button type="button" class="btn-text-link" style="font-size: 0.76rem; color: #64748b; font-weight: 600;" onclick="closeAuthModal(); openDedicatedAdminModal();">
+          <i class="fa-solid fa-lock" style="color: #059669;"></i> SPOC / Jury / Admin Gateway
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dedicated Modal: SPOC & Faculty Admin Gateway -->
+  <div class="modal-overlay" id="admin-gateway-modal">
+    <div class="modal-container" style="max-width: 440px; text-align: left;">
+      <button class="modal-close-btn" onclick="closeDedicatedAdminModal()" aria-label="Close Admin Modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="width: 56px; height: 56px; border-radius: 50%; background: #ecfdf5; color: #059669; display: inline-flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 10px; border: 2px solid #a7f3d0;">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h3 style="font-size: 1.4rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;">SPOC & Jury Gateway</h3>
+        <p style="color: #64748b; font-size: 0.82rem;">Authorized Committee Evaluation Access</p>
+      </div>
+
+      <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px; font-size: 0.82rem; color: #1e40af; margin-bottom: 18px; line-height: 1.45;">
+        <i class="fa-solid fa-circle-info" style="color: #2563eb;"></i> Enter the authorized institutional passcode to manage registrations, score presentations, and export submission files.
+      </div>
+
+      <form id="dedicated-admin-passcode-form" onsubmit="handleDedicatedAdminPasscodeSubmit(event)">
+        <div class="form-group-item">
+          <label class="form-input-label">Committee Master Passcode</label>
+          <div style="position: relative;">
+            <input type="password" id="dedicated-admin-passcode-input" class="form-text-input" placeholder="Enter SPOC Passcode" required style="text-align: center; font-weight: 700; font-size: 1.05rem; letter-spacing: 2px; padding-right: 40px;">
+            <button type="button" onclick="togglePasscodeVisibility('dedicated-admin-passcode-input')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94a3b8; cursor: pointer;">
+              <i class="fa-solid fa-eye" id="passcode-eye-icon"></i>
             </button>
           </div>
-          <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 4px;">
-            <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to Portal
-          </button>
-        </form>
+        </div>
 
-        <!-- Reset Password Form -->
-        <form id="reset-password-form" style="display: none;" onsubmit="handlePasswordResetSubmit(event)">
-          <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; color: #1e40af; margin-bottom: 14px; line-height: 1.4;">
-            <i class="fa-solid fa-envelope" style="color: #2563eb;"></i> Enter your registered college email to receive a password reset link.
-          </div>
-          <div class="form-group-item">
-            <label class="form-input-label">Registered College Email</label>
-            <input type="email" id="reset-email" class="form-text-input" placeholder="e.g. yourname@titagartala.ac.in" required autocomplete="email">
-          </div>
-          <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
-            <i class="fa-solid fa-paper-plane"></i> Send Password Reset Email
-          </button>
-          <div style="text-align: center; margin-top: 14px;">
-            <button type="button" class="btn-text-link" onclick="switchStudentAuthTab('login')">← Back to Sign In</button>
-          </div>
-        </form>
+        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
+          <i class="fa-solid fa-key"></i> Unlock Master Console
+        </button>
 
-        <!-- Sign Up Form -->
-        <form id="signup-form" style="display: none;" onsubmit="handleSignupSubmit(event)">
-          <div class="form-group-item">
-            <label class="form-input-label">Full Name</label>
-            <input type="text" id="signup-name" class="form-text-input" placeholder="e.g. Student Name" required maxlength="60">
-          </div>
-          <div class="form-row-2">
-            <div class="form-group-item">
-              <label class="form-input-label">Roll / Enrollment No.</label>
-              <input type="text" id="signup-roll" class="form-text-input" placeholder="e.g. 21CSE042" required maxlength="20">
-            </div>
-            <div class="form-group-item">
-              <label class="form-input-label">Department</label>
-              <select id="signup-dept" class="form-select-input" required>
-                <option value="CSE">CSE</option>
-                <option value="IT">IT</option>
-                <option value="ECE">ECE</option>
-                <option value="EE">EE</option>
-                <option value="ME">ME</option>
-                <option value="CE">CE</option>
-                <option value="AI&DS">AI & DS</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row-2">
-            <div class="form-group-item">
-              <label class="form-input-label">Year of Study</label>
-              <select id="signup-year" class="form-select-input" required>
-                <option value="1st Year">1st Year</option>
-                <option value="2nd Year">2nd Year</option>
-                <option value="3rd Year" selected>3rd Year</option>
-                <option value="4th Year">4th Year</option>
-              </select>
-            </div>
-            <div class="form-group-item">
-              <label class="form-input-label">Gender</label>
-              <select id="signup-gender" class="form-select-input" required>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group-item">
-            <label class="form-input-label"> Email ID</label>
-            <input type="email" id="signup-email" class="form-text-input" placeholder="e.g. student@titagartala.ac.in" required autocomplete="email">
-          </div>
-          <div class="form-group-item">
-            <label class="form-input-label">Create Password (Min. 6 chars)</label>
-            <input type="password" id="signup-password" class="form-text-input" placeholder="Minimum 6 characters" minlength="6" required autocomplete="new-password">
-          </div>
-          <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
-            <i class="fa-solid fa-user-plus"></i> Create Student Account
+        <div style="text-align: center; margin-top: 14px;">
+          <button type="button" class="btn-text-link" onclick="closeDedicatedAdminModal(); openAuthModal();">
+            ← Switch to Student Sign In
           </button>
-        </form>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dedicated Modal: Internal Hackathon Rulebook & Rubric Handbook -->
+  <div class="modal-overlay" id="rulebook-modal">
+    <div class="modal-container" style="max-width: 840px; text-align: left; max-height: 90vh; display: flex; flex-direction: column;">
+      <button class="modal-close-btn" onclick="closeRulebookModal()" aria-label="Close Rulebook Modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #ecfdf5; padding-bottom: 14px; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <h3 style="font-size: 1.35rem; font-weight: 800; color: #064e3b; margin: 0; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-book-bookmark" style="color: #059669;"></i> TIT SIH 2026 Internal Hackathon Rulebook
+          </h3>
+          <p style="color: #64748b; font-size: 0.82rem; margin: 2px 0 0 0;">Official Handbook & Evaluation Guidelines • Institution Innovation Council (IIC)</p>
+        </div>
+        <button class="btn-3d-outline" onclick="window.print()" style="padding: 6px 14px; font-size: 0.82rem;">
+          <i class="fa-solid fa-print"></i> Print / Save as PDF
+        </button>
       </div>
 
-      <!-- SECTION 2: SPOC / FACULTY ADMIN PORTAL -->
-      <div id="auth-admin-section" style="display: none;">
-        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px; font-size: 0.82rem; color: #1e40af; margin-bottom: 16px; line-height: 1.45;">
-          <i class="fa-solid fa-shield-halved" style="color: #2563eb;"></i> <strong>Authorized Faculty & Jury Portal:</strong> Enter the SPOC passcode to evaluate registered teams, inspect rosters, and export AICTE spreadsheets.
+      <div style="overflow-y: auto; padding-right: 6px; font-size: 0.9rem; color: #334155; line-height: 1.6;">
+        <div style="background: #f0fdf4; border-left: 4px solid #059669; padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 18px;">
+          <strong style="color: #065f46;">Important Notice:</strong> Top selected teams from this internal hackathon will receive direct Golden Ticket nomination by TIT to compete in the national <strong>Smart India Hackathon (SIH) 2026 Grand Finale</strong>.
         </div>
-        <form id="admin-login-tab-form" onsubmit="handleAdminTabPasscodeSubmit(event)" autocomplete="off">
-          <div class="form-group-item">
-            <label class="form-input-label">SPOC / Admin Passcode</label>
-            <input type="password" id="admin-tab-passcode-input" class="form-text-input" placeholder="Enter SPOC Passcode" autocomplete="new-password" data-lpignore="true" data-1p-ignore="true" readonly onfocus="this.removeAttribute('readonly');" required style="text-align: center; font-weight: 700; font-size: 1rem; letter-spacing: 1px;">
+
+        <h4 style="color: #0f172a; font-size: 1.05rem; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-users" style="color: #059669;"></i> 1. Team Formation & Eligibility
+        </h4>
+        <ul style="margin: 0 0 16px 20px;">
+          <li>Teams must comprise <strong>4 to 6 members</strong>.</li>
+          <li>At least <strong>1 female member</strong> is strictly mandatory in every team (SIH AICTE central rule).</li>
+          <li>All members must be active regular students of Tripura Institute of Technology (Diploma, B.Tech, or M.Tech).</li>
+          <li>Cross-departmental and inter-year collaborations are encouraged.</li>
+          <li>A student can register with only <strong>one team</strong>.</li>
+        </ul>
+
+        <h4 style="color: #0f172a; font-size: 1.05rem; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-chart-pie" style="color: #059669;"></i> 2. Evaluation Criteria & Scoring Weightage
+        </h4>
+        <div style="overflow-x: auto; margin-bottom: 16px;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+            <thead>
+              <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0; text-align: left;">
+                <th style="padding: 10px 14px; color: #475569;">Evaluation Criterion</th>
+                <th style="padding: 10px 14px; color: #475569; width: 100px; text-align: center;">Weightage</th>
+                <th style="padding: 10px 14px; color: #475569;">Key Indicators</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid #f1f5f9;">
+                <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">Innovation & Novelty</td>
+                <td style="padding: 10px 14px; text-align: center; font-weight: 800; color: #059669;">30%</td>
+                <td style="padding: 10px 14px; color: #64748b;">Uniqueness of solution, creative approach, USP over existing market alternatives.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;">
+                <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">Technical Feasibility & Architecture</td>
+                <td style="padding: 10px 14px; text-align: center; font-weight: 800; color: #059669;">25%</td>
+                <td style="padding: 10px 14px; color: #64748b;">Robust tech stack choice, scalability, system workflow, API/hardware design.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;">
+                <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">Societal & Real-World Impact</td>
+                <td style="padding: 10px 14px; text-align: center; font-weight: 800; color: #059669;">20%</td>
+                <td style="padding: 10px 14px; color: #64748b;">Alignment with Ministry Problem Statement, user impact, sustainability.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;">
+                <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">Prototype / Demo Readiness</td>
+                <td style="padding: 10px 14px; text-align: center; font-weight: 800; color: #059669;">15%</td>
+                <td style="padding: 10px 14px; color: #64748b;">Working wireframes, GitHub repository, live API test or simulated demo.</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">Pitch & Presentation Quality</td>
+                <td style="padding: 10px 14px; text-align: center; font-weight: 800; color: #059669;">10%</td>
+                <td style="padding: 10px 14px; color: #64748b;">Adherence to standard 7-slide PPT template, clarity of answers during Q&A.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4 style="color: #0f172a; font-size: 1.05rem; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-file-powerpoint" style="color: #059669;"></i> 3. PPT Template Structure
+        </h4>
+        <p style="margin-bottom: 6px;">All teams must strictly use the official 7-slide PPT format:</p>
+        <ol style="margin: 0 0 16px 20px;">
+          <li>Slide 1: Team Name, Problem Statement ID & Title, Institute Name.</li>
+          <li>Slide 2: Proposed Solution Brief & Core Value Proposition.</li>
+          <li>Slide 3: Technical Architecture, Flowchart & Tech Stack.</li>
+          <li>Slide 4: Feasibility, User Persona & Real-World Use Case.</li>
+          <li>Slide 5: Research, Novelty & Competitive Advantage.</li>
+          <li>Slide 6: Implementation Roadmap & Milestones.</li>
+          <li>Slide 7: Team Composition, Branch & Skill Allocation.</li>
+        </ol>
+
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px; padding-top: 14px; border-top: 1px solid #e2e8f0;">
+          <a href="SIH2026-IDEA-Presentation-Format.pptx" download="SIH2026-IDEA-Presentation-Format.pptx" class="btn-3d-primary" style="font-size: 0.85rem;">
+            <i class="fa-solid fa-download"></i> Download PPT Template
+          </a>
+          <button class="btn-3d-secondary" onclick="closeRulebookModal()" style="font-size: 0.85rem;">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dedicated Modal: Curated Sample Problem Statements & Architecture Blueprints -->
+  <div class="modal-overlay" id="sample-ps-modal">
+    <div class="modal-container" style="max-width: 880px; text-align: left; max-height: 90vh; display: flex; flex-direction: column;">
+      <button class="modal-close-btn" onclick="closeSamplePSModal()" aria-label="Close Sample PS Modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #ecfdf5; padding-bottom: 14px; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <h3 style="font-size: 1.35rem; font-weight: 800; color: #064e3b; margin: 0; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-lightbulb" style="color: #f59e0b;"></i> Sample Problem Statements & Case Studies
+          </h3>
+          <p style="color: #64748b; font-size: 0.82rem; margin: 2px 0 0 0;">Reference Winning Architectures & Solution Frameworks for SIH 2026</p>
+        </div>
+        <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="btn-3d-primary" style="padding: 6px 14px; font-size: 0.82rem; text-decoration: none;">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open sih.gov.in PS Portal ↗
+        </a>
+      </div>
+
+      <div style="overflow-y: auto; padding-right: 6px; display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px;">
+        
+        <!-- Case Study 1 -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="background: #ecfdf5; color: #065f46; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">Agriculture • Hardware / Software</span>
+              <span style="color: #94a3b8; font-size: 0.75rem; font-family: var(--font-mono);">PS ID: SIH-AG-01</span>
+            </div>
+            <h4 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">AI Edge Drone for Early Crop Blight & Pest Detection</h4>
+            <p style="font-size: 0.82rem; color: #475569; margin-bottom: 12px; line-height: 1.45;">
+              Autonomous quadcopter equipped with Raspberry Pi / Jetson Nano running lightweight YOLOv8 models to inspect tea & rubber plantations in Tripura in real time.
+            </p>
           </div>
-          <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
-            <i class="fa-solid fa-key"></i> Access Master Evaluation Console
-          </button>
-        </form>
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: 0.76rem; color: #334155;">
+            <strong>Recommended Tech Stack:</strong> PyTorch, OpenCV, ROS, Flutter Dashboard, MQTT & LoRaWAN.
+          </div>
+        </div>
+
+        <!-- Case Study 2 -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="background: #eff6ff; color: #1e40af; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">Disaster Management • IoT</span>
+              <span style="color: #94a3b8; font-size: 0.75rem; font-family: var(--font-mono);">PS ID: SIH-DM-04</span>
+            </div>
+            <h4 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">Solar-Powered River Level & Flash Flood Early Warning System</h4>
+            <p style="font-size: 0.82rem; color: #475569; margin-bottom: 12px; line-height: 1.45;">
+              Ultrasonic river-gauge nodes with GSM/Satellite failover transmitting telemetry data to a geospatial GIS map that automatically triggers localized SMS flood alerts.
+            </p>
+          </div>
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: 0.76rem; color: #334155;">
+            <strong>Recommended Tech Stack:</strong> ESP32, Ultrasonic Sensors, Node.js, Leaflet/Mapbox GIS, Twilio SMS API.
+          </div>
+        </div>
+
+        <!-- Case Study 3 -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="background: #faf5ff; color: #6b21a8; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">Healthcare • Web3 / AI</span>
+              <span style="color: #94a3b8; font-size: 0.75rem; font-family: var(--font-mono);">PS ID: SIH-HC-09</span>
+            </div>
+            <h4 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">Counterfeit Medicine Tracking & Cold-Chain IoT Ledger</h4>
+            <p style="font-size: 0.82rem; color: #475569; margin-bottom: 12px; line-height: 1.45;">
+              Decentralized pharma provenance tracker with cryptographically signed packaging QR codes and real-time cold-chain temperature telemetry logs.
+            </p>
+          </div>
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: 0.76rem; color: #334155;">
+            <strong>Recommended Tech Stack:</strong> Solidity, Polygon / EVM, Next.js, DHT22 Temperature Sensors, QR Scanner.
+          </div>
+        </div>
+
+        <!-- Case Study 4 -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="background: #fefce8; color: #854d0e; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">Smart City • Clean Tech</span>
+              <span style="color: #94a3b8; font-size: 0.75rem; font-family: var(--font-mono);">PS ID: SIH-SC-14</span>
+            </div>
+            <h4 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">Autonomous Solar Microgrid Load-Balancing & Peak Predictor</h4>
+            <p style="font-size: 0.82rem; color: #475569; margin-bottom: 12px; line-height: 1.45;">
+              Reinforcement learning algorithm that optimizes campus battery storage discharge cycles based on real-time solar irradiance forecasting.
+            </p>
+          </div>
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: 0.76rem; color: #334155;">
+            <strong>Recommended Tech Stack:</strong> Python, FastAPI, TensorFlow/LSTM, InfluxDB, Tailwind/React UI.
+          </div>
+        </div>
+
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 18px; padding-top: 12px; border-top: 1px solid #e2e8f0;">
+        <button class="btn-3d-secondary" onclick="closeSamplePSModal()" style="font-size: 0.85rem;">Close</button>
       </div>
     </div>
   </div>
