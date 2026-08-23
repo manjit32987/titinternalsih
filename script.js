@@ -305,7 +305,7 @@ window.handleAdminTabPasscodeSubmit = (e) => {
 
     renderAdminConsole();
   } else {
-    alert("❌ Invalid SPOC / Admin Passcode. Access restricted to authorized faculty and organizers.");
+    alert("[TIT SIH] Invalid Passcode: Access restricted to authorized faculty and organizers.");
   }
 };
 
@@ -319,21 +319,21 @@ window.handlePasswordResetSubmit = (e) => {
       .auth()
       .sendPasswordResetEmail(email)
       .then(() => {
-        alert(`✅ Official Password Reset email sent to ${email}!\nPlease check your email inbox and spam folder.`);
+        alert(`[TIT SIH] Password Reset Dispatched: A secure reset link has been sent to ${email}. Please check your inbox and spam folder.`);
         switchAuthTab("login");
       })
       .catch((err) => {
         console.warn("Firebase Auth reset error:", err);
-        alert(`📧 Password reset instructions processed for: ${email}\nIf an account exists with this email, you will receive a reset link.`);
+        alert(`[TIT SIH] Password Reset Dispatched: If an account exists with ${email}, you will receive a reset link shortly.`);
         switchAuthTab("login");
       });
   } else {
     // Local / Firestore lookup
     const student = registeredStudents.find((s) => s.email.toLowerCase() === email);
     if (student) {
-      alert(`✅ Password Reset Request Processed!\nA reset link has been dispatched to: ${email}\n(Demo Password for ${student.name} is: "${student.password}")`);
+      alert(`[TIT SIH] Password Reset Request: A reset link has been dispatched to ${email}.`);
     } else {
-      alert(`📧 Password reset request received for: ${email}.\nIf this email is registered with TIT IIC, a reset link will arrive shortly.`);
+      alert(`[TIT SIH] Password Reset Request: If this email is registered with TIT IIC, a reset link will arrive shortly.`);
     }
     switchAuthTab("login");
   }
@@ -345,7 +345,7 @@ window.handleLoginSubmit = (e) => {
   const password = document.getElementById("login-password").value;
 
   if (!identifier || !password) {
-    alert("⚠️ Please enter your College Email / Roll Number and Password.");
+    alert("[TIT SIH] Please enter your College Email / Roll Number and Password.");
     return;
   }
 
@@ -360,9 +360,9 @@ window.handleLoginSubmit = (e) => {
     updateNavAuthState();
     renderStudentDashboard();
     triggerConfettiBurst();
-    alert(`🎉 Welcome back, ${student.name}! You are signed in as Team Leader.`);
+    alert(`[TIT SIH] Welcome, ${student.name}. You are logged in as Team Leader.`);
   } else {
-    alert("❌ Invalid credentials. Please check your email/roll number and password, or create a new student account.");
+    alert("[TIT SIH] Invalid credentials. Please check your email/roll number and password, or create a new student account.");
   }
 };
 
@@ -378,22 +378,22 @@ window.handleSignupSubmit = (e) => {
 
   // Production Validation Checks
   if (!name || name.length < 2) {
-    alert("⚠️ Please enter a valid full name.");
+    alert("[TIT SIH] Please enter a valid full name.");
     return;
   }
 
   if (!roll || roll.length < 3) {
-    alert("⚠️ Please enter a valid college roll number (e.g. 21CSE042).");
+    alert("[TIT SIH] Please enter a valid college roll number (e.g. 21CSE042).");
     return;
   }
 
   if (!isValidEmail(email)) {
-    alert("⚠️ Please enter a valid email address (e.g. student@titagartala.ac.in).");
+    alert("[TIT SIH] Please enter a valid email address (e.g. student@titagartala.ac.in).");
     return;
   }
 
   if (!password || password.length < 6) {
-    alert("⚠️ Password must be at least 6 characters long for account security.");
+    alert("[TIT SIH] Password must be at least 6 characters long.");
     return;
   }
 
@@ -403,7 +403,7 @@ window.handleSignupSubmit = (e) => {
   );
 
   if (existing) {
-    alert("⚠️ An account with this Email or Roll Number already exists. Please sign in.");
+    alert("[TIT SIH] An account with this Email or Roll Number already exists. Please sign in.");
     switchAuthTab("login");
     return;
   }
@@ -426,7 +426,7 @@ window.handleSignupSubmit = (e) => {
   updateNavAuthState();
   renderStudentDashboard();
   triggerConfettiBurst();
-  alert(`🎉 Account created successfully! Welcome to TIT SIH Hackathon, ${name}.`);
+  alert(`[TIT SIH] Student Leader account created successfully for ${name}.`);
 };
 
 window.handleLogout = () => {
@@ -671,7 +671,7 @@ window.handleTeamRegistrationSubmit = (e) => {
   // Validate 1+ Female Member
   const isFemaleCompliant = checkRosterFemaleQuota();
   if (!isFemaleCompliant) {
-    alert("❌ SIH Mandatory Rule: Your team must have at least ONE female student member to be eligible for Smart India Hackathon.");
+    alert("[TIT SIH Error] Mandatory Rule: Your squad must have at least ONE female student member to be eligible under official SIH guidelines.");
     return;
   }
 
@@ -685,27 +685,27 @@ window.handleTeamRegistrationSubmit = (e) => {
 
   // Basic Project Validations
   if (!teamName || teamName.length < 3) {
-    alert("⚠️ Please enter a valid Team Name (at least 3 characters).");
+    alert("[TIT SIH] Please enter a valid Team Name (minimum 3 characters).");
     return;
   }
 
   if (!psId || psId.length < 3) {
-    alert("⚠️ Please enter the Target SIH Problem Statement ID (e.g. SIH2601).");
+    alert("[TIT SIH] Please enter the Target SIH Problem Statement ID (e.g. SIH2601).");
     return;
   }
 
   if (!title || title.length < 5) {
-    alert("⚠️ Please enter your Solution Title (at least 5 characters).");
+    alert("[TIT SIH] Please enter your Solution Title (minimum 5 characters).");
     return;
   }
 
   if (!abstract || abstract.length < 15) {
-    alert("⚠️ Please provide a clear Solution Abstract (at least 15 characters).");
+    alert("[TIT SIH] Please provide a clear Solution Abstract (minimum 15 characters).");
     return;
   }
 
   if (!isValidUrl(pptLink)) {
-    alert("⚠️ Please provide a valid link to your Idea Presentation Deck (e.g. https://drive.google.com/file/d/... or Canva / OneDrive link).");
+    alert("[TIT SIH] Please provide a valid URL link to your Idea Presentation Deck.");
     return;
   }
 
@@ -723,34 +723,34 @@ window.handleTeamRegistrationSubmit = (e) => {
     const phone = document.getElementById(`m${i}-phone`).value.trim();
 
     if (!name) {
-      alert(`⚠️ Please provide the Full Name for Member ${i}.`);
+      alert(`[TIT SIH] Please provide the Full Name for Member ${i}.`);
       return;
     }
 
     if (!roll) {
-      alert(`⚠️ Please provide the Roll Number for Member ${i}.`);
+      alert(`[TIT SIH] Please provide the Roll Number for Member ${i}.`);
       return;
     }
 
     if (rollSet.has(roll)) {
-      alert(`❌ Duplicate Roll Number: "${roll}" is entered more than once. All 6 members must be distinct students.`);
+      alert(`[TIT SIH Error] Duplicate Roll Number: "${roll}" is entered more than once. All 6 members must be distinct.`);
       return;
     }
     rollSet.add(roll);
 
     if (!isValidEmail(email)) {
-      alert(`⚠️ Please enter a valid Email address for Member ${i} (${name || "Member"}).`);
+      alert(`[TIT SIH] Please enter a valid Email address for Member ${i}.`);
       return;
     }
 
     if (emailSet.has(email)) {
-      alert(`❌ Duplicate Email: "${email}" is entered more than once. All 6 members must have unique emails.`);
+      alert(`[TIT SIH Error] Duplicate Email: "${email}" is entered more than once.`);
       return;
     }
     emailSet.add(email);
 
     if (!isValidPhone(phone)) {
-      alert(`⚠️ Please enter a valid 10-digit mobile phone number for Member ${i} (${name || "Member"}).`);
+      alert(`[TIT SIH] Please enter a valid 10-digit mobile phone number for Member ${i}.`);
       return;
     }
 
@@ -817,7 +817,7 @@ window.handleTeamRegistrationSubmit = (e) => {
     dashSection.scrollIntoView({ behavior: "smooth" });
   }
 
-  alert(`🎉 Success! Team "${teamName}" registered successfully!\nYour Official Team ID is: ${newTeam.teamId}\nCheck your dashboard below to view and print your digital registration pass.`);
+  alert(`[TIT SIH] Team "${teamName}" registered successfully.\nOfficial Team ID: ${newTeam.teamId}\nYou can now view and print your authenticated registration pass below.`);
 };
 
 /* ==========================================================================
@@ -846,15 +846,15 @@ function renderStudentDashboard() {
   if (!userTeam) {
     contentBox.innerHTML = `
       <div class="dashboard-hero-card" style="text-align: center; padding: 48px 20px;">
-        <div style="font-size: 3rem; margin-bottom: 12px;">🚀</div>
+        <div style="font-size: 2.4rem; color: #059669; margin-bottom: 12px;"><i class="fa-solid fa-users"></i></div>
         <h3 style="font-size: 1.4rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;">
-          Welcome, ${currentUser.name}!
+          Welcome, ${currentUser.name}
         </h3>
         <p style="color: #64748b; font-size: 0.9rem; max-width: 540px; margin: 0 auto 24px; line-height: 1.5;">
-          You are currently not linked to any registered 6-member squad. Assemble your team and register now to compete for ₹5,000 Cash, ChatGPT Plus Ignite Award, and SIH Prelims nomination!
+          You are currently not linked to any registered 6-member squad. Assemble your team and register now to participate in the TIT SIH Internal Hackathon.
         </p>
         <button class="btn-3d-primary" onclick="triggerRegistration()" style="padding: 14px 28px;">
-          <i class="fa-solid fa-plus"></i> Register Your 6-Member Squad
+          <i class="fa-solid fa-plus"></i> Register 6-Member Squad
         </button>
       </div>
     `;
@@ -1265,7 +1265,7 @@ function renderAdminConsole() {
       </div>
       <div style="background: #fff1f2; border: 1px solid #fecdd3; border-radius: 10px; padding: 12px; text-align: center;">
         <div style="font-size: 1.6rem; font-weight: 900; color: #9f1239;">${totalFemales}</div>
-        <div style="font-size: 0.75rem; font-weight: 700; color: #e11d48;">Female Participants 👩</div>
+        <div style="font-size: 0.75rem; font-weight: 700; color: #e11d48;">Female Participants</div>
       </div>
     </div>
 
@@ -1290,9 +1290,9 @@ function renderAdminConsole() {
 
         <select class="form-select-input" onchange="filterAdminTeams(undefined, undefined, this.value)" style="height: 38px; font-size: 0.82rem; padding: 6px 12px; width: auto; margin: 0;">
           <option value="ALL" ${adminStatusFilter === "ALL" ? "selected" : ""}>All Statuses</option>
-          <option value="Review" ${adminStatusFilter === "Review" ? "selected" : ""}>Under Review ⏳</option>
-          <option value="Shortlisted" ${adminStatusFilter === "Shortlisted" ? "selected" : ""}>Shortlisted 🚀</option>
-          <option value="Nominated" ${adminStatusFilter === "Nominated" ? "selected" : ""}>Nominated 🏆</option>
+          <option value="Review" ${adminStatusFilter === "Review" ? "selected" : ""}>Under Review</option>
+          <option value="Shortlisted" ${adminStatusFilter === "Shortlisted" ? "selected" : ""}>Shortlisted for Demo Day</option>
+          <option value="Nominated" ${adminStatusFilter === "Nominated" ? "selected" : ""}>Nominated for SIH Finals</option>
         </select>
       </div>
     </div>
@@ -1345,9 +1345,9 @@ function renderAdminConsole() {
               </td>
               <td>
                 <select class="admin-status-select" onchange="updateTeamStatus('${t.teamId}', this.value)">
-                  <option value="Under Review by IIC Panel" ${t.status.includes("Under Review") ? "selected" : ""}>Under Review ⏳</option>
-                  <option value="Shortlisted for Demo Day" ${t.status.includes("Shortlisted") ? "selected" : ""}>Shortlisted 🚀</option>
-                  <option value="Nominated for SIH Finals" ${t.status.includes("Nominated") ? "selected" : ""}>Nominated 🏆</option>
+                  <option value="Under Review by IIC Panel" ${t.status.includes("Under Review") ? "selected" : ""}>Under Review</option>
+                  <option value="Shortlisted for Demo Day" ${t.status.includes("Shortlisted") ? "selected" : ""}>Shortlisted for Demo Day</option>
+                  <option value="Nominated for SIH Finals" ${t.status.includes("Nominated") ? "selected" : ""}>Nominated for SIH Finals</option>
                 </select>
               </td>
               <td style="text-align: right; white-space: nowrap;">
@@ -1413,9 +1413,9 @@ window.openAdminTeamDetails = (teamId) => {
         <div style="text-align: right;">
           <label style="font-size: 0.75rem; font-weight: 700; color: #64748b; display: block; margin-bottom: 4px;">UPDATE EVALUATION STATUS</label>
           <select class="admin-status-select" style="padding: 6px 12px; font-weight: 700;" onchange="updateTeamStatus('${team.teamId}', this.value)">
-            <option value="Under Review by IIC Panel" ${team.status.includes("Under Review") ? "selected" : ""}>Under Review ⏳</option>
-            <option value="Shortlisted for Demo Day" ${team.status.includes("Shortlisted") ? "selected" : ""}>Shortlisted for Demo Day 🚀</option>
-            <option value="Nominated for SIH Finals" ${team.status.includes("Nominated") ? "selected" : ""}>Nominated for SIH Finals 🏆</option>
+            <option value="Under Review by IIC Panel" ${team.status.includes("Under Review") ? "selected" : ""}>Under Review</option>
+            <option value="Shortlisted for Demo Day" ${team.status.includes("Shortlisted") ? "selected" : ""}>Shortlisted for Demo Day</option>
+            <option value="Nominated for SIH Finals" ${team.status.includes("Nominated") ? "selected" : ""}>Nominated for SIH Finals</option>
           </select>
         </div>
       </div>
@@ -1503,7 +1503,7 @@ window.deleteTeamByAdmin = (teamId) => {
   const team = registeredTeams.find((t) => t.teamId === teamId);
   if (!team) return;
 
-  const confirmPrompt = `⚠️ CONFIRM PERMANENT DELETION\n\nAre you sure you want to delete this team?\n• Team Name: ${team.teamName}\n• Team ID: ${team.teamId}\n• Leader: ${team.members[0]?.name || "N/A"}\n\nThis will remove the team from the registry and Google Firebase Cloud. This action cannot be undone.`;
+  const confirmPrompt = `CONFIRM PERMANENT DELETION\n\nAre you sure you want to delete this team?\n• Team Name: ${team.teamName}\n• Team ID: ${team.teamId}\n• Leader: ${team.members[0]?.name || "N/A"}\n\nThis will remove the team from the registry and cloud database. This action cannot be undone.`;
 
   if (confirm(confirmPrompt)) {
     // 1. Remove from local array
@@ -1516,7 +1516,7 @@ window.deleteTeamByAdmin = (teamId) => {
         .doc(teamId)
         .delete()
         .then(() => {
-          console.log(`✅ Team ${teamId} permanently deleted from Firestore.`);
+          console.log(`Team ${teamId} permanently deleted from Firestore.`);
         })
         .catch((err) => {
           console.error("Error deleting team from Firestore:", err);
@@ -1528,7 +1528,7 @@ window.deleteTeamByAdmin = (teamId) => {
     renderAdminConsole();
     renderStudentDashboard();
 
-    alert(`🗑️ Team "${team.teamName}" (${teamId}) has been successfully deleted.`);
+    alert(`[TIT SIH] Team "${team.teamName}" (${teamId}) has been deleted.`);
   }
 };
 
