@@ -996,6 +996,7 @@ window.openTeamPassModal = (teamId) => {
         <thead>
           <tr style="background: #ecfdf5; border-bottom: 1px solid #a7f3d0;">
             <th style="padding: 6px 8px; color: #064e3b;">#</th>
+            <th style="padding: 6px 8px; color: #064e3b;">Role</th>
             <th style="padding: 6px 8px; color: #064e3b;">Student Name</th>
             <th style="padding: 6px 8px; color: #064e3b;">Roll No</th>
             <th style="padding: 6px 8px; color: #064e3b;">Dept</th>
@@ -1007,7 +1008,8 @@ window.openTeamPassModal = (teamId) => {
             .map(
               (m, idx) => `
             <tr style="border-bottom: 1px solid #e2e8f0; ${m.isLeader ? "font-weight: 700; background: #fafafa;" : ""}">
-              <td style="padding: 5px 8px;">${idx + 1}${m.isLeader ? " 👑" : ""}</td>
+              <td style="padding: 5px 8px;">${idx + 1}</td>
+              <td style="padding: 5px 8px;">${m.isLeader ? '<span style="color:#059669; font-weight:700; font-size:0.7rem; background:#ecfdf5; padding:2px 6px; border-radius:4px; border:1px solid #a7f3d0;">Leader</span>' : '<span style="color:#64748b; font-size:0.7rem;">Member</span>'}</td>
               <td style="padding: 5px 8px;">${m.name}</td>
               <td style="padding: 5px 8px;">${m.roll}</td>
               <td style="padding: 5px 8px;">${m.dept}</td>
@@ -1038,6 +1040,108 @@ window.openTeamPassModal = (teamId) => {
 window.closeTeamPassModal = () => {
   const modal = document.getElementById("team-pass-modal");
   if (modal) modal.classList.remove("active");
+};
+
+/* Dedicated 1-Page Pass Printing Engine */
+window.printDigitalPass = () => {
+  const passContent = document.getElementById("printable-pass-content");
+  if (!passContent) return;
+
+  const printFrame = document.createElement("iframe");
+  printFrame.style.position = "fixed";
+  printFrame.style.right = "0";
+  printFrame.style.bottom = "0";
+  printFrame.style.width = "0";
+  printFrame.style.height = "0";
+  printFrame.style.border = "0";
+  document.body.appendChild(printFrame);
+
+  const doc = printFrame.contentWindow.document;
+  doc.open();
+  doc.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>TIT SIH 2026 - Official Registration Pass</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+      <link rel="stylesheet" href="xtyle.css">
+      <style>
+        @page {
+          size: A4 portrait;
+          margin: 10mm;
+        }
+        * {
+          box-sizing: border-box;
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        body {
+          margin: 0;
+          padding: 12px;
+          background: #ffffff;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          color: #0f172a;
+          display: flex;
+          justify-content: center;
+        }
+        .team-pass-card {
+          width: 100%;
+          max-width: 620px;
+          border: 2px solid #059669;
+          border-radius: 12px;
+          padding: 24px;
+          background: #ffffff;
+          box-shadow: none !important;
+          page-break-inside: avoid;
+          break-inside: avoid;
+        }
+        .pass-header {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          border-bottom: 2px solid #059669;
+          padding-bottom: 14px;
+          margin-bottom: 16px;
+        }
+        .pass-seal {
+          width: 60px;
+          height: 60px;
+          object-fit: contain;
+        }
+        .pass-qr-row {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          background: #f0fdf4;
+          border: 1px solid #a7f3d0;
+          border-radius: 10px;
+          padding: 14px;
+        }
+        .pass-qr-img {
+          width: 85px;
+          height: 85px;
+          border-radius: 8px;
+          background: #ffffff;
+          padding: 4px;
+          border: 1px solid #cbd5e1;
+        }
+      </style>
+    </head>
+    <body>
+      ${passContent.innerHTML}
+    </body>
+    </html>
+  `);
+  doc.close();
+
+  printFrame.contentWindow.focus();
+  setTimeout(() => {
+    printFrame.contentWindow.print();
+    setTimeout(() => {
+      document.body.removeChild(printFrame);
+    }, 1000);
+  }, 300);
 };
 
 /* ==========================================================================
@@ -1347,7 +1451,7 @@ window.openAdminTeamDetails = (teamId) => {
         <div style="background: ${m.isLeader ? "#f0fdf4" : "#ffffff"}; border: 1px solid ${m.isLeader ? "#a7f3d0" : "#e2e8f0"}; border-radius: 10px; padding: 12px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <strong style="color: #0f172a; font-size: 0.9rem;">${m.name}</strong>
-            ${m.isLeader ? '<span class="member-badge-pill leader" style="font-size:0.65rem;">LEADER 👑</span>' : `<span style="font-size:0.7rem; color:#64748b; font-weight:600;">Member ${idx + 1}</span>`}
+            ${m.isLeader ? '<span class="member-badge-pill leader" style="font-size:0.65rem;">LEADER</span>' : `<span style="font-size:0.7rem; color:#64748b; font-weight:600;">Member ${idx + 1}</span>`}
           </div>
           <div style="font-size: 0.78rem; color: #475569; margin-bottom: 3px;">
             <i class="fa-solid fa-id-badge" style="color: #059669; width: 14px;"></i> Roll: <strong>${m.roll}</strong> (${m.dept})
