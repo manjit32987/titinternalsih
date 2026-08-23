@@ -12,12 +12,13 @@
 // 3. Go to Project Settings (⚙️) -> "General" -> Under "Your apps", click Web (</>) and copy the firebaseConfig.
 // 4. Replace the values below with your Firebase project keys.
 const FIREBASE_CONFIG = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDiporqhdFbc1b0FL1cS8TB0AMuEr7njKA",
+  authDomain: "titinternalsih.firebaseapp.com",
+  projectId: "titinternalsih",
+  storageBucket: "titinternalsih.firebasestorage.app",
+  messagingSenderId: "892199525524",
+  appId: "1:892199525524:web:3a717624d0dd8ef795a881",
+  measurementId: "G-TXFZY0XYPK"
 };
 
 // Global Hackathon Settings
