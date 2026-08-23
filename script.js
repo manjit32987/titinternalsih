@@ -155,21 +155,9 @@ function initRegistrationModal() {
 }
 
 /* ==========================================================================
-   5. SCROLL REVEAL & STICKY DOCK & MOBILE NAV
+   5. MOBILE NAVIGATION ENGINE
    ========================================================================== */
 function initScrollEffects() {
-  const floatingDock = document.getElementById("floating-reg-dock");
-
-  window.addEventListener("scroll", () => {
-    if (!floatingDock) return;
-    if (window.scrollY > 450) {
-      floatingDock.classList.add("visible");
-    } else {
-      floatingDock.classList.remove("visible");
-    }
-  });
-
-  // Mobile menu toggle
   const mobileBtn = document.getElementById("mobile-menu-toggle");
   const mobileMenu = document.getElementById("mobile-nav-dropdown");
 
