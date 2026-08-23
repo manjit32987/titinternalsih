@@ -1,23 +1,74 @@
 /**
  * TIT IIC - SIH INTERNAL HACKATHON 2026
- * Interactive & Dynamic Logic Engine
+ * Full Dynamic Logic Engine (Auth, Registration, Dashboard, Digital Pass & Jury Panel)
  */
 
 // Global Configuration
 const CONFIG = {
-  googleFormUrl: "https://forms.gle/sampleGoogleFormTITSIH2026", // Replace with your actual Google Form URL
+  adminPasscode: "TIT-IIC-2026",
   hackathonDate: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000), // 12 days from now
   registrationDeadline: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000) // 6 days from now
 };
+
+/* ==========================================================================
+   STATE MANAGEMENT & STORAGE ENGINE
+   ========================================================================== */
+let currentUser = JSON.parse(localStorage.getItem("tit_sih_current_user") || "null");
+let registeredTeams = JSON.parse(localStorage.getItem("tit_sih_teams") || "[]");
+let registeredStudents = JSON.parse(localStorage.getItem("tit_sih_students") || "[]");
+
+// Seed initial demo data if clean
+if (registeredStudents.length === 0) {
+  registeredStudents = [
+    {
+      name: "Rahul Debbarma",
+      roll: "21CSE042",
+      dept: "CSE",
+      year: "3rd Year",
+      gender: "Male",
+      email: "rahul.cse@titagartala.ac.in",
+      password: "password123"
+    }
+  ];
+  localStorage.setItem("tit_sih_students", JSON.stringify(registeredStudents));
+}
+
+if (registeredTeams.length === 0) {
+  registeredTeams = [
+    {
+      teamId: "TIT-SIH26-1084",
+      teamName: "NeuralNortheast",
+      edition: "Software Edition",
+      psId: "SIH2601",
+      domain: "Disaster Management",
+      title: "AI-Powered Real-Time Early Disaster Warning & Rescue System",
+      abstract: "Automated early warning and citizen SOS mesh network designed for landslide and flood risk mitigation in Tripura.",
+      pptLink: "https://drive.google.com/file/d/sampleDemoLinkTITSIH2026/view",
+      status: "Shortlisted for Demo Day",
+      createdAt: new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }),
+      leaderEmail: "rahul.cse@titagartala.ac.in",
+      members: [
+        { name: "Rahul Debbarma", roll: "21CSE042", dept: "CSE", gender: "Male", email: "rahul.cse@titagartala.ac.in", phone: "9436123456", isLeader: true },
+        { name: "Ananya Saha", roll: "21CSE018", dept: "CSE", gender: "Female", email: "ananya.saha@titagartala.ac.in", phone: "9862123456", isLeader: false },
+        { name: "Suman Bhowmik", roll: "21IT029", dept: "IT", gender: "Male", email: "suman.it@titagartala.ac.in", phone: "9436987654", isLeader: false },
+        { name: "Priyanka Roy", roll: "21ECE015", dept: "ECE", gender: "Female", email: "priyanka.ece@titagartala.ac.in", phone: "9862554433", isLeader: false },
+        { name: "Joydeep Das", roll: "21EE008", dept: "EE", gender: "Male", email: "joydeep.ee@titagartala.ac.in", phone: "9436778899", isLeader: false },
+        { name: "Tanmoy Paul", roll: "21ME034", dept: "ME", gender: "Male", email: "tanmoy.me@titagartala.ac.in", phone: "9862332211", isLeader: false }
+      ]
+    }
+  ];
+  localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
+}
 
 // Initialize Everything on DOM Load
 document.addEventListener("DOMContentLoaded", () => {
   initCountdownTimer();
   init3DCardTilt();
   initFaqAccordion();
-  initScrollEffects();
-  initRegistrationModal();
+  initMobileNav();
   initConfettiTriggers();
+  updateNavAuthState();
+  renderStudentDashboard();
 });
 
 /* ==========================================================================
@@ -60,7 +111,823 @@ function initCountdownTimer() {
 }
 
 /* ==========================================================================
-   2. VANILLA 3D CARD TILT ENGINE
+   2. STUDENT AUTHENTICATION SYSTEM (LOGIN / SIGN UP / LOGOUT)
+   ========================================================================== */
+window.openAuthModal = (tab = "login") => {
+  const modal = document.getElementById("auth-modal");
+  if (!modal) return;
+  switchAuthTab(tab);
+  modal.classList.add("active");
+};
+
+window.closeAuthModal = () => {
+  const modal = document.getElementById("auth-modal");
+  if (modal) modal.classList.remove("active");
+};
+
+window.switchAuthTab = (tab) => {
+  const loginBtn = document.getElementById("tab-login-btn");
+  const signupBtn = document.getElementById("tab-signup-btn");
+  const loginForm = document.getElementById("login-form");
+  const signupForm = document.getElementById("signup-form");
+  const title = document.getElementById("auth-modal-title");
+
+  if (tab === "login") {
+    if (loginBtn) loginBtn.classList.add("active");
+    if (signupBtn) signupBtn.classList.remove("active");
+    if (loginForm) loginForm.style.display = "block";
+    if (signupForm) signupForm.style.display = "none";
+    if (title) title.textContent = "Student Sign In";
+  } else {
+    if (signupBtn) signupBtn.classList.add("active");
+    if (loginBtn) loginBtn.classList.remove("active");
+    if (signupForm) signupForm.style.display = "block";
+    if (loginForm) loginForm.style.display = "none";
+    if (title) title.textContent = "Create Student Account";
+  }
+};
+
+window.fillDemoStudent = () => {
+  const identifier = document.getElementById("login-identifier");
+  const password = document.getElementById("login-password");
+  if (identifier && password) {
+    identifier.value = "rahul.cse@titagartala.ac.in";
+    password.value = "password123";
+  }
+};
+
+window.handleLoginSubmit = (e) => {
+  e.preventDefault();
+  const identifier = document.getElementById("login-identifier").value.trim().toLowerCase();
+  const password = document.getElementById("login-password").value;
+
+  const student = registeredStudents.find(
+    (s) => (s.email.toLowerCase() === identifier || s.roll.toLowerCase() === identifier) && s.password === password
+  );
+
+  if (student) {
+    currentUser = student;
+    localStorage.setItem("tit_sih_current_user", JSON.stringify(currentUser));
+    closeAuthModal();
+    updateNavAuthState();
+    renderStudentDashboard();
+    triggerConfettiBurst();
+    alert(`🎉 Welcome back, ${student.name}! You are signed in.`);
+  } else {
+    alert("❌ Invalid credentials. Please check your email/roll number and password, or create a new student account.");
+  }
+};
+
+window.handleSignupSubmit = (e) => {
+  e.preventDefault();
+  const name = document.getElementById("signup-name").value.trim();
+  const roll = document.getElementById("signup-roll").value.trim().toUpperCase();
+  const dept = document.getElementById("signup-dept").value;
+  const year = document.getElementById("signup-year").value;
+  const gender = document.getElementById("signup-gender").value;
+  const email = document.getElementById("signup-email").value.trim().toLowerCase();
+  const password = document.getElementById("signup-password").value;
+
+  // Check if roll or email already exists
+  const existing = registeredStudents.find(
+    (s) => s.email.toLowerCase() === email || s.roll.toLowerCase() === roll.toLowerCase()
+  );
+
+  if (existing) {
+    alert("⚠️ An account with this Email or Roll Number already exists. Please sign in.");
+    switchAuthTab("login");
+    return;
+  }
+
+  const newStudent = { name, roll, dept, year, gender, email, password };
+  registeredStudents.push(newStudent);
+  localStorage.setItem("tit_sih_students", JSON.stringify(registeredStudents));
+
+  currentUser = newStudent;
+  localStorage.setItem("tit_sih_current_user", JSON.stringify(currentUser));
+
+  closeAuthModal();
+  updateNavAuthState();
+  renderStudentDashboard();
+  triggerConfettiBurst();
+  alert(`🎉 Account created successfully! Welcome to TIT SIH Hackathon, ${name}.`);
+};
+
+window.handleLogout = () => {
+  if (confirm("Are you sure you want to sign out?")) {
+    currentUser = null;
+    localStorage.removeItem("tit_sih_current_user");
+    updateNavAuthState();
+    renderStudentDashboard();
+    alert("You have been signed out.");
+  }
+};
+
+function updateNavAuthState() {
+  const navAuthContainer = document.getElementById("nav-auth-container");
+  const navDashLink = document.getElementById("nav-dashboard-link");
+  const mobAuthLink = document.getElementById("mob-auth-link");
+  const mobDashLink = document.getElementById("mob-dashboard-link");
+
+  if (!navAuthContainer) return;
+
+  if (currentUser) {
+    // Logged In State
+    const initials = currentUser.name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .substring(0, 2)
+      .toUpperCase();
+
+    navAuthContainer.innerHTML = `
+      <div class="user-profile-badge" title="${currentUser.name} (${currentUser.roll} - ${currentUser.dept})">
+        <span class="user-avatar-circle">${initials}</span>
+        <span>${currentUser.name.split(" ")[0]} (${currentUser.dept})</span>
+      </div>
+      <button class="btn-3d-primary" style="padding: 7px 14px; font-size: 0.8rem;" onclick="triggerRegistration()">
+        <i class="fa-solid fa-file-pen"></i> Register Team
+      </button>
+      <button class="btn-nav-logout" onclick="handleLogout()" title="Sign Out">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      </button>
+    `;
+
+    if (navDashLink) navDashLink.style.display = "block";
+    if (mobDashLink) mobDashLink.style.display = "block";
+    if (mobAuthLink) {
+      mobAuthLink.innerHTML = `<a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); handleLogout();" style="color:#dc2626;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout (${currentUser.name})</a>`;
+    }
+  } else {
+    // Logged Out State
+    navAuthContainer.innerHTML = `
+      <button class="btn-nav-auth" onclick="openAuthModal('login')">
+        <i class="fa-solid fa-user-lock"></i> Student Sign In
+      </button>
+      <button class="btn-nav-register" onclick="triggerRegistration()">
+        <i class="fa-solid fa-file-pen"></i> Register Team
+      </button>
+    `;
+
+    if (navDashLink) navDashLink.style.display = "none";
+    if (mobDashLink) mobDashLink.style.display = "none";
+    if (mobAuthLink) {
+      mobAuthLink.innerHTML = `<a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); openAuthModal('login');"><i class="fa-solid fa-user-lock"></i> Student Login / Sign Up</a>`;
+    }
+  }
+}
+
+/* ==========================================================================
+   3. 6-MEMBER TEAM REGISTRATION WIZARD ENGINE
+   ========================================================================== */
+window.triggerRegistration = () => {
+  if (!currentUser) {
+    if (confirm("Please sign in or create a student account to register your team. Proceed to Login?")) {
+      openAuthModal("login");
+    }
+    return;
+  }
+  openTeamRegModal();
+};
+
+window.openTeamRegModal = () => {
+  const modal = document.getElementById("team-registration-modal");
+  if (!modal) return;
+  renderMembersRosterInputs();
+  modal.classList.add("active");
+};
+
+window.closeTeamRegModal = () => {
+  const modal = document.getElementById("team-registration-modal");
+  if (modal) modal.classList.remove("active");
+};
+
+function renderMembersRosterInputs() {
+  const container = document.getElementById("members-roster-inputs");
+  if (!container) return;
+
+  const leaderName = currentUser ? currentUser.name : "";
+  const leaderRoll = currentUser ? currentUser.roll : "";
+  const leaderDept = currentUser ? currentUser.dept : "CSE";
+  const leaderGender = currentUser ? currentUser.gender : "Male";
+  const leaderEmail = currentUser ? currentUser.email : "";
+
+  let html = `
+    <!-- Member 1: Team Leader -->
+    <div class="member-input-card leader-card">
+      <div class="member-card-header">
+        <span class="member-badge-pill leader"><i class="fa-solid fa-crown"></i> Member 1: Team Leader</span>
+        <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">(Logged In Account)</span>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group-item" style="margin-bottom: 8px;">
+          <label class="form-input-label">Full Name *</label>
+          <input type="text" id="m1-name" class="form-text-input" value="${leaderName}" required>
+        </div>
+        <div class="form-group-item" style="margin-bottom: 8px;">
+          <label class="form-input-label">Roll Number *</label>
+          <input type="text" id="m1-roll" class="form-text-input" value="${leaderRoll}" required>
+        </div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group-item" style="margin-bottom: 8px;">
+          <label class="form-input-label">Department *</label>
+          <select id="m1-dept" class="form-select-input" required>
+            <option value="CSE" ${leaderDept === "CSE" ? "selected" : ""}>CSE</option>
+            <option value="IT" ${leaderDept === "IT" ? "selected" : ""}>IT</option>
+            <option value="ECE" ${leaderDept === "ECE" ? "selected" : ""}>ECE</option>
+            <option value="EE" ${leaderDept === "EE" ? "selected" : ""}>EE</option>
+            <option value="ME" ${leaderDept === "ME" ? "selected" : ""}>ME</option>
+            <option value="CE" ${leaderDept === "CE" ? "selected" : ""}>CE</option>
+            <option value="AI&DS" ${leaderDept === "AI&DS" ? "selected" : ""}>AI & DS</option>
+          </select>
+        </div>
+        <div class="form-group-item" style="margin-bottom: 8px;">
+          <label class="form-input-label">Gender *</label>
+          <select id="m1-gender" class="form-select-input roster-gender-select" onchange="checkRosterFemaleQuota()" required>
+            <option value="Male" ${leaderGender === "Male" ? "selected" : ""}>Male</option>
+            <option value="Female" ${leaderGender === "Female" ? "selected" : ""}>Female</option>
+            <option value="Other" ${leaderGender === "Other" ? "selected" : ""}>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group-item" style="margin-bottom: 0;">
+          <label class="form-input-label">Email ID *</label>
+          <input type="email" id="m1-email" class="form-text-input" value="${leaderEmail}" required>
+        </div>
+        <div class="form-group-item" style="margin-bottom: 0;">
+          <label class="form-input-label">Phone Number *</label>
+          <input type="tel" id="m1-phone" class="form-text-input" placeholder="10-digit mobile" required>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Members 2 to 6
+  for (let i = 2; i <= 6; i++) {
+    html += `
+      <div class="member-input-card">
+        <div class="member-card-header">
+          <span class="member-badge-pill">Member ${i}</span>
+          <span style="font-size: 0.72rem; color: #64748b;">TIT Student</span>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group-item" style="margin-bottom: 8px;">
+            <label class="form-input-label">Full Name *</label>
+            <input type="text" id="m${i}-name" class="form-text-input" placeholder="Member ${i} Name" required>
+          </div>
+          <div class="form-group-item" style="margin-bottom: 8px;">
+            <label class="form-input-label">Roll Number *</label>
+            <input type="text" id="m${i}-roll" class="form-text-input" placeholder="e.g. 21IT0${i * 4}" required>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group-item" style="margin-bottom: 8px;">
+            <label class="form-input-label">Department *</label>
+            <select id="m${i}-dept" class="form-select-input" required>
+              <option value="CSE">CSE</option>
+              <option value="IT" ${i === 2 ? "selected" : ""}>IT</option>
+              <option value="ECE" ${i === 3 ? "selected" : ""}>ECE</option>
+              <option value="EE" ${i === 4 ? "selected" : ""}>EE</option>
+              <option value="ME" ${i === 5 ? "selected" : ""}>ME</option>
+              <option value="CE" ${i === 6 ? "selected" : ""}>CE</option>
+              <option value="AI&DS">AI & DS</option>
+            </select>
+          </div>
+          <div class="form-group-item" style="margin-bottom: 8px;">
+            <label class="form-input-label">Gender *</label>
+            <select id="m${i}-gender" class="form-select-input roster-gender-select" onchange="checkRosterFemaleQuota()" required>
+              <option value="Male">Male</option>
+              <option value="Female" ${i === 2 ? "selected" : ""}>Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group-item" style="margin-bottom: 0;">
+            <label class="form-input-label">Email ID *</label>
+            <input type="email" id="m${i}-email" class="form-text-input" placeholder="member${i}@titagartala.ac.in" required>
+          </div>
+          <div class="form-group-item" style="margin-bottom: 0;">
+            <label class="form-input-label">Phone Number *</label>
+            <input type="tel" id="m${i}-phone" class="form-text-input" placeholder="10-digit mobile" required>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  container.innerHTML = html;
+  checkRosterFemaleQuota();
+}
+
+window.checkRosterFemaleQuota = () => {
+  const genderSelects = document.querySelectorAll(".roster-gender-select");
+  let femaleCount = 0;
+
+  genderSelects.forEach((sel) => {
+    if (sel.value === "Female") femaleCount++;
+  });
+
+  const statusEl = document.getElementById("roster-female-status");
+  if (statusEl) {
+    if (femaleCount >= 1) {
+      statusEl.style.color = "#059669";
+      statusEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${femaleCount} Female Member(s) Included (Compliant)`;
+    } else {
+      statusEl.style.color = "#dc2626";
+      statusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> 0 Female Members (1+ Mandatory for SIH)`;
+    }
+  }
+
+  return femaleCount >= 1;
+};
+
+window.handleTeamRegistrationSubmit = (e) => {
+  e.preventDefault();
+
+  if (!currentUser) {
+    alert("Please sign in before registering.");
+    return;
+  }
+
+  // Validate 1+ Female Member
+  const isFemaleCompliant = checkRosterFemaleQuota();
+  if (!isFemaleCompliant) {
+    alert("❌ SIH Mandatory Rule: Your team must have at least ONE female student member to be eligible for Smart India Hackathon.");
+    return;
+  }
+
+  const teamName = document.getElementById("reg-team-name").value.trim();
+  const edition = document.getElementById("reg-edition").value;
+  const psId = document.getElementById("reg-ps-id").value.trim().toUpperCase();
+  const domain = document.getElementById("reg-ps-domain").value;
+  const title = document.getElementById("reg-ps-title").value.trim();
+  const abstract = document.getElementById("reg-abstract").value.trim();
+  const pptLink = document.getElementById("reg-ppt-link").value.trim();
+
+  // Extract all 6 members
+  const members = [];
+  for (let i = 1; i <= 6; i++) {
+    const name = document.getElementById(`m${i}-name`).value.trim();
+    const roll = document.getElementById(`m${i}-roll`).value.trim().toUpperCase();
+    const dept = document.getElementById(`m${i}-dept`).value;
+    const gender = document.getElementById(`m${i}-gender`).value;
+    const email = document.getElementById(`m${i}-email`).value.trim();
+    const phone = document.getElementById(`m${i}-phone`).value.trim();
+
+    members.push({
+      name,
+      roll,
+      dept,
+      gender,
+      email,
+      phone,
+      isLeader: i === 1
+    });
+  }
+
+  // Generate Unique Team ID
+  const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+  const teamId = `TIT-SIH26-${randomSuffix}`;
+
+  const newTeam = {
+    teamId,
+    teamName,
+    edition,
+    psId,
+    domain,
+    title,
+    abstract,
+    pptLink,
+    status: "Under Review by IIC Panel",
+    createdAt: new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }),
+    leaderEmail: currentUser.email,
+    members
+  };
+
+  // Check if team with same name or leader already exists
+  const existingIdx = registeredTeams.findIndex((t) => t.leaderEmail.toLowerCase() === currentUser.email.toLowerCase());
+  if (existingIdx > -1) {
+    registeredTeams[existingIdx] = newTeam;
+  } else {
+    registeredTeams.unshift(newTeam);
+  }
+
+  localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
+
+  closeTeamRegModal();
+  renderStudentDashboard();
+  triggerConfettiBurst();
+
+  // Scroll to dashboard
+  const dashSection = document.getElementById("student-dashboard");
+  if (dashSection) {
+    dashSection.style.display = "block";
+    dashSection.scrollIntoView({ behavior: "smooth" });
+  }
+
+  alert(`🎉 Team "${teamName}" registered successfully!\nYour Team ID is: ${teamId}\nCheck your dashboard below to view/print your official registration pass.`);
+};
+
+/* ==========================================================================
+   4. STUDENT TEAM DASHBOARD ENGINE
+   ========================================================================== */
+function renderStudentDashboard() {
+  const dashSection = document.getElementById("student-dashboard");
+  const contentBox = document.getElementById("dashboard-content-box");
+
+  if (!dashSection || !contentBox) return;
+
+  if (!currentUser) {
+    dashSection.style.display = "none";
+    return;
+  }
+
+  dashSection.style.display = "block";
+
+  // Find team associated with current user
+  const userTeam = registeredTeams.find(
+    (t) =>
+      t.leaderEmail.toLowerCase() === currentUser.email.toLowerCase() ||
+      t.members.some((m) => m.email.toLowerCase() === currentUser.email.toLowerCase() || m.roll.toLowerCase() === currentUser.roll.toLowerCase())
+  );
+
+  if (!userTeam) {
+    contentBox.innerHTML = `
+      <div class="dashboard-hero-card" style="text-align: center; padding: 48px 20px;">
+        <div style="font-size: 3rem; margin-bottom: 12px;">🚀</div>
+        <h3 style="font-size: 1.4rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;">
+          Welcome, ${currentUser.name}!
+        </h3>
+        <p style="color: #64748b; font-size: 0.9rem; max-width: 540px; margin: 0 auto 24px; line-height: 1.5;">
+          You are currently not linked to any registered 6-member squad. Assemble your team and register now to compete for ₹5,000 Cash, ChatGPT Plus Ignite Award, and SIH Prelims nomination!
+        </p>
+        <button class="btn-3d-primary" onclick="triggerRegistration()" style="padding: 14px 28px;">
+          <i class="fa-solid fa-plus"></i> Register Your 6-Member Squad
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  // Render Registered Team Console
+  let statusBadgeClass = "status-review";
+  let statusIcon = "fa-hourglass-half";
+  if (userTeam.status.includes("Shortlisted")) {
+    statusBadgeClass = "status-shortlisted";
+    statusIcon = "fa-rocket";
+  } else if (userTeam.status.includes("Nominated") || userTeam.status.includes("Winner")) {
+    statusBadgeClass = "status-winner";
+    statusIcon = "fa-trophy";
+  }
+
+  contentBox.innerHTML = `
+    <div class="dashboard-hero-card">
+      <div class="dashboard-header-row">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;">
+            <span style="background: #059669; color: #ffffff; font-weight: 800; font-size: 0.85rem; padding: 4px 12px; border-radius: 6px;">
+              ${userTeam.teamId}
+            </span>
+            <span style="background: #ecfdf5; color: #065f46; font-weight: 700; font-size: 0.8rem; padding: 4px 12px; border-radius: 6px; border: 1px solid #a7f3d0;">
+              ${userTeam.edition}
+            </span>
+            <span style="font-size: 0.8rem; color: #64748b;">Registered: ${userTeam.createdAt}</span>
+          </div>
+          <h2 style="font-size: 1.7rem; font-weight: 900; color: #0f172a; margin-bottom: 4px;">
+            Team ${userTeam.teamName}
+          </h2>
+          <p style="color: #475569; font-size: 0.92rem; font-weight: 600;">
+            <i class="fa-solid fa-bullseye" style="color: #059669;"></i> Target PS: <strong>${userTeam.psId}</strong> (${userTeam.domain})
+          </p>
+        </div>
+
+        <div style="text-align: right;">
+          <div class="dashboard-status-banner ${statusBadgeClass}">
+            <i class="fa-solid ${statusIcon}"></i> ${userTeam.status}
+          </div>
+          <div style="margin-top: 10px; display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap;">
+            <button class="btn-3d-primary" onclick="openTeamPassModal('${userTeam.teamId}')" style="padding: 9px 18px; font-size: 0.85rem;">
+              <i class="fa-solid fa-id-card"></i> View Digital Pass
+            </button>
+            <a href="${userTeam.pptLink}" target="_blank" rel="noopener" class="btn-3d-outline" style="padding: 9px 18px; font-size: 0.85rem; background: #ffffff; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              <i class="fa-solid fa-file-powerpoint" style="color: #ea580c;"></i> View PPT ↗
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem & Solution Overview -->
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+        <h4 style="font-size: 0.98rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
+          ${userTeam.title}
+        </h4>
+        <p style="font-size: 0.88rem; color: #475569; line-height: 1.5; margin: 0;">
+          ${userTeam.abstract}
+        </p>
+      </div>
+
+      <!-- 6-Member Squad Roster Grid -->
+      <h4 style="font-size: 1.05rem; font-weight: 800; color: #064e3b; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-users"></i> Confirmed 6-Member Squad Roster
+      </h4>
+      <div class="dashboard-team-grid">
+        ${userTeam.members
+          .map(
+            (m) => `
+          <div class="dashboard-member-box ${m.isLeader ? "leader" : ""}">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <strong style="color: #0f172a; font-size: 0.92rem;">${m.name}</strong>
+              ${m.isLeader ? '<span class="member-badge-pill leader" style="font-size: 0.65rem;">LEADER</span>' : `<span style="font-size: 0.72rem; color: #64748b;">${m.gender}</span>`}
+            </div>
+            <div style="font-size: 0.78rem; color: #475569; margin-bottom: 3px;">
+              <i class="fa-solid fa-id-badge" style="color: #059669; width: 14px;"></i> ${m.roll} (${m.dept})
+            </div>
+            <div style="font-size: 0.76rem; color: #64748b;">
+              <i class="fa-solid fa-envelope" style="color: #059669; width: 14px;"></i> ${m.email}
+            </div>
+          </div>
+        `
+          )
+          .join("")}
+      </div>
+    </div>
+  `;
+}
+
+/* ==========================================================================
+   5. DIGITAL TEAM PASS / VERIFICATION SLIP GENERATOR
+   ========================================================================== */
+window.openTeamPassModal = (teamId) => {
+  const team = registeredTeams.find((t) => t.teamId === teamId);
+  if (!team) return;
+
+  const modal = document.getElementById("team-pass-modal");
+  const container = document.getElementById("printable-pass-content");
+  if (!modal || !container) return;
+
+  const qrText = encodeURIComponent(`TIT-IIC-SIH-PASS:${team.teamId}|Team:${team.teamName}|PS:${team.psId}|Status:${team.status}`);
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${qrText}`;
+
+  container.innerHTML = `
+    <div class="team-pass-card">
+      <div class="pass-header">
+        <img src="tit_logo.png" alt="TIT Logo" class="pass-seal">
+        <div>
+          <h3 style="font-size: 1.25rem; font-weight: 900; color: #0f172a; margin: 0 0 2px;">
+            TRIPURA INSTITUTE OF TECHNOLOGY
+          </h3>
+          <p style="font-size: 0.78rem; color: #059669; font-weight: 700; margin: 0;">
+            Institution's Innovation Council (IIC) • SIH Internal Hackathon 2026
+          </p>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <span style="font-size: 0.75rem; font-weight: 700; color: #64748b; display: block;">OFFICIAL TEAM ID</span>
+          <span style="font-size: 1.4rem; font-weight: 900; color: #064e3b; font-family: var(--font-mono);">${team.teamId}</span>
+        </div>
+        <div style="text-align: right;">
+          <span style="font-size: 0.75rem; font-weight: 700; color: #64748b; display: block;">CATEGORY</span>
+          <span style="font-size: 0.88rem; font-weight: 800; color: #059669;">${team.edition}</span>
+        </div>
+      </div>
+
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 16px;">
+        <div style="font-size: 0.78rem; color: #64748b;">TEAM NAME: <strong style="color: #0f172a; font-size: 0.95rem;">${team.teamName}</strong></div>
+        <div style="font-size: 0.78rem; color: #64748b; margin-top: 4px;">TARGET PS ID: <strong style="color: #064e3b;">${team.psId}</strong> (${team.domain})</div>
+        <div style="font-size: 0.76rem; color: #475569; margin-top: 4px;">TITLE: ${team.title}</div>
+      </div>
+
+      <!-- Compact 6 Member Roster Table -->
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.76rem; text-align: left; margin-bottom: 14px;">
+        <thead>
+          <tr style="background: #ecfdf5; border-bottom: 1px solid #a7f3d0;">
+            <th style="padding: 6px 8px; color: #064e3b;">#</th>
+            <th style="padding: 6px 8px; color: #064e3b;">Student Name</th>
+            <th style="padding: 6px 8px; color: #064e3b;">Roll No</th>
+            <th style="padding: 6px 8px; color: #064e3b;">Dept</th>
+            <th style="padding: 6px 8px; color: #064e3b;">Gender</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${team.members
+            .map(
+              (m, idx) => `
+            <tr style="border-bottom: 1px solid #e2e8f0; ${m.isLeader ? "font-weight: 700; background: #fafafa;" : ""}">
+              <td style="padding: 5px 8px;">${idx + 1}${m.isLeader ? " 👑" : ""}</td>
+              <td style="padding: 5px 8px;">${m.name}</td>
+              <td style="padding: 5px 8px;">${m.roll}</td>
+              <td style="padding: 5px 8px;">${m.dept}</td>
+              <td style="padding: 5px 8px;">${m.gender}</td>
+            </tr>
+          `
+            )
+            .join("")}
+        </tbody>
+      </table>
+
+      <div class="pass-qr-row">
+        <img src="${qrUrl}" alt="Pass QR Code" class="pass-qr-img">
+        <div style="font-size: 0.75rem; color: #475569; line-height: 1.4;">
+          <div style="font-weight: 800; color: #0f172a; margin-bottom: 2px;">AUTHENTICATED REGISTRATION PASS</div>
+          <div>Status: <strong style="color: #059669;">${team.status}</strong></div>
+          <div>Verified Date: ${team.createdAt}</div>
+          <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 4px;">Present this digital slip at the TIT Campus Hackathon Helpdesk during Demo Day.</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  modal.classList.add("active");
+  triggerConfettiBurst();
+};
+
+window.closeTeamPassModal = () => {
+  const modal = document.getElementById("team-pass-modal");
+  if (modal) modal.classList.remove("active");
+};
+
+/* ==========================================================================
+   6. FACULTY & JURY ADMIN REVIEW CONSOLE ENGINE
+   ========================================================================== */
+window.openAdminModal = () => {
+  const modal = document.getElementById("admin-review-modal");
+  const passcodeView = document.getElementById("admin-passcode-view");
+  const consoleView = document.getElementById("admin-console-view");
+
+  if (!modal) return;
+  if (passcodeView) passcodeView.style.display = "block";
+  if (consoleView) consoleView.style.display = "none";
+
+  modal.classList.add("active");
+};
+
+window.closeAdminModal = () => {
+  const modal = document.getElementById("admin-review-modal");
+  if (modal) modal.classList.remove("active");
+};
+
+window.handleAdminPasscodeSubmit = (e) => {
+  e.preventDefault();
+  const input = document.getElementById("admin-passcode-input").value.trim();
+
+  if (input === CONFIG.adminPasscode) {
+    document.getElementById("admin-passcode-view").style.display = "none";
+    document.getElementById("admin-console-view").style.display = "block";
+    renderAdminConsole();
+  } else {
+    alert("❌ Invalid Admin Passcode. Access restricted to authorized faculty and IIC conveners.");
+  }
+};
+
+function renderAdminConsole() {
+  const container = document.getElementById("admin-teams-table-container");
+  if (!container) return;
+
+  const totalTeams = registeredTeams.length;
+  const swTeams = registeredTeams.filter((t) => t.edition.includes("Software")).length;
+  const hwTeams = registeredTeams.filter((t) => t.edition.includes("Hardware")).length;
+  const totalStudents = totalTeams * 6;
+
+  container.innerHTML = `
+    <!-- Stats Cards -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px;">
+      <div style="background: #f0fdf4; border: 1px solid #a7f3d0; border-radius: 10px; padding: 14px; text-align: center;">
+        <div style="font-size: 1.6rem; font-weight: 900; color: #064e3b;">${totalTeams}</div>
+        <div style="font-size: 0.75rem; font-weight: 700; color: #059669;">Total Teams</div>
+      </div>
+      <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 14px; text-align: center;">
+        <div style="font-size: 1.6rem; font-weight: 900; color: #1e40af;">${swTeams}</div>
+        <div style="font-size: 0.75rem; font-weight: 700; color: #2563eb;">Software Teams</div>
+      </div>
+      <div style="background: #fef3c7; border: 1px solid #fde68a; border-radius: 10px; padding: 14px; text-align: center;">
+        <div style="font-size: 1.6rem; font-weight: 900; color: #92400e;">${hwTeams}</div>
+        <div style="font-size: 0.75rem; font-weight: 700; color: #d97706;">Hardware Teams</div>
+      </div>
+      <div style="background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 10px; padding: 14px; text-align: center;">
+        <div style="font-size: 1.6rem; font-weight: 900; color: #6b21a8;">${totalStudents}</div>
+        <div style="font-size: 0.75rem; font-weight: 700; color: #9333ea;">Active Students</div>
+      </div>
+    </div>
+
+    <!-- Teams Table -->
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Team ID</th>
+            <th>Team Name</th>
+            <th>Target PS</th>
+            <th>Leader Contact</th>
+            <th>PPT Deck</th>
+            <th>Evaluation Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${registeredTeams
+            .map(
+              (t, idx) => `
+            <tr>
+              <td><strong style="color: #059669;">${t.teamId}</strong></td>
+              <td><strong>${t.teamName}</strong><br><span style="font-size: 0.72rem; color: #64748b;">${t.edition}</span></td>
+              <td><strong>${t.psId}</strong><br><span style="font-size: 0.72rem; color: #64748b;">${t.domain}</span></td>
+              <td>${t.members[0].name}<br><span style="font-size: 0.72rem; color: #64748b;">${t.members[0].phone}</span></td>
+              <td><a href="${t.pptLink}" target="_blank" rel="noopener" style="color: #059669; font-weight: 700; text-decoration: underline;">View Deck ↗</a></td>
+              <td>
+                <select class="admin-status-select" onchange="updateTeamStatus('${t.teamId}', this.value)">
+                  <option value="Under Review by IIC Panel" ${t.status.includes("Under Review") ? "selected" : ""}>Under Review ⏳</option>
+                  <option value="Shortlisted for Demo Day" ${t.status.includes("Shortlisted") ? "selected" : ""}>Shortlisted 🚀</option>
+                  <option value="Nominated for SIH Finals" ${t.status.includes("Nominated") ? "selected" : ""}>Nominated 🏆</option>
+                </select>
+              </td>
+              <td>
+                <button class="btn-3d-outline" onclick="openTeamPassModal('${t.teamId}')" style="padding: 4px 10px; font-size: 0.75rem;">
+                  <i class="fa-solid fa-id-card"></i> Pass
+                </button>
+              </td>
+            </tr>
+          `
+            )
+            .join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+window.updateTeamStatus = (teamId, newStatus) => {
+  const team = registeredTeams.find((t) => t.teamId === teamId);
+  if (team) {
+    team.status = newStatus;
+    localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
+    renderStudentDashboard();
+    alert(`Status for team ${team.teamName} updated to: "${newStatus}"`);
+  }
+};
+
+window.exportTeamsToCSV = () => {
+  if (registeredTeams.length === 0) {
+    alert("No registered teams found to export.");
+    return;
+  }
+
+  let csvContent = "data:text/csv;charset=utf-8,";
+  csvContent += "Team ID,Team Name,Edition,PS ID,PS Domain,Solution Title,Status,Registered Date,PPT Link,Leader Name,Leader Roll,Leader Dept,Leader Gender,Leader Email,Leader Phone,Member 2 Name,Member 2 Roll,Member 2 Gender,Member 3 Name,Member 3 Roll,Member 3 Gender,Member 4 Name,Member 4 Roll,Member 4 Gender,Member 5 Name,Member 5 Roll,Member 5 Gender,Member 6 Name,Member 6 Roll,Member 6 Gender\n";
+
+  registeredTeams.forEach((t) => {
+    const row = [
+      t.teamId,
+      `"${t.teamName.replace(/"/g, '""')}"`,
+      t.edition,
+      t.psId,
+      `"${t.domain}"`,
+      `"${t.title.replace(/"/g, '""')}"`,
+      `"${t.status}"`,
+      t.createdAt,
+      `"${t.pptLink}"`,
+      `"${t.members[0].name}"`,
+      t.members[0].roll,
+      t.members[0].dept,
+      t.members[0].gender,
+      t.members[0].email,
+      t.members[0].phone,
+      `"${t.members[1]?.name || ""}"`,
+      t.members[1]?.roll || "",
+      t.members[1]?.gender || "",
+      `"${t.members[2]?.name || ""}"`,
+      t.members[2]?.roll || "",
+      t.members[2]?.gender || "",
+      `"${t.members[3]?.name || ""}"`,
+      t.members[3]?.roll || "",
+      t.members[3]?.gender || "",
+      `"${t.members[4]?.name || ""}"`,
+      t.members[4]?.roll || "",
+      t.members[4]?.gender || "",
+      `"${t.members[5]?.name || ""}"`,
+      t.members[5]?.roll || "",
+      t.members[5]?.gender || ""
+    ].join(",");
+    csvContent += row + "\n";
+  });
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `TIT_SIH_2026_Registered_Teams_${Date.now()}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  triggerConfettiBurst();
+};
+
+/* ==========================================================================
+   7. VANILLA 3D CARD TILT ENGINE
    ========================================================================== */
 function init3DCardTilt() {
   const tiltElements = document.querySelectorAll("[data-tilt]");
@@ -90,7 +957,7 @@ function init3DCardTilt() {
 }
 
 /* ==========================================================================
-   3. FAQ ACCORDION ENGINE
+   8. FAQ ACCORDION ENGINE
    ========================================================================== */
 function initFaqAccordion() {
   const faqItems = document.querySelectorAll(".faq-item");
@@ -122,42 +989,9 @@ function initFaqAccordion() {
 }
 
 /* ==========================================================================
-   4. REGISTRATION REDIRECTION & MODAL SYSTEM
+   9. MOBILE NAVIGATION TOGGLE
    ========================================================================== */
-function initRegistrationModal() {
-  const regModal = document.getElementById("registration-confirm-modal");
-  const modalClose = document.getElementById("reg-modal-close");
-  const directLaunchBtn = document.getElementById("btn-direct-launch-form");
-
-  window.triggerRegistration = (psId = "") => {
-    if (regModal) {
-      regModal.classList.add("active");
-    } else {
-      window.open(CONFIG.googleFormUrl, "_blank");
-    }
-  };
-
-  window.closeRegistrationModal = () => {
-    if (regModal) regModal.classList.remove("active");
-  };
-
-  if (modalClose) {
-    modalClose.addEventListener("click", window.closeRegistrationModal);
-  }
-
-  if (directLaunchBtn) {
-    directLaunchBtn.addEventListener("click", () => {
-      triggerConfettiBurst();
-      window.open(CONFIG.googleFormUrl, "_blank");
-      window.closeRegistrationModal();
-    });
-  }
-}
-
-/* ==========================================================================
-   5. MOBILE NAVIGATION ENGINE
-   ========================================================================== */
-function initScrollEffects() {
+function initMobileNav() {
   const mobileBtn = document.getElementById("mobile-menu-toggle");
   const mobileMenu = document.getElementById("mobile-nav-dropdown");
 
@@ -173,7 +1007,7 @@ function initScrollEffects() {
 }
 
 /* ==========================================================================
-   6. CELEBRATORY CONFETTI ENGINE
+   10. CELEBRATORY CONFETTI ENGINE
    ========================================================================== */
 function initConfettiTriggers() {
   const grandPrizeCard = document.getElementById("grand-prize-card");
@@ -196,7 +1030,7 @@ function triggerConfettiBurst(colorMix) {
 }
 
 /* ==========================================================================
-   7. DOWNLOAD PPT TEMPLATE TRIGGER
+   11. DOWNLOAD PPT TEMPLATE TRIGGER
    ========================================================================== */
 window.downloadPptTemplate = () => {
   const link = document.createElement("a");
@@ -207,3 +1041,4 @@ window.downloadPptTemplate = () => {
   document.body.removeChild(link);
   triggerConfettiBurst();
 };
+

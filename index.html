@@ -70,13 +70,14 @@
           <li><a href="#resources" class="nav-link"><i class="fa-solid fa-download"></i> Resources</a></li>
           <li><a href="#committee" class="nav-link"><i class="fa-solid fa-users"></i> Committee</a></li>
           <li><a href="#faq" class="nav-link"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
+          <li id="nav-dashboard-link" style="display:none;"><a href="#student-dashboard" class="nav-link" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-gauge-high"></i> Dashboard</a></li>
         </ul>
 
-        <!-- Right Action Button -->
+        <!-- Right Action Button & Auth Container -->
         <div class="nav-actions">
-          <button class="btn-nav-register" onclick="triggerRegistration()">
-            <i class="fa-solid fa-file-pen"></i> Register Team
-          </button>
+          <div id="nav-auth-container" style="display: flex; align-items: center; gap: 8px;">
+            <!-- Rendered dynamically by script.js -->
+          </div>
           <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Toggle Navigation">
             <i class="fa-solid fa-bars-staggered"></i>
           </button>
@@ -86,6 +87,8 @@
       <!-- Mobile Navigation Dropdown Menu -->
       <div class="mobile-nav-dropdown" id="mobile-nav-dropdown">
         <ul class="mobile-nav-links">
+          <li id="mob-auth-link"><a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); openAuthModal('login');"><i class="fa-solid fa-user-lock"></i> Student Login / Sign Up</a></li>
+          <li id="mob-dashboard-link" style="display:none;"><a href="#student-dashboard" class="mobile-nav-link" onclick="closeMobileMenu();" style="color:#059669; font-weight:700;"><i class="fa-solid fa-gauge-high"></i> My Team Dashboard</a></li>
           <li><a href="#prizes" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-trophy"></i> Prizes & Awards</a></li>
           <li><a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="mobile-nav-link" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-arrow-up-right-from-square"></i> SIH 2026 PS ↗</a></li>
           <li><a href="#resources" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-download"></i> Resources & PPT</a></li>
@@ -211,6 +214,21 @@
           </div>
         </div>
 
+      </div>
+    </div>
+  </section>
+
+  <!-- 3.5 Student Team Dashboard Section (Dynamic) -->
+  <section class="dashboard-section" id="student-dashboard" style="display: none;">
+    <div class="container">
+      <div class="section-header" style="margin-bottom: 24px;">
+        <span class="section-tag"><i class="fa-solid fa-gauge-high"></i> Student Portal</span>
+        <h2 class="section-title">My Registered Team Dashboard</h2>
+        <p class="section-subtitle">Manage your 6-member squad, check screening status, and access your official digital team pass.</p>
+      </div>
+
+      <div id="dashboard-content-box">
+        <!-- Rendered dynamically by script.js -->
       </div>
     </div>
   </section>
@@ -663,66 +681,293 @@
           <p><i class="fa-solid fa-location-dot" style="color: #6ee7b7;"></i> TIT Campus, Narsingarh, Agartala</p>
           <p><i class="fa-solid fa-envelope" style="color: #6ee7b7;"></i> iic@titagartala.ac.in</p>
           <p><i class="fa-solid fa-phone" style="color: #6ee7b7;"></i> +91 9436X XXXXX / +91 9862X XXXXX</p>
-          <button class="btn-3d-primary" style="padding: 8px 18px; font-size: 0.85rem; margin-top: 10px;"
-            onclick="triggerRegistration()">
-            <i class="fa-solid fa-paper-plane"></i> Launch Google Form
-          </button>
+          <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn-3d-primary" style="padding: 7px 14px; font-size: 0.8rem;" onclick="triggerRegistration()">
+              <i class="fa-solid fa-bolt"></i> Register Team
+            </button>
+            <button class="btn-3d-outline" style="padding: 7px 14px; font-size: 0.8rem; background: #1e293b; color: #94a3b8; border-color: #334155;" onclick="openAdminModal()">
+              <i class="fa-solid fa-lock"></i> Jury / Admin
+            </button>
+          </div>
         </div>
 
       </div>
 
       <div class="footer-bottom">
-        <p>© 2026 Institution's Innovation Council (IIC), Tripura Institute of Technology. All Rights Reserved. Built
-          for SIH Aspirants.</p>
+        <p>© 2026 Institution's Innovation Council (IIC), Tripura Institute of Technology. All Rights Reserved. Built for SIH Aspirants.</p>
       </div>
     </div>
   </footer>
 
-  <!-- Modal: Registration Checklist & Google Form Redirection Launcher -->
-  <div class="modal-overlay" id="registration-confirm-modal">
-    <div class="modal-container" style="max-width: 580px; text-align: center;">
-      <button class="modal-close-btn" id="reg-modal-close">
+  <!-- Modal 1: Student Authentication (Login / Register) -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-container" style="max-width: 480px; text-align: left;">
+      <button class="modal-close-btn" onclick="closeAuthModal()">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
-      <div style="font-size: 3rem; margin-bottom: 12px;">🚀</div>
-      <h3 style="font-size: 1.6rem; margin-bottom: 8px;">Register for TIT SIH Internal Hackathon</h3>
-      <p style="color: #475569; font-size: 0.95rem; margin-bottom: 20px;" id="modal-selected-ps">
-        All SIH Problem Statements Eligible
-      </p>
-
-      <div
-        style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px; text-align: left; margin-bottom: 24px;">
-        <h4 style="font-size: 0.95rem; margin-bottom: 10px; color: #0f172a;">Pre-Submission Checklist:</h4>
-        <ul style="list-style: none; font-size: 0.88rem; color: #334155;">
-          <li style="margin-bottom: 8px;"><i class="fa-solid fa-check" style="color: #10b981; margin-right: 8px;"></i>
-            Exactly 6 student members from TIT</li>
-          <li style="margin-bottom: 8px;"><i class="fa-solid fa-check" style="color: #10b981; margin-right: 8px;"></i>
-            At least 1 female team member (Mandatory)</li>
-          <li style="margin-bottom: 8px;"><i class="fa-solid fa-check" style="color: #10b981; margin-right: 8px;"></i>
-            Prepared Idea Presentation in official PPT format</li>
-          <li><i class="fa-solid fa-check" style="color: #10b981; margin-right: 8px;"></i> Chosen valid SIH Problem
-            Statement ID</li>
-        </ul>
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="font-size: 2.5rem; margin-bottom: 8px;">🎓</div>
+        <h3 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;" id="auth-modal-title">Student Portal</h3>
+        <p style="color: #64748b; font-size: 0.85rem;">TIT SIH Internal Hackathon 2026</p>
       </div>
 
-      <!-- Optional URL customizer if organizer wants to modify their Google Form link directly in the app -->
-      <div style="margin-bottom: 20px; text-align: left;">
-        <label for="custom-google-form-url"
-          style="font-size: 0.8rem; font-weight: 700; color: #64748b; margin-bottom: 4px; display: block;">
-          Google Form URL:
-        </label>
-        <input type="text" id="custom-google-form-url" value="https://forms.gle/sampleGoogleFormTITSIH2026"
-          style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 0.85rem; font-family: var(--font-mono); color: #334155;">
+      <!-- Auth Tabs -->
+      <div class="auth-tabs-bar">
+        <button class="auth-tab-btn active" id="tab-login-btn" onclick="switchAuthTab('login')">Sign In</button>
+        <button class="auth-tab-btn" id="tab-signup-btn" onclick="switchAuthTab('signup')">New Student Sign Up</button>
       </div>
 
-      <div style="display: flex; gap: 12px;">
-        <button class="btn-3d-primary" id="btn-direct-launch-form" style="flex: 1; justify-content: center;">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Google Form ↗
+      <!-- Sign In Form -->
+      <form id="login-form" onsubmit="handleLoginSubmit(event)">
+        <div class="form-group-item">
+          <label class="form-input-label">College Email or Roll Number</label>
+          <input type="text" id="login-identifier" class="form-text-input" placeholder="e.g. 2101004 or name@titagartala.ac.in" required>
+        </div>
+        <div class="form-group-item">
+          <label class="form-input-label">Password</label>
+          <input type="password" id="login-password" class="form-text-input" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to Portal
         </button>
-        <button class="btn-3d-secondary" onclick="closeRegistrationModal()">
-          Cancel
+        <div style="text-align: center; margin-top: 14px;">
+          <button type="button" class="btn-text-link" onclick="fillDemoStudent()">💡 Fill Demo Student Login</button>
+        </div>
+      </form>
+
+      <!-- Sign Up Form -->
+      <form id="signup-form" style="display: none;" onsubmit="handleSignupSubmit(event)">
+        <div class="form-group-item">
+          <label class="form-input-label">Full Name</label>
+          <input type="text" id="signup-name" class="form-text-input" placeholder="e.g. Rahul Debbarma" required>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group-item">
+            <label class="form-input-label">Roll / Enrollment No.</label>
+            <input type="text" id="signup-roll" class="form-text-input" placeholder="e.g. 21CSE042" required>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Department</label>
+            <select id="signup-dept" class="form-select-input" required>
+              <option value="CSE">CSE</option>
+              <option value="IT">IT</option>
+              <option value="ECE">ECE</option>
+              <option value="EE">EE</option>
+              <option value="ME">ME</option>
+              <option value="CE">CE</option>
+              <option value="AI&DS">AI & DS</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group-item">
+            <label class="form-input-label">Year of Study</label>
+            <select id="signup-year" class="form-select-input" required>
+              <option value="3rd Year">3rd Year (B.Tech)</option>
+              <option value="4th Year">4th Year (B.Tech)</option>
+              <option value="2nd Year">2nd Year (B.Tech)</option>
+              <option value="1st Year">1st Year (B.Tech)</option>
+              <option value="Diploma">Diploma Engineering</option>
+            </select>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Gender</label>
+            <select id="signup-gender" class="form-select-input" required>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group-item">
+          <label class="form-input-label">Email ID</label>
+          <input type="email" id="signup-email" class="form-text-input" placeholder="student@titagartala.ac.in" required>
+        </div>
+        <div class="form-group-item">
+          <label class="form-input-label">Create Password</label>
+          <input type="password" id="signup-password" class="form-text-input" placeholder="At least 6 characters" minlength="6" required>
+        </div>
+        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
+          <i class="fa-solid fa-user-plus"></i> Create Student Account
         </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: 6-Member Team Registration Wizard -->
+  <div class="modal-overlay" id="team-registration-modal">
+    <div class="modal-container" style="max-width: 820px; text-align: left;">
+      <button class="modal-close-btn" onclick="closeTeamRegModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 20px;">
+        <div>
+          <h3 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin-bottom: 2px;">
+            <i class="fa-solid fa-users-viewfinder" style="color: #059669;"></i> SIH Team Registration Wizard
+          </h3>
+          <p style="color: #64748b; font-size: 0.85rem;">Official Internal Hackathon 2026 Submission</p>
+        </div>
+        <span class="status-badge status-valid" style="font-size: 0.8rem;">
+          <i class="fa-solid fa-shield-check"></i> Strict SIH 6-Member Rule
+        </span>
+      </div>
+
+      <form id="team-reg-form" onsubmit="handleTeamRegistrationSubmit(event)">
+        
+        <!-- Step 1: Team & Idea Overview -->
+        <div class="form-section-card">
+          <h4 class="form-section-title"><i class="fa-solid fa-flag"></i> 1. Team & Problem Statement Details</h4>
+          <div class="form-row-2">
+            <div class="form-group-item">
+              <label class="form-input-label">Team Name *</label>
+              <input type="text" id="reg-team-name" class="form-text-input" placeholder="e.g. ByteCraft TIT" required>
+            </div>
+            <div class="form-group-item">
+              <label class="form-input-label">Edition Category *</label>
+              <select id="reg-edition" class="form-select-input" required>
+                <option value="Software Edition">Software Edition</option>
+                <option value="Hardware Edition">Hardware Edition</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group-item">
+              <label class="form-input-label">Target SIH 2026 Problem Statement ID *</label>
+              <input type="text" id="reg-ps-id" class="form-text-input" placeholder="e.g. SIH2601 / PS-XXXX / Student Innovation" required>
+            </div>
+            <div class="form-group-item">
+              <label class="form-input-label">PS Theme / Domain *</label>
+              <select id="reg-ps-domain" class="form-select-input" required>
+                <option value="Disaster Management">Disaster Management</option>
+                <option value="Agriculture & Rural Dev">Agriculture & Rural Dev</option>
+                <option value="Clean & Green Energy">Clean & Green Energy</option>
+                <option value="Smart Education">Smart Education</option>
+                <option value="Robotics & Drones">Robotics & Drones</option>
+                <option value="Healthcare & Biotech">Healthcare & Biotech</option>
+                <option value="Cyber Security & Web3">Cyber Security & Web3</option>
+                <option value="Smart Automation & Cities">Smart Automation & Cities</option>
+                <option value="Heritage & Tourism">Heritage & Tourism</option>
+                <option value="Student Innovation (Open)">Student Innovation (Open Theme)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group-item">
+            <label class="form-input-label">Problem Statement / Solution Title *</label>
+            <input type="text" id="reg-ps-title" class="form-text-input" placeholder="Brief title of your proposed innovation" required>
+          </div>
+
+          <div class="form-group-item">
+            <label class="form-input-label">Solution Abstract / Key Architecture (2-3 sentences) *</label>
+            <textarea id="reg-abstract" class="form-textarea-input" rows="2" placeholder="Describe how your software/hardware solves the target challenge..." required></textarea>
+          </div>
+        </div>
+
+        <!-- Step 2: 6-Member Squad Roster -->
+        <div class="form-section-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h4 class="form-section-title" style="margin: 0;"><i class="fa-solid fa-users"></i> 2. Exact 6-Member Squad Roster</h4>
+            <div id="roster-female-status" style="font-size: 0.8rem; font-weight: 700; color: #dc2626;">
+              <i class="fa-solid fa-triangle-exclamation"></i> 1+ Female Member Mandatory
+            </div>
+          </div>
+
+          <div class="members-roster-grid" id="members-roster-inputs">
+            <!-- 6 Member Cards rendered dynamically by script.js -->
+          </div>
+        </div>
+
+        <!-- Step 3: Presentation Submission & Declaration -->
+        <div class="form-section-card">
+          <h4 class="form-section-title"><i class="fa-solid fa-file-powerpoint"></i> 3. Idea Presentation & Verification</h4>
+          
+          <div class="form-group-item">
+            <label class="form-input-label">Idea PPT Cloud Link (Google Drive / OneDrive / Dropbox) *</label>
+            <input type="url" id="reg-ppt-link" class="form-text-input" placeholder="https://drive.google.com/file/d/... (Make sure view permission is public)" required>
+            <span style="font-size: 0.76rem; color: #64748b; margin-top: 4px; display: block;">
+              <i class="fa-solid fa-info-circle"></i> Use the official <strong>SIH2026-IDEA-Presentation-Format.pptx</strong> template provided on this portal.
+            </span>
+          </div>
+
+          <div style="background: #f0fdf4; border: 1px solid #a7f3d0; border-radius: 10px; padding: 12px 14px; margin-top: 14px;">
+            <label style="display: flex; gap: 10px; align-items: flex-start; cursor: pointer; font-size: 0.82rem; color: #064e3b;">
+              <input type="checkbox" id="reg-declaration" required style="margin-top: 3px;">
+              <span>I hereby certify that all 6 team members are regular enrolled students of Tripura Institute of Technology (TIT) and agree to abide by all Smart India Hackathon & IIC rules.</span>
+            </label>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 14px; justify-content: flex-end; margin-top: 20px;">
+          <button type="button" class="btn-3d-secondary" onclick="closeTeamRegModal()">Cancel</button>
+          <button type="submit" class="btn-3d-primary" style="padding: 14px 32px;">
+            <i class="fa-solid fa-check-double"></i> Complete Team Registration
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Official Digital Team Pass / Verification Slip -->
+  <div class="modal-overlay" id="team-pass-modal">
+    <div class="modal-container" style="max-width: 620px; text-align: left; padding: 28px;">
+      <button class="modal-close-btn" onclick="closeTeamPassModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div id="printable-pass-content">
+        <!-- Rendered dynamically by script.js -->
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;" class="no-print">
+        <button class="btn-3d-secondary" onclick="closeTeamPassModal()">Close</button>
+        <button class="btn-3d-primary" onclick="window.print()">
+          <i class="fa-solid fa-print"></i> Print / Save PDF Pass
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Faculty / Jury Admin Review Console -->
+  <div class="modal-overlay" id="admin-review-modal">
+    <div class="modal-container" style="max-width: 960px; text-align: left;">
+      <button class="modal-close-btn" onclick="closeAdminModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Passcode Auth Screen -->
+      <div id="admin-passcode-view" style="text-align: center; padding: 20px;">
+        <div style="font-size: 2.8rem; margin-bottom: 10px;">🔒</div>
+        <h3 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;">IIC Faculty & Jury Admin Console</h3>
+        <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 20px;">Enter the authorized organizer passcode to review registrations and export lists.</p>
+        
+        <form onsubmit="handleAdminPasscodeSubmit(event)" style="max-width: 320px; margin: 0 auto;">
+          <input type="password" id="admin-passcode-input" class="form-text-input" placeholder="Passcode (Default: TIT-IIC-2026)" required style="text-align: center; margin-bottom: 12px;">
+          <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center;">
+            <i class="fa-solid fa-key"></i> Access Admin Console
+          </button>
+        </form>
+      </div>
+
+      <!-- Admin Console Dashboard Screen -->
+      <div id="admin-console-view" style="display: none;">
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 20px;">
+          <div>
+            <h3 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin-bottom: 2px;">
+              <i class="fa-solid fa-list-check" style="color: #059669;"></i> Registered Teams Master List
+            </h3>
+            <p style="color: #64748b; font-size: 0.85rem;">Tripura Institute of Technology • SIH 2026 Screening Panel</p>
+          </div>
+          <button class="btn-3d-primary" onclick="exportTeamsToCSV()" style="padding: 10px 18px; font-size: 0.85rem;">
+            <i class="fa-solid fa-file-csv"></i> Export CSV for AICTE
+          </button>
+        </div>
+
+        <div id="admin-teams-table-container">
+          <!-- Rendered dynamically by script.js -->
+        </div>
       </div>
     </div>
   </div>
