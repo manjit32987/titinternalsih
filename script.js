@@ -71,6 +71,7 @@ function escapeHtml(str) {
 
 // Initialize Everything on DOM Load
 document.addEventListener("DOMContentLoaded", () => {
+  initTheme();
   initFirebaseCloud();
   init3DCardTilt();
   initFaqAccordion();
@@ -79,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateNavAuthState();
   renderStudentDashboard();
   checkUrlHashRouting();
+  initScrollSpy();
 });
 
 function checkUrlHashRouting() {
@@ -941,7 +943,7 @@ function renderStudentDashboard() {
               <i class="fa-solid fa-id-card"></i> View Digital Pass
             </button>
             <a href="${userTeam.pptLink}" target="_blank" rel="noopener" class="btn-3d-outline" style="padding: 9px 18px; font-size: 0.85rem; background: #ffffff; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-              <i class="fa-solid fa-file-powerpoint" style="color: #ea580c;"></i> View PPT ↗
+              <i class="fa-solid fa-file-powerpoint" style="color: #ea580c;"></i> View PPT
             </a>
           </div>
         </div>
@@ -1467,7 +1469,7 @@ window.openAdminTeamDetails = (teamId) => {
           <i class="fa-solid fa-bullseye" style="color: #059669;"></i> Target PS: <strong>${team.psId}</strong> (${team.domain})
         </span>
         <a href="${team.pptLink}" target="_blank" rel="noopener" class="btn-3d-primary" style="padding: 6px 14px; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-          <i class="fa-solid fa-file-powerpoint"></i> Open Idea PPT Deck ↗
+          <i class="fa-solid fa-file-powerpoint"></i> Open Idea PPT Deck
         </a>
       </div>
       <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
@@ -1794,5 +1796,76 @@ window.downloadPptTemplate = () => {
   document.body.removeChild(link);
   triggerConfettiBurst();
 };
+
+/* ==========================================================================
+   14. BUTTERY SMOOTH DARK & BRIGHT THEME ENGINE
+   ========================================================================== */
+function initTheme() {
+  const savedTheme = localStorage.getItem("tit_sih_theme") || "dark";
+  applyTheme(savedTheme, false);
+}
+
+window.toggleTheme = () => {
+  const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+  const newTheme = currentTheme === "dark" ? "light" : "dark";
+  applyTheme(newTheme, true);
+};
+
+function applyTheme(theme, animate = true) {
+  if (theme === "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
+    document.body.classList.add("dark-theme");
+  } else {
+    document.documentElement.setAttribute("data-theme", "light");
+    document.body.classList.remove("dark-theme");
+  }
+
+  localStorage.setItem("tit_sih_theme", theme);
+
+  // Sync all theme toggle buttons (desktop + mobile)
+  const toggleBtns = document.querySelectorAll(".theme-toggle-btn");
+  toggleBtns.forEach((btn) => {
+    if (theme === "dark") {
+      btn.classList.add("dark");
+    } else {
+      btn.classList.remove("dark");
+    }
+  });
+}
+
+/* ==========================================================================
+   15. ACTIVE SECTION SCROLLSPY PILL CONTROLLER
+   ========================================================================== */
+function initScrollSpy() {
+  const sections = document.querySelectorAll("section[id]");
+  const navLinks = document.querySelectorAll(".nav-links .nav-link");
+
+  if (!sections.length || !navLinks.length) return;
+
+  window.addEventListener("scroll", () => {
+    let currentId = "";
+    const scrollPos = window.scrollY + 180;
+
+    sections.forEach((section) => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+      if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+        currentId = section.getAttribute("id");
+      }
+    });
+
+    if (currentId) {
+      navLinks.forEach((link) => {
+        const href = link.getAttribute("href");
+        if (href && href.startsWith("#") && href.substring(1) === currentId) {
+          link.classList.add("active-pill");
+        } else if (href && href.startsWith("#")) {
+          link.classList.remove("active-pill");
+        }
+      });
+    }
+  }, { passive: true });
+}
+
 
 

@@ -52,8 +52,8 @@
         <a href="index.html" class="nav-brand">
           <img src="tit_logo.png" alt="Tripura Institute of Technology Logo" class="brand-logo-img" width="46" height="46" decoding="async">
           <div class="brand-text">
-            <div class="brand-title"><span>Internal Hackathon 2026</span></div>
-            <div class="brand-subtitle">Tripura Institute of Technology</div>
+            <div class="brand-title"><span>TIT</span> HACKATHON 2026</div>
+            <div class="brand-subtitle">IIC • SIH Internal</div>
           </div>
         </a>
 
@@ -62,8 +62,7 @@
           <li><a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
           <li><a href="index.html#prizes" class="nav-link"><i class="fa-solid fa-trophy"></i> Prizes</a></li>
           <li><a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="nav-link"
-              style="color: #059669; font-weight: 700;"><i class="fa-solid fa-arrow-up-right-from-square"></i> SIH 2026
-              PS ↗</a></li>
+              style="color: #059669; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> SIH 2026 PS</a></li>
           <li><a href="index.html#rules" class="nav-link"><i class="fa-solid fa-scale-balanced"></i> Rules</a></li>
           <li><a href="index.html#resources" class="nav-link"><i class="fa-solid fa-download"></i> Resources</a></li>
           <li><a href="committee.html" class="nav-link" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-users"></i> Committee</a></li>
@@ -72,6 +71,14 @@
 
         <!-- Right Action Button -->
         <div class="nav-actions">
+          <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle Bright / Dark Theme" title="Toggle Bright / Dark Theme">
+            <div class="theme-toggle-track">
+              <div class="theme-toggle-thumb">
+                <i class="fa-solid fa-sun icon-sun"></i>
+                <i class="fa-solid fa-moon icon-moon"></i>
+              </div>
+            </div>
+          </button>
           <a href="index.html" class="btn-3d-primary" style="padding: 9px 18px; font-size: 0.85rem; text-decoration: none;">
             <i class="fa-solid fa-arrow-left"></i> Main Portal
           </a>
@@ -87,10 +94,21 @@
           <li><a href="index.html" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-house"></i> Home Portal</a></li>
           <li><a href="index.html#prizes" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-trophy"></i> Prizes & Awards</a></li>
           <li><a href="index.html#rules" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-scale-balanced"></i> Rules & Guidelines</a></li>
-          <li><a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="mobile-nav-link" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-arrow-up-right-from-square"></i> SIH 2026 PS ↗</a></li>
+          <li><a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="mobile-nav-link" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> SIH 2026 PS</a></li>
           <li><a href="index.html#resources" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-download"></i> Resources & PPT</a></li>
           <li><a href="committee.html" class="mobile-nav-link" onclick="closeMobileMenu()" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-users"></i> Organizing Committee</a></li>
           <li><a href="index.html#faq" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
+          <li style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; display: flex; align-items: center; justify-content: space-between;">
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">🌓 Theme Mode</span>
+            <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle Bright / Dark Theme">
+              <div class="theme-toggle-track">
+                <div class="theme-toggle-thumb">
+                  <i class="fa-solid fa-sun icon-sun"></i>
+                  <i class="fa-solid fa-moon icon-moon"></i>
+                </div>
+              </div>
+            </button>
+          </li>
         </ul>
       </div>
     </div>

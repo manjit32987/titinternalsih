@@ -105,8 +105,8 @@
         <a href="#" class="nav-brand">
           <img src="tit_logo.png" alt="Tripura Institute of Technology Logo" class="brand-logo-img" width="46" height="46" decoding="async">
           <div class="brand-text">
-            <div class="brand-title"><span>Internal Hackathon 2026</span></div>
-            <div class="brand-subtitle">Tripura Institute of Technology</div>
+            <div class="brand-title"><span>TIT</span> HACKATHON 2026</div>
+            <div class="brand-subtitle">IIC • SIH Internal</div>
           </div>
         </a>
 
@@ -114,17 +114,24 @@
         <ul class="nav-links">
           <li><a href="#prizes" class="nav-link"><i class="fa-solid fa-trophy"></i> Prizes</a></li>
           <li><a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="nav-link"
-              style="color: #059669; font-weight: 700;"><i class="fa-solid fa-arrow-up-right-from-square"></i> SIH 2026
-              PS ↗</a></li>
+              style="color: #059669; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> SIH 2026 PS</a></li>
           <li><a href="#rules" class="nav-link"><i class="fa-solid fa-scale-balanced"></i> Rules</a></li>
           <li><a href="#resources" class="nav-link"><i class="fa-solid fa-download"></i> Resources</a></li>
-          <li><a href="committee.html" class="nav-link"><i class="fa-solid fa-users"></i> Committee ↗</a></li>
+          <li><a href="committee.html" class="nav-link"><i class="fa-solid fa-users"></i> Committee</a></li>
           <li><a href="#faq" class="nav-link"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
           <li id="nav-dashboard-link" style="display:none;"><a href="#student-dashboard" class="nav-link" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-gauge-high"></i> Dashboard</a></li>
         </ul>
 
         <!-- Right Action Button & Auth Container -->
         <div class="nav-actions">
+          <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle Bright / Dark Theme" title="Toggle Bright / Dark Theme">
+            <div class="theme-toggle-track">
+              <div class="theme-toggle-thumb">
+                <i class="fa-solid fa-sun icon-sun"></i>
+                <i class="fa-solid fa-moon icon-moon"></i>
+              </div>
+            </div>
+          </button>
           <div id="nav-auth-container" style="display: flex; align-items: center; gap: 8px;">
             <!-- Rendered dynamically by script.js -->
           </div>
@@ -141,10 +148,21 @@
           <li id="mob-dashboard-link" style="display:none;"><a href="#student-dashboard" class="mobile-nav-link" onclick="closeMobileMenu();" style="color:#059669; font-weight:700;"><i class="fa-solid fa-gauge-high"></i> My Team Dashboard</a></li>
           <li><a href="#prizes" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-trophy"></i> Prizes & Awards</a></li>
           <li><a href="#rules" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-scale-balanced"></i> Rules & Guidelines</a></li>
-          <li><a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="mobile-nav-link" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-arrow-up-right-from-square"></i> SIH 2026 PS ↗</a></li>
+          <li><a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="mobile-nav-link" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> SIH 2026 PS</a></li>
           <li><a href="#resources" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-download"></i> Resources & PPT</a></li>
-          <li><a href="committee.html" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-users"></i> Organizing Committee ↗</a></li>
+          <li><a href="committee.html" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-users"></i> Organizing Committee</a></li>
           <li><a href="#faq" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
+          <li style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; display: flex; align-items: center; justify-content: space-between;">
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">🌓 Theme Mode</span>
+            <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle Bright / Dark Theme">
+              <div class="theme-toggle-track">
+                <div class="theme-toggle-thumb">
+                  <i class="fa-solid fa-sun icon-sun"></i>
+                  <i class="fa-solid fa-moon icon-moon"></i>
+                </div>
+              </div>
+            </button>
+          </li>
         </ul>
       </div>
     </div>
@@ -182,10 +200,10 @@
         <!-- CTA Buttons -->
         <div class="hero-cta-group">
           <button class="btn-3d-primary" onclick="triggerRegistration()">
-            <i class="fa-solid fa-bolt"></i> Register Team ↗
+            <i class="fa-solid fa-bolt"></i> Register Team
           </button>
           <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="btn-3d-secondary">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> Official SIH 2026 PS Portal (sih.gov.in) ↗
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Official SIH 2026 PS Portal (sih.gov.in)
           </a>
           <a href="SIH2026-IDEA-Presentation-Format.pptx" download="SIH2026-IDEA-Presentation-Format.pptx"
             class="btn-3d-outline" onclick="triggerConfettiBurst()">
@@ -356,7 +374,7 @@
         </div>
         <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="btn-3d-primary"
           style="background: #ffffff; color: #064e3b; font-weight: 800; white-space: nowrap; border: none; font-size: 1.05rem; padding: 16px 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.25); text-decoration: none;">
-          <i class="fa-solid fa-arrow-up-right-from-square" style="color: #059669;"></i> Open Official SIH PS Portal ↗
+          <i class="fa-solid fa-arrow-up-right-from-square" style="color: #059669;"></i> Open Official SIH PS Portal
         </a>
       </div>
 
@@ -949,7 +967,7 @@
           <p style="color: #64748b; font-size: 0.82rem; margin: 2px 0 0 0;">Reference Winning Architectures & Solution Frameworks for SIH 2026</p>
         </div>
         <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="btn-3d-primary" style="padding: 6px 14px; font-size: 0.82rem; text-decoration: none;">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open sih.gov.in PS Portal ↗
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open sih.gov.in PS Portal
         </a>
       </div>
 
