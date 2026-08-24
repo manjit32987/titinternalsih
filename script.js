@@ -454,13 +454,10 @@ function updateNavAuthState() {
       .toUpperCase();
 
     navAuthContainer.innerHTML = `
-      <div class="user-profile-badge" title="${currentUser.name} (${currentUser.roll} - ${currentUser.dept})">
+      <div class="user-profile-badge" title="${escapeHtml(currentUser.name)} (${escapeHtml(currentUser.roll)} - ${escapeHtml(currentUser.dept)})">
         <span class="user-avatar-circle">${initials}</span>
-        <span>${currentUser.name.split(" ")[0]} (${currentUser.dept})</span>
+        <span>${escapeHtml(currentUser.name.split(" ")[0])} (${escapeHtml(currentUser.dept)})</span>
       </div>
-      <button class="btn-3d-primary" style="padding: 7px 14px; font-size: 0.8rem;" onclick="triggerRegistration()">
-        <i class="fa-solid fa-file-pen"></i> Register Team
-      </button>
       <button class="btn-nav-logout" onclick="handleLogout()" title="Sign Out">
         <i class="fa-solid fa-arrow-right-from-bracket"></i>
       </button>
@@ -469,16 +466,16 @@ function updateNavAuthState() {
     if (navDashLink) navDashLink.style.display = "block";
     if (mobDashLink) mobDashLink.style.display = "block";
     if (mobAuthLink) {
-      mobAuthLink.innerHTML = `<a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); handleLogout();" style="color:#dc2626;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout (${currentUser.name})</a>`;
+      mobAuthLink.innerHTML = `<a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); handleLogout();" style="color:#dc2626;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout (${escapeHtml(currentUser.name)})</a>`;
     }
   } else {
     // Logged Out State
     navAuthContainer.innerHTML = `
       <button class="btn-nav-auth" onclick="openAuthModal('login')">
-        <i class="fa-solid fa-user-lock"></i> Sign In / Portal
+        <i class="fa-solid fa-user-lock"></i> Sign In
       </button>
       <button class="btn-nav-register" onclick="triggerRegistration()">
-        <i class="fa-solid fa-file-pen"></i> Register Team
+        <i class="fa-solid fa-bolt"></i> Register
       </button>
     `;
 

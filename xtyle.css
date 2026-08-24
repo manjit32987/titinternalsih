@@ -317,14 +317,14 @@ button {
 
 .navbar {
   position: sticky;
-  top: 18px;
+  top: 14px;
   z-index: 100;
   margin-bottom: 16px;
   padding: 0 16px;
 }
 
 .navbar .container {
-  max-width: 1240px;
+  max-width: 1340px;
   padding: 0;
 }
 
@@ -332,14 +332,16 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 16px 8px 20px;
-  background: #18181b; /* Sleek matte dark capsule by default */
+  padding: 6px 14px 6px 18px;
+  background: #18181b; /* Sleek matte dark capsule */
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-full);
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.06);
   transition: all var(--transition-normal);
+  gap: 10px;
+  box-sizing: border-box;
 }
 
 /* Light / Bright Mode Capsule Navbar */
@@ -347,29 +349,30 @@ html[data-theme="light"] .navbar-container,
 body:not(.dark-theme) .navbar-container {
   background: rgba(255, 255, 255, 0.96);
   border: 1px solid #e2e8f0;
-  box-shadow: 0 14px 32px -6px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
 }
 
 .nav-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
 .brand-logo-img {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
   border-radius: 50%;
-  box-shadow: 0 0 14px rgba(34, 197, 94, 0.35);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.35);
   background: #ffffff;
   padding: 2px;
   transition: transform var(--transition-fast);
 }
 
 .brand-logo-img:hover {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 .badge-mini-logo {
@@ -385,14 +388,15 @@ body:not(.dark-theme) .navbar-container {
 }
 
 .brand-title {
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   font-weight: 900;
   letter-spacing: -0.01em;
   color: #ffffff;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   font-family: var(--font-heading);
+  white-space: nowrap;
 }
 
 html[data-theme="light"] .brand-title,
@@ -405,7 +409,7 @@ body:not(.dark-theme) .brand-title {
 }
 
 .brand-subtitle {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 700;
   color: #a1a1aa;
   letter-spacing: 0.03em;
@@ -420,22 +424,23 @@ body:not(.dark-theme) .brand-subtitle {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   list-style: none;
+  flex-shrink: 0;
 }
 
 .nav-link {
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   font-weight: 700;
   color: #d4d4d8;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 7px 14px;
+  letter-spacing: 0.03em;
+  padding: 6px 10px;
   border-radius: var(--radius-full);
   transition: all var(--transition-fast);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   white-space: nowrap;
 }
 
@@ -455,7 +460,7 @@ body:not(.dark-theme) .nav-link:hover {
   background: #ecfdf5;
 }
 
-/* Green Highlight Active Pill (Exactly like PRIZES pill in Image 2) */
+/* Green Highlight Active Pill */
 .nav-link.active-pill,
 .nav-link.active {
   background: #22c55e !important;
@@ -467,23 +472,88 @@ body:not(.dark-theme) .nav-link:hover {
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* User Profile Badge */
+.user-profile-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 3px 10px 3px 4px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #166534;
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .user-profile-badge {
+  background: rgba(16, 185, 129, 0.14);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+
+.user-avatar-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #059669;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.66rem;
+  font-weight: 800;
+}
+
+.btn-nav-logout {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fff1f2;
+  color: #dc2626;
+  border: 1px solid #fecdd3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.74rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.btn-nav-logout:hover {
+  background: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+  transform: scale(1.08);
+}
+
+[data-theme="dark"] .btn-nav-logout {
+  background: rgba(220, 38, 38, 0.15);
+  border-color: rgba(220, 38, 38, 0.35);
+  color: #f87171;
 }
 
 /* Auth / Portal Pill Button */
 .btn-nav-auth {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
   background: transparent;
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.22);
-  padding: 8px 16px;
+  padding: 6px 13px;
   border-radius: var(--radius-full);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.02em;
   transition: all var(--transition-fast);
+  white-space: nowrap;
 }
 
 html[data-theme="light"] .btn-nav-auth,
@@ -506,28 +576,29 @@ body:not(.dark-theme) .btn-nav-auth:hover {
   border-color: #059669;
 }
 
-/* Register Green Pill Button (Exactly like REGISTER/LOGIN in Image 2) */
+/* Register Green Pill Button */
 .btn-nav-register {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
   background: #22c55e;
   color: #052e16;
-  padding: 9px 20px;
+  padding: 7px 16px;
   border-radius: var(--radius-full);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.4);
+  letter-spacing: 0.03em;
+  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
   transition: all var(--transition-fast);
   border: none;
+  white-space: nowrap;
 }
 
 .btn-nav-register:hover {
   background: #16a34a;
   transform: translateY(-2px);
-  box-shadow: 0 6px 22px rgba(34, 197, 94, 0.6);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
   color: #ffffff;
 }
 
