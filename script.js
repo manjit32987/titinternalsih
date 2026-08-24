@@ -463,8 +463,10 @@ function updateNavAuthState() {
       </button>
     `;
 
+    const mobBottomDash = document.getElementById("mob-bottom-dash-item");
     if (navDashLink) navDashLink.style.display = "block";
     if (mobDashLink) mobDashLink.style.display = "block";
+    if (mobBottomDash) mobBottomDash.style.display = "flex";
     if (mobAuthLink) {
       mobAuthLink.innerHTML = `<a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); handleLogout();" style="color:#dc2626;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout (${escapeHtml(currentUser.name)})</a>`;
     }
@@ -476,8 +478,10 @@ function updateNavAuthState() {
       </button>
     `;
 
+    const mobBottomDash = document.getElementById("mob-bottom-dash-item");
     if (navDashLink) navDashLink.style.display = "none";
     if (mobDashLink) mobDashLink.style.display = "none";
+    if (mobBottomDash) mobBottomDash.style.display = "none";
     if (mobAuthLink) {
       mobAuthLink.innerHTML = `<a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); openAuthModal('student', 'login');"><i class="fa-solid fa-user-lock"></i> Sign In / Register</a>`;
     }
@@ -2309,12 +2313,13 @@ function applyTheme(theme, animate = true) {
 function initScrollSpy() {
   const sections = document.querySelectorAll("section[id]");
   const navLinks = document.querySelectorAll(".nav-links .nav-link");
+  const mobBottomItems = document.querySelectorAll(".mob-bottom-item[data-target]");
 
-  if (!sections.length || !navLinks.length) return;
+  if (!sections.length) return;
 
   window.addEventListener("scroll", () => {
-    let currentId = "";
-    const scrollPos = window.scrollY + 180;
+    let currentId = "hero";
+    const scrollPos = window.scrollY + 200;
 
     sections.forEach((section) => {
       const sectionTop = section.offsetTop;
@@ -2325,14 +2330,29 @@ function initScrollSpy() {
     });
 
     if (currentId) {
-      navLinks.forEach((link) => {
-        const href = link.getAttribute("href");
-        if (href && href.startsWith("#") && href.substring(1) === currentId) {
-          link.classList.add("active-pill");
-        } else if (href && href.startsWith("#")) {
-          link.classList.remove("active-pill");
-        }
-      });
+      // Desktop Nav Links
+      if (navLinks.length) {
+        navLinks.forEach((link) => {
+          const href = link.getAttribute("href");
+          if (href && href.startsWith("#") && href.substring(1) === currentId) {
+            link.classList.add("active-pill");
+          } else if (href && href.startsWith("#")) {
+            link.classList.remove("active-pill");
+          }
+        });
+      }
+
+      // Mobile Bottom Bar Items
+      if (mobBottomItems.length) {
+        mobBottomItems.forEach((item) => {
+          const target = item.getAttribute("data-target");
+          if (target === currentId || (currentId === "hero" && target === "hero")) {
+            item.classList.add("active");
+          } else if (target !== "committee") {
+            item.classList.remove("active");
+          }
+        });
+      }
     }
   }, { passive: true });
 }

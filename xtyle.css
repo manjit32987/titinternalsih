@@ -4415,5 +4415,100 @@ body.dark-theme [style*="background: #ecfdf5"] {
   z-index: 99999;
 }
 
+/* ==========================================================================
+   17. MOBILE FLOATING BOTTOM SECTION NAVIGATION BAR
+   ========================================================================== */
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 850px) {
+  body {
+    padding-bottom: 84px !important;
+  }
+
+  .mobile-bottom-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: fixed;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    height: 62px;
+    background: rgba(18, 24, 38, 0.94);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-full);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    z-index: 9999;
+    padding: 0 8px;
+    margin: 0 auto;
+    max-width: 500px;
+    transition: all var(--transition-normal);
+  }
+
+  /* Light Theme */
+  html[data-theme="light"] .mobile-bottom-nav,
+  body:not(.dark-theme) .mobile-bottom-nav {
+    background: rgba(255, 255, 255, 0.96);
+    border-color: #e2e8f0;
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.04);
+  }
+
+  .mob-bottom-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    flex: 1;
+    height: 100%;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+    padding: 4px 0;
+  }
+
+  .mob-bottom-item i {
+    font-size: 1.1rem;
+    transition: transform var(--transition-fast);
+  }
+
+  html[data-theme="light"] .mob-bottom-item,
+  body:not(.dark-theme) .mob-bottom-item {
+    color: #64748b;
+  }
+
+  .mob-bottom-item:active,
+  .mob-bottom-item:hover {
+    color: #22c55e;
+  }
+
+  .mob-bottom-item:active i {
+    transform: scale(0.9);
+  }
+
+  /* Active Section Highlight */
+  .mob-bottom-item.active {
+    color: #22c55e !important;
+  }
+
+  html[data-theme="light"] .mob-bottom-item.active,
+  body:not(.dark-theme) .mob-bottom-item.active {
+    color: #059669 !important;
+  }
+
+  .mob-bottom-item.active i {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 6px rgba(34, 197, 94, 0.5));
+  }
+}
+
 
 
