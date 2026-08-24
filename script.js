@@ -469,20 +469,17 @@ function updateNavAuthState() {
       mobAuthLink.innerHTML = `<a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); handleLogout();" style="color:#dc2626;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout (${escapeHtml(currentUser.name)})</a>`;
     }
   } else {
-    // Logged Out State
+    // Logged Out State: Unified Single Button
     navAuthContainer.innerHTML = `
-      <button class="btn-nav-auth" onclick="openAuthModal('login')">
-        <i class="fa-solid fa-user-lock"></i> Sign In
-      </button>
-      <button class="btn-nav-register" onclick="triggerRegistration()">
-        <i class="fa-solid fa-bolt"></i> Register
+      <button class="btn-nav-register" onclick="openAuthModal('student', 'login')">
+        <i class="fa-solid fa-user-lock"></i> Sign In / Register
       </button>
     `;
 
     if (navDashLink) navDashLink.style.display = "none";
     if (mobDashLink) mobDashLink.style.display = "none";
     if (mobAuthLink) {
-      mobAuthLink.innerHTML = `<a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); openAuthModal('login');"><i class="fa-solid fa-user-lock"></i> Sign In / Portal (Student / SPOC)</a>`;
+      mobAuthLink.innerHTML = `<a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); openAuthModal('student', 'login');"><i class="fa-solid fa-user-lock"></i> Sign In / Register</a>`;
     }
   }
 }
