@@ -1798,18 +1798,91 @@ window.downloadPptTemplate = () => {
 };
 
 /* ==========================================================================
-   14. BUTTERY SMOOTH DARK & BRIGHT THEME ENGINE
+   14. BUTTERY SMOOTH DARK & BRIGHT THEME ENGINE (EXPANDING RIPPLE FROM BUTTON)
    ========================================================================== */
 function initTheme() {
-  const savedTheme = localStorage.getItem("tit_sih_theme") || "dark";
+  const savedTheme = localStorage.getItem("tit_sih_theme") || "light";
   applyTheme(savedTheme, false);
 }
 
-window.toggleTheme = () => {
-  const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+window.toggleTheme = (event) => {
+  const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
   const newTheme = currentTheme === "dark" ? "light" : "dark";
-  applyTheme(newTheme, true);
+
+  // Find origin coordinates of the toggle button
+  let x = window.innerWidth - 90;
+  let y = 36;
+  if (event && (event.clientX || event.pageX)) {
+    x = event.clientX || event.pageX;
+    y = event.clientY || event.pageY;
+  } else {
+    const btn = document.getElementById("theme-toggle-btn");
+    if (btn) {
+      const rect = btn.getBoundingClientRect();
+      x = rect.left + rect.width / 2;
+      y = rect.top + rect.height / 2;
+    }
+  }
+
+  // Trigger glowing expanding light-up / dark-up ripple wave from button
+  triggerExpandingThemeWave(x, y, newTheme);
+
+  // If View Transition API is supported, use circular clip-path expansion
+  if (document.startViewTransition) {
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    const transition = document.startViewTransition(() => {
+      applyTheme(newTheme, false);
+    });
+
+    transition.ready.then(() => {
+      document.documentElement.animate(
+        {
+          clipPath: [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`
+          ]
+        },
+        {
+          duration: 650,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+          pseudoElement: "::view-transition-new(root)"
+        }
+      );
+    });
+  } else {
+    applyTheme(newTheme, true);
+  }
 };
+
+function triggerExpandingThemeWave(x, y, newTheme) {
+  const wave = document.createElement("div");
+  wave.className = `theme-radial-wave ${newTheme === "dark" ? "wave-dark" : "wave-light"}`;
+  wave.style.left = `${x}px`;
+  wave.style.top = `${y}px`;
+  document.body.appendChild(wave);
+
+  // Trigger micro pulse on button
+  const btn = document.getElementById("theme-toggle-btn");
+  if (btn) {
+    btn.classList.add("theme-btn-pulse");
+    setTimeout(() => btn.classList.remove("theme-btn-pulse"), 600);
+  }
+
+  // Force reflow and expand
+  requestAnimationFrame(() => {
+    wave.classList.add("expanding");
+  });
+
+  setTimeout(() => {
+    if (wave && wave.parentNode) {
+      wave.parentNode.removeChild(wave);
+    }
+  }, 750);
+}
 
 function applyTheme(theme, animate = true) {
   if (theme === "dark") {
