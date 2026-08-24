@@ -72,7 +72,6 @@ function escapeHtml(str) {
 // Initialize Everything on DOM Load
 document.addEventListener("DOMContentLoaded", () => {
   initFirebaseCloud();
-  initCountdownTimer();
   init3DCardTilt();
   initFaqAccordion();
   initMobileNav();
@@ -169,44 +168,6 @@ function startFirebaseRealtimeListeners() {
   );
 }
 
-/* ==========================================================================
-   1. LIVE COUNTDOWN TIMER ENGINE
-   ========================================================================== */
-function initCountdownTimer() {
-  const daysEl = document.getElementById("timer-days");
-  const hoursEl = document.getElementById("timer-hours");
-  const minutesEl = document.getElementById("timer-minutes");
-  const secondsEl = document.getElementById("timer-seconds");
-
-  if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
-
-  function updateTimer() {
-    const now = new Date().getTime();
-    const target = CONFIG.registrationDeadline.getTime();
-    const difference = target - now;
-
-    if (difference <= 0) {
-      daysEl.textContent = "00";
-      hoursEl.textContent = "00";
-      minutesEl.textContent = "00";
-      secondsEl.textContent = "00";
-      return;
-    }
-
-    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-    daysEl.textContent = String(days).padStart(2, "0");
-    hoursEl.textContent = String(hours).padStart(2, "0");
-    minutesEl.textContent = String(minutes).padStart(2, "0");
-    secondsEl.textContent = String(seconds).padStart(2, "0");
-  }
-
-  updateTimer();
-  setInterval(updateTimer, 1000);
-}
 
 /* ==========================================================================
    2. STUDENT AUTHENTICATION SYSTEM (LOGIN / SIGN UP / LOGOUT)
@@ -1686,46 +1647,6 @@ window.exportTeamsToCSV = () => {
   triggerConfettiBurst();
 };
 
-/* ==========================================================================
-   6.5 LIVE HERO REGISTRATION COUNTDOWN TIMER
-   ========================================================================== */
-function initCountdownTimer() {
-  const daysEl = document.getElementById("countdown-days");
-  const hoursEl = document.getElementById("countdown-hours");
-  const minsEl = document.getElementById("countdown-mins");
-  const secsEl = document.getElementById("countdown-secs");
-
-  if (!daysEl || !hoursEl || !minsEl || !secsEl) return;
-
-  // Deadline: September 15, 2026, 23:59:59 IST (UTC+05:30)
-  const deadlineDate = new Date("2026-09-15T23:59:59+05:30").getTime();
-
-  function updateTimer() {
-    const now = new Date().getTime();
-    const distance = deadlineDate - now;
-
-    if (distance <= 0) {
-      daysEl.textContent = "00";
-      hoursEl.textContent = "00";
-      minsEl.textContent = "00";
-      secsEl.textContent = "00";
-      return;
-    }
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    daysEl.textContent = String(days).padStart(2, "0");
-    hoursEl.textContent = String(hours).padStart(2, "0");
-    minsEl.textContent = String(minutes).padStart(2, "0");
-    secsEl.textContent = String(seconds).padStart(2, "0");
-  }
-
-  updateTimer();
-  setInterval(updateTimer, 1000);
-}
 
 /* ==========================================================================
    7. VANILLA 3D CARD TILT ENGINE
