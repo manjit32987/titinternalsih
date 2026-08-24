@@ -2426,72 +2426,98 @@ window.triggerPwaInstall = async () => {
 };
 
 /* ==========================================================================
-   17. CINEMATIC HACKATHON INTRO SPLASH ANIMATION ENGINE
+   17. CINEMATIC VIDEO-STYLE HACKATHON TRAILER INTRO ENGINE
    ========================================================================== */
 let introTimer = null;
 let introAnimInterval = null;
+let cinemaCanvasRaf = null;
 
 function initHackathonIntro() {
   const introOverlay = document.getElementById("hackathon-intro-overlay");
   if (!introOverlay) return;
 
-  // Check if intro has already been viewed during this browser session
+  // Check if intro has already been played this browser session
   const hasSeenIntro = sessionStorage.getItem("tit_sih_intro_played");
   if (hasSeenIntro) {
     introOverlay.style.display = "none";
     return;
   }
 
-  // Generate dynamic particles
-  const particlesWrap = document.getElementById("intro-particles-wrap");
-  if (particlesWrap) {
-    for (let i = 0; i < 18; i++) {
-      const particle = document.createElement("div");
-      particle.className = "intro-particle";
-      const size = Math.random() * 6 + 3;
-      particle.style.width = `${size}px`;
-      particle.style.height = `${size}px`;
-      particle.style.left = `${Math.random() * 100}%`;
-      particle.style.top = `${Math.random() * 100}%`;
-      particle.style.animationDelay = `${Math.random() * 2}s`;
-      particle.style.animationDuration = `${Math.random() * 3 + 2}s`;
-      particlesWrap.appendChild(particle);
+  // Setup Ambient Cinematic Dust Particles Canvas
+  const canvas = document.getElementById("cinema-particles-canvas");
+  if (canvas) {
+    const ctx = canvas.getContext("2d");
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    window.addEventListener("resize", () => {
+      if (canvas) {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+    });
+
+    const particles = [];
+    for (let i = 0; i < 35; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 2 + 0.8,
+        speedX: (Math.random() - 0.5) * 0.4,
+        speedY: -Math.random() * 0.6 - 0.2,
+        opacity: Math.random() * 0.6 + 0.2,
+        color: Math.random() > 0.4 ? "#22c55e" : "#38bdf8"
+      });
     }
+
+    function renderCinemaParticles() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach((p) => {
+        p.x += p.speedX;
+        p.y += p.speedY;
+        if (p.y < 0) p.y = height;
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.opacity;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+      });
+      cinemaCanvasRaf = requestAnimationFrame(renderCinemaParticles);
+    }
+    renderCinemaParticles();
   }
 
-  const progressBar = document.getElementById("intro-loader-bar");
-  const statusText = document.getElementById("intro-status-text");
-
+  // 3-Second Smooth Video Timeline Progress Scrubber
+  const progressFill = document.getElementById("cinema-progress-fill");
   let progress = 0;
+  const totalDuration = 3200; // 3.2 seconds
+  const intervalTime = 40;
+  const step = (intervalTime / totalDuration) * 100;
+
   introAnimInterval = setInterval(() => {
-    progress += Math.floor(Math.random() * 8) + 4;
+    progress += step;
     if (progress > 100) progress = 100;
 
-    if (progressBar) progressBar.style.width = `${progress}%`;
-    if (statusText) {
-      if (progress < 30) {
-        statusText.textContent = `INITIALIZING QUANTUM ARENA... ${progress}%`;
-      } else if (progress < 60) {
-        statusText.textContent = `SYNCHRONIZING TIT & AICTE REPOSITORY... ${progress}%`;
-      } else if (progress < 90) {
-        statusText.textContent = `CALIBRATING EVALUATION CRITERIA... ${progress}%`;
-      } else {
-        statusText.textContent = `ARENA READY • WELCOME TO TIT SIH 2026!`;
-      }
-    }
+    if (progressFill) progressFill.style.width = `${progress}%`;
 
     if (progress >= 100) {
       clearInterval(introAnimInterval);
       introTimer = setTimeout(() => {
         dismissHackathonIntro();
-      }, 350);
+      }, 150);
     }
-  }, 45);
+  }, intervalTime);
 }
 
 window.dismissHackathonIntro = () => {
   if (introAnimInterval) clearInterval(introAnimInterval);
   if (introTimer) clearTimeout(introTimer);
+  if (cinemaCanvasRaf) cancelAnimationFrame(cinemaCanvasRaf);
 
   const introOverlay = document.getElementById("hackathon-intro-overlay");
   if (introOverlay) {
@@ -2499,7 +2525,7 @@ window.dismissHackathonIntro = () => {
     sessionStorage.setItem("tit_sih_intro_played", "1");
     setTimeout(() => {
       introOverlay.style.display = "none";
-    }, 900);
+    }, 850);
   }
 };
 

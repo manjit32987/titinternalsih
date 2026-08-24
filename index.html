@@ -100,48 +100,52 @@
 <body>
 
   <!-- ==========================================================================
-       CINEMATIC HACKATHON INTRO SPLASH ANIMATION OVERLAY
+       CINEMATIC VIDEO-STYLE HACKATHON TRAILER INTRO
        ========================================================================== -->
-  <div class="hackathon-intro-overlay" id="hackathon-intro-overlay">
-    <div class="intro-cyber-grid"></div>
-    <div class="intro-particles-wrap" id="intro-particles-wrap"></div>
+  <div class="cinema-intro-overlay" id="hackathon-intro-overlay">
+    <!-- Letterbox Widescreen Bars -->
+    <div class="cinema-bar cinema-bar-top"></div>
+    <div class="cinema-bar cinema-bar-bottom"></div>
 
-    <button class="intro-skip-btn" onclick="dismissHackathonIntro()" aria-label="Skip Intro Animation">
-      <span>Skip</span> <i class="fa-solid fa-forward-step"></i>
+    <!-- Anamorphic Lens Flare & Ambient Atmosphere -->
+    <div class="cinema-flare"></div>
+    <canvas id="cinema-particles-canvas" class="cinema-canvas"></canvas>
+
+    <!-- Skip Button -->
+    <button class="cinema-skip-btn" onclick="dismissHackathonIntro()" aria-label="Skip Intro Video">
+      <span>Skip</span> <i class="fa-solid fa-forward"></i>
     </button>
 
-    <div class="intro-main-stage">
-      <!-- 3D Hologram Emblem Ring -->
-      <div class="intro-emblem-wrap">
-        <div class="intro-spin-ring ring-1"></div>
-        <div class="intro-spin-ring ring-2"></div>
-        <div class="intro-spin-ring ring-3"></div>
-        <div class="intro-emblem-core">
-          <img src="tit_logo.png" alt="TIT Emblem" class="intro-logo-img">
-        </div>
+    <!-- Cinematic Content Sequence -->
+    <div class="cinema-sequence-container">
+      <!-- Scene 1: Presenter Badge & Glowing Crest -->
+      <div class="cinema-crest-wrap">
+        <div class="cinema-crest-glow"></div>
+        <img src="tit_logo.png" alt="TIT Emblem" class="cinema-crest-img">
       </div>
 
-      <!-- Live Badge -->
-      <div class="intro-badge">
-        <span class="intro-live-dot"></span>
-        <span>TRIPURA INSTITUTE OF TECHNOLOGY • IIC</span>
+      <div class="cinema-presents-text">
+        TRIPURA INSTITUTE OF TECHNOLOGY • IIC PRESENTS
       </div>
 
-      <!-- Kinetic Typography Headline -->
-      <div class="intro-title">
-        <span class="intro-line-1">SMART INDIA HACKATHON</span>
-        <span class="intro-line-2">INTERNAL ARENA 2026</span>
+      <!-- Scene 2: Epic Cinematic Title Reveal -->
+      <h1 class="cinema-hero-title">
+        <span class="cinema-title-sub">THE NATIONAL QUALIFIER</span>
+        <span class="cinema-title-main">SMART INDIA HACKATHON <span class="cinema-year">2026</span></span>
+      </h1>
+
+      <div class="cinema-motto-row">
+        <span class="motto-word">BUILD</span>
+        <span class="motto-sep">•</span>
+        <span class="motto-word">INNOVATE</span>
+        <span class="motto-sep">•</span>
+        <span class="motto-word">WIN</span>
       </div>
 
-      <p class="intro-tagline">
-        <span>INNOVATE</span> • <span>PROTOTYPE</span> • <span>REPRESENT TIT</span>
-      </p>
-
-      <!-- Cybernetic Loading Progress Bar -->
-      <div class="intro-loader-track">
-        <div class="intro-loader-bar" id="intro-loader-bar"></div>
+      <!-- Sleek Video Playback Line -->
+      <div class="cinema-progress-line">
+        <div class="cinema-progress-fill" id="cinema-progress-fill"></div>
       </div>
-      <div class="intro-status-text" id="intro-status-text">INITIALIZING HACKATHON ARENA... 0%</div>
     </div>
   </div>
 
