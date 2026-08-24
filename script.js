@@ -71,6 +71,7 @@ function escapeHtml(str) {
 
 // Initialize Everything on DOM Load
 document.addEventListener("DOMContentLoaded", () => {
+  initHackathonIntro();
   initTheme();
   initPwaEngine();
   initFirebaseCloud();
@@ -2420,8 +2421,85 @@ window.triggerPwaInstall = async () => {
     if (installBtn) installBtn.style.display = "none";
     if (mobInstallItem) mobInstallItem.style.display = "none";
   } else {
-    // Helpful guide for iOS Safari and other browsers
     alert("[📲 Install TIT SIH App]\n\n• On iOS (Safari): Tap the Share icon (⎋) and select 'Add to Home Screen'.\n• On Android (Chrome): Tap the three dots (⋮) and select 'Install app' or 'Add to Home Screen'.\n• On Desktop (Chrome / Edge): Click the Install icon in the address bar.");
+  }
+};
+
+/* ==========================================================================
+   17. CINEMATIC HACKATHON INTRO SPLASH ANIMATION ENGINE
+   ========================================================================== */
+let introTimer = null;
+let introAnimInterval = null;
+
+function initHackathonIntro() {
+  const introOverlay = document.getElementById("hackathon-intro-overlay");
+  if (!introOverlay) return;
+
+  // Check if intro has already been viewed during this browser session
+  const hasSeenIntro = sessionStorage.getItem("tit_sih_intro_played");
+  if (hasSeenIntro) {
+    introOverlay.style.display = "none";
+    return;
+  }
+
+  // Generate dynamic particles
+  const particlesWrap = document.getElementById("intro-particles-wrap");
+  if (particlesWrap) {
+    for (let i = 0; i < 18; i++) {
+      const particle = document.createElement("div");
+      particle.className = "intro-particle";
+      const size = Math.random() * 6 + 3;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.top = `${Math.random() * 100}%`;
+      particle.style.animationDelay = `${Math.random() * 2}s`;
+      particle.style.animationDuration = `${Math.random() * 3 + 2}s`;
+      particlesWrap.appendChild(particle);
+    }
+  }
+
+  const progressBar = document.getElementById("intro-loader-bar");
+  const statusText = document.getElementById("intro-status-text");
+
+  let progress = 0;
+  introAnimInterval = setInterval(() => {
+    progress += Math.floor(Math.random() * 8) + 4;
+    if (progress > 100) progress = 100;
+
+    if (progressBar) progressBar.style.width = `${progress}%`;
+    if (statusText) {
+      if (progress < 30) {
+        statusText.textContent = `INITIALIZING QUANTUM ARENA... ${progress}%`;
+      } else if (progress < 60) {
+        statusText.textContent = `SYNCHRONIZING TIT & AICTE REPOSITORY... ${progress}%`;
+      } else if (progress < 90) {
+        statusText.textContent = `CALIBRATING EVALUATION CRITERIA... ${progress}%`;
+      } else {
+        statusText.textContent = `ARENA READY • WELCOME TO TIT SIH 2026!`;
+      }
+    }
+
+    if (progress >= 100) {
+      clearInterval(introAnimInterval);
+      introTimer = setTimeout(() => {
+        dismissHackathonIntro();
+      }, 350);
+    }
+  }, 45);
+}
+
+window.dismissHackathonIntro = () => {
+  if (introAnimInterval) clearInterval(introAnimInterval);
+  if (introTimer) clearTimeout(introTimer);
+
+  const introOverlay = document.getElementById("hackathon-intro-overlay");
+  if (introOverlay) {
+    introOverlay.classList.add("dismissed");
+    sessionStorage.setItem("tit_sih_intro_played", "1");
+    setTimeout(() => {
+      introOverlay.style.display = "none";
+    }, 900);
   }
 };
 

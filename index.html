@@ -99,6 +99,52 @@
 
 <body>
 
+  <!-- ==========================================================================
+       CINEMATIC HACKATHON INTRO SPLASH ANIMATION OVERLAY
+       ========================================================================== -->
+  <div class="hackathon-intro-overlay" id="hackathon-intro-overlay">
+    <div class="intro-cyber-grid"></div>
+    <div class="intro-particles-wrap" id="intro-particles-wrap"></div>
+
+    <button class="intro-skip-btn" onclick="dismissHackathonIntro()" aria-label="Skip Intro Animation">
+      <span>Skip</span> <i class="fa-solid fa-forward-step"></i>
+    </button>
+
+    <div class="intro-main-stage">
+      <!-- 3D Hologram Emblem Ring -->
+      <div class="intro-emblem-wrap">
+        <div class="intro-spin-ring ring-1"></div>
+        <div class="intro-spin-ring ring-2"></div>
+        <div class="intro-spin-ring ring-3"></div>
+        <div class="intro-emblem-core">
+          <img src="tit_logo.png" alt="TIT Emblem" class="intro-logo-img">
+        </div>
+      </div>
+
+      <!-- Live Badge -->
+      <div class="intro-badge">
+        <span class="intro-live-dot"></span>
+        <span>TRIPURA INSTITUTE OF TECHNOLOGY • IIC</span>
+      </div>
+
+      <!-- Kinetic Typography Headline -->
+      <div class="intro-title">
+        <span class="intro-line-1">SMART INDIA HACKATHON</span>
+        <span class="intro-line-2">INTERNAL ARENA 2026</span>
+      </div>
+
+      <p class="intro-tagline">
+        <span>INNOVATE</span> • <span>PROTOTYPE</span> • <span>REPRESENT TIT</span>
+      </p>
+
+      <!-- Cybernetic Loading Progress Bar -->
+      <div class="intro-loader-track">
+        <div class="intro-loader-bar" id="intro-loader-bar"></div>
+      </div>
+      <div class="intro-status-text" id="intro-status-text">INITIALIZING HACKATHON ARENA... 0%</div>
+    </div>
+  </div>
+
   <!-- Ambient 3D Glowing Lights -->
   <div class="ambient-glow glow-1"></div>
   <div class="ambient-glow glow-2"></div>
