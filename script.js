@@ -72,6 +72,7 @@ function escapeHtml(str) {
 // Initialize Everything on DOM Load
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
+  initPwaEngine();
   initFirebaseCloud();
   init3DCardTilt();
   initFaqAccordion();
@@ -2341,6 +2342,74 @@ function initScrollSpy() {
     }
   }, { passive: true });
 }
+
+/* ==========================================================================
+   16. PWA (PROGRESSIVE WEB APP) SERVICE WORKER & INSTALL PROMPT ENGINE
+   ========================================================================== */
+let deferredPwaPrompt = null;
+
+function initPwaEngine() {
+  // 1. Register Service Worker for offline capability and instant caching
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("./sw.js")
+        .then((registration) => {
+          console.log("✅ [PWA] Service Worker registered with scope:", registration.scope);
+        })
+        .catch((error) => {
+          console.warn("[PWA] Service Worker registration warning:", error);
+        });
+    });
+  }
+
+  // 2. Intercept beforeinstallprompt for native app installation
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPwaPrompt = e;
+    console.log("📲 [PWA] App install prompt ready");
+
+    // Show Install button in desktop nav and mobile menu
+    const installBtn = document.getElementById("pwa-install-btn");
+    const mobInstallItem = document.getElementById("mob-pwa-install-item");
+
+    if (installBtn) installBtn.style.display = "inline-flex";
+    if (mobInstallItem) mobInstallItem.style.display = "block";
+  });
+
+  // 3. Listen for appinstalled event
+  window.addEventListener("appinstalled", () => {
+    console.log("🎉 [PWA] App successfully installed on user device!");
+    deferredPwaPrompt = null;
+
+    const installBtn = document.getElementById("pwa-install-btn");
+    const mobInstallItem = document.getElementById("mob-pwa-install-item");
+
+    if (installBtn) installBtn.style.display = "none";
+    if (mobInstallItem) mobInstallItem.style.display = "none";
+
+    triggerConfettiBurst();
+  });
+}
+
+window.triggerPwaInstall = async () => {
+  if (deferredPwaPrompt) {
+    deferredPwaPrompt.prompt();
+    const { outcome } = await deferredPwaPrompt.userChoice;
+    console.log(`[PWA] User response to install prompt: ${outcome}`);
+    if (outcome === "accepted") {
+      triggerConfettiBurst();
+    }
+    deferredPwaPrompt = null;
+    const installBtn = document.getElementById("pwa-install-btn");
+    const mobInstallItem = document.getElementById("mob-pwa-install-item");
+    if (installBtn) installBtn.style.display = "none";
+    if (mobInstallItem) mobInstallItem.style.display = "none";
+  } else {
+    // Helpful guide for iOS Safari and other browsers
+    alert("[📲 Install TIT SIH App]\n\n• On iOS (Safari): Tap the Share icon (⎋) and select 'Add to Home Screen'.\n• On Android (Chrome): Tap the three dots (⋮) and select 'Install app' or 'Add to Home Screen'.\n• On Desktop (Chrome / Edge): Click the Install icon in the address bar.");
+  }
+};
 
 
 

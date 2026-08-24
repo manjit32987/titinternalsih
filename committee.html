@@ -16,6 +16,15 @@
   <meta name="theme-color" content="#059669">
   <link rel="canonical" href="https://titinternalsih.vercel.app/committee.html">
 
+  <!-- PWA Manifest & App Configuration -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="TIT SIH 2026">
+  <link rel="apple-touch-icon" href="tit_logo.png">
+  <link rel="icon" type="image/png" href="tit_logo.png">
+
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://titinternalsih.vercel.app/committee.html">
@@ -71,6 +80,10 @@
 
         <!-- Right Action Button -->
         <div class="nav-actions">
+          <!-- PWA Install Button -->
+          <button id="pwa-install-btn" class="btn-3d-outline" onclick="triggerPwaInstall()" style="display: none; padding: 7px 12px; font-size: 0.78rem; background: #ecfdf5; color: #065f46; border-color: #a7f3d0; align-items: center; gap: 6px;" title="Install TIT SIH Mobile App">
+            <i class="fa-solid fa-mobile-screen-button"></i> <span>Install App</span>
+          </button>
           <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme(event)" aria-label="Toggle Bright / Dark Theme" title="Toggle Bright / Dark Theme">
             <div class="theme-toggle-track">
               <div class="theme-toggle-thumb">
@@ -91,6 +104,11 @@
       <!-- Mobile Navigation Dropdown Menu -->
       <div class="mobile-nav-dropdown" id="mobile-nav-dropdown">
         <ul class="mobile-nav-links">
+          <li id="mob-pwa-install-item" style="display: none;">
+            <a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); triggerPwaInstall();" style="color: #059669; font-weight: 700;">
+              <i class="fa-solid fa-mobile-screen-button"></i> Install Mobile App
+            </a>
+          </li>
           <li><a href="index.html" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-house"></i> Home Portal</a></li>
           <li><a href="index.html#prizes" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-trophy"></i> Prizes & Awards</a></li>
           <li><a href="index.html#rules" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-scale-balanced"></i> Rules & Guidelines</a></li>
