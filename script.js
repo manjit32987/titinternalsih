@@ -589,7 +589,7 @@ function renderMembersRosterInputs() {
       <div class="member-input-card" style="${cardBgStyle}">
         <div class="member-card-header">
           <span class="member-badge-pill" style="${isRequired ? "" : "background:#f1f5f9; color:#475569;"}">${badgeText}</span>
-          <span style="font-size: 0.72rem; color: #64748b;">${isRequired ? "Required TIT Student" : "Optional (2-6 Members Allowed)"}</span>
+          <span style="font-size: 0.72rem; color: #64748b;">${isRequired ? "Required TIT Student (Min 2 Required)" : "Optional (Max 6 Allowed)"}</span>
         </div>
         <div class="form-row-2">
           <div class="form-group-item" style="margin-bottom: 8px;">
