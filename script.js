@@ -85,7 +85,7 @@ function checkUrlHashRouting() {
   const hash = window.location.hash.toLowerCase();
   if (hash === "#admin" || hash === "#spoc" || hash === "#jury") {
     setTimeout(() => openDedicatedAdminModal(), 300);
-  } else if (hash === "#rulebook" || hash === "#rules") {
+  } else if (hash === "#rulebook") {
     setTimeout(() => openRulebookModal(), 300);
   } else if (hash === "#samples" || hash === "#case-studies") {
     setTimeout(() => openSamplePSModal(), 300);
