@@ -1212,6 +1212,231 @@
     </div>
   </div>
 
+  <!-- Modal 6: Edit Team Info Modal (Leader Portal) -->
+  <div class="modal-overlay" id="edit-team-modal">
+    <div class="modal-container" style="max-width: 680px; text-align: left;">
+      <button class="modal-close-btn" onclick="closeEditTeamModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 20px;">
+        <div>
+          <h3 style="font-size: 1.35rem; font-weight: 800; color: #0f172a; margin-bottom: 2px;">
+            <i class="fa-solid fa-pen-to-square" style="color: #059669;"></i> Edit Team & Project Details
+          </h3>
+          <p style="color: #64748b; font-size: 0.82rem;">Update your team name, problem statement, or idea presentation</p>
+        </div>
+        <span id="edit-team-badge-id" class="status-badge" style="background:#ecfdf5; color:#065f46; font-family:var(--font-mono); font-weight:800;"></span>
+      </div>
+
+      <form id="edit-team-form" onsubmit="handleEditTeamSubmit(event)">
+        <input type="hidden" id="edit-team-id">
+        <div class="form-row-2">
+          <div class="form-group-item">
+            <label class="form-input-label">Team Name *</label>
+            <input type="text" id="edit-team-name" class="form-text-input" required>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Edition Category *</label>
+            <select id="edit-team-edition" class="form-select-input" required>
+              <option value="Software Edition">Software Edition</option>
+              <option value="Hardware Edition">Hardware Edition</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group-item">
+            <label class="form-input-label">Problem Statement ID *</label>
+            <input type="text" id="edit-team-ps-id" class="form-text-input" required>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">PS Theme / Domain *</label>
+            <select id="edit-team-ps-domain" class="form-select-input" required>
+              <option value="Disaster Management">Disaster Management</option>
+              <option value="Agriculture & Rural Dev">Agriculture & Rural Dev</option>
+              <option value="Clean & Green Energy">Clean & Green Energy</option>
+              <option value="Smart Education">Smart Education</option>
+              <option value="Robotics & Drones">Robotics & Drones</option>
+              <option value="Healthcare & Biotech">Healthcare & Biotech</option>
+              <option value="Cyber Security & Web3">Cyber Security & Web3</option>
+              <option value="Smart Automation & Cities">Smart Automation & Cities</option>
+              <option value="Heritage & Tourism">Heritage & Tourism</option>
+              <option value="Student Innovation (Open)">Student Innovation (Open Theme)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-input-label">Solution Title *</label>
+          <input type="text" id="edit-team-title" class="form-text-input" required>
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-input-label">Solution Abstract / Key Architecture *</label>
+          <textarea id="edit-team-abstract" class="form-textarea-input" rows="3" required></textarea>
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-input-label">Idea PPT Cloud Link (Google Drive / OneDrive) *</label>
+          <input type="url" id="edit-team-ppt-link" class="form-text-input" required>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
+          <button type="button" class="btn-3d-secondary" onclick="closeEditTeamModal()">Cancel</button>
+          <button type="submit" class="btn-3d-primary">
+            <i class="fa-solid fa-floppy-disk"></i> Save Team Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 7: Edit Member Modal -->
+  <div class="modal-overlay" id="edit-member-modal">
+    <div class="modal-container" style="max-width: 540px; text-align: left;">
+      <button class="modal-close-btn" onclick="closeEditMemberModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 18px;">
+        <h3 style="font-size: 1.3rem; font-weight: 800; color: #0f172a; margin-bottom: 2px;">
+          <i class="fa-solid fa-user-pen" style="color: #059669;"></i> Edit Member Details
+        </h3>
+        <p style="color: #64748b; font-size: 0.82rem;" id="edit-member-subhead">Update student contact, department, or roll number</p>
+      </div>
+
+      <form id="edit-member-form" onsubmit="handleEditMemberSubmit(event)">
+        <input type="hidden" id="edit-member-team-id">
+        <input type="hidden" id="edit-member-index">
+
+        <div class="form-row-2">
+          <div class="form-group-item">
+            <label class="form-input-label">Full Name *</label>
+            <input type="text" id="edit-m-name" class="form-text-input" required>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Roll Number *</label>
+            <input type="text" id="edit-m-roll" class="form-text-input" required>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group-item">
+            <label class="form-input-label">Department *</label>
+            <select id="edit-m-dept" class="form-select-input" required>
+              <option value="CSE">CSE</option>
+              <option value="IT">IT</option>
+              <option value="ECE">ECE</option>
+              <option value="EE">EE</option>
+              <option value="ME">ME</option>
+              <option value="CE">CE</option>
+              <option value="AI&DS">AI & DS</option>
+            </select>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Gender *</label>
+            <select id="edit-m-gender" class="form-select-input" required>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group-item">
+            <label class="form-input-label">Email ID *</label>
+            <input type="email" id="edit-m-email" class="form-text-input" required>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Mobile Phone *</label>
+            <input type="tel" id="edit-m-phone" class="form-text-input" maxlength="10" placeholder="10-digit mobile" required>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
+          <button type="button" class="btn-3d-secondary" onclick="closeEditMemberModal()">Cancel</button>
+          <button type="submit" class="btn-3d-primary">
+            <i class="fa-solid fa-check"></i> Update Member
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 8: Add Member Modal -->
+  <div class="modal-overlay" id="add-member-modal">
+    <div class="modal-container" style="max-width: 540px; text-align: left;">
+      <button class="modal-close-btn" onclick="closeAddMemberModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 18px;">
+        <h3 style="font-size: 1.3rem; font-weight: 800; color: #0f172a; margin-bottom: 2px;">
+          <i class="fa-solid fa-user-plus" style="color: #059669;"></i> Add Squad Member
+        </h3>
+        <p style="color: #64748b; font-size: 0.82rem;">Add an enrolled TIT student to your squad (max 6 members)</p>
+      </div>
+
+      <form id="add-member-form" onsubmit="handleAddMemberSubmit(event)">
+        <input type="hidden" id="add-member-team-id">
+
+        <div class="form-row-2">
+          <div class="form-group-item">
+            <label class="form-input-label">Full Name *</label>
+            <input type="text" id="add-m-name" class="form-text-input" placeholder="Student Name" required>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Roll Number *</label>
+            <input type="text" id="add-m-roll" class="form-text-input" placeholder="e.g. 21IT024" required>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group-item">
+            <label class="form-input-label">Department *</label>
+            <select id="add-m-dept" class="form-select-input" required>
+              <option value="CSE">CSE</option>
+              <option value="IT">IT</option>
+              <option value="ECE">ECE</option>
+              <option value="EE">EE</option>
+              <option value="ME">ME</option>
+              <option value="CE">CE</option>
+              <option value="AI&DS">AI & DS</option>
+            </select>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Gender *</label>
+            <select id="add-m-gender" class="form-select-input" required>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group-item">
+            <label class="form-input-label">Email ID *</label>
+            <input type="email" id="add-m-email" class="form-text-input" placeholder="student@titagartala.ac.in" required>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Mobile Phone *</label>
+            <input type="tel" id="add-m-phone" class="form-text-input" maxlength="10" placeholder="10-digit number" required>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
+          <button type="button" class="btn-3d-secondary" onclick="closeAddMemberModal()">Cancel</button>
+          <button type="submit" class="btn-3d-primary">
+            <i class="fa-solid fa-user-plus"></i> Add to Squad
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Canvas Confetti CDN -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 

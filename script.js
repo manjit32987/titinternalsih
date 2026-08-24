@@ -134,16 +134,15 @@ function startFirebaseRealtimeListeners() {
         cloudTeams.push(doc.data());
       });
 
-      if (cloudTeams.length > 0) {
-        registeredTeams = cloudTeams;
-        localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
-        renderStudentDashboard();
-        
-        // If admin console is open, re-render it live
-        const adminView = document.getElementById("admin-console-view");
-        if (adminView && adminView.style.display !== "none") {
-          renderAdminConsole();
-        }
+      // Always sync the exact array from cloud (even when teams are deleted or collection is empty)
+      registeredTeams = cloudTeams;
+      localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
+      renderStudentDashboard();
+      
+      // If admin console is open, re-render it live
+      const adminView = document.getElementById("admin-console-view");
+      if (adminView && adminView.style.display !== "none") {
+        renderAdminConsole();
       }
     },
     (error) => {
@@ -880,8 +879,8 @@ function renderStudentDashboard() {
   // Find team associated with current user
   const userTeam = registeredTeams.find(
     (t) =>
-      t.leaderEmail.toLowerCase() === currentUser.email.toLowerCase() ||
-      t.members.some((m) => m.email.toLowerCase() === currentUser.email.toLowerCase() || m.roll.toLowerCase() === currentUser.roll.toLowerCase())
+      (t.leaderEmail && t.leaderEmail.toLowerCase() === currentUser.email.toLowerCase()) ||
+      t.members.some((m) => m.email.toLowerCase() === currentUser.email.toLowerCase() || (m.roll && m.roll.toLowerCase() === (currentUser.roll || "").toLowerCase()))
   );
 
   if (!userTeam) {
@@ -889,10 +888,10 @@ function renderStudentDashboard() {
       <div class="dashboard-hero-card" style="text-align: center; padding: 48px 20px;">
         <div style="font-size: 2.4rem; color: #059669; margin-bottom: 12px;"><i class="fa-solid fa-users"></i></div>
         <h3 style="font-size: 1.4rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;">
-          Welcome, ${currentUser.name}
+          Welcome, ${escapeHtml(currentUser.name)}
         </h3>
         <p style="color: #64748b; font-size: 0.9rem; max-width: 540px; margin: 0 auto 24px; line-height: 1.5;">
-          You are currently not linked to any registered team. Assemble your squad (4 to 6 members) and register now to participate in the TIT SIH Internal Hackathon.
+          You are currently not linked to any active registered team. Assemble your squad (2 to 6 members) and register now to participate in the TIT SIH Internal Hackathon.
         </p>
         <button class="btn-3d-primary" onclick="triggerRegistration()" style="padding: 14px 28px;">
           <i class="fa-solid fa-plus"></i> Register Team
@@ -901,6 +900,11 @@ function renderStudentDashboard() {
     `;
     return;
   }
+
+  // Determine if current user is the Team Leader
+  const isLeader =
+    (userTeam.leaderEmail && userTeam.leaderEmail.toLowerCase() === currentUser.email.toLowerCase()) ||
+    (userTeam.members[0] && (userTeam.members[0].email.toLowerCase() === currentUser.email.toLowerCase() || (userTeam.members[0].roll && userTeam.members[0].roll.toLowerCase() === (currentUser.roll || "").toLowerCase())));
 
   // Render Registered Team Console
   let statusBadgeClass = "status-review";
@@ -918,33 +922,42 @@ function renderStudentDashboard() {
       <div class="dashboard-header-row">
         <div>
           <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;">
-            <span style="background: #059669; color: #ffffff; font-weight: 800; font-size: 0.85rem; padding: 4px 12px; border-radius: 6px;">
-              ${userTeam.teamId}
+            <span style="background: #059669; color: #ffffff; font-weight: 800; font-size: 0.85rem; padding: 4px 12px; border-radius: 6px; font-family: var(--font-mono);">
+              ${escapeHtml(userTeam.teamId)}
             </span>
             <span style="background: #ecfdf5; color: #065f46; font-weight: 700; font-size: 0.8rem; padding: 4px 12px; border-radius: 6px; border: 1px solid #a7f3d0;">
-              ${userTeam.edition}
+              ${escapeHtml(userTeam.edition)}
             </span>
-            <span style="font-size: 0.8rem; color: #64748b;">Registered: ${userTeam.createdAt}</span>
+            ${isLeader ? '<span style="background:#fef3c7; color:#92400e; font-weight:800; font-size:0.75rem; padding:4px 10px; border-radius:6px; border:1px solid #fde68a;"><i class="fa-solid fa-crown"></i> Team Leader</span>' : ''}
+            <span style="font-size: 0.8rem; color: #64748b;">Registered: ${escapeHtml(userTeam.createdAt)}</span>
           </div>
           <h2 style="font-size: 1.7rem; font-weight: 900; color: #0f172a; margin-bottom: 4px;">
-            Team ${userTeam.teamName}
+            Team ${escapeHtml(userTeam.teamName)}
           </h2>
           <p style="color: #475569; font-size: 0.92rem; font-weight: 600;">
-            <i class="fa-solid fa-bullseye" style="color: #059669;"></i> Target PS: <strong>${userTeam.psId}</strong> (${userTeam.domain})
+            <i class="fa-solid fa-bullseye" style="color: #059669;"></i> Target PS: <strong>${escapeHtml(userTeam.psId)}</strong> (${escapeHtml(userTeam.domain)})
           </p>
         </div>
 
         <div style="text-align: right;">
           <div class="dashboard-status-banner ${statusBadgeClass}">
-            <i class="fa-solid ${statusIcon}"></i> ${userTeam.status}
+            <i class="fa-solid ${statusIcon}"></i> ${escapeHtml(userTeam.status)}
           </div>
           <div style="margin-top: 10px; display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap;">
-            <button class="btn-3d-primary" onclick="openTeamPassModal('${userTeam.teamId}')" style="padding: 9px 18px; font-size: 0.85rem;">
-              <i class="fa-solid fa-id-card"></i> View Digital Pass
+            <button class="btn-3d-primary" onclick="openTeamPassModal('${userTeam.teamId}')" style="padding: 8px 14px; font-size: 0.82rem;">
+              <i class="fa-solid fa-id-card"></i> Digital Pass
             </button>
-            <a href="${userTeam.pptLink}" target="_blank" rel="noopener" class="btn-3d-outline" style="padding: 9px 18px; font-size: 0.85rem; background: #ffffff; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+            <a href="${escapeHtml(userTeam.pptLink)}" target="_blank" rel="noopener" class="btn-3d-outline" style="padding: 8px 14px; font-size: 0.82rem; background: #ffffff; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
               <i class="fa-solid fa-file-powerpoint" style="color: #ea580c;"></i> View PPT
             </a>
+            ${isLeader ? `
+              <button class="btn-3d-outline" onclick="openEditTeamModal('${userTeam.teamId}')" style="padding: 8px 14px; font-size: 0.82rem; background: #f0fdf4; color: #065f46; border-color: #a7f3d0;" title="Edit Problem Statement, Title & Presentation">
+                <i class="fa-solid fa-pen-to-square"></i> Edit Team
+              </button>
+              <button class="btn-3d-outline" onclick="deleteTeamByLeader('${userTeam.teamId}')" style="padding: 8px 14px; font-size: 0.82rem; background: #fff1f2; color: #dc2626; border-color: #fecdd3;" title="Permanently Delete Team from Database">
+                <i class="fa-solid fa-trash-can"></i> Delete Team
+              </button>
+            ` : ''}
           </div>
         </div>
       </div>
@@ -952,32 +965,58 @@ function renderStudentDashboard() {
       <!-- Problem & Solution Overview -->
       <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-bottom: 20px;">
         <h4 style="font-size: 0.98rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
-          ${userTeam.title}
+          ${escapeHtml(userTeam.title)}
         </h4>
         <p style="font-size: 0.88rem; color: #475569; line-height: 1.5; margin: 0;">
-          ${userTeam.abstract}
+          ${escapeHtml(userTeam.abstract)}
         </p>
       </div>
 
+      <!-- Squad Roster Header & Action -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+        <h4 style="font-size: 1.05rem; font-weight: 800; color: #064e3b; margin: 0; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-users"></i> Confirmed Squad Roster (${userTeam.members.length} Members)
+        </h4>
+        ${isLeader && userTeam.members.length < 6 ? `
+          <button class="btn-3d-primary" onclick="openAddMemberModal('${userTeam.teamId}')" style="padding: 6px 14px; font-size: 0.78rem;">
+            <i class="fa-solid fa-user-plus"></i> Add Squad Member (${userTeam.members.length}/6)
+          </button>
+        ` : ''}
+      </div>
+
       <!-- Squad Roster Grid -->
-      <h4 style="font-size: 1.05rem; font-weight: 800; color: #064e3b; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-        <i class="fa-solid fa-users"></i> Confirmed Squad Roster (${userTeam.members.length} Members)
-      </h4>
       <div class="dashboard-team-grid">
         ${userTeam.members
           .map(
-            (m) => `
+            (m, idx) => `
           <div class="dashboard-member-box ${m.isLeader ? "leader" : ""}">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <strong style="color: #0f172a; font-size: 0.92rem;">${m.name}</strong>
-              ${m.isLeader ? '<span class="member-badge-pill leader" style="font-size: 0.65rem;">LEADER</span>' : `<span style="font-size: 0.72rem; color: #64748b;">${m.gender}</span>`}
+              <strong style="color: #0f172a; font-size: 0.92rem;">${escapeHtml(m.name)}</strong>
+              ${m.isLeader ? '<span class="member-badge-pill leader" style="font-size: 0.65rem;">LEADER</span>' : `<span style="font-size: 0.72rem; color: #64748b; font-weight:600;">${escapeHtml(m.gender)}</span>`}
             </div>
             <div style="font-size: 0.78rem; color: #475569; margin-bottom: 3px;">
-              <i class="fa-solid fa-id-badge" style="color: #059669; width: 14px;"></i> ${m.roll} (${m.dept})
+              <i class="fa-solid fa-id-badge" style="color: #059669; width: 14px;"></i> ${escapeHtml(m.roll)} (${escapeHtml(m.dept)})
             </div>
-            <div style="font-size: 0.76rem; color: #64748b;">
-              <i class="fa-solid fa-envelope" style="color: #059669; width: 14px;"></i> ${m.email}
+            <div style="font-size: 0.76rem; color: #64748b; margin-bottom: 4px; word-break: break-all;">
+              <i class="fa-solid fa-envelope" style="color: #059669; width: 14px;"></i> ${escapeHtml(m.email)}
             </div>
+            ${m.phone ? `
+              <div style="font-size: 0.74rem; color: #64748b;">
+                <i class="fa-solid fa-phone" style="color: #059669; width: 14px;"></i> ${escapeHtml(m.phone)}
+              </div>
+            ` : ''}
+            ${isLeader ? `
+              <div style="display: flex; gap: 6px; margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 8px; justify-content: flex-end;">
+                <button onclick="openEditMemberModal('${userTeam.teamId}', ${idx})" class="btn-3d-outline" style="padding: 4px 10px; font-size: 0.72rem; background: #ffffff;" title="Edit Student Details">
+                  <i class="fa-solid fa-user-pen"></i> Edit
+                </button>
+                ${!m.isLeader && idx > 0 ? `
+                  <button onclick="deleteMemberByLeader('${userTeam.teamId}', ${idx})" class="btn-3d-outline" style="padding: 4px 10px; font-size: 0.72rem; background: #fff1f2; color: #dc2626; border-color: #fecdd3;" title="Remove from Team">
+                    <i class="fa-solid fa-trash-can"></i> Remove
+                  </button>
+                ` : ''}
+              </div>
+            ` : ''}
           </div>
         `
           )
@@ -986,6 +1025,369 @@ function renderStudentDashboard() {
     </div>
   `;
 }
+
+/* ==========================================================================
+   4.5 LEADER TEAM & MEMBER EDIT/DELETE ENGINE
+   ========================================================================== */
+window.openEditTeamModal = (teamId) => {
+  const team = registeredTeams.find((t) => t.teamId === teamId);
+  if (!team) return;
+
+  const modal = document.getElementById("edit-team-modal");
+  if (!modal) return;
+
+  document.getElementById("edit-team-id").value = team.teamId;
+  document.getElementById("edit-team-badge-id").textContent = team.teamId;
+  document.getElementById("edit-team-name").value = team.teamName || "";
+  document.getElementById("edit-team-edition").value = team.edition || "Software Edition";
+  document.getElementById("edit-team-ps-id").value = team.psId || "";
+  document.getElementById("edit-team-ps-domain").value = team.domain || "Student Innovation (Open)";
+  document.getElementById("edit-team-title").value = team.title || "";
+  document.getElementById("edit-team-abstract").value = team.abstract || "";
+  document.getElementById("edit-team-ppt-link").value = team.pptLink || "";
+
+  modal.classList.add("active");
+};
+
+window.closeEditTeamModal = () => {
+  const modal = document.getElementById("edit-team-modal");
+  if (modal) modal.classList.remove("active");
+};
+
+window.handleEditTeamSubmit = (event) => {
+  event.preventDefault();
+  const teamId = document.getElementById("edit-team-id").value;
+  const team = registeredTeams.find((t) => t.teamId === teamId);
+  if (!team) return;
+
+  const teamName = document.getElementById("edit-team-name").value.trim();
+  const edition = document.getElementById("edit-team-edition").value;
+  const psId = document.getElementById("edit-team-ps-id").value.trim();
+  const domain = document.getElementById("edit-team-ps-domain").value;
+  const title = document.getElementById("edit-team-title").value.trim();
+  const abstract = document.getElementById("edit-team-abstract").value.trim();
+  const pptLink = document.getElementById("edit-team-ppt-link").value.trim();
+
+  if (!teamName || !psId || !title || !abstract || !pptLink) {
+    alert("[TIT SIH Error] Please fill in all required fields.");
+    return;
+  }
+
+  if (!isValidUrl(pptLink)) {
+    alert("[TIT SIH Error] Please enter a valid URL (http:// or https://) for the Idea PPT deck.");
+    return;
+  }
+
+  team.teamName = teamName;
+  team.edition = edition;
+  team.psId = psId;
+  team.domain = domain;
+  team.title = title;
+  team.abstract = abstract;
+  team.pptLink = pptLink;
+  team.lastModifiedAt = new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+
+  localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
+
+  if (isFirebaseActive && db) {
+    db.collection("teams").doc(teamId).set(team).catch((err) => {
+      console.warn("Firestore update team notice:", err);
+    });
+  }
+
+  closeEditTeamModal();
+  renderStudentDashboard();
+  if (document.getElementById("admin-console-view")?.style.display !== "none") {
+    renderAdminConsole();
+  }
+
+  alert(`[TIT SIH] Team "${teamName}" details have been updated successfully.`);
+};
+
+window.openEditMemberModal = (teamId, memberIdx) => {
+  const team = registeredTeams.find((t) => t.teamId === teamId);
+  if (!team || !team.members[memberIdx]) return;
+
+  const member = team.members[memberIdx];
+  const modal = document.getElementById("edit-member-modal");
+  if (!modal) return;
+
+  document.getElementById("edit-member-team-id").value = teamId;
+  document.getElementById("edit-member-index").value = memberIdx;
+  document.getElementById("edit-member-subhead").textContent = member.isLeader
+    ? `Editing Team Leader details (${team.teamName})`
+    : `Editing Member ${memberIdx + 1} details (${team.teamName})`;
+
+  document.getElementById("edit-m-name").value = member.name || "";
+  document.getElementById("edit-m-roll").value = member.roll || "";
+  document.getElementById("edit-m-dept").value = member.dept || "CSE";
+  document.getElementById("edit-m-gender").value = member.gender || "Female";
+  document.getElementById("edit-m-email").value = member.email || "";
+  document.getElementById("edit-m-phone").value = member.phone || "";
+
+  modal.classList.add("active");
+};
+
+window.closeEditMemberModal = () => {
+  const modal = document.getElementById("edit-member-modal");
+  if (modal) modal.classList.remove("active");
+};
+
+window.handleEditMemberSubmit = (event) => {
+  event.preventDefault();
+  const teamId = document.getElementById("edit-member-team-id").value;
+  const memberIdx = parseInt(document.getElementById("edit-member-index").value, 10);
+  const team = registeredTeams.find((t) => t.teamId === teamId);
+  if (!team || !team.members[memberIdx]) return;
+
+  const name = document.getElementById("edit-m-name").value.trim();
+  const roll = document.getElementById("edit-m-roll").value.trim();
+  const dept = document.getElementById("edit-m-dept").value;
+  const gender = document.getElementById("edit-m-gender").value;
+  const email = document.getElementById("edit-m-email").value.trim();
+  const phone = document.getElementById("edit-m-phone").value.trim();
+
+  if (!name || !roll || !email || !phone) {
+    alert("[TIT SIH Error] Please fill in all member fields.");
+    return;
+  }
+
+  // Duplicate roll check in same team
+  const isDuplicateRoll = team.members.some((m, idx) => idx !== memberIdx && m.roll.toLowerCase() === roll.toLowerCase());
+  if (isDuplicateRoll) {
+    alert(`[TIT SIH Error] Roll Number "${roll}" is already assigned to another member in this team.`);
+    return;
+  }
+
+  // Duplicate email check in same team
+  const isDuplicateEmail = team.members.some((m, idx) => idx !== memberIdx && m.email.toLowerCase() === email.toLowerCase());
+  if (isDuplicateEmail) {
+    alert(`[TIT SIH Error] Email "${email}" is already used by another member in this team.`);
+    return;
+  }
+
+  if (!isValidEmail(email)) {
+    alert("[TIT SIH Error] Please enter a valid email address.");
+    return;
+  }
+
+  if (!isValidPhone(phone)) {
+    alert("[TIT SIH Error] Please enter a valid 10-digit mobile phone number.");
+    return;
+  }
+
+  // Mandatory Female Quota check: Ensure at least 1 female remains in the squad
+  const otherFemales = team.members.filter((m, idx) => idx !== memberIdx && m.gender === "Female").length;
+  if (otherFemales === 0 && gender !== "Female") {
+    alert("[TIT SIH Error] Mandatory Rule: Your squad must have at least ONE female student member. You cannot set this member's gender to Male/Other because she is currently the only female member in your squad.");
+    return;
+  }
+
+  team.members[memberIdx].name = name;
+  team.members[memberIdx].roll = roll;
+  team.members[memberIdx].dept = dept;
+  team.members[memberIdx].gender = gender;
+  team.members[memberIdx].email = email;
+  team.members[memberIdx].phone = phone;
+
+  // If leader was edited, keep leaderEmail synced
+  if (memberIdx === 0 || team.members[memberIdx].isLeader) {
+    team.leaderEmail = email;
+  }
+
+  localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
+
+  if (isFirebaseActive && db) {
+    db.collection("teams").doc(teamId).set(team).catch((err) => {
+      console.warn("Firestore update member notice:", err);
+    });
+  }
+
+  closeEditMemberModal();
+  renderStudentDashboard();
+  if (document.getElementById("admin-console-view")?.style.display !== "none") {
+    renderAdminConsole();
+  }
+
+  alert(`[TIT SIH] Member "${name}" details updated successfully.`);
+};
+
+window.openAddMemberModal = (teamId) => {
+  const team = registeredTeams.find((t) => t.teamId === teamId);
+  if (!team) return;
+
+  if (team.members.length >= 6) {
+    alert("[TIT SIH] Your squad already contains the maximum allowed limit of 6 members.");
+    return;
+  }
+
+  const modal = document.getElementById("add-member-modal");
+  if (!modal) return;
+
+  document.getElementById("add-member-team-id").value = teamId;
+  document.getElementById("add-m-name").value = "";
+  document.getElementById("add-m-roll").value = "";
+  document.getElementById("add-m-email").value = "";
+  document.getElementById("add-m-phone").value = "";
+
+  modal.classList.add("active");
+};
+
+window.closeAddMemberModal = () => {
+  const modal = document.getElementById("add-member-modal");
+  if (modal) modal.classList.remove("active");
+};
+
+window.handleAddMemberSubmit = (event) => {
+  event.preventDefault();
+  const teamId = document.getElementById("add-member-team-id").value;
+  const team = registeredTeams.find((t) => t.teamId === teamId);
+  if (!team) return;
+
+  if (team.members.length >= 6) {
+    alert("[TIT SIH] Your squad already has the maximum allowed limit of 6 members.");
+    return;
+  }
+
+  const name = document.getElementById("add-m-name").value.trim();
+  const roll = document.getElementById("add-m-roll").value.trim();
+  const dept = document.getElementById("add-m-dept").value;
+  const gender = document.getElementById("add-m-gender").value;
+  const email = document.getElementById("add-m-email").value.trim();
+  const phone = document.getElementById("add-m-phone").value.trim();
+
+  if (!name || !roll || !email || !phone) {
+    alert("[TIT SIH Error] Please fill in all fields to add the member.");
+    return;
+  }
+
+  // Check duplicate roll in team
+  if (team.members.some((m) => m.roll.toLowerCase() === roll.toLowerCase())) {
+    alert(`[TIT SIH Error] Roll Number "${roll}" is already in this team.`);
+    return;
+  }
+
+  // Check duplicate email in team
+  if (team.members.some((m) => m.email.toLowerCase() === email.toLowerCase())) {
+    alert(`[TIT SIH Error] Email "${email}" is already in this team.`);
+    return;
+  }
+
+  if (!isValidEmail(email)) {
+    alert("[TIT SIH Error] Please enter a valid email address.");
+    return;
+  }
+
+  if (!isValidPhone(phone)) {
+    alert("[TIT SIH Error] Please enter a valid 10-digit mobile phone number.");
+    return;
+  }
+
+  team.members.push({
+    name,
+    roll,
+    dept,
+    gender,
+    email,
+    phone,
+    isLeader: false
+  });
+
+  localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
+
+  if (isFirebaseActive && db) {
+    db.collection("teams").doc(teamId).set(team).catch((err) => {
+      console.warn("Firestore add member notice:", err);
+    });
+  }
+
+  closeAddMemberModal();
+  renderStudentDashboard();
+  if (document.getElementById("admin-console-view")?.style.display !== "none") {
+    renderAdminConsole();
+  }
+
+  alert(`[TIT SIH] Member "${name}" has been added to Team "${team.teamName}".`);
+};
+
+window.deleteMemberByLeader = (teamId, memberIdx) => {
+  const team = registeredTeams.find((t) => t.teamId === teamId);
+  if (!team || !team.members[memberIdx]) return;
+
+  const member = team.members[memberIdx];
+
+  if (member.isLeader || memberIdx === 0) {
+    alert("[TIT SIH Error] The Team Leader cannot be deleted. If you wish to disband the team, please use the 'Delete Team' button.");
+    return;
+  }
+
+  // Rule 1: Minimum 2 members required
+  if (team.members.length <= 2) {
+    alert("[TIT SIH Error] A team must have a minimum of 2 members (Leader + 1 Member). You cannot remove this member unless you replace them first.");
+    return;
+  }
+
+  // Rule 2: Mandatory female member check
+  if (member.gender === "Female") {
+    const totalFemales = team.members.filter((m) => m.gender === "Female").length;
+    if (totalFemales <= 1) {
+      alert("[TIT SIH Error] Mandatory Rule: Your squad must have at least 1 female student member. You cannot remove this member as she is the only female member in your squad.");
+      return;
+    }
+  }
+
+  if (confirm(`Are you sure you want to remove ${member.name} (${member.roll}) from Team "${team.teamName}"?`)) {
+    team.members.splice(memberIdx, 1);
+    localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
+
+    if (isFirebaseActive && db) {
+      db.collection("teams").doc(teamId).set(team).catch((err) => {
+        console.warn("Firestore remove member notice:", err);
+      });
+    }
+
+    renderStudentDashboard();
+    if (document.getElementById("admin-console-view")?.style.display !== "none") {
+      renderAdminConsole();
+    }
+
+    alert(`[TIT SIH] Member "${member.name}" has been removed from Team "${team.teamName}".`);
+  }
+};
+
+window.deleteTeamByLeader = (teamId) => {
+  const team = registeredTeams.find((t) => t.teamId === teamId);
+  if (!team) return;
+
+  const confirmMsg = `CONFIRM PERMANENT TEAM DELETION\n\nAre you sure you want to delete your team "${team.teamName}" (ID: ${team.teamId})?\n\n• All squad members and project submissions will be permanently deleted from the database.\n• This action cannot be undone.`;
+
+  if (confirm(confirmMsg)) {
+    // 1. Remove from local array
+    registeredTeams = registeredTeams.filter((t) => t.teamId !== teamId);
+    localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
+
+    // 2. Delete from Firebase Firestore if active
+    if (isFirebaseActive && db) {
+      db.collection("teams")
+        .doc(teamId)
+        .delete()
+        .then(() => {
+          console.log(`Team ${teamId} permanently deleted from Firestore by Leader.`);
+        })
+        .catch((err) => {
+          console.warn("Firestore delete team notice:", err);
+        });
+    }
+
+    // 3. Re-render student dashboard & SPOC console
+    renderStudentDashboard();
+    if (document.getElementById("admin-console-view")?.style.display !== "none") {
+      renderAdminConsole();
+    }
+
+    alert(`[TIT SIH] Your team "${team.teamName}" has been successfully deleted from the database.`);
+  }
+};
 
 /* ==========================================================================
    5. DIGITAL TEAM PASS / VERIFICATION SLIP GENERATOR
