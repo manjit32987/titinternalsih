@@ -1376,6 +1376,184 @@ button {
   border: 1px solid #fde68a;
 }
 
+/* ==========================================================================
+   OFFICIAL RULES & GUIDELINES SECTION
+   ========================================================================== */
+.rules-section {
+  padding: 90px 0;
+  background-color: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  position: relative;
+}
+
+.rules-highlight-banner {
+  background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
+  border-radius: var(--radius-xl);
+  padding: 24px 28px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 36px;
+  box-shadow: 0 12px 30px rgba(6, 78, 59, 0.18);
+  border: 1px solid rgba(167, 243, 208, 0.3);
+}
+
+.rules-highlight-icon {
+  width: 54px;
+  height: 54px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #a7f3d0;
+  flex-shrink: 0;
+}
+
+.rules-highlight-text h4 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+
+.rules-highlight-text p {
+  font-size: 0.92rem;
+  color: #d1fae5;
+  margin: 0;
+  line-height: 1.55;
+}
+
+.rules-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 22px;
+  margin-bottom: 36px;
+}
+
+.rule-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.rule-card:hover {
+  transform: translateY(-4px);
+  border-color: #a7f3d0;
+  box-shadow: 0 14px 28px -6px rgba(5, 150, 105, 0.12);
+}
+
+.rule-card-alert {
+  border-color: #fecaca;
+  background: #fffafa;
+}
+
+.rule-card-alert:hover {
+  border-color: #f87171;
+  box-shadow: 0 14px 28px -6px rgba(220, 38, 38, 0.12);
+}
+
+.rule-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.rule-badge-num {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #059669;
+  background: #ecfdf5;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #a7f3d0;
+}
+
+.rule-badge-mandatory {
+  color: #dc2626;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.rule-card-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.76rem;
+  font-weight: 700;
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.tag-mandatory {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.rule-card-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.rule-card-desc {
+  font-size: 0.88rem;
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  flex-grow: 1;
+}
+
+.rule-card-footer {
+  padding-top: 12px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #059669;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-mandatory {
+  color: #dc2626;
+}
+
+.rules-bottom-cta {
+  background: #ffffff;
+  border: 1px solid var(--border-emerald);
+  border-radius: var(--radius-xl);
+  padding: 22px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
+}
+
 /* SIH Official Rules Infographic Card */
 .rules-info-card {
   background: #f8fafc;

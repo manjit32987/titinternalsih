@@ -578,8 +578,8 @@ function renderMembersRosterInputs() {
 
   // Members 2 to 6
   for (let i = 2; i <= 6; i++) {
-    const isRequired = i <= 4;
-    const badgeText = isRequired ? `Member ${i} (Required)` : `Member ${i} (Optional - Participant Choice)`;
+    const isRequired = i <= 2;
+    const badgeText = isRequired ? `Member ${i} (Required)` : `Member ${i} (Optional for Internal Round)`;
     const requiredMarker = isRequired ? " *" : "";
     const cardBgStyle = isRequired ? "" : "background: #f8fafc; border-style: dashed;";
 
@@ -587,7 +587,7 @@ function renderMembersRosterInputs() {
       <div class="member-input-card" style="${cardBgStyle}">
         <div class="member-card-header">
           <span class="member-badge-pill" style="${isRequired ? "" : "background:#f1f5f9; color:#475569;"}">${badgeText}</span>
-          <span style="font-size: 0.72rem; color: #64748b;">${isRequired ? "Required TIT Student" : "Optional 5th/6th Member"}</span>
+          <span style="font-size: 0.72rem; color: #64748b;">${isRequired ? "Required TIT Student" : "Optional (2-6 Members Allowed)"}</span>
         </div>
         <div class="form-row-2">
           <div class="form-group-item" style="margin-bottom: 8px;">
@@ -646,14 +646,12 @@ window.checkRosterFemaleQuota = () => {
   const m1Gender = document.getElementById("m1-gender");
   if (m1Gender && m1Gender.value === "Female") femaleCount++;
 
-  // Check Members 2 to 4 (Required)
-  for (let i = 2; i <= 4; i++) {
-    const genderSel = document.getElementById(`m${i}-gender`);
-    if (genderSel && genderSel.value === "Female") femaleCount++;
-  }
+  // Check Member 2 (Required)
+  const m2Gender = document.getElementById("m2-gender");
+  if (m2Gender && m2Gender.value === "Female") femaleCount++;
 
-  // Check Members 5 and 6 (Only count if name or roll is filled)
-  for (let i = 5; i <= 6; i++) {
+  // Check Members 3 to 6 (Only count if name or roll is filled)
+  for (let i = 3; i <= 6; i++) {
     const nameInput = document.getElementById(`m${i}-name`);
     const genderSel = document.getElementById(`m${i}-gender`);
     if (nameInput && nameInput.value.trim() !== "" && genderSel && genderSel.value === "Female") {
@@ -724,13 +722,13 @@ window.handleTeamRegistrationSubmit = (e) => {
     return;
   }
 
-  // Extract and strictly validate 4 required members and optional 5th/6th members
+  // Extract and strictly validate 2 required members and optional 3rd-6th members
   const members = [];
   const rollSet = new Set();
   const emailSet = new Set();
 
   for (let i = 1; i <= 6; i++) {
-    const isRequired = i <= 4;
+    const isRequired = i <= 2;
     const nameEl = document.getElementById(`m${i}-name`);
     const rollEl = document.getElementById(`m${i}-roll`);
     const deptEl = document.getElementById(`m${i}-dept`);
@@ -745,7 +743,7 @@ window.handleTeamRegistrationSubmit = (e) => {
     const email = emailEl ? emailEl.value.trim().toLowerCase() : "";
     const phone = phoneEl ? phoneEl.value.trim() : "";
 
-    // For optional members 5 and 6, skip if empty
+    // For optional members 3 to 6, skip if empty
     if (!isRequired && !name && !roll && !email) {
       continue;
     }
@@ -793,9 +791,9 @@ window.handleTeamRegistrationSubmit = (e) => {
     });
   }
 
-  // Validate team size minimum 4 members
-  if (members.length < 4) {
-    alert("[TIT SIH Error] A minimum of 4 members (Member 1 to 4) is required to register a team.");
+  // Validate team size minimum 2 members
+  if (members.length < 2) {
+    alert("[TIT SIH Error] A minimum of 2 members (Leader + 1 Member) is required to register a team.");
     return;
   }
 
