@@ -71,7 +71,6 @@ function escapeHtml(str) {
 
 // Initialize Everything on DOM Load
 document.addEventListener("DOMContentLoaded", () => {
-  initHackathonIntro();
   initTheme();
   initPwaEngine();
   initFirebaseCloud();
@@ -2422,110 +2421,6 @@ window.triggerPwaInstall = async () => {
     if (mobInstallItem) mobInstallItem.style.display = "none";
   } else {
     alert("[📲 Install TIT SIH App]\n\n• On iOS (Safari): Tap the Share icon (⎋) and select 'Add to Home Screen'.\n• On Android (Chrome): Tap the three dots (⋮) and select 'Install app' or 'Add to Home Screen'.\n• On Desktop (Chrome / Edge): Click the Install icon in the address bar.");
-  }
-};
-
-/* ==========================================================================
-   17. CINEMATIC VIDEO-STYLE HACKATHON TRAILER INTRO ENGINE
-   ========================================================================== */
-let introTimer = null;
-let introAnimInterval = null;
-let cinemaCanvasRaf = null;
-
-function initHackathonIntro() {
-  const introOverlay = document.getElementById("hackathon-intro-overlay");
-  if (!introOverlay) return;
-
-  // Check if intro has already been played this browser session
-  const hasSeenIntro = sessionStorage.getItem("tit_sih_intro_played");
-  if (hasSeenIntro) {
-    introOverlay.style.display = "none";
-    return;
-  }
-
-  // Setup Ambient Cinematic Dust Particles Canvas
-  const canvas = document.getElementById("cinema-particles-canvas");
-  if (canvas) {
-    const ctx = canvas.getContext("2d");
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
-
-    window.addEventListener("resize", () => {
-      if (canvas) {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-      }
-    });
-
-    const particles = [];
-    for (let i = 0; i < 35; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        radius: Math.random() * 2 + 0.8,
-        speedX: (Math.random() - 0.5) * 0.4,
-        speedY: -Math.random() * 0.6 - 0.2,
-        opacity: Math.random() * 0.6 + 0.2,
-        color: Math.random() > 0.4 ? "#22c55e" : "#38bdf8"
-      });
-    }
-
-    function renderCinemaParticles() {
-      ctx.clearRect(0, 0, width, height);
-      particles.forEach((p) => {
-        p.x += p.speedX;
-        p.y += p.speedY;
-        if (p.y < 0) p.y = height;
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = p.opacity;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = p.color;
-        ctx.fill();
-      });
-      cinemaCanvasRaf = requestAnimationFrame(renderCinemaParticles);
-    }
-    renderCinemaParticles();
-  }
-
-  // 3-Second Smooth Video Timeline Progress Scrubber
-  const progressFill = document.getElementById("cinema-progress-fill");
-  let progress = 0;
-  const totalDuration = 3200; // 3.2 seconds
-  const intervalTime = 40;
-  const step = (intervalTime / totalDuration) * 100;
-
-  introAnimInterval = setInterval(() => {
-    progress += step;
-    if (progress > 100) progress = 100;
-
-    if (progressFill) progressFill.style.width = `${progress}%`;
-
-    if (progress >= 100) {
-      clearInterval(introAnimInterval);
-      introTimer = setTimeout(() => {
-        dismissHackathonIntro();
-      }, 150);
-    }
-  }, intervalTime);
-}
-
-window.dismissHackathonIntro = () => {
-  if (introAnimInterval) clearInterval(introAnimInterval);
-  if (introTimer) clearTimeout(introTimer);
-  if (cinemaCanvasRaf) cancelAnimationFrame(cinemaCanvasRaf);
-
-  const introOverlay = document.getElementById("hackathon-intro-overlay");
-  if (introOverlay) {
-    introOverlay.classList.add("dismissed");
-    sessionStorage.setItem("tit_sih_intro_played", "1");
-    setTimeout(() => {
-      introOverlay.style.display = "none";
-    }, 850);
   }
 };
 
