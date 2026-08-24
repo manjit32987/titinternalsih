@@ -325,10 +325,7 @@
 
       <!-- Department Branch Filter Tabs -->
       <div class="branch-filter-bar">
-        <button class="branch-filter-btn active" data-branch="all" onclick="filterDepartmentBranch('all')">
-          <i class="fa-solid fa-layer-group"></i> All 5 Branches
-        </button>
-        <button class="branch-filter-btn" data-branch="ece" onclick="filterDepartmentBranch('ece')">
+        <button class="branch-filter-btn active" data-branch="ece" onclick="filterDepartmentBranch('ece')">
           <i class="fa-solid fa-satellite-dish"></i> ECE
         </button>
         <button class="branch-filter-btn" data-branch="cse" onclick="filterDepartmentBranch('cse')">
@@ -337,22 +334,22 @@
         <button class="branch-filter-btn" data-branch="ee" onclick="filterDepartmentBranch('ee')">
           <i class="fa-solid fa-bolt"></i> EE
         </button>
-        <button class="branch-filter-btn" data-branch="me" onclick="filterDepartmentBranch('me')">
-          <i class="fa-solid fa-wrench"></i> ME
-        </button>
         <button class="branch-filter-btn" data-branch="ce" onclick="filterDepartmentBranch('ce')">
           <i class="fa-solid fa-compass-drafting"></i> CE
         </button>
+        <button class="branch-filter-btn" data-branch="me" onclick="filterDepartmentBranch('me')">
+          <i class="fa-solid fa-wrench"></i> ME
+        </button>
       </div>
 
-      <!-- 1. ECE Branch Block -->
-      <div class="dept-branch-block open" data-branch="ece">
+      <!-- 1. ECE Branch Block (Active by default) -->
+      <div class="dept-branch-block open" data-branch="ece" style="display: block;">
         <div class="dept-branch-header" onclick="toggleBranchAccordion('ece')">
           <div class="dept-header-left">
             <h3 class="dept-branch-title">
               <i class="fa-solid fa-satellite-dish" style="color: #059669;"></i> Electronics & Communication Engineering (ECE)
             </h3>
-            <span class="dept-badge-summary"><i class="fa-solid fa-users"></i> 8 Coordinators • 1st to 4th Year</span>
+            <span class="dept-badge-summary"><i class="fa-solid fa-users"></i> 5 Coordinators</span>
           </div>
           <div class="dept-header-right">
             <button class="dept-accordion-chevron" aria-label="Toggle ECE Coordinators">
@@ -415,36 +412,10 @@
                 <a href="https://www.instagram.com/bani.kneelotpal?igsi=NWF4MXBpeTZ3bzQ1" target="_blank" rel="noopener" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
               </div>
             </div>
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-microchip"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Female)</h3>
-              <span class="committee-designation">3rd Year • ECE</span>
-              <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ECE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ECE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
           </div>
 
           <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 2nd Year</div>
           <div class="committee-grid" style="margin-bottom: 20px;">
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon"><i class="fa-solid fa-microchip"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Male)</h3>
-              <span class="committee-designation">2nd Year • ECE</span>
-              <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ECE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ECE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
             <div class="committee-card">
               <div class="committee-avatar-wrap" style="overflow: hidden; padding: 0;">
                 <img src="coordinators/anurati_bhowmik.jpg" alt="Anurati Bhowmik - 2nd Year ECE Coordinator" width="96" height="96" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 50%;">
@@ -479,31 +450,18 @@
                 <a href="https://www.instagram.com/samvhuu?igsi=MTFoOHNyZmIzY255bQ==" target="_blank" rel="noopener" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
               </div>
             </div>
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-microchip"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Female)</h3>
-              <span class="committee-designation">1st Year • ECE</span>
-              <p class="committee-dept">Dept. of Electronics & Communication Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ECE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ECE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
           </div>
         </div>
       </div>
 
       <!-- 2. CSE Branch Block -->
-      <div class="dept-branch-block" data-branch="cse">
+      <div class="dept-branch-block" data-branch="cse" style="display: none;">
         <div class="dept-branch-header" onclick="toggleBranchAccordion('cse')">
           <div class="dept-header-left">
             <h3 class="dept-branch-title">
               <i class="fa-solid fa-laptop-code" style="color: #059669;"></i> Computer Science & Engineering (CSE)
             </h3>
-            <span class="dept-badge-summary"><i class="fa-solid fa-users"></i> 8 Coordinators • 1st to 4th Year</span>
+            <span class="dept-badge-summary"><i class="fa-solid fa-users"></i> 3 Coordinators</span>
           </div>
           <div class="dept-header-right">
             <button class="dept-accordion-chevron" aria-label="Toggle CSE Coordinators">
@@ -548,66 +506,6 @@
             </div>
           </div>
 
-          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 3rd Year (Pre-Final Year)</div>
-          <div class="committee-grid" style="margin-bottom: 20px;">
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon"><i class="fa-solid fa-laptop-code"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Male)</h3>
-              <span class="committee-designation">3rd Year • CSE</span>
-              <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CSE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CSE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-laptop-code"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Female)</h3>
-              <span class="committee-designation">3rd Year • CSE</span>
-              <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CSE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CSE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 2nd Year</div>
-          <div class="committee-grid" style="margin-bottom: 20px;">
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon"><i class="fa-solid fa-laptop-code"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Male)</h3>
-              <span class="committee-designation">2nd Year • CSE</span>
-              <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CSE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CSE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-laptop-code"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Female)</h3>
-              <span class="committee-designation">2nd Year • CSE</span>
-              <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CSE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CSE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-          </div>
-
           <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 1st Year</div>
           <div class="committee-grid">
             <div class="committee-card">
@@ -624,31 +522,18 @@
                 <a href="https://wa.me/919862869421?text=Hello%20Ronit,%20regarding%20TIT%20SIH%20Hackathon" target="_blank" rel="noopener" title="WhatsApp Ronit"><i class="fa-brands fa-whatsapp"></i></a>
               </div>
             </div>
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-laptop-code"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Female)</h3>
-              <span class="committee-designation">1st Year • CSE</span>
-              <p class="committee-dept">Dept. of Computer Science & Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CSE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CSE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
           </div>
         </div>
       </div>
 
       <!-- 3. EE Branch Block -->
-      <div class="dept-branch-block" data-branch="ee">
+      <div class="dept-branch-block" data-branch="ee" style="display: none;">
         <div class="dept-branch-header" onclick="toggleBranchAccordion('ee')">
           <div class="dept-header-left">
             <h3 class="dept-branch-title">
               <i class="fa-solid fa-bolt" style="color: #059669;"></i> Electrical Engineering (EE)
             </h3>
-            <span class="dept-badge-summary"><i class="fa-solid fa-users"></i> 8 Coordinators • 1st to 4th Year</span>
+            <span class="dept-badge-summary"><i class="fa-solid fa-users"></i> 4 Coordinators</span>
           </div>
           <div class="dept-header-right">
             <button class="dept-accordion-chevron" aria-label="Toggle EE Coordinators">
@@ -697,19 +582,6 @@
           <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 3rd Year (Pre-Final Year)</div>
           <div class="committee-grid" style="margin-bottom: 20px;">
             <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon"><i class="fa-solid fa-plug"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Male)</h3>
-              <span class="committee-designation">3rd Year • EE</span>
-              <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20EE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20EE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-            <div class="committee-card">
               <div class="committee-avatar-wrap" style="overflow: hidden; padding: 0;">
                 <img src="coordinators/sreya_deb.jpg" alt="Sreya Deb - 3rd Year EE Coordinator" width="96" height="96" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 50%;">
                 <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-plug"></i></span>
@@ -728,20 +600,7 @@
           </div>
 
           <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 2nd Year</div>
-          <div class="committee-grid" style="margin-bottom: 20px;">
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon"><i class="fa-solid fa-plug"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Male)</h3>
-              <span class="committee-designation">2nd Year • EE</span>
-              <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20EE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20EE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
+          <div class="committee-grid">
             <div class="committee-card">
               <div class="committee-avatar-wrap" style="overflow: hidden; padding: 0;">
                 <img src="coordinators/simran_das.jpg" alt="Simran Das - 2nd Year EE Coordinator" width="96" height="96" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 50%;">
@@ -759,186 +618,17 @@
               </div>
             </div>
           </div>
-
-          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 1st Year</div>
-          <div class="committee-grid">
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon"><i class="fa-solid fa-plug"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Male)</h3>
-              <span class="committee-designation">1st Year • EE</span>
-              <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20EE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20EE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-plug"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Female)</h3>
-              <span class="committee-designation">1st Year • EE</span>
-              <p class="committee-dept">Dept. of Electrical Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20EE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20EE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
-      <!-- 4. ME Branch Block -->
-      <div class="dept-branch-block" data-branch="me">
-        <div class="dept-branch-header" onclick="toggleBranchAccordion('me')">
-          <div class="dept-header-left">
-            <h3 class="dept-branch-title">
-              <i class="fa-solid fa-wrench" style="color: #059669;"></i> Mechanical Engineering (ME)
-            </h3>
-            <span class="dept-badge-summary"><i class="fa-solid fa-users"></i> 8 Coordinators • 1st to 4th Year</span>
-          </div>
-          <div class="dept-header-right">
-            <button class="dept-accordion-chevron" aria-label="Toggle ME Coordinators">
-              <i class="fa-solid fa-chevron-down"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="dept-branch-content">
-          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 4th Year (Final Year)</div>
-          <div class="committee-grid" style="margin-bottom: 20px;">
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon"><i class="fa-solid fa-wrench"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Male)</h3>
-              <span class="committee-designation">4th Year • ME</span>
-              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ME%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ME%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-wrench"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Female)</h3>
-              <span class="committee-designation">4th Year • ME</span>
-              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ME%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ME%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 3rd Year (Pre-Final Year)</div>
-          <div class="committee-grid" style="margin-bottom: 20px;">
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon"><i class="fa-solid fa-wrench"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Male)</h3>
-              <span class="committee-designation">3rd Year • ME</span>
-              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ME%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ME%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-            <div class="committee-card">
-              <div class="committee-avatar-wrap" style="overflow: hidden; padding: 0;">
-                <img src="PURBA.jpeg" alt="Purba Gangopadhyay - 3rd Year ME Student Coordinator" width="96" height="96" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; object-position: center 15%; border-radius: 50%;">
-                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-wrench"></i></span>
-              </div>
-              <h3 class="committee-name">Purba Gangopadhyay</h3>
-              <span class="committee-designation">3rd Year • ME</span>
-              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:purbagangopadhyay@gmail.com" title="Email Purba"><i class="fa-solid fa-envelope"></i></a>
-                <a href="mailto:purbagangopadhyay@gmail.com" title="Contact Purba"><i class="fa-solid fa-paper-plane"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 2nd Year</div>
-          <div class="committee-grid" style="margin-bottom: 20px;">
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon"><i class="fa-solid fa-wrench"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Male)</h3>
-              <span class="committee-designation">2nd Year • ME</span>
-              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ME%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ME%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-wrench"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Female)</h3>
-              <span class="committee-designation">2nd Year • ME</span>
-              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ME%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ME%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 1st Year</div>
-          <div class="committee-grid">
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon"><i class="fa-solid fa-wrench"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Male)</h3>
-              <span class="committee-designation">1st Year • ME</span>
-              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ME%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ME%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-wrench"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Female)</h3>
-              <span class="committee-designation">1st Year • ME</span>
-              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20ME%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20ME%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 5. CE Branch Block -->
-      <div class="dept-branch-block" data-branch="ce">
+      <!-- 4. CE Branch Block -->
+      <div class="dept-branch-block" data-branch="ce" style="display: none;">
         <div class="dept-branch-header" onclick="toggleBranchAccordion('ce')">
           <div class="dept-header-left">
             <h3 class="dept-branch-title">
               <i class="fa-solid fa-compass-drafting" style="color: #059669;"></i> Civil Engineering (CE)
             </h3>
-            <span class="dept-badge-summary"><i class="fa-solid fa-users"></i> 8 Coordinators • 1st to 4th Year</span>
+            <span class="dept-badge-summary"><i class="fa-solid fa-users"></i> 1 Coordinator</span>
           </div>
           <div class="dept-header-right">
             <button class="dept-accordion-chevron" aria-label="Toggle CE Coordinators">
@@ -949,7 +639,7 @@
 
         <div class="dept-branch-content">
           <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 4th Year (Final Year)</div>
-          <div class="committee-grid" style="margin-bottom: 20px;">
+          <div class="committee-grid">
             <div class="committee-card">
               <div class="committee-avatar-wrap" style="overflow: hidden; padding: 0;">
                 <img src="coordinators/manash_debbarma.jpg" alt="Manash Debbarma - 4th Year CE Coordinator" width="96" height="96" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 50%;">
@@ -966,107 +656,40 @@
                 <a href="https://www.instagram.com/oleacea.irony?igsi=MTRxYmk1NmhwengyOQ==" target="_blank" rel="noopener" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
               </div>
             </div>
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-trowel-bricks"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Female)</h3>
-              <span class="committee-designation">4th Year • CE</span>
-              <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
           </div>
+        </div>
+      </div>
 
+      <!-- 5. ME Branch Block -->
+      <div class="dept-branch-block" data-branch="me" style="display: none;">
+        <div class="dept-branch-header" onclick="toggleBranchAccordion('me')">
+          <div class="dept-header-left">
+            <h3 class="dept-branch-title">
+              <i class="fa-solid fa-wrench" style="color: #059669;"></i> Mechanical Engineering (ME)
+            </h3>
+            <span class="dept-badge-summary"><i class="fa-solid fa-users"></i> 1 Coordinator</span>
+          </div>
+          <div class="dept-header-right">
+            <button class="dept-accordion-chevron" aria-label="Toggle ME Coordinators">
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="dept-branch-content">
           <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 3rd Year (Pre-Final Year)</div>
-          <div class="committee-grid" style="margin-bottom: 20px;">
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon"><i class="fa-solid fa-trowel-bricks"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Male)</h3>
-              <span class="committee-designation">3rd Year • CE</span>
-              <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-trowel-bricks"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Female)</h3>
-              <span class="committee-designation">3rd Year • CE</span>
-              <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 2nd Year</div>
-          <div class="committee-grid" style="margin-bottom: 20px;">
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon"><i class="fa-solid fa-trowel-bricks"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Male)</h3>
-              <span class="committee-designation">2nd Year • CE</span>
-              <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-trowel-bricks"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Female)</h3>
-              <span class="committee-designation">2nd Year • CE</span>
-              <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 1st Year</div>
           <div class="committee-grid">
             <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon"><i class="fa-solid fa-trowel-bricks"></i></span>
+              <div class="committee-avatar-wrap" style="overflow: hidden; padding: 0;">
+                <img src="PURBA.jpeg" alt="Purba Gangopadhyay - 3rd Year ME Student Coordinator" width="96" height="96" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; object-position: center 15%; border-radius: 50%;">
+                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-wrench"></i></span>
               </div>
-              <h3 class="committee-name">Student Coordinator (Male)</h3>
-              <span class="committee-designation">1st Year • CE</span>
-              <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
+              <h3 class="committee-name">Purba Gangopadhyay</h3>
+              <span class="committee-designation">3rd Year • ME</span>
+              <p class="committee-dept">Dept. of Mechanical Engineering, TIT</p>
               <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
-              </div>
-            </div>
-            <div class="committee-card">
-              <div class="committee-avatar-wrap">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="committee-badge-icon" style="background:#047857;"><i class="fa-solid fa-trowel-bricks"></i></span>
-              </div>
-              <h3 class="committee-name">Student Coordinator (Female)</h3>
-              <span class="committee-designation">1st Year • CE</span>
-              <p class="committee-dept">Dept. of Civil Engineering, TIT</p>
-              <div class="committee-contact-links">
-                <a href="mailto:iic@titagartala.ac.in?subject=TIT%20SIH%20CE%20Coordinator%20Nomination" title="Contact / Nominate"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/916009236698?text=Hello%20TIT%20IIC%20CE%20Coordination%20Desk" target="_blank" rel="noopener" title="WhatsApp Helpdesk"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="mailto:purbagangopadhyay@gmail.com" title="Email Purba"><i class="fa-solid fa-envelope"></i></a>
+                <a href="mailto:purbagangopadhyay@gmail.com" title="Contact Purba"><i class="fa-solid fa-paper-plane"></i></a>
               </div>
             </div>
           </div>
