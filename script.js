@@ -696,6 +696,11 @@ window.handleTeamRegistrationSubmit = (e) => {
   const title = document.getElementById("reg-ps-title").value.trim();
   const abstract = document.getElementById("reg-abstract").value.trim();
   const pptLink = document.getElementById("reg-ppt-link").value.trim();
+  const referralCodeInput = (document.getElementById("reg-referral-code")?.value || "").trim().toUpperCase();
+
+  const matchedCoord = window.COORDINATOR_REFERRAL_MAP ? window.COORDINATOR_REFERRAL_MAP[referralCodeInput] : null;
+  const referralCode = referralCodeInput || "NONE";
+  const referredBy = matchedCoord ? `${matchedCoord.name} (${matchedCoord.branch})` : (referralCodeInput ? referralCodeInput : "Direct Registration");
 
   // Basic Project Validations
   if (!teamName || teamName.length < 3) {
@@ -822,6 +827,8 @@ window.handleTeamRegistrationSubmit = (e) => {
     title,
     abstract,
     pptLink,
+    referralCode,
+    referredBy,
     status: "Under Review by IIC Panel",
     createdAt: new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }),
     leaderEmail: currentUser.email,
@@ -929,6 +936,7 @@ function renderStudentDashboard() {
               ${escapeHtml(userTeam.edition)}
             </span>
             ${isLeader ? '<span style="background:#fef3c7; color:#92400e; font-weight:800; font-size:0.75rem; padding:4px 10px; border-radius:6px; border:1px solid #fde68a;"><i class="fa-solid fa-crown"></i> Team Leader</span>' : ''}
+            ${userTeam.referralCode && userTeam.referralCode !== "NONE" ? `<span style="background: rgba(16,185,129,0.12); color: #065f46; font-weight: 700; font-size: 0.78rem; padding: 4px 10px; border-radius: 6px; border: 1px solid #a7f3d0;"><i class="fa-solid fa-ticket"></i> Ref: <strong>${escapeHtml(userTeam.referralCode)}</strong></span>` : ''}
             <span style="font-size: 0.8rem; color: #64748b;">Registered: ${escapeHtml(userTeam.createdAt)}</span>
           </div>
           <h2 style="font-size: 1.7rem; font-weight: 900; color: #0f172a; margin-bottom: 4px;">
@@ -1045,6 +1053,9 @@ window.openEditTeamModal = (teamId) => {
   document.getElementById("edit-team-title").value = team.title || "";
   document.getElementById("edit-team-abstract").value = team.abstract || "";
   document.getElementById("edit-team-ppt-link").value = team.pptLink || "";
+  if (document.getElementById("edit-team-referral-code")) {
+    document.getElementById("edit-team-referral-code").value = (team.referralCode && team.referralCode !== "NONE") ? team.referralCode : "";
+  }
 
   modal.classList.add("active");
 };
@@ -1067,6 +1078,7 @@ window.handleEditTeamSubmit = (event) => {
   const title = document.getElementById("edit-team-title").value.trim();
   const abstract = document.getElementById("edit-team-abstract").value.trim();
   const pptLink = document.getElementById("edit-team-ppt-link").value.trim();
+  const editRefCode = (document.getElementById("edit-team-referral-code")?.value || "").trim().toUpperCase();
 
   if (!teamName || !psId || !title || !abstract || !pptLink) {
     alert("[TIT SIH Error] Please fill in all required fields.");
@@ -1085,6 +1097,11 @@ window.handleEditTeamSubmit = (event) => {
   team.title = title;
   team.abstract = abstract;
   team.pptLink = pptLink;
+  if (editRefCode) {
+    team.referralCode = editRefCode;
+    const matched = window.COORDINATOR_REFERRAL_MAP ? window.COORDINATOR_REFERRAL_MAP[editRefCode] : null;
+    team.referredBy = matched ? `${matched.name} (${matched.branch})` : editRefCode;
+  }
   team.lastModifiedAt = new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
 
   localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
@@ -1432,6 +1449,7 @@ window.openTeamPassModal = (teamId) => {
         <div style="font-size: 0.78rem; color: #64748b;">TEAM NAME: <strong style="color: #0f172a; font-size: 0.95rem;">${team.teamName}</strong></div>
         <div style="font-size: 0.78rem; color: #64748b; margin-top: 4px;">TARGET PS ID: <strong style="color: #064e3b;">${team.psId}</strong> (${team.domain})</div>
         <div style="font-size: 0.76rem; color: #475569; margin-top: 4px;">TITLE: ${team.title}</div>
+        ${team.referralCode && team.referralCode !== "NONE" ? `<div style="font-size: 0.74rem; color: #059669; font-weight: 700; margin-top: 4px;"><i class="fa-solid fa-ticket"></i> REFERRAL CODE: ${escapeHtml(team.referralCode)} (${escapeHtml(team.referredBy || "")})</div>` : ''}
       </div>
 
       <!-- Compact 6 Member Roster Table -->
@@ -1689,6 +1707,7 @@ function renderAdminConsole() {
     ${dbStatusBadge}
 
     <!-- Summary Stats Grid -->
+    <!-- Summary Stats Grid -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px;">
       <div style="background: #f0fdf4; border: 1px solid #a7f3d0; border-radius: 10px; padding: 12px; text-align: center;">
         <div style="font-size: 1.6rem; font-weight: 900; color: #064e3b;">${totalTeams}</div>
@@ -1712,12 +1731,56 @@ function renderAdminConsole() {
       </div>
     </div>
 
+    <!-- Coordinator Referral Performance Leaderboard -->
+    ${(() => {
+      const refMap = {};
+      registeredTeams.forEach((t) => {
+        const code = (t.referralCode && t.referralCode !== "NONE") ? t.referralCode.toUpperCase() : "DIRECT";
+        if (!refMap[code]) {
+          const coord = window.COORDINATOR_REFERRAL_MAP ? window.COORDINATOR_REFERRAL_MAP[code] : null;
+          refMap[code] = {
+            code,
+            name: coord ? coord.name : (t.referredBy || (code === "DIRECT" ? "Direct / No Referral" : code)),
+            branch: coord ? coord.branch : (code.includes("-") ? code.split("-")[0] : "General"),
+            count: 0
+          };
+        }
+        refMap[code].count++;
+      });
+      const sortedStats = Object.values(refMap).sort((a, b) => b.count - a.count);
+      return `
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px 18px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+            <h4 style="margin: 0; font-size: 0.98rem; font-weight: 800; color: #064e3b; display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-chart-simple" style="color: #059669;"></i> Technical Heads & Coordinator Referral Performance
+            </h4>
+            <span style="font-size: 0.75rem; font-weight: 700; color: #059669; background: #ecfdf5; padding: 3px 10px; border-radius: 20px; border: 1px solid #a7f3d0;">
+              <i class="fa-solid fa-ticket"></i> Live Referral Tracker
+            </span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px;">
+            ${sortedStats.map((st, i) => `
+              <div style="background: ${st.code === 'DIRECT' ? '#f8fafc' : '#f0fdf4'}; border: 1px solid ${st.code === 'DIRECT' ? '#e2e8f0' : '#a7f3d0'}; border-radius: 8px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-weight: 800; font-size: 0.85rem; color: #0f172a;">${i + 1}. ${escapeHtml(st.name)}</div>
+                  <div style="font-size: 0.72rem; color: #64748b; font-family: var(--font-mono); font-weight: 700;">Code: ${escapeHtml(st.code)} (${escapeHtml(st.branch)})</div>
+                </div>
+                <span style="background: ${st.code === 'DIRECT' ? '#e2e8f0' : '#059669'}; color: ${st.code === 'DIRECT' ? '#334155' : '#ffffff'}; font-size: 0.82rem; font-weight: 900; padding: 4px 10px; border-radius: 6px; white-space: nowrap;">
+                  ${st.count} Team${st.count > 1 ? 's' : ''}
+                </span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    })()}
+
     <!-- Search & Filter Toolbar -->
     <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
       <div style="display: flex; gap: 10px; flex-grow: 1; min-width: 240px;">
         <div style="position: relative; width: 100%;">
           <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 11px; color: #94a3b8; font-size: 0.85rem;"></i>
-          <input type="text" class="form-text-input" placeholder="Search by team name, ID, leader, roll no, or domain..." 
+          <input type="text" class="form-text-input" placeholder="Search by team name, ID, leader, roll no, referral code..." 
             value="${adminSearchQuery}" 
             oninput="filterAdminTeams(this.value, undefined, undefined)"
             style="padding-left: 34px; font-size: 0.85rem; height: 38px; margin: 0;">
@@ -1748,6 +1811,7 @@ function renderAdminConsole() {
             <th>Team ID</th>
             <th>Team Name & Category</th>
             <th>Target PS & Domain</th>
+            <th>Referral Code</th>
             <th>Team Leader</th>
             <th>Female Quota</th>
             <th>Evaluation Status</th>
@@ -1757,7 +1821,7 @@ function renderAdminConsole() {
         <tbody>
           ${
             filteredTeams.length === 0
-              ? `<tr><td colspan="7" style="text-align: center; padding: 32px; color: #64748b;">No registered teams matching your search/filters.</td></tr>`
+              ? `<tr><td colspan="8" style="text-align: center; padding: 32px; color: #64748b;">No registered teams matching your search/filters.</td></tr>`
               : filteredTeams
                   .map((t) => {
                     const femalesInTeam = t.members.filter((m) => m.gender === "Female").length;
@@ -1775,6 +1839,14 @@ function renderAdminConsole() {
               <td>
                 <strong style="color: #064e3b;">${t.psId}</strong>
                 <div style="font-size: 0.72rem; color: #64748b;">${t.domain}</div>
+              </td>
+              <td>
+                ${t.referralCode && t.referralCode !== 'NONE' ? `
+                  <span style="font-size: 0.75rem; font-weight: 800; background: #f0fdf4; color: #065f46; padding: 3px 8px; border-radius: 6px; border: 1px solid #a7f3d0; font-family: var(--font-mono); display: inline-block;">
+                    ${escapeHtml(t.referralCode)}
+                  </span>
+                  <div style="font-size: 0.68rem; color: #64748b; margin-top: 2px;">${escapeHtml(t.referredBy || "")}</div>
+                ` : `<span style="font-size: 0.72rem; color: #94a3b8;">Direct</span>`}
               </td>
               <td>
                 <strong style="color: #0f172a;">${leader.name}</strong>
@@ -2000,7 +2072,7 @@ window.exportTeamsToCSV = () => {
   }
 
   let csvContent = "data:text/csv;charset=utf-8,";
-  csvContent += "Team ID,Team Name,Edition,PS ID,PS Domain,Solution Title,Status,Registered Date,PPT Link,Leader Name,Leader Roll,Leader Dept,Leader Gender,Leader Email,Leader Phone,Member 2 Name,Member 2 Roll,Member 2 Gender,Member 3 Name,Member 3 Roll,Member 3 Gender,Member 4 Name,Member 4 Roll,Member 4 Gender,Member 5 Name,Member 5 Roll,Member 5 Gender,Member 6 Name,Member 6 Roll,Member 6 Gender\n";
+  csvContent += "Team ID,Team Name,Edition,PS ID,PS Domain,Solution Title,Referral Code,Referred By Coordinator,Status,Registered Date,PPT Link,Leader Name,Leader Roll,Leader Dept,Leader Gender,Leader Email,Leader Phone,Member 2 Name,Member 2 Roll,Member 2 Gender,Member 3 Name,Member 3 Roll,Member 3 Gender,Member 4 Name,Member 4 Roll,Member 4 Gender,Member 5 Name,Member 5 Roll,Member 5 Gender,Member 6 Name,Member 6 Roll,Member 6 Gender\n";
 
   registeredTeams.forEach((t) => {
     const row = [
@@ -2010,6 +2082,8 @@ window.exportTeamsToCSV = () => {
       t.psId,
       `"${t.domain}"`,
       `"${t.title.replace(/"/g, '""')}"`,
+      t.referralCode || "NONE",
+      `"${(t.referredBy || "").replace(/"/g, '""')}"`,
       `"${t.status}"`,
       t.createdAt,
       `"${t.pptLink}"`,
@@ -2433,6 +2507,93 @@ const GOOGLE_SHEET_COORDINATORS_CSV =
 
 let liveCoordinatorsData = [];
 let currentActiveBranchFilter = "ece";
+window.COORDINATOR_REFERRAL_MAP = {};
+
+// Helper: Generate clean, memorable unique referral code for a coordinator
+function getCoordinatorReferralCode(coord) {
+  const branch = (coord.branch || "TIT").toUpperCase();
+  const firstName = (coord.name || "").split(" ")[0].replace(/[^a-zA-Z]/g, "").toUpperCase();
+  return `${branch}-${firstName}`;
+}
+
+// Pre-populate seed coordinators for immediate referral resolution
+const DEFAULT_COORDINATORS_SEED = [
+  { name: "Alak Das", branch: "ECE", year: "4th Year" },
+  { name: "Reshmi Karmakar", branch: "ECE", year: "4th Year" },
+  { name: "Neelotpal Banik", branch: "ECE", year: "3rd Year" },
+  { name: "Sambhu Debnath", branch: "ECE", year: "3rd Year" },
+  { name: "Anurati Bhowmik", branch: "ECE", year: "2nd Year" },
+  { name: "Deeptanu Shil", branch: "ECE", year: "2nd Year" },
+  { name: "Sanjit Noatia", branch: "CSE", year: "4th Year" },
+  { name: "Prena Saha", branch: "CSE", year: "4th Year" },
+  { name: "Diya Das", branch: "CSE", year: "3rd Year" },
+  { name: "Sneha Chaudhuri", branch: "CSE", year: "2nd Year" },
+  { name: "Ronit Saha", branch: "CSE", year: "2nd Year" },
+  { name: "Sneha Debnath", branch: "EE", year: "4th Year" },
+  { name: "Sujit Dey", branch: "EE", year: "4th Year" },
+  { name: "Sreya Deb", branch: "EE", year: "3rd Year" },
+  { name: "Soubik Roy", branch: "EE", year: "3rd Year" },
+  { name: "Simran Das", branch: "EE", year: "2nd Year" },
+  { name: "Raj Arnab Debnath", branch: "EE", year: "2nd Year" },
+  { name: "Manash T", branch: "CE", year: "4th Year" },
+  { name: "Kishore Majumder", branch: "CE", year: "3rd Year" },
+  { name: "Prabal Kanti Paul", branch: "ME", year: "4th Year" },
+  { name: "Purba Gangopadhyay", branch: "ME", year: "3rd Year" },
+];
+
+DEFAULT_COORDINATORS_SEED.forEach((c) => {
+  const code = getCoordinatorReferralCode(c);
+  c.referralCode = code;
+  window.COORDINATOR_REFERRAL_MAP[code] = c;
+});
+
+window.copyCoordinatorRefCode = (code) => {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(code).then(() => {
+      alert(`🎟️ Referral Code "${code}" copied to clipboard!\n\nEnter this code in your Team Registration Form to credit your technical coordinator.`);
+    }).catch(() => {
+      prompt("Coordinator Referral Code:", code);
+    });
+  } else {
+    prompt("Coordinator Referral Code:", code);
+  }
+};
+
+window.handleReferralCodeInput = (val) => {
+  const code = (val || "").trim().toUpperCase();
+  const checkIcon = document.getElementById("referral-check-icon");
+  const matchBadge = document.getElementById("referral-match-badge");
+
+  if (!code) {
+    if (checkIcon) checkIcon.style.display = "none";
+    if (matchBadge) matchBadge.style.display = "none";
+    return;
+  }
+
+  const matched = window.COORDINATOR_REFERRAL_MAP ? window.COORDINATOR_REFERRAL_MAP[code] : null;
+
+  if (matched) {
+    if (checkIcon) {
+      checkIcon.style.display = "block";
+      checkIcon.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #059669;"></i>`;
+    }
+    if (matchBadge) {
+      matchBadge.style.display = "block";
+      matchBadge.style.color = "#059669";
+      matchBadge.innerHTML = `<i class="fa-solid fa-user-check"></i> Verified Head: <strong>${escapeHtml(matched.name)}</strong> (${escapeHtml(matched.branch)} - ${escapeHtml(matched.year)})`;
+    }
+  } else {
+    if (checkIcon) {
+      checkIcon.style.display = "block";
+      checkIcon.innerHTML = `<i class="fa-solid fa-circle-info" style="color: #64748b;"></i>`;
+    }
+    if (matchBadge) {
+      matchBadge.style.display = "block";
+      matchBadge.style.color = "#64748b";
+      matchBadge.innerHTML = `<i class="fa-solid fa-ticket"></i> Custom Referral Code (${escapeHtml(code)})`;
+    }
+  }
+};
 
 // Robust CSV Line Parser
 function parseGoogleSheetCsv(text) {
@@ -2562,7 +2723,6 @@ function getBranchDetails(branchCode) {
 // Main Coordinator Fetcher & Realtime Sync Controller
 window.initLiveDepartmentCoordinators = async () => {
   const container = document.getElementById("dept-coordinators-dynamic-container");
-  if (!container) return; // Not on committee page
 
   try {
     const response = await fetch(GOOGLE_SHEET_COORDINATORS_CSV, { cache: "no-store" });
@@ -2588,7 +2748,7 @@ window.initLiveDepartmentCoordinators = async () => {
         if (!name) return;
 
         const key = (email || `${name}_${branch}`).toLowerCase();
-        parsedMap.set(key, {
+        const coordObj = {
           timestamp,
           photoUrl,
           name,
@@ -2598,7 +2758,12 @@ window.initLiveDepartmentCoordinators = async () => {
           phone,
           instagram,
           linkedin,
-        });
+        };
+        const refCode = getCoordinatorReferralCode(coordObj);
+        coordObj.referralCode = refCode;
+        window.COORDINATOR_REFERRAL_MAP[refCode] = coordObj;
+
+        parsedMap.set(key, coordObj);
       });
 
       liveCoordinatorsData = Array.from(parsedMap.values());
@@ -2610,11 +2775,18 @@ window.initLiveDepartmentCoordinators = async () => {
     if (cached) {
       try {
         liveCoordinatorsData = JSON.parse(cached);
+        liveCoordinatorsData.forEach((c) => {
+          const refCode = getCoordinatorReferralCode(c);
+          c.referralCode = refCode;
+          window.COORDINATOR_REFERRAL_MAP[refCode] = c;
+        });
       } catch (e) {}
     }
   }
 
-  renderLiveDepartmentCoordinators();
+  if (container) {
+    renderLiveDepartmentCoordinators();
+  }
 };
 
 window.refreshLiveCoordinators = async () => {
@@ -2710,6 +2882,7 @@ function renderLiveDepartmentCoordinators() {
         const directImg = getDriveDirectImageUrl(c.photoUrl, c.name);
         const fallbackImg = getDriveThumbnailFallback(c.photoUrl, c.name);
         const cleanPhone = c.phone ? c.phone.slice(-10) : "";
+        const refCode = c.referralCode || getCoordinatorReferralCode(c);
 
         // Build contact links
         let contactHtml = "";
@@ -2746,6 +2919,9 @@ function renderLiveDepartmentCoordinators() {
             <h3 class="committee-name">${escapeHtml(c.name)}</h3>
             <span class="committee-designation">${escapeHtml(c.year)} • ${escapeHtml(c.branch)}</span>
             <p class="committee-dept">${escapeHtml(meta.name)}, TIT</p>
+            <div class="coordinator-referral-chip" onclick="copyCoordinatorRefCode('${refCode}')" title="Click to copy Referral Code for Team Registration">
+              <i class="fa-solid fa-ticket"></i> Ref: <strong>${refCode}</strong> <i class="fa-regular fa-copy"></i>
+            </div>
             <div class="committee-contact-links">
               ${contactHtml}
             </div>

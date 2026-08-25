@@ -2745,6 +2745,40 @@ body.dark-theme .resource-icon {
   transform: translateY(-2px);
 }
 
+/* Unique Coordinator Referral Code Badge */
+.coordinator-referral-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(5, 150, 105, 0.08);
+  border: 1px dashed rgba(5, 150, 105, 0.4);
+  color: #065f46;
+  font-size: 0.76rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.coordinator-referral-chip:hover {
+  background: #059669;
+  color: #ffffff;
+  border-color: #059669;
+  transform: scale(1.04);
+  box-shadow: 0 3px 10px rgba(5, 150, 105, 0.25);
+}
+
+html[data-theme="dark"] .coordinator-referral-chip,
+body.dark-theme .coordinator-referral-chip {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #6ee7b7;
+}
+
 /* Departmental Branch Coordination Tabs & Blocks */
 .branch-filter-bar {
   display: flex;

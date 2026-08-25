@@ -1080,9 +1080,22 @@
             </div>
           </div>
 
-          <div class="form-group-item">
-            <label class="form-input-label">Problem Statement / Solution Title *</label>
-            <input type="text" id="reg-ps-title" class="form-text-input" placeholder="Brief title of your proposed innovation" required>
+          <div class="form-row-2">
+            <div class="form-group-item">
+              <label class="form-input-label">Problem Statement / Solution Title *</label>
+              <input type="text" id="reg-ps-title" class="form-text-input" placeholder="Brief title of your proposed innovation" required>
+            </div>
+            <div class="form-group-item">
+              <label class="form-input-label" style="display: flex; justify-content: space-between; align-items: center;">
+                <span>🎟️ Coordinator Referral Code</span>
+                <span style="font-size: 0.72rem; color: #64748b; font-weight: normal;">(Optional)</span>
+              </label>
+              <div style="position: relative;">
+                <input type="text" id="reg-referral-code" class="form-text-input" placeholder="e.g. ECE-ALAK or CSE-SANJIT" oninput="handleReferralCodeInput(this.value)" style="text-transform: uppercase; font-family: var(--font-mono); font-weight: 700; padding-right: 34px;">
+                <span id="referral-check-icon" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 0.95rem; display: none;"></span>
+              </div>
+              <div id="referral-match-badge" style="font-size: 0.76rem; margin-top: 4px; font-weight: 700; color: #059669; display: none;"></div>
+            </div>
           </div>
 
           <div class="form-group-item">
@@ -1291,9 +1304,15 @@
           <textarea id="edit-team-abstract" class="form-textarea-input" rows="3" required></textarea>
         </div>
 
-        <div class="form-group-item">
-          <label class="form-input-label">Idea PPT Cloud Link (Google Drive / OneDrive) *</label>
-          <input type="url" id="edit-team-ppt-link" class="form-text-input" required>
+        <div class="form-row-2">
+          <div class="form-group-item">
+            <label class="form-input-label">Idea PPT Cloud Link (Google Drive / OneDrive) *</label>
+            <input type="url" id="edit-team-ppt-link" class="form-text-input" required>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">🎟️ Referral Code (Optional)</label>
+            <input type="text" id="edit-team-referral-code" class="form-text-input" placeholder="e.g. ECE-ALAK" style="text-transform: uppercase; font-family: var(--font-mono); font-weight: 700;">
+          </div>
         </div>
 
         <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
