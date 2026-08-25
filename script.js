@@ -295,6 +295,10 @@ window.openAuthModal = (mode = "student", studentTab = "login") => {
     openDedicatedAdminModal();
     return;
   }
+  if (mode === "login" || mode === "signup" || mode === "reset") {
+    studentTab = mode;
+    mode = "student";
+  }
   const modal = document.getElementById("auth-modal");
   if (!modal) return;
   switchStudentAuthTab(studentTab);
@@ -638,6 +642,8 @@ window.openTeamRegModal = () => {
       handleReferralCodeInput(currentUser.referralCode);
     }
   }
+
+  modal.classList.add("active");
 };
 
 window.closeTeamRegModal = () => {
