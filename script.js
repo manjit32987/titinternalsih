@@ -406,7 +406,8 @@ window.handleSignupSubmit = (e) => {
     return;
   }
 
-  const newStudent = { name, roll, dept, year, gender, email, password };
+  const signupRefCode = (document.getElementById("signup-referral-code")?.value || "").trim().toUpperCase();
+  const newStudent = { name, roll, dept, year, gender, email, password, referralCode: signupRefCode || "NONE" };
   registeredStudents.push(newStudent);
   localStorage.setItem("tit_sih_students", JSON.stringify(registeredStudents));
 
@@ -506,6 +507,16 @@ window.openTeamRegModal = () => {
   const modal = document.getElementById("team-registration-modal");
   if (!modal) return;
   renderMembersRosterInputs();
+
+  // Auto-fill referral code from leader profile if available
+  if (currentUser && currentUser.referralCode && currentUser.referralCode !== "NONE") {
+    const regRefInput = document.getElementById("reg-referral-code");
+    if (regRefInput && !regRefInput.value) {
+      regRefInput.value = currentUser.referralCode;
+      handleReferralCodeInput(currentUser.referralCode);
+    }
+  }
+
   modal.classList.add("active");
 };
 
@@ -2593,10 +2604,10 @@ window.copyCoordinatorRefCode = (code) => {
   }
 };
 
-window.handleReferralCodeInput = (val) => {
+window.handleReferralCodeInput = (val, context = "reg") => {
   const code = (val || "").trim().toUpperCase();
-  const checkIcon = document.getElementById("referral-check-icon");
-  const matchBadge = document.getElementById("referral-match-badge");
+  const checkIcon = context === "signup" ? null : document.getElementById("referral-check-icon");
+  const matchBadge = context === "signup" ? document.getElementById("signup-referral-badge") : document.getElementById("referral-match-badge");
 
   if (!code) {
     if (checkIcon) checkIcon.style.display = "none";

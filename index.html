@@ -755,6 +755,16 @@
           <label class="form-input-label">Create Password (Min. 6 chars)</label>
           <input type="password" id="signup-password" class="form-text-input" placeholder="Minimum 6 characters" minlength="6" required autocomplete="new-password">
         </div>
+        <div class="form-group-item">
+          <label class="form-input-label" style="display: flex; justify-content: space-between; align-items: center;">
+            <span><i class="fa-solid fa-ticket" style="color: #059669;"></i> Coordinator Referral Code</span>
+            <span style="font-size: 0.72rem; color: #64748b; font-weight: normal;">(Optional)</span>
+          </label>
+          <div style="position: relative;">
+            <input type="text" id="signup-referral-code" class="form-text-input" placeholder="e.g. SIHIN1001" oninput="handleReferralCodeInput(this.value, 'signup')" style="text-transform: uppercase; font-family: var(--font-mono); font-weight: 700;">
+          </div>
+          <div id="signup-referral-badge" style="font-size: 0.76rem; margin-top: 4px; font-weight: 700; color: #059669; display: none;"></div>
+        </div>
         <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
           <i class="fa-solid fa-user-plus"></i> Create Student Account
         </button>
@@ -1080,27 +1090,32 @@
             </div>
           </div>
 
-          <div class="form-row-2">
-            <div class="form-group-item">
-              <label class="form-input-label">Problem Statement / Solution Title *</label>
-              <input type="text" id="reg-ps-title" class="form-text-input" placeholder="Brief title of your proposed innovation" required>
-            </div>
-            <div class="form-group-item">
-              <label class="form-input-label" style="display: flex; justify-content: space-between; align-items: center;">
-                <span>🎟️ Coordinator Referral Code</span>
-                <span style="font-size: 0.72rem; color: #64748b; font-weight: normal;">(Optional)</span>
-              </label>
-              <div style="position: relative;">
-                <input type="text" id="reg-referral-code" class="form-text-input" placeholder="e.g. SIHIN1001" oninput="handleReferralCodeInput(this.value)" style="text-transform: uppercase; font-family: var(--font-mono); font-weight: 700; padding-right: 34px;">
-                <span id="referral-check-icon" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 0.95rem; display: none;"></span>
-              </div>
-              <div id="referral-match-badge" style="font-size: 0.76rem; margin-top: 4px; font-weight: 700; color: #059669; display: none;"></div>
-            </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Problem Statement / Solution Title *</label>
+            <input type="text" id="reg-ps-title" class="form-text-input" placeholder="Brief title of your proposed innovation" required>
           </div>
 
           <div class="form-group-item">
             <label class="form-input-label">Solution Abstract / Key Architecture (2-3 sentences) *</label>
             <textarea id="reg-abstract" class="form-textarea-input" rows="2" placeholder="Describe how your software/hardware solves the target challenge..." required></textarea>
+          </div>
+
+          <!-- Dedicated Coordinator Referral Section -->
+          <div style="background: rgba(5, 150, 105, 0.06); border: 1.5px dashed rgba(5, 150, 105, 0.35); border-radius: 12px; padding: 14px 16px; margin-top: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label class="form-input-label" style="margin: 0; font-size: 0.88rem; font-weight: 800; color: #064e3b; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-ticket" style="color: #059669; font-size: 1.05rem;"></i> Department Coordinator Referral Code
+              </label>
+              <span style="font-size: 0.72rem; font-weight: 800; color: #059669; background: #ecfdf5; padding: 3px 8px; border-radius: 6px; border: 1px solid #a7f3d0; text-transform: uppercase;">Optional</span>
+            </div>
+            <p style="font-size: 0.78rem; color: #64748b; margin: 0 0 10px 0;">
+              Enter the unique referral code provided by your Department Student Technical Head (e.g. <strong style="color: #059669; font-family: var(--font-mono);">SIHIN1001</strong>).
+            </p>
+            <div style="position: relative;">
+              <input type="text" id="reg-referral-code" class="form-text-input" placeholder="Enter Coordinator Referral Code (e.g. SIHIN1001)" oninput="handleReferralCodeInput(this.value)" style="text-transform: uppercase; font-family: var(--font-mono); font-weight: 800; font-size: 0.92rem; letter-spacing: 1.5px; padding-right: 38px; background: #ffffff;">
+              <span id="referral-check-icon" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 1.1rem; display: none;"></span>
+            </div>
+            <div id="referral-match-badge" style="font-size: 0.8rem; margin-top: 6px; font-weight: 700; color: #059669; display: none;"></div>
           </div>
         </div>
 
