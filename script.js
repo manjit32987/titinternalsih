@@ -534,9 +534,74 @@ window.handlePasswordResetSubmit = (e) => {
 };
 
 /* ==========================================================================
-   GOOGLE AUTHENTICATION & ONBOARDING CONTROLLER
+   GOOGLE AUTHENTICATION & ONBOARDING CONTROLLER (GSI & FIREBASE DUAL-ENGINE)
    ========================================================================== */
-window.handleGoogleSignIn = async () => {
+const GOOGLE_CLIENT_ID = "892199525524-ivgagc8ckf7ojfd8m45m4uggfn9gqpgp.apps.googleusercontent.com";
+
+function parseJwt(token) {
+  try {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    return null;
+  }
+}
+
+window.handleGoogleCredentialResponse = async (response) => {
+  if (!response || !response.credential) return;
+  const payload = parseJwt(response.credential);
+  if (!payload || !payload.email) return;
+
+  const email = payload.email.toLowerCase();
+  const name = payload.name || payload.email.split("@")[0];
+
+  // Also bridge into Firebase Auth if active
+  if (typeof firebase !== "undefined" && firebase.auth && isFirebaseActive) {
+    try {
+      const credential = firebase.auth.GoogleAuthProvider.credential(response.credential);
+      await firebase.auth().signInWithCredential(credential);
+    } catch (err) {
+      console.warn("Firebase credential sign-in notice:", err);
+    }
+  }
+
+  // Check if student profile exists
+  let existingStudent = registeredStudents.find(
+    (s) => s.email.toLowerCase() === email
+  );
+
+  if (!existingStudent && isFirebaseActive && db) {
+    try {
+      const doc = await db.collection("students").doc(email).get();
+      if (doc.exists) {
+        existingStudent = doc.data();
+      }
+    } catch (e) {
+      console.warn("Firestore lookup notice:", e);
+    }
+  }
+
+  if (existingStudent) {
+    currentUser = existingStudent;
+    localStorage.setItem("tit_sih_current_user", JSON.stringify(currentUser));
+    closeAuthModal();
+    updateNavAuthState();
+    renderStudentDashboard();
+    triggerConfettiBurst();
+    alert(`[TIT SIH] Welcome back, ${currentUser.name}! You are logged in with Google.`);
+  } else {
+    openGoogleProfileOnboarding(name, email);
+  }
+};
+
+window.signInWithFirebaseGooglePopup = async () => {
   if (typeof firebase === "undefined" || !firebase.auth) {
     alert("[TIT SIH] Firebase Authentication SDK is loading. Please check your internet connection.");
     return;
@@ -578,15 +643,41 @@ window.handleGoogleSignIn = async () => {
       triggerConfettiBurst();
       alert(`[TIT SIH] Welcome back, ${currentUser.name}! You are logged in.`);
     } else {
-      // New student: Prompt to complete academic details
       openGoogleProfileOnboarding(name, email);
     }
   } catch (error) {
     console.error("Google Sign-In error:", error);
-    if (error.code !== "auth/popup-closed-by-user" && error.code !== "auth/cancelled-popup-request") {
+    if (error.code === "auth/unauthorized-domain") {
+      alert("[TIT SIH] Domain Authorization Required:\nPlease add your website domain in Firebase Console -> Authentication -> Settings -> Authorized Domains.");
+    } else if (error.code !== "auth/popup-closed-by-user" && error.code !== "auth/cancelled-popup-request") {
       alert(`[TIT SIH] Google Authentication Notice: ${error.message || "Failed to sign in with Google."}`);
     }
   }
+};
+
+window.handleGoogleSignIn = () => {
+  // 1. Try Google Identity Services (GSI)
+  if (typeof google !== "undefined" && google.accounts && google.accounts.id) {
+    try {
+      google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: window.handleGoogleCredentialResponse,
+        auto_select: false,
+        cancel_on_tap_outside: true
+      });
+      google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          window.signInWithFirebaseGooglePopup();
+        }
+      });
+      return;
+    } catch (gsiErr) {
+      console.warn("Google GSI initialization notice:", gsiErr);
+    }
+  }
+
+  // 2. Direct fallback to Firebase Google Popup
+  window.signInWithFirebaseGooglePopup();
 };
 
 window.openGoogleProfileOnboarding = (name, email) => {
