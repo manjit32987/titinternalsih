@@ -1,4 +1,4 @@
-const CACHE_NAME = "tit-sih-2026-v2.3.2";
+const CACHE_NAME = "tit-sih-2026-v2.4.0";
 const PRECACHE_ASSETS = [
   "./",
   "./index.html",

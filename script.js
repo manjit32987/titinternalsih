@@ -381,12 +381,16 @@ window.switchStudentAuthTab = (tab) => {
   const loginForm = document.getElementById("login-form");
   const signupForm = document.getElementById("signup-form");
   const resetForm = document.getElementById("reset-password-form");
+  const googleForm = document.getElementById("google-profile-form");
+  const tabs = document.querySelector(".sub-auth-tabs");
 
   if (loginBtn) loginBtn.classList.remove("active");
   if (signupBtn) signupBtn.classList.remove("active");
   if (loginForm) loginForm.style.display = "none";
   if (signupForm) signupForm.style.display = "none";
   if (resetForm) resetForm.style.display = "none";
+  if (googleForm) googleForm.style.display = "none";
+  if (tabs) tabs.style.display = "flex";
 
   if (tab === "login") {
     if (loginBtn) loginBtn.classList.add("active");
@@ -529,7 +533,141 @@ window.handlePasswordResetSubmit = (e) => {
   currentResetStudent = null;
 };
 
-window.handleLoginSubmit = (e) => {
+/* ==========================================================================
+   GOOGLE AUTHENTICATION & ONBOARDING CONTROLLER
+   ========================================================================== */
+window.handleGoogleSignIn = async () => {
+  if (typeof firebase === "undefined" || !firebase.auth) {
+    alert("[TIT SIH] Firebase Authentication SDK is loading. Please check your internet connection.");
+    return;
+  }
+
+  const provider = new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: "select_account" });
+
+  try {
+    const result = await firebase.auth().signInWithPopup(provider);
+    const gUser = result.user;
+    if (!gUser || !gUser.email) return;
+
+    const email = gUser.email.toLowerCase();
+    const name = gUser.displayName || email.split("@")[0];
+
+    // Check if student profile already exists in registeredStudents or Firestore
+    let existingStudent = registeredStudents.find(
+      (s) => s.email.toLowerCase() === email
+    );
+
+    if (!existingStudent && isFirebaseActive && db) {
+      try {
+        const doc = await db.collection("students").doc(email).get();
+        if (doc.exists) {
+          existingStudent = doc.data();
+        }
+      } catch (e) {
+        console.warn("Firestore lookup note:", e);
+      }
+    }
+
+    if (existingStudent) {
+      currentUser = existingStudent;
+      localStorage.setItem("tit_sih_current_user", JSON.stringify(currentUser));
+      closeAuthModal();
+      updateNavAuthState();
+      renderStudentDashboard();
+      triggerConfettiBurst();
+      alert(`[TIT SIH] Welcome back, ${currentUser.name}! You are logged in.`);
+    } else {
+      // New student: Prompt to complete academic details
+      openGoogleProfileOnboarding(name, email);
+    }
+  } catch (error) {
+    console.error("Google Sign-In error:", error);
+    if (error.code !== "auth/popup-closed-by-user" && error.code !== "auth/cancelled-popup-request") {
+      alert(`[TIT SIH] Google Authentication Notice: ${error.message || "Failed to sign in with Google."}`);
+    }
+  }
+};
+
+window.openGoogleProfileOnboarding = (name, email) => {
+  const loginForm = document.getElementById("login-form");
+  const signupForm = document.getElementById("signup-form");
+  const resetForm = document.getElementById("reset-password-form");
+  const googleForm = document.getElementById("google-profile-form");
+  const tabs = document.querySelector(".sub-auth-tabs");
+
+  if (loginForm) loginForm.style.display = "none";
+  if (signupForm) signupForm.style.display = "none";
+  if (resetForm) resetForm.style.display = "none";
+  if (tabs) tabs.style.display = "none";
+
+  if (googleForm) {
+    googleForm.style.display = "block";
+    const nameEl = document.getElementById("g-name");
+    const emailEl = document.getElementById("g-email");
+    if (nameEl) nameEl.value = name;
+    if (emailEl) emailEl.value = email;
+  }
+};
+
+window.updateGoogleBranchOptions = () => {
+  const progEl = document.getElementById("g-program");
+  const branchEl = document.getElementById("g-branch");
+  if (progEl && branchEl) {
+    branchEl.innerHTML = window.getBranchOptionsHtml(progEl.value, progEl.value === "Diploma" ? "CST" : "CSE");
+  }
+};
+
+window.handleGoogleProfileSubmit = async (e) => {
+  e.preventDefault();
+  const name = document.getElementById("g-name").value.trim();
+  const email = document.getElementById("g-email").value.trim().toLowerCase();
+  const program = document.getElementById("g-program")?.value || "Degree";
+  const branch = document.getElementById("g-branch")?.value || "CSE";
+  const dept = branch;
+  const year = document.getElementById("g-year")?.value || "3rd Year";
+  const gender = document.getElementById("g-gender")?.value || "Male";
+  const roll = (document.getElementById("g-roll")?.value || "").trim().toUpperCase();
+
+  const newStudent = {
+    name,
+    roll: roll || "",
+    program,
+    branch,
+    dept,
+    year,
+    gender,
+    email,
+    authProvider: "google",
+    referralCode: "NONE"
+  };
+
+  registeredStudents.push(newStudent);
+  localStorage.setItem("tit_sih_students", JSON.stringify(registeredStudents));
+
+  if (isFirebaseActive && db) {
+    try {
+      await db.collection("students").doc(email).set(newStudent);
+    } catch (err) {
+      console.warn("Firestore student write notice:", err);
+    }
+  }
+
+  currentUser = newStudent;
+  localStorage.setItem("tit_sih_current_user", JSON.stringify(currentUser));
+
+  closeAuthModal();
+  updateNavAuthState();
+  renderStudentDashboard();
+  triggerConfettiBurst();
+
+  alert(`[TIT SIH] Student Leader profile created successfully for ${name}! Welcome to SIH 2026.`);
+};
+
+/* ==========================================================================
+   EMAIL & PASSWORD AUTHENTICATION CONTROLLER
+   ========================================================================== */
+window.handleLoginSubmit = async (e) => {
   e.preventDefault();
   const identifier = document.getElementById("login-identifier").value.trim().toLowerCase();
   const password = document.getElementById("login-password").value;
@@ -539,8 +677,21 @@ window.handleLoginSubmit = (e) => {
     return;
   }
 
+  // Attempt Firebase Auth sign-in if email is provided
+  if (identifier.includes("@") && typeof firebase !== "undefined" && firebase.auth && isFirebaseActive) {
+    try {
+      await firebase.auth().signInWithEmailAndPassword(identifier, password);
+    } catch (authErr) {
+      console.warn("Firebase Auth login notice:", authErr.code);
+      if (authErr.code === "auth/wrong-password" || authErr.code === "auth/invalid-credential") {
+        alert("[TIT SIH] Invalid password. Please check your credentials or use 'Forgot Password?'.");
+        return;
+      }
+    }
+  }
+
   const student = registeredStudents.find(
-    (s) => (s.email.toLowerCase() === identifier || (s.roll && s.roll.toLowerCase() === identifier)) && s.password === password
+    (s) => (s.email.toLowerCase() === identifier || (s.roll && s.roll.toLowerCase() === identifier)) && (!s.password || s.password === password)
   );
 
   if (student) {
@@ -552,11 +703,11 @@ window.handleLoginSubmit = (e) => {
     triggerConfettiBurst();
     alert(`[TIT SIH] Welcome, ${student.name}. You are logged in as Team Leader.`);
   } else {
-    alert("[TIT SIH] Invalid credentials. Please check your email/roll number and password, or create a new student account.");
+    alert("[TIT SIH] Invalid credentials. Please check your email/roll number and password, or sign up for a new account.");
   }
 };
 
-window.handleSignupSubmit = (e) => {
+window.handleSignupSubmit = async (e) => {
   e.preventDefault();
   const name = document.getElementById("signup-name").value.trim();
   const roll = (document.getElementById("signup-roll")?.value || "").trim().toUpperCase();
@@ -595,6 +746,27 @@ window.handleSignupSubmit = (e) => {
     return;
   }
 
+  // Create real user in Firebase Authentication & send verification email
+  let firebaseAuthCreated = false;
+  if (typeof firebase !== "undefined" && firebase.auth && isFirebaseActive) {
+    try {
+      const userCred = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      if (userCred.user) {
+        firebaseAuthCreated = true;
+        await userCred.user.updateProfile({ displayName: name });
+        await userCred.user.sendEmailVerification();
+        console.log("✅ Firebase verification email dispatched to:", email);
+      }
+    } catch (authErr) {
+      console.warn("Firebase Auth creation notice:", authErr);
+      if (authErr.code === "auth/email-already-in-use") {
+        alert("[TIT SIH] This email is already registered in Firebase Authentication. Please sign in or use 'Forgot Password?'.");
+        switchAuthTab("login");
+        return;
+      }
+    }
+  }
+
   const signupRefCode = (document.getElementById("signup-referral-code")?.value || "").trim().toUpperCase();
   const newStudent = { 
     name, 
@@ -606,15 +778,16 @@ window.handleSignupSubmit = (e) => {
     gender, 
     email, 
     password, 
+    authProvider: "password",
     referralCode: signupRefCode || "NONE" 
   };
   
   registeredStudents.push(newStudent);
   localStorage.setItem("tit_sih_students", JSON.stringify(registeredStudents));
 
-  // Sync with Firebase Firestore if active
+  // Sync with Firebase Firestore
   if (isFirebaseActive && db) {
-    const docId = newStudent.roll ? newStudent.roll : newStudent.email.replace(/[^a-zA-Z0-9_]/g, "_");
+    const docId = newStudent.email ? newStudent.email : (newStudent.roll || "student_" + Date.now());
     db.collection("students").doc(docId).set(newStudent).catch((err) => {
       console.warn("Firestore student write notice:", err);
     });
@@ -627,7 +800,12 @@ window.handleSignupSubmit = (e) => {
   updateNavAuthState();
   renderStudentDashboard();
   triggerConfettiBurst();
-  alert(`[TIT SIH] Student Leader account created successfully for ${name}.`);
+
+  if (firebaseAuthCreated) {
+    alert(`[TIT SIH] 🎉 Account created successfully for ${name}!\n\n📧 An official email verification link has been sent to ${email}. Please check your inbox / spam folder.`);
+  } else {
+    alert(`[TIT SIH] Student Leader account created successfully for ${name}.`);
+  }
 };
 
 window.handleLogout = () => {
