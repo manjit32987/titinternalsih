@@ -2905,6 +2905,7 @@ function initPwaEngine() {
       navigator.serviceWorker
         .register("./sw.js")
         .then((registration) => {
+          registration.update();
           console.log("✅ [PWA] Service Worker registered with scope:", registration.scope);
         })
         .catch((error) => {
