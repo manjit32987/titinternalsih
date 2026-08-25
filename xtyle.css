@@ -5180,15 +5180,19 @@ body.dark-theme [style*="background: #ecfdf5"] {
     padding-bottom: 84px !important;
   }
 
+  .container {
+    padding: 0 16px !important;
+  }
+
   .mobile-bottom-nav {
     display: flex;
     align-items: center;
     justify-content: space-around;
     position: fixed;
-    bottom: 12px;
+    bottom: max(10px, env(safe-area-inset-bottom));
     left: 12px;
     right: 12px;
-    height: 62px;
+    height: 60px;
     background: rgba(18, 24, 38, 0.94);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -5198,11 +5202,11 @@ body.dark-theme [style*="background: #ecfdf5"] {
     z-index: 9999;
     padding: 0 8px;
     margin: 0 auto;
-    max-width: 500px;
+    max-width: 480px;
     transition: all var(--transition-normal);
   }
 
-  /* Light Theme */
+  /* Light Theme Bottom Nav */
   html[data-theme="light"] .mobile-bottom-nav,
   body:not(.dark-theme) .mobile-bottom-nav {
     background: rgba(255, 255, 255, 0.96);
@@ -5245,6 +5249,293 @@ body.dark-theme [style*="background: #ecfdf5"] {
 
   .mob-bottom-item:active i {
     transform: scale(0.9);
+  }
+
+  /* Top Announcement & Navbar */
+  .top-announcement {
+    font-size: 0.78rem;
+    padding: 8px 10px;
+  }
+  .announcement-inner {
+    gap: 6px;
+  }
+  .navbar {
+    top: 8px;
+    padding: 0 8px;
+    margin-bottom: 12px;
+  }
+  .navbar-container {
+    padding: 6px 12px;
+  }
+  .brand-title {
+    font-size: 0.88rem;
+  }
+  .brand-logo-img {
+    width: 32px;
+    height: 32px;
+  }
+  .nav-links {
+    display: none;
+  }
+
+  /* Hero Section Layout on Smartphones */
+  .hero-section {
+    padding: 48px 0 36px !important;
+  }
+  .hero-headline {
+    font-size: 1.95rem !important;
+    line-height: 1.18;
+    margin-bottom: 12px;
+  }
+  .hero-subtitle {
+    font-size: 0.94rem !important;
+    line-height: 1.55;
+    margin-bottom: 22px;
+  }
+  .hero-council-badge {
+    padding: 6px 14px;
+    font-size: 0.76rem;
+  }
+  .hero-cta-group {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 28px;
+  }
+  .hero-cta-group .btn-3d-primary,
+  .hero-cta-group .btn-3d-secondary,
+  .hero-cta-group .btn-3d-outline {
+    width: 100%;
+    justify-content: center;
+    padding: 13px 18px;
+    font-size: 0.92rem;
+  }
+
+  /* 4 Metric Chips */
+  .hero-metrics-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .metric-card-3d {
+    padding: 12px 10px;
+    gap: 10px;
+  }
+  .metric-icon-wrap {
+    width: 38px;
+    height: 38px;
+    font-size: 1.05rem;
+  }
+  .metric-info h4 {
+    font-size: 0.88rem;
+  }
+  .metric-info p {
+    font-size: 0.7rem;
+  }
+
+  /* Countdown Box */
+  .hero-countdown-wrap {
+    margin-bottom: 28px;
+  }
+  .countdown-box {
+    padding: 16px 12px;
+  }
+  .countdown-timer-grid {
+    gap: 8px;
+  }
+  .timer-item {
+    padding: 10px 4px;
+  }
+  .timer-value {
+    font-size: 1.55rem;
+  }
+  .timer-unit {
+    font-size: 0.65rem;
+  }
+
+  /* Section Spacing & Headers */
+  .section-header {
+    margin-bottom: 28px;
+  }
+  .section-title {
+    font-size: 1.75rem !important;
+  }
+  .section-subtitle {
+    font-size: 0.88rem !important;
+  }
+  .section-tag {
+    font-size: 0.74rem;
+    padding: 5px 12px;
+  }
+
+  /* Prizes Arena */
+  .prizes-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+  .prize-card, .tilt-card-3d {
+    padding: 24px 18px !important;
+  }
+  .prize-amount-hero {
+    font-size: 2.1rem !important;
+  }
+  .secondary-prizes-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  /* Problem Statements Explorer */
+  .ps-cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+  .ps-card {
+    padding: 18px 16px !important;
+  }
+  .ps-controls-bar {
+    padding: 14px;
+  }
+  .search-input-wrap {
+    min-width: 100%;
+  }
+
+  /* Rules & Regulations */
+  .rules-cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+  }
+  .rule-card {
+    padding: 18px 16px !important;
+  }
+  .rules-highlight-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 18px 14px;
+    gap: 12px;
+  }
+
+  /* Resources Hub */
+  .resources-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+  }
+  .resource-card {
+    padding: 20px 16px !important;
+  }
+
+  /* FAQs */
+  .faq-question {
+    padding: 14px 16px;
+    font-size: 0.92rem;
+  }
+  .faq-answer {
+    padding: 0 16px;
+    font-size: 0.85rem;
+  }
+
+  /* Interactive Validator, Rubric, Matcher */
+  .validator-grid,
+  .rubric-calc-grid,
+  .matcher-form-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+  .validator-card,
+  .rubric-calc-card,
+  .matcher-card {
+    padding: 20px 16px !important;
+  }
+
+  /* Form & Modal Optimization on Mobile */
+  .modal-overlay {
+    padding: 8px !important;
+  }
+  .modal-container {
+    max-width: 100% !important;
+    width: 100% !important;
+    max-height: 92vh !important;
+    padding: 22px 14px 28px !important;
+    border-radius: 20px !important;
+    margin: 0 !important;
+  }
+  .modal-close-btn {
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+  }
+  .form-row-2 {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+  .members-roster-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+  .form-section-card {
+    padding: 14px 12px !important;
+    margin-bottom: 14px;
+  }
+  .form-text-input,
+  .form-select-input,
+  .form-textarea-input {
+    font-size: 16px !important; /* Prevents auto-zoom on iOS Safari */
+    padding: 11px 12px;
+  }
+
+  /* Committee Page Mobile Optimization */
+  .branch-filter-bar {
+    gap: 6px;
+    padding: 4px;
+  }
+  .branch-filter-btn {
+    min-width: 58px;
+    padding: 8px 10px;
+    font-size: 0.78rem;
+  }
+  .dept-branch-header {
+    padding: 14px 16px;
+  }
+  .dept-branch-title {
+    font-size: 1.05rem;
+  }
+  .dept-branch-block.open .dept-branch-content {
+    padding: 16px 12px;
+  }
+  .committee-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+  }
+  .committee-card {
+    padding: 20px 16px !important;
+  }
+
+  /* Student Dashboard Mobile Optimization */
+  .dashboard-hero-card {
+    padding: 18px 14px !important;
+  }
+  .dashboard-header-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .dashboard-team-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Extra Small Phones (iPhone SE, Small Androids <= 400px) */
+@media (max-width: 400px) {
+  .hero-metrics-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .hero-headline {
+    font-size: 1.65rem !important;
+  }
+  .timer-value {
+    font-size: 1.3rem;
+  }
+  .branch-filter-btn {
+    font-size: 0.72rem;
+    padding: 6px 8px;
   }
 }
 
