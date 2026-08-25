@@ -2432,7 +2432,7 @@ const GOOGLE_SHEET_COORDINATORS_CSV =
   "https://docs.google.com/spreadsheets/d/1vUqQk-kvq8fE9fQTlu4ih_dcKsINJmEFyriPTh84jNk/gviz/tq?tqx=out:csv&gid=1802588861";
 
 let liveCoordinatorsData = [];
-let currentActiveBranchFilter = "all";
+let currentActiveBranchFilter = "ece";
 
 // Robust CSV Line Parser
 function parseGoogleSheetCsv(text) {
@@ -2617,15 +2617,20 @@ window.initLiveDepartmentCoordinators = async () => {
   renderLiveDepartmentCoordinators();
 };
 
-window.refreshLiveCoordinators = () => {
-  const countText = document.getElementById("dept-sync-count-text");
-  if (countText) countText.textContent = "Refreshing responses from Google Form...";
-  initLiveDepartmentCoordinators();
+window.refreshLiveCoordinators = async () => {
+  const refreshBtn = document.getElementById("dept-refresh-btn");
+  const refreshIcon = refreshBtn ? refreshBtn.querySelector("i") : null;
+  if (refreshIcon) refreshIcon.classList.add("fa-spin");
+
+  await initLiveDepartmentCoordinators();
+
+  setTimeout(() => {
+    if (refreshIcon) refreshIcon.classList.remove("fa-spin");
+  }, 600);
 };
 
 function renderLiveDepartmentCoordinators() {
   const container = document.getElementById("dept-coordinators-dynamic-container");
-  const countText = document.getElementById("dept-sync-count-text");
   if (!container) return;
 
   if (!liveCoordinatorsData || liveCoordinatorsData.length === 0) {
@@ -2639,10 +2644,6 @@ function renderLiveDepartmentCoordinators() {
       </div>
     `;
     return;
-  }
-
-  if (countText) {
-    countText.innerHTML = `<strong>${liveCoordinatorsData.length} Coordinators</strong> live connected via Google Form`;
   }
 
   // Group by Branch
