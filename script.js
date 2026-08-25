@@ -69,6 +69,105 @@ function escapeHtml(str) {
     .replace(/'/g, "&#039;");
 }
 
+/* ==========================================================================
+   PROGRAM / MODULE & BRANCH ARCHITECTURE (DEGREE & DIPLOMA)
+   ========================================================================== */
+window.PROGRAM_BRANCH_MAP = {
+  Degree: [
+    { value: "ECE", label: "ECE - Electronics & Communication" },
+    { value: "CSE", label: "CSE - Computer Science & Engg" },
+    { value: "EE", label: "EE - Electrical Engineering" },
+    { value: "ME", label: "ME - Mechanical Engineering" },
+    { value: "CE", label: "CE - Civil Engineering" }
+  ],
+  Diploma: [
+    { value: "CST", label: "CST - Computer Science & Technology" },
+    { value: "ETCE", label: "ETCE - Electronics & Telecommunication" },
+    { value: "CE", label: "CE - Civil Engineering" },
+    { value: "ME", label: "ME - Mechanical Engineering" },
+    { value: "Architectural Assistantship", label: "Architectural Assistantship (Architecture)" },
+    { value: "Automobile Engineering", label: "Automobile Engineering" },
+    { value: "Food Processing Technology", label: "Food Processing Technology" }
+  ]
+};
+
+window.isDiplomaBranch = (branch) => {
+  if (!branch) return false;
+  const b = branch.toUpperCase();
+  return b.includes("CST") || b.includes("ETCE") || b.includes("ARCH") || b.includes("AUTO") || b.includes("FOOD");
+};
+
+window.getBranchOptionsHtml = (program, selectedBranch) => {
+  const prog = program === "Diploma" ? "Diploma" : "Degree";
+  const list = window.PROGRAM_BRANCH_MAP[prog] || window.PROGRAM_BRANCH_MAP["Degree"];
+  let matched = false;
+  const optionsHtml = list.map((b) => {
+    const isSel = selectedBranch && (selectedBranch.toUpperCase() === b.value.toUpperCase() || selectedBranch.toUpperCase().startsWith(b.value.toUpperCase()));
+    if (isSel) matched = true;
+    return `<option value="${b.value}" ${isSel ? "selected" : ""}>${b.label}</option>`;
+  }).join("");
+  
+  if (!matched && selectedBranch) {
+    return `<option value="${escapeHtml(selectedBranch)}" selected>${escapeHtml(selectedBranch)}</option>` + optionsHtml;
+  }
+  return optionsHtml;
+};
+
+window.updateSignupBranchOptions = () => {
+  const progEl = document.getElementById("signup-program");
+  const branchEl = document.getElementById("signup-branch");
+  const yearEl = document.getElementById("signup-year");
+  if (!progEl || !branchEl) return;
+
+  const program = progEl.value || "Degree";
+  const currentVal = branchEl.value;
+  branchEl.innerHTML = window.getBranchOptionsHtml(program, currentVal);
+
+  if (yearEl) {
+    if (program === "Diploma") {
+      yearEl.innerHTML = `
+        <option value="1st Year">1st Year</option>
+        <option value="2nd Year">2nd Year</option>
+        <option value="3rd Year" selected>3rd Year (Final Year)</option>
+      `;
+    } else {
+      yearEl.innerHTML = `
+        <option value="1st Year">1st Year</option>
+        <option value="2nd Year">2nd Year</option>
+        <option value="3rd Year" selected>3rd Year</option>
+        <option value="4th Year">4th Year (Final Year)</option>
+      `;
+    }
+  }
+};
+
+window.updateMemberBranchSelect = (idx) => {
+  const progEl = document.getElementById(`m${idx}-program`);
+  const branchEl = document.getElementById(`m${idx}-branch`);
+  if (!progEl || !branchEl) return;
+  const program = progEl.value || "Degree";
+  const currentVal = branchEl.value;
+  branchEl.innerHTML = window.getBranchOptionsHtml(program, currentVal);
+};
+
+window.updateEditMemberBranchOptions = () => {
+  const progEl = document.getElementById("edit-m-program");
+  const branchEl = document.getElementById("edit-m-branch");
+  if (!progEl || !branchEl) return;
+  const program = progEl.value || "Degree";
+  const currentVal = branchEl.value;
+  branchEl.innerHTML = window.getBranchOptionsHtml(program, currentVal);
+};
+
+window.updateAddMemberBranchOptions = () => {
+  const progEl = document.getElementById("add-m-program");
+  const branchEl = document.getElementById("add-m-branch");
+  if (!progEl || !branchEl) return;
+  const program = progEl.value || "Degree";
+  const currentVal = branchEl.value;
+  branchEl.innerHTML = window.getBranchOptionsHtml(program, currentVal);
+};
+
 // Initialize Everything on DOM Load
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
@@ -79,6 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileNav();
   initConfettiTriggers();
   updateNavAuthState();
+  updateSignupBranchOptions();
   renderStudentDashboard();
   checkUrlHashRouting();
   initScrollSpy();
@@ -348,7 +448,7 @@ window.handleLoginSubmit = (e) => {
   }
 
   const student = registeredStudents.find(
-    (s) => (s.email.toLowerCase() === identifier || s.roll.toLowerCase() === identifier) && s.password === password
+    (s) => (s.email.toLowerCase() === identifier || (s.roll && s.roll.toLowerCase() === identifier)) && s.password === password
   );
 
   if (student) {
@@ -367,8 +467,10 @@ window.handleLoginSubmit = (e) => {
 window.handleSignupSubmit = (e) => {
   e.preventDefault();
   const name = document.getElementById("signup-name").value.trim();
-  const roll = document.getElementById("signup-roll").value.trim().toUpperCase();
-  const dept = document.getElementById("signup-dept").value;
+  const roll = (document.getElementById("signup-roll")?.value || "").trim().toUpperCase();
+  const program = document.getElementById("signup-program")?.value || "Degree";
+  const branch = document.getElementById("signup-branch")?.value || "CSE";
+  const dept = branch;
   const year = document.getElementById("signup-year").value;
   const gender = document.getElementById("signup-gender").value;
   const email = document.getElementById("signup-email").value.trim().toLowerCase();
@@ -377,11 +479,6 @@ window.handleSignupSubmit = (e) => {
   // Production Validation Checks
   if (!name || name.length < 2) {
     alert("[TIT SIH] Please enter a valid full name.");
-    return;
-  }
-
-  if (!roll || roll.length < 3) {
-    alert("[TIT SIH] Please enter a valid college roll number (e.g. 21CSE042).");
     return;
   }
 
@@ -395,9 +492,9 @@ window.handleSignupSubmit = (e) => {
     return;
   }
 
-  // Check if roll or email already exists
+  // Check if email already exists, or if roll is provided and already taken
   const existing = registeredStudents.find(
-    (s) => s.email.toLowerCase() === email || s.roll.toLowerCase() === roll.toLowerCase()
+    (s) => s.email.toLowerCase() === email || (roll && roll !== "AWAITED" && s.roll && s.roll.toLowerCase() === roll.toLowerCase())
   );
 
   if (existing) {
@@ -407,13 +504,26 @@ window.handleSignupSubmit = (e) => {
   }
 
   const signupRefCode = (document.getElementById("signup-referral-code")?.value || "").trim().toUpperCase();
-  const newStudent = { name, roll, dept, year, gender, email, password, referralCode: signupRefCode || "NONE" };
+  const newStudent = { 
+    name, 
+    roll: roll || "", 
+    program, 
+    branch, 
+    dept, 
+    year, 
+    gender, 
+    email, 
+    password, 
+    referralCode: signupRefCode || "NONE" 
+  };
+  
   registeredStudents.push(newStudent);
   localStorage.setItem("tit_sih_students", JSON.stringify(registeredStudents));
 
   // Sync with Firebase Firestore if active
   if (isFirebaseActive && db) {
-    db.collection("students").doc(newStudent.roll).set(newStudent).catch((err) => {
+    const docId = newStudent.roll ? newStudent.roll : newStudent.email.replace(/[^a-zA-Z0-9_]/g, "_");
+    db.collection("students").doc(docId).set(newStudent).catch((err) => {
       console.warn("Firestore student write notice:", err);
     });
   }

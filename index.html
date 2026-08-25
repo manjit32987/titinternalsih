@@ -782,39 +782,40 @@
       <!-- Sign Up Form -->
       <form id="signup-form" style="display: none;" onsubmit="handleSignupSubmit(event)">
         <div class="form-group-item">
-          <label class="form-input-label">Full Name</label>
+          <label class="form-input-label">Full Name *</label>
           <input type="text" id="signup-name" class="form-text-input" placeholder="e.g. Student Name" required maxlength="60">
         </div>
         <div class="form-row-2">
           <div class="form-group-item">
-            <label class="form-input-label">Roll / Enrollment No.</label>
-            <input type="text" id="signup-roll" class="form-text-input" placeholder="e.g. 21CSE042" required maxlength="20">
+            <label class="form-input-label">Program / Module *</label>
+            <select id="signup-program" class="form-select-input" onchange="updateSignupBranchOptions()" required>
+              <option value="Degree" selected>Degree (B.Tech)</option>
+              <option value="Diploma">Diploma</option>
+            </select>
           </div>
           <div class="form-group-item">
-            <label class="form-input-label">Department</label>
-            <select id="signup-dept" class="form-select-input" required>
-              <option value="CSE">CSE</option>
-              <option value="IT">IT</option>
-              <option value="ECE">ECE</option>
-              <option value="EE">EE</option>
-              <option value="ME">ME</option>
-              <option value="CE">CE</option>
-              <option value="AI&DS">AI & DS</option>
+            <label class="form-input-label">Branch *</label>
+            <select id="signup-branch" class="form-select-input" required>
+              <option value="ECE">ECE - Electronics & Communication</option>
+              <option value="CSE" selected>CSE - Computer Science & Engg</option>
+              <option value="EE">EE - Electrical Engineering</option>
+              <option value="ME">ME - Mechanical Engineering</option>
+              <option value="CE">CE - Civil Engineering</option>
             </select>
           </div>
         </div>
         <div class="form-row-2">
           <div class="form-group-item">
-            <label class="form-input-label">Year of Study</label>
+            <label class="form-input-label">Year of Study *</label>
             <select id="signup-year" class="form-select-input" required>
               <option value="1st Year">1st Year</option>
               <option value="2nd Year">2nd Year</option>
               <option value="3rd Year" selected>3rd Year</option>
-              <option value="4th Year">4th Year</option>
+              <option value="4th Year">4th Year (Final Year)</option>
             </select>
           </div>
           <div class="form-group-item">
-            <label class="form-input-label">Gender</label>
+            <label class="form-input-label">Gender *</label>
             <select id="signup-gender" class="form-select-input" required>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
@@ -823,11 +824,18 @@
           </div>
         </div>
         <div class="form-group-item">
-          <label class="form-input-label">Email ID</label>
+          <label class="form-input-label" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Roll / Enrollment No.</span>
+            <span style="font-size: 0.72rem; color: #64748b; font-weight: normal;">(Optional - if allotted)</span>
+          </label>
+          <input type="text" id="signup-roll" class="form-text-input" placeholder="e.g. 21CSE042 or leave blank if not allotted" maxlength="20">
+        </div>
+        <div class="form-group-item">
+          <label class="form-input-label">Email ID *</label>
           <input type="email" id="signup-email" class="form-text-input" placeholder="e.g. student@titagartala.ac.in" required autocomplete="email">
         </div>
         <div class="form-group-item">
-          <label class="form-input-label">Create Password (Min. 6 chars)</label>
+          <label class="form-input-label">Create Password (Min. 6 chars) *</label>
           <input type="password" id="signup-password" class="form-text-input" placeholder="Minimum 6 characters" minlength="6" required autocomplete="new-password">
         </div>
         <div class="form-group-item">
@@ -1434,24 +1442,35 @@
             <input type="text" id="edit-m-name" class="form-text-input" required>
           </div>
           <div class="form-group-item">
-            <label class="form-input-label">Roll Number *</label>
-            <input type="text" id="edit-m-roll" class="form-text-input" required>
+            <label class="form-input-label" style="display: flex; justify-content: space-between; align-items: center;">
+              <span>Roll / Enrollment No.</span>
+              <span style="font-size: 0.72rem; color: #64748b; font-weight: normal;">(Optional)</span>
+            </label>
+            <input type="text" id="edit-m-roll" class="form-text-input" placeholder="e.g. 21CSE042 or leave blank">
           </div>
         </div>
 
         <div class="form-row-2">
           <div class="form-group-item">
-            <label class="form-input-label">Department *</label>
-            <select id="edit-m-dept" class="form-select-input" required>
-              <option value="CSE">CSE</option>
-              <option value="IT">IT</option>
-              <option value="ECE">ECE</option>
-              <option value="EE">EE</option>
-              <option value="ME">ME</option>
-              <option value="CE">CE</option>
-              <option value="AI&DS">AI & DS</option>
+            <label class="form-input-label">Program / Module *</label>
+            <select id="edit-m-program" class="form-select-input" onchange="updateEditMemberBranchOptions()" required>
+              <option value="Degree" selected>Degree (B.Tech)</option>
+              <option value="Diploma">Diploma</option>
             </select>
           </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Branch *</label>
+            <select id="edit-m-branch" class="form-select-input" required>
+              <option value="ECE">ECE - Electronics & Communication</option>
+              <option value="CSE">CSE - Computer Science & Engg</option>
+              <option value="EE">EE - Electrical Engineering</option>
+              <option value="ME">ME - Mechanical Engineering</option>
+              <option value="CE">CE - Civil Engineering</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
           <div class="form-group-item">
             <label class="form-input-label">Gender *</label>
             <select id="edit-m-gender" class="form-select-input" required>
@@ -1460,17 +1479,15 @@
               <option value="Other">Other</option>
             </select>
           </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group-item">
-            <label class="form-input-label">Email ID *</label>
-            <input type="email" id="edit-m-email" class="form-text-input" required>
-          </div>
           <div class="form-group-item">
             <label class="form-input-label">Mobile Phone *</label>
             <input type="tel" id="edit-m-phone" class="form-text-input" maxlength="10" placeholder="10-digit mobile" required>
           </div>
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-input-label">Email ID *</label>
+          <input type="email" id="edit-m-email" class="form-text-input" required>
         </div>
 
         <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
@@ -1506,24 +1523,35 @@
             <input type="text" id="add-m-name" class="form-text-input" placeholder="Student Name" required>
           </div>
           <div class="form-group-item">
-            <label class="form-input-label">Roll Number *</label>
-            <input type="text" id="add-m-roll" class="form-text-input" placeholder="e.g. 21IT024" required>
+            <label class="form-input-label" style="display: flex; justify-content: space-between; align-items: center;">
+              <span>Roll / Enrollment No.</span>
+              <span style="font-size: 0.72rem; color: #64748b; font-weight: normal;">(Optional)</span>
+            </label>
+            <input type="text" id="add-m-roll" class="form-text-input" placeholder="e.g. 21IT024 or leave blank">
           </div>
         </div>
 
         <div class="form-row-2">
           <div class="form-group-item">
-            <label class="form-input-label">Department *</label>
-            <select id="add-m-dept" class="form-select-input" required>
-              <option value="CSE">CSE</option>
-              <option value="IT">IT</option>
-              <option value="ECE">ECE</option>
-              <option value="EE">EE</option>
-              <option value="ME">ME</option>
-              <option value="CE">CE</option>
-              <option value="AI&DS">AI & DS</option>
+            <label class="form-input-label">Program / Module *</label>
+            <select id="add-m-program" class="form-select-input" onchange="updateAddMemberBranchOptions()" required>
+              <option value="Degree" selected>Degree (B.Tech)</option>
+              <option value="Diploma">Diploma</option>
             </select>
           </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Branch *</label>
+            <select id="add-m-branch" class="form-select-input" required>
+              <option value="ECE">ECE - Electronics & Communication</option>
+              <option value="CSE" selected>CSE - Computer Science & Engg</option>
+              <option value="EE">EE - Electrical Engineering</option>
+              <option value="ME">ME - Mechanical Engineering</option>
+              <option value="CE">CE - Civil Engineering</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
           <div class="form-group-item">
             <label class="form-input-label">Gender *</label>
             <select id="add-m-gender" class="form-select-input" required>
@@ -1532,17 +1560,15 @@
               <option value="Other">Other</option>
             </select>
           </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group-item">
-            <label class="form-input-label">Email ID *</label>
-            <input type="email" id="add-m-email" class="form-text-input" placeholder="student@titagartala.ac.in" required>
-          </div>
           <div class="form-group-item">
             <label class="form-input-label">Mobile Phone *</label>
             <input type="tel" id="add-m-phone" class="form-text-input" maxlength="10" placeholder="10-digit number" required>
           </div>
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-input-label">Email ID *</label>
+          <input type="email" id="add-m-email" class="form-text-input" placeholder="student@titagartala.ac.in" required>
         </div>
 
         <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
