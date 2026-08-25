@@ -632,15 +632,26 @@ window.triggerRegistration = () => {
 window.openTeamRegModal = () => {
   const modal = document.getElementById("team-registration-modal");
   if (!modal) return;
-  renderMembersRosterInputs();
+
+  try {
+    renderMembersRosterInputs();
+  } catch (err) {
+    console.error("[TIT SIH] Error rendering roster inputs:", err);
+  }
 
   // Auto-fill referral code from leader profile if available
-  if (currentUser && currentUser.referralCode && currentUser.referralCode !== "NONE") {
-    const regRefInput = document.getElementById("reg-referral-code");
-    if (regRefInput && !regRefInput.value) {
-      regRefInput.value = currentUser.referralCode;
-      handleReferralCodeInput(currentUser.referralCode);
+  try {
+    if (currentUser && currentUser.referralCode && currentUser.referralCode !== "NONE") {
+      const regRefInput = document.getElementById("reg-referral-code");
+      if (regRefInput && !regRefInput.value) {
+        regRefInput.value = currentUser.referralCode;
+        if (typeof window.handleReferralCodeInput === "function") {
+          window.handleReferralCodeInput(currentUser.referralCode);
+        }
+      }
     }
+  } catch (err) {
+    console.warn("[TIT SIH] Referral auto-fill warning:", err);
   }
 
   modal.classList.add("active");
@@ -787,7 +798,7 @@ function renderMembersRosterInputs() {
   checkRosterFemaleQuota();
 }
 
-window.checkRosterFemaleQuota = () => {
+function checkRosterFemaleQuota() {
   let femaleCount = 0;
 
   // Check Member 1
@@ -819,7 +830,8 @@ window.checkRosterFemaleQuota = () => {
   }
 
   return femaleCount >= 1;
-};
+}
+window.checkRosterFemaleQuota = checkRosterFemaleQuota;
 
 window.handleTeamRegistrationSubmit = (e) => {
   e.preventDefault();
@@ -2812,7 +2824,7 @@ window.copyCoordinatorRefCode = (code) => {
   }
 };
 
-window.handleReferralCodeInput = (val, context = "reg") => {
+function handleReferralCodeInput(val, context = "reg") {
   const code = (val || "").trim().toUpperCase();
   const checkIcon = context === "signup" ? null : document.getElementById("referral-check-icon");
   const matchBadge = context === "signup" ? document.getElementById("signup-referral-badge") : document.getElementById("referral-match-badge");
@@ -2856,7 +2868,8 @@ window.handleReferralCodeInput = (val, context = "reg") => {
       matchBadge.innerHTML = `<i class="fa-solid fa-ticket"></i> Referral Code: <strong>${escapeHtml(code)}</strong>`;
     }
   }
-};
+}
+window.handleReferralCodeInput = handleReferralCodeInput;
 
 // Robust CSV Line Parser
 function parseGoogleSheetCsv(text) {

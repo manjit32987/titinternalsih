@@ -1,4 +1,4 @@
-const CACHE_NAME = "tit-sih-2026-v2.1.1";
+const CACHE_NAME = "tit-sih-2026-v2.3.1";
 const PRECACHE_ASSETS = [
   "./",
   "./index.html",
@@ -6,7 +6,8 @@ const PRECACHE_ASSETS = [
   "./xtyle.css",
   "./script.js",
   "./manifest.json",
-  "./tit_logo.png"
+  "./tit_logo.png",
+  "./kaberi majumder.jpg"
 ];
 
 // Install Event: Precaches core shell assets & immediately activates
@@ -41,7 +42,7 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// Fetch Event: Network-First for HTML/Navigation, Stale-While-Revalidate for static assets
+// Fetch Event: Network-First for HTML, Scripts & Styles to guarantee instant live updates
 self.addEventListener("fetch", (event) => {
   if (
     event.request.method !== "GET" ||
@@ -53,8 +54,11 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Network-First for HTML documents to always show newest updates instantly
-  if (event.request.mode === "navigate" || event.request.headers.get("accept")?.includes("text/html")) {
+  // Network-First for HTML documents, scripts, and CSS
+  const isHtml = event.request.mode === "navigate" || event.request.headers.get("accept")?.includes("text/html");
+  const isCodeAsset = event.request.url.includes("script.js") || event.request.url.includes("xtyle.css");
+
+  if (isHtml || isCodeAsset) {
     event.respondWith(
       fetch(event.request)
         .then((networkResponse) => {
@@ -64,12 +68,12 @@ self.addEventListener("fetch", (event) => {
           }
           return networkResponse;
         })
-        .catch(() => caches.match(event.request) || caches.match("./index.html"))
+        .catch(() => caches.match(event.request) || (isHtml ? caches.match("./index.html") : caches.match(event.request)))
     );
     return;
   }
 
-  // Stale-While-Revalidate for other static assets
+  // Stale-While-Revalidate for images and other static assets
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       const fetchPromise = fetch(event.request)
