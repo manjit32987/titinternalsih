@@ -1,4 +1,4 @@
-const CACHE_NAME = "tit-sih-2026-v1.0.0";
+const CACHE_NAME = "tit-sih-2026-v2.1.0";
 const PRECACHE_ASSETS = [
   "./",
   "./index.html",
@@ -6,34 +6,23 @@ const PRECACHE_ASSETS = [
   "./xtyle.css",
   "./script.js",
   "./manifest.json",
-  "./tit_logo.png",
-  "./principal-patron.jpg",
-  "./ANUP.jpeg",
-  "./PURBA.jpeg",
-  "./Sania.jpeg",
-  "./aaniketh.jpeg",
-  "./arijit.jpeg",
-  "./arindam.jpg",
-  "./manjit.png",
-  "./nikita.jpeg",
-  "./SIH2026-IDEA-Presentation-Format.pptx"
+  "./tit_logo.png"
 ];
 
-// Install Event: Precaches core shell assets
+// Install Event: Precaches core shell assets & immediately activates
 self.addEventListener("install", (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches
       .open(CACHE_NAME)
       .then((cache) => {
-        console.log("[PWA SW] Pre-caching core portal assets");
         return cache.addAll(PRECACHE_ASSETS);
       })
-      .then(() => self.skipWaiting())
       .catch((err) => console.warn("[PWA SW] Pre-cache warning:", err))
   );
 });
 
-// Activate Event: Cleans up obsolete cache versions
+// Activate Event: Cleans up obsolete cache versions and claims clients immediately
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches
@@ -52,41 +41,46 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// Fetch Event: Stale-While-Revalidate with offline fallback
+// Fetch Event: Network-First for HTML/Navigation, Stale-While-Revalidate for static assets
 self.addEventListener("fetch", (event) => {
-  // Bypass Firestore, external analytics, and non-GET requests from service worker caching
   if (
     event.request.method !== "GET" ||
     event.request.url.includes("firestore.googleapis.com") ||
     event.request.url.includes("google-analytics.com") ||
-    event.request.url.includes("identitytoolkit.googleapis.com")
+    event.request.url.includes("identitytoolkit.googleapis.com") ||
+    event.request.url.includes("docs.google.com")
   ) {
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      // Return cached response if available, while fetching update in the background
-      const fetchPromise = fetch(event.request)
+  // Network-First for HTML documents to always show newest updates instantly
+  if (event.request.mode === "navigate" || event.request.headers.get("accept")?.includes("text/html")) {
+    event.respondWith(
+      fetch(event.request)
         .then((networkResponse) => {
-          if (
-            networkResponse &&
-            networkResponse.status === 200 &&
-            networkResponse.type === "basic"
-          ) {
+          if (networkResponse && networkResponse.status === 200) {
             const responseToCache = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseToCache);
-            });
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseToCache));
           }
           return networkResponse;
         })
-        .catch(() => {
-          // If offline and request is for an HTML page, return index.html fallback
-          if (event.request.mode === "navigate") {
-            return caches.match("./index.html");
+        .catch(() => caches.match(event.request) || caches.match("./index.html"))
+    );
+    return;
+  }
+
+  // Stale-While-Revalidate for other static assets
+  event.respondWith(
+    caches.match(event.request).then((cachedResponse) => {
+      const fetchPromise = fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200 && networkResponse.type === "basic") {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseToCache));
           }
-        });
+          return networkResponse;
+        })
+        .catch(() => cachedResponse);
 
       return cachedResponse || fetchPromise;
     })

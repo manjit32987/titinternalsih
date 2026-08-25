@@ -2545,20 +2545,52 @@ const FIXED_COORDINATOR_SIHIN_CODES = {
   "purba gangopadhyay": "SIHIN1021",
 };
 
-// Helper: Generate or look up permanent unique SIHINxxxx code
+// Global set of all assigned/claimed codes to strictly prevent any duplicates
+const ALLOCATED_REFERRAL_CODES_SET = new Set(Object.values(FIXED_COORDINATOR_SIHIN_CODES));
+
+// Persistent local registry of new coordinator dynamic codes
+let DYNAMIC_COORDINATOR_REGISTRY = {};
+try {
+  const savedRegistry = localStorage.getItem("tit_sih_dyn_coord_codes");
+  if (savedRegistry) {
+    DYNAMIC_COORDINATOR_REGISTRY = JSON.parse(savedRegistry);
+    Object.values(DYNAMIC_COORDINATOR_REGISTRY).forEach((code) => ALLOCATED_REFERRAL_CODES_SET.add(code));
+  }
+} catch (e) {}
+
+// Collision-Free Guaranteed Sequential Assignment Generator for future Google Form submissions
 function getCoordinatorReferralCode(coord) {
   const normName = (coord.name || "").trim().toLowerCase();
+  const key = (coord.email || `${normName}_${(coord.branch || "").toLowerCase()}`).trim().toLowerCase();
+
+  // 1. Check fixed baseline dictionary
   if (FIXED_COORDINATOR_SIHIN_CODES[normName]) {
-    return FIXED_COORDINATOR_SIHIN_CODES[normName];
+    const code = FIXED_COORDINATOR_SIHIN_CODES[normName];
+    ALLOCATED_REFERRAL_CODES_SET.add(code);
+    return code;
   }
-  // Deterministic 4-digit number for any dynamic new form submissions
-  let hash = 0;
-  const str = `${normName}_${(coord.branch || "").toLowerCase()}`;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash * 31 + str.charCodeAt(i)) % 9000;
+
+  // 2. Check previously saved dynamic assignment for this specific coordinator
+  if (DYNAMIC_COORDINATOR_REGISTRY[key]) {
+    ALLOCATED_REFERRAL_CODES_SET.add(DYNAMIC_COORDINATOR_REGISTRY[key]);
+    return DYNAMIC_COORDINATOR_REGISTRY[key];
   }
-  const num = 1000 + Math.abs(hash);
-  return `SIHIN${num}`;
+
+  // 3. Find the next available unallocated unique integer (SIHIN1022, SIHIN1023, ...)
+  let nextNum = 1022;
+  while (ALLOCATED_REFERRAL_CODES_SET.has(`SIHIN${nextNum}`)) {
+    nextNum++;
+  }
+
+  const assignedCode = `SIHIN${nextNum}`;
+  ALLOCATED_REFERRAL_CODES_SET.add(assignedCode);
+  DYNAMIC_COORDINATOR_REGISTRY[key] = assignedCode;
+
+  try {
+    localStorage.setItem("tit_sih_dyn_coord_codes", JSON.stringify(DYNAMIC_COORDINATOR_REGISTRY));
+  } catch (e) {}
+
+  return assignedCode;
 }
 
 // Pre-populate seed coordinators for immediate referral resolution
