@@ -98,11 +98,15 @@ window.isDiplomaBranch = (branch) => {
 };
 
 window.getBranchOptionsHtml = (program, selectedBranch) => {
-  const prog = program === "Diploma" ? "Diploma" : "Degree";
+  const prog = (program && program.toLowerCase() === "diploma") ? "Diploma" : "Degree";
   const list = window.PROGRAM_BRANCH_MAP[prog] || window.PROGRAM_BRANCH_MAP["Degree"];
   let matched = false;
   const optionsHtml = list.map((b) => {
-    const isSel = selectedBranch && (selectedBranch.toUpperCase() === b.value.toUpperCase() || selectedBranch.toUpperCase().startsWith(b.value.toUpperCase()));
+    const isSel = selectedBranch && (
+      selectedBranch.toUpperCase() === b.value.toUpperCase() || 
+      selectedBranch.toUpperCase().startsWith(b.value.toUpperCase()) ||
+      b.value.toUpperCase().startsWith(selectedBranch.toUpperCase())
+    );
     if (isSel) matched = true;
     return `<option value="${b.value}" ${isSel ? "selected" : ""}>${b.label}</option>`;
   }).join("");
@@ -634,8 +638,6 @@ window.openTeamRegModal = () => {
       handleReferralCodeInput(currentUser.referralCode);
     }
   }
-
-  modal.classList.add("active");
 };
 
 window.closeTeamRegModal = () => {
@@ -643,14 +645,15 @@ window.closeTeamRegModal = () => {
   if (modal) modal.classList.remove("active");
 };
 
-// Render Team Member Input Cards (Members 1-4 Required, Members 5-6 Optional)
+// Render Team Member Input Cards (Members 1-2 Required, Members 3-6 Optional)
 function renderMembersRosterInputs() {
   const container = document.getElementById("members-roster-inputs");
   if (!container) return;
 
   const leaderName = currentUser ? currentUser.name : "";
   const leaderRoll = currentUser ? currentUser.roll : "";
-  const leaderDept = currentUser ? currentUser.dept : "CSE";
+  const leaderProgram = currentUser ? (currentUser.program || (window.isDiplomaBranch(currentUser.branch || currentUser.dept) ? "Diploma" : "Degree")) : "Degree";
+  const leaderBranch = currentUser ? (currentUser.branch || currentUser.dept || "CSE") : "CSE";
   const leaderGender = currentUser ? currentUser.gender : "Male";
   const leaderEmail = currentUser ? currentUser.email : "";
 
@@ -664,26 +667,32 @@ function renderMembersRosterInputs() {
       <div class="form-row-2">
         <div class="form-group-item" style="margin-bottom: 8px;">
           <label class="form-input-label">Full Name *</label>
-          <input type="text" id="m1-name" class="form-text-input" value="${leaderName}" required oninput="checkRosterFemaleQuota()">
+          <input type="text" id="m1-name" class="form-text-input" value="${escapeHtml(leaderName)}" required oninput="checkRosterFemaleQuota()">
         </div>
         <div class="form-group-item" style="margin-bottom: 8px;">
-          <label class="form-input-label">Roll Number *</label>
-          <input type="text" id="m1-roll" class="form-text-input" value="${leaderRoll}" required>
+          <label class="form-input-label" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Roll / Enrollment No.</span>
+            <span style="font-size: 0.72rem; color: #059669; font-weight: 700; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; border: 1px solid #a7f3d0;">Optional</span>
+          </label>
+          <input type="text" id="m1-roll" class="form-text-input" placeholder="e.g. 21CSE042 or leave blank if not allotted" value="${escapeHtml(leaderRoll)}">
         </div>
       </div>
       <div class="form-row-2">
         <div class="form-group-item" style="margin-bottom: 8px;">
-          <label class="form-input-label">Department *</label>
-          <select id="m1-dept" class="form-select-input" required>
-            <option value="CSE" ${leaderDept === "CSE" ? "selected" : ""}>CSE</option>
-            <option value="IT" ${leaderDept === "IT" ? "selected" : ""}>IT</option>
-            <option value="ECE" ${leaderDept === "ECE" ? "selected" : ""}>ECE</option>
-            <option value="EE" ${leaderDept === "EE" ? "selected" : ""}>EE</option>
-            <option value="ME" ${leaderDept === "ME" ? "selected" : ""}>ME</option>
-            <option value="CE" ${leaderDept === "CE" ? "selected" : ""}>CE</option>
-            <option value="AI&DS" ${leaderDept === "AI&DS" ? "selected" : ""}>AI & DS</option>
+          <label class="form-input-label">Program / Module *</label>
+          <select id="m1-program" class="form-select-input" onchange="updateMemberBranchSelect(1)" required>
+            <option value="Degree" ${leaderProgram === "Degree" ? "selected" : ""}>Degree (B.Tech)</option>
+            <option value="Diploma" ${leaderProgram === "Diploma" ? "selected" : ""}>Diploma</option>
           </select>
         </div>
+        <div class="form-group-item" style="margin-bottom: 8px;">
+          <label class="form-input-label">Branch *</label>
+          <select id="m1-branch" class="form-select-input" required>
+            ${window.getBranchOptionsHtml(leaderProgram, leaderBranch)}
+          </select>
+        </div>
+      </div>
+      <div class="form-row-2">
         <div class="form-group-item" style="margin-bottom: 8px;">
           <label class="form-input-label">Gender *</label>
           <select id="m1-gender" class="form-select-input roster-gender-select" onchange="checkRosterFemaleQuota()" required>
@@ -692,16 +701,14 @@ function renderMembersRosterInputs() {
             <option value="Other" ${leaderGender === "Other" ? "selected" : ""}>Other</option>
           </select>
         </div>
-      </div>
-      <div class="form-row-2">
-        <div class="form-group-item" style="margin-bottom: 0;">
+        <div class="form-group-item" style="margin-bottom: 8px;">
           <label class="form-input-label">Email ID *</label>
-          <input type="email" id="m1-email" class="form-text-input" value="${leaderEmail}" required>
+          <input type="email" id="m1-email" class="form-text-input" value="${escapeHtml(leaderEmail)}" required>
         </div>
-        <div class="form-group-item" style="margin-bottom: 0;">
-          <label class="form-input-label">Phone Number *</label>
-          <input type="tel" id="m1-phone" class="form-text-input" placeholder="10-digit mobile" required>
-        </div>
+      </div>
+      <div class="form-group-item" style="margin-bottom: 0;">
+        <label class="form-input-label">Phone Number *</label>
+        <input type="tel" id="m1-phone" class="form-text-input" placeholder="10-digit mobile" required>
       </div>
     </div>
   `;
@@ -712,6 +719,7 @@ function renderMembersRosterInputs() {
     const badgeText = isRequired ? `Member ${i} (Required)` : `Member ${i} (Optional for Internal Round)`;
     const requiredMarker = isRequired ? " *" : "";
     const cardBgStyle = isRequired ? "" : "background: #f8fafc; border-style: dashed;";
+    const defaultBranch = i === 2 ? "ECE" : i === 3 ? "EE" : i === 4 ? "ME" : i === 5 ? "CE" : "CSE";
 
     html += `
       <div class="member-input-card" style="${cardBgStyle}">
@@ -725,23 +733,29 @@ function renderMembersRosterInputs() {
             <input type="text" id="m${i}-name" class="form-text-input" placeholder="Member ${i} Name" ${isRequired ? "required" : ""} oninput="checkRosterFemaleQuota()">
           </div>
           <div class="form-group-item" style="margin-bottom: 8px;">
-            <label class="form-input-label">Roll Number${requiredMarker}</label>
-            <input type="text" id="m${i}-roll" class="form-text-input" placeholder="e.g. 21IT0${i * 4}" ${isRequired ? "required" : ""}>
+            <label class="form-input-label" style="display: flex; justify-content: space-between; align-items: center;">
+              <span>Roll / Enrollment No.</span>
+              <span style="font-size: 0.72rem; color: #059669; font-weight: 700; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; border: 1px solid #a7f3d0;">Optional</span>
+            </label>
+            <input type="text" id="m${i}-roll" class="form-text-input" placeholder="e.g. 21IT0${i * 4} or leave blank if not allotted">
           </div>
         </div>
         <div class="form-row-2">
           <div class="form-group-item" style="margin-bottom: 8px;">
-            <label class="form-input-label">Department${requiredMarker}</label>
-            <select id="m${i}-dept" class="form-select-input" ${isRequired ? "required" : ""}>
-              <option value="CSE">CSE</option>
-              <option value="IT" ${i === 2 ? "selected" : ""}>IT</option>
-              <option value="ECE" ${i === 3 ? "selected" : ""}>ECE</option>
-              <option value="EE" ${i === 4 ? "selected" : ""}>EE</option>
-              <option value="ME" ${i === 5 ? "selected" : ""}>ME</option>
-              <option value="CE" ${i === 6 ? "selected" : ""}>CE</option>
-              <option value="AI&DS">AI & DS</option>
+            <label class="form-input-label">Program / Module${requiredMarker}</label>
+            <select id="m${i}-program" class="form-select-input" onchange="updateMemberBranchSelect(${i})" ${isRequired ? "required" : ""}>
+              <option value="Degree" selected>Degree (B.Tech)</option>
+              <option value="Diploma">Diploma</option>
             </select>
           </div>
+          <div class="form-group-item" style="margin-bottom: 8px;">
+            <label class="form-input-label">Branch${requiredMarker}</label>
+            <select id="m${i}-branch" class="form-select-input" ${isRequired ? "required" : ""}>
+              ${window.getBranchOptionsHtml("Degree", defaultBranch)}
+            </select>
+          </div>
+        </div>
+        <div class="form-row-2">
           <div class="form-group-item" style="margin-bottom: 8px;">
             <label class="form-input-label">Gender${requiredMarker}</label>
             <select id="m${i}-gender" class="form-select-input roster-gender-select" onchange="checkRosterFemaleQuota()" ${isRequired ? "required" : ""}>
@@ -750,16 +764,14 @@ function renderMembersRosterInputs() {
               <option value="Other">Other</option>
             </select>
           </div>
-        </div>
-        <div class="form-row-2">
-          <div class="form-group-item" style="margin-bottom: 0;">
+          <div class="form-group-item" style="margin-bottom: 8px;">
             <label class="form-input-label">Email ID${requiredMarker}</label>
             <input type="email" id="m${i}-email" class="form-text-input" placeholder="member${i}@titagartala.ac.in" ${isRequired ? "required" : ""}>
           </div>
-          <div class="form-group-item" style="margin-bottom: 0;">
-            <label class="form-input-label">Phone Number${requiredMarker}</label>
-            <input type="tel" id="m${i}-phone" class="form-text-input" placeholder="10-digit mobile" ${isRequired ? "required" : ""}>
-          </div>
+        </div>
+        <div class="form-group-item" style="margin-bottom: 0;">
+          <label class="form-input-label">Phone Number${requiredMarker}</label>
+          <input type="tel" id="m${i}-phone" class="form-text-input" placeholder="10-digit mobile" ${isRequired ? "required" : ""}>
         </div>
       </div>
     `;
@@ -866,20 +878,23 @@ window.handleTeamRegistrationSubmit = (e) => {
     const isRequired = i <= 2;
     const nameEl = document.getElementById(`m${i}-name`);
     const rollEl = document.getElementById(`m${i}-roll`);
-    const deptEl = document.getElementById(`m${i}-dept`);
+    const progEl = document.getElementById(`m${i}-program`);
+    const branchEl = document.getElementById(`m${i}-branch`);
     const genderEl = document.getElementById(`m${i}-gender`);
     const emailEl = document.getElementById(`m${i}-email`);
     const phoneEl = document.getElementById(`m${i}-phone`);
 
     const name = nameEl ? nameEl.value.trim() : "";
     const roll = rollEl ? rollEl.value.trim().toUpperCase() : "";
-    const dept = deptEl ? deptEl.value : "CSE";
+    const program = progEl ? progEl.value : "Degree";
+    const branch = branchEl ? branchEl.value : "CSE";
+    const dept = branch;
     const gender = genderEl ? genderEl.value : "Male";
     const email = emailEl ? emailEl.value.trim().toLowerCase() : "";
     const phone = phoneEl ? phoneEl.value.trim() : "";
 
     // For optional members 3 to 6, skip if empty
-    if (!isRequired && !name && !roll && !email) {
+    if (!isRequired && !name && !email && !phone) {
       continue;
     }
 
@@ -888,16 +903,14 @@ window.handleTeamRegistrationSubmit = (e) => {
       return;
     }
 
-    if (!roll) {
-      alert(`[TIT SIH] Please provide the Roll Number for Member ${i}.`);
-      return;
+    // Roll number is optional: only check duplicate if provided
+    if (roll && roll !== "AWAITED" && roll !== "N/A") {
+      if (rollSet.has(roll)) {
+        alert(`[TIT SIH Error] Duplicate Roll Number: "${roll}" is entered more than once.`);
+        return;
+      }
+      rollSet.add(roll);
     }
-
-    if (rollSet.has(roll)) {
-      alert(`[TIT SIH Error] Duplicate Roll Number: "${roll}" is entered more than once.`);
-      return;
-    }
-    rollSet.add(roll);
 
     if (!isValidEmail(email)) {
       alert(`[TIT SIH] Please enter a valid Email address for Member ${i}.`);
@@ -917,7 +930,9 @@ window.handleTeamRegistrationSubmit = (e) => {
 
     members.push({
       name,
-      roll,
+      roll: roll || "",
+      program,
+      branch,
       dept,
       gender,
       email,
@@ -1132,7 +1147,7 @@ function renderStudentDashboard() {
               ${m.isLeader ? '<span class="member-badge-pill leader" style="font-size: 0.65rem;">LEADER</span>' : `<span style="font-size: 0.72rem; color: #64748b; font-weight:600;">${escapeHtml(m.gender)}</span>`}
             </div>
             <div style="font-size: 0.78rem; color: #475569; margin-bottom: 3px;">
-              <i class="fa-solid fa-id-badge" style="color: #059669; width: 14px;"></i> ${escapeHtml(m.roll)} (${escapeHtml(m.dept)})
+              <i class="fa-solid fa-id-badge" style="color: #059669; width: 14px;"></i> ${m.roll ? escapeHtml(m.roll) : '<span style="color:#059669; font-style:italic;">Roll Awaited</span>'} (${escapeHtml(m.dept || m.branch)})
             </div>
             <div style="font-size: 0.76rem; color: #64748b; margin-bottom: 4px; word-break: break-all;">
               <i class="fa-solid fa-envelope" style="color: #059669; width: 14px;"></i> ${escapeHtml(m.email)}
@@ -1266,7 +1281,20 @@ window.openEditMemberModal = (teamId, memberIdx) => {
 
   document.getElementById("edit-m-name").value = member.name || "";
   document.getElementById("edit-m-roll").value = member.roll || "";
-  document.getElementById("edit-m-dept").value = member.dept || "CSE";
+  
+  const prog = member.program || (window.isDiplomaBranch(member.branch || member.dept) ? "Diploma" : "Degree");
+  const branch = member.branch || member.dept || "CSE";
+  
+  const progEl = document.getElementById("edit-m-program");
+  if (progEl) {
+    progEl.value = prog;
+  }
+  const branchEl = document.getElementById("edit-m-branch");
+  if (branchEl) {
+    branchEl.innerHTML = window.getBranchOptionsHtml(prog, branch);
+    branchEl.value = branch;
+  }
+
   document.getElementById("edit-m-gender").value = member.gender || "Female";
   document.getElementById("edit-m-email").value = member.email || "";
   document.getElementById("edit-m-phone").value = member.phone || "";
@@ -1287,22 +1315,27 @@ window.handleEditMemberSubmit = (event) => {
   if (!team || !team.members[memberIdx]) return;
 
   const name = document.getElementById("edit-m-name").value.trim();
-  const roll = document.getElementById("edit-m-roll").value.trim();
-  const dept = document.getElementById("edit-m-dept").value;
+  const roll = document.getElementById("edit-m-roll").value.trim().toUpperCase();
+  const program = document.getElementById("edit-m-program") ? document.getElementById("edit-m-program").value : "Degree";
+  const branch = document.getElementById("edit-m-branch") ? document.getElementById("edit-m-branch").value : (document.getElementById("edit-m-dept") ? document.getElementById("edit-m-dept").value : "CSE");
+  const dept = branch;
   const gender = document.getElementById("edit-m-gender").value;
-  const email = document.getElementById("edit-m-email").value.trim();
+  const email = document.getElementById("edit-m-email").value.trim().toLowerCase();
   const phone = document.getElementById("edit-m-phone").value.trim();
 
-  if (!name || !roll || !email || !phone) {
-    alert("[TIT SIH Error] Please fill in all member fields.");
+  // Full Name, Email, Phone are required. Roll is optional!
+  if (!name || !email || !phone) {
+    alert("[TIT SIH Error] Please fill in all required member fields (Name, Email, Phone).");
     return;
   }
 
-  // Duplicate roll check in same team
-  const isDuplicateRoll = team.members.some((m, idx) => idx !== memberIdx && m.roll.toLowerCase() === roll.toLowerCase());
-  if (isDuplicateRoll) {
-    alert(`[TIT SIH Error] Roll Number "${roll}" is already assigned to another member in this team.`);
-    return;
+  // Duplicate roll check in same team (only if roll is provided)
+  if (roll && roll !== "AWAITED" && roll !== "N/A") {
+    const isDuplicateRoll = team.members.some((m, idx) => idx !== memberIdx && m.roll && m.roll.toUpperCase() === roll);
+    if (isDuplicateRoll) {
+      alert(`[TIT SIH Error] Roll Number "${roll}" is already assigned to another member in this team.`);
+      return;
+    }
   }
 
   // Duplicate email check in same team
@@ -1330,7 +1363,9 @@ window.handleEditMemberSubmit = (event) => {
   }
 
   team.members[memberIdx].name = name;
-  team.members[memberIdx].roll = roll;
+  team.members[memberIdx].roll = roll || "";
+  team.members[memberIdx].program = program;
+  team.members[memberIdx].branch = branch;
   team.members[memberIdx].dept = dept;
   team.members[memberIdx].gender = gender;
   team.members[memberIdx].email = email;
@@ -1373,6 +1408,16 @@ window.openAddMemberModal = (teamId) => {
   document.getElementById("add-member-team-id").value = teamId;
   document.getElementById("add-m-name").value = "";
   document.getElementById("add-m-roll").value = "";
+  
+  const progEl = document.getElementById("add-m-program");
+  if (progEl) {
+    progEl.value = "Degree";
+  }
+  const branchEl = document.getElementById("add-m-branch");
+  if (branchEl) {
+    branchEl.innerHTML = window.getBranchOptionsHtml("Degree", "CSE");
+  }
+
   document.getElementById("add-m-email").value = "";
   document.getElementById("add-m-phone").value = "";
 
@@ -1396,21 +1441,26 @@ window.handleAddMemberSubmit = (event) => {
   }
 
   const name = document.getElementById("add-m-name").value.trim();
-  const roll = document.getElementById("add-m-roll").value.trim();
-  const dept = document.getElementById("add-m-dept").value;
+  const roll = document.getElementById("add-m-roll").value.trim().toUpperCase();
+  const program = document.getElementById("add-m-program") ? document.getElementById("add-m-program").value : "Degree";
+  const branch = document.getElementById("add-m-branch") ? document.getElementById("add-m-branch").value : (document.getElementById("add-m-dept") ? document.getElementById("add-m-dept").value : "CSE");
+  const dept = branch;
   const gender = document.getElementById("add-m-gender").value;
-  const email = document.getElementById("add-m-email").value.trim();
+  const email = document.getElementById("add-m-email").value.trim().toLowerCase();
   const phone = document.getElementById("add-m-phone").value.trim();
 
-  if (!name || !roll || !email || !phone) {
-    alert("[TIT SIH Error] Please fill in all fields to add the member.");
+  // Name, Email, Phone are required. Roll is optional!
+  if (!name || !email || !phone) {
+    alert("[TIT SIH Error] Please fill in all required fields (Name, Email, Phone).");
     return;
   }
 
-  // Check duplicate roll in team
-  if (team.members.some((m) => m.roll.toLowerCase() === roll.toLowerCase())) {
-    alert(`[TIT SIH Error] Roll Number "${roll}" is already in this team.`);
-    return;
+  // Check duplicate roll in team (only if roll is provided)
+  if (roll && roll !== "AWAITED" && roll !== "N/A") {
+    if (team.members.some((m) => m.roll && m.roll.toUpperCase() === roll)) {
+      alert(`[TIT SIH Error] Roll Number "${roll}" is already in this team.`);
+      return;
+    }
   }
 
   // Check duplicate email in team
@@ -1431,7 +1481,9 @@ window.handleAddMemberSubmit = (event) => {
 
   team.members.push({
     name,
-    roll,
+    roll: roll || "",
+    program,
+    branch,
     dept,
     gender,
     email,
@@ -1601,7 +1653,7 @@ window.openTeamPassModal = (teamId) => {
               <td style="padding: 5px 8px;">${idx + 1}</td>
               <td style="padding: 5px 8px;">${m.isLeader ? '<span style="color:#059669; font-weight:700; font-size:0.7rem; background:#ecfdf5; padding:2px 6px; border-radius:4px; border:1px solid #a7f3d0;">Leader</span>' : '<span style="color:#64748b; font-size:0.7rem;">Member</span>'}</td>
               <td style="padding: 5px 8px;">${m.name}</td>
-              <td style="padding: 5px 8px;">${m.roll}</td>
+              <td style="padding: 5px 8px;">${escapeHtml(m.roll || "Awaited")}</td>
               <td style="padding: 5px 8px;">${m.dept}</td>
               <td style="padding: 5px 8px;">${m.gender}</td>
             </tr>
@@ -1979,7 +2031,7 @@ function renderAdminConsole() {
               </td>
               <td>
                 <strong style="color: #0f172a;">${leader.name}</strong>
-                <div style="font-size: 0.72rem; color: #64748b;">${leader.roll} (${leader.dept})</div>
+                <div style="font-size: 0.72rem; color: #64748b;">${leader.roll ? escapeHtml(leader.roll) : "Roll Awaited"} (${escapeHtml(leader.dept || leader.branch)})</div>
                 <div style="font-size: 0.7rem; color: #059669;"><i class="fa-solid fa-phone" style="font-size:0.65rem;"></i> ${leader.phone || "N/A"}</div>
               </td>
               <td>
@@ -2050,7 +2102,7 @@ window.openAdminTeamDetails = (teamId) => {
             Team: ${team.teamName}
           </h2>
           <div style="color: #64748b; font-size: 0.85rem;">
-            Leader: <strong style="color: #0f172a;">${leader.name}</strong> (${leader.roll} - ${leader.dept}) • Registered on: ${team.createdAt}
+            Leader: <strong style="color: #0f172a;">${escapeHtml(leader.name)}</strong> (${leader.roll ? escapeHtml(leader.roll) : "Roll Awaited"} - ${escapeHtml(leader.dept || leader.branch)}) • Registered on: ${team.createdAt}
           </div>
         </div>
 
@@ -2094,11 +2146,11 @@ window.openAdminTeamDetails = (teamId) => {
           (m, idx) => `
         <div style="background: ${m.isLeader ? "#f0fdf4" : "#ffffff"}; border: 1px solid ${m.isLeader ? "#a7f3d0" : "#e2e8f0"}; border-radius: 10px; padding: 12px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <strong style="color: #0f172a; font-size: 0.9rem;">${m.name}</strong>
+            <strong style="color: #0f172a; font-size: 0.9rem;">${escapeHtml(m.name)}</strong>
             ${m.isLeader ? '<span class="member-badge-pill leader" style="font-size:0.65rem;">LEADER</span>' : `<span style="font-size:0.7rem; color:#64748b; font-weight:600;">Member ${idx + 1}</span>`}
           </div>
           <div style="font-size: 0.78rem; color: #475569; margin-bottom: 3px;">
-            <i class="fa-solid fa-id-badge" style="color: #059669; width: 14px;"></i> Roll: <strong>${m.roll}</strong> (${m.dept})
+            <i class="fa-solid fa-id-badge" style="color: #059669; width: 14px;"></i> Roll: <strong>${m.roll ? escapeHtml(m.roll) : "Awaited"}</strong> (${escapeHtml(m.dept || m.branch)})
           </div>
           <div style="font-size: 0.78rem; color: #475569; margin-bottom: 3px;">
             <i class="fa-solid fa-venus-mars" style="color: #059669; width: 14px;"></i> Gender: <strong>${m.gender}</strong>
@@ -2865,6 +2917,11 @@ function getDriveThumbnailFallback(driveUrl, name) {
 function normalizeBranchCode(rawBranch) {
   if (!rawBranch) return "OTHER";
   const b = rawBranch.toUpperCase().trim();
+  if (b.includes("CST") || b.includes("COMPUTER SCIENCE & TECH")) return "CST";
+  if (b.includes("ETCE") || b.includes("TELECOMMUNICATION")) return "ETCE";
+  if (b.includes("ARCH")) return "Architectural Assistantship";
+  if (b.includes("AUTO")) return "Automobile Engineering";
+  if (b.includes("FOOD")) return "Food Processing Technology";
   if (b.includes("ECE") || b.includes("ELECTRONIC")) return "ECE";
   if (b.includes("CSE") || b.includes("COMPUTER")) return "CSE";
   if (b.includes("EE") || b.includes("ELECTRICAL")) return "EE";
@@ -2916,9 +2973,39 @@ function getBranchDetails(branchCode) {
       badgeIcon: "fa-gears",
       badgeColor: "#047857",
     },
+    CST: {
+      name: "Computer Science & Technology (CST)",
+      icon: "fa-laptop-code",
+      badgeIcon: "fa-code",
+      badgeColor: "#2563eb",
+    },
+    ETCE: {
+      name: "Electronics & Telecommunication Engg (ETCE)",
+      icon: "fa-satellite-dish",
+      badgeIcon: "fa-tower-broadcast",
+      badgeColor: "#059669",
+    },
+    "Architectural Assistantship": {
+      name: "Architectural Assistantship (Architecture)",
+      icon: "fa-building-columns",
+      badgeIcon: "fa-drafting-compass",
+      badgeColor: "#8b5cf6",
+    },
+    "Automobile Engineering": {
+      name: "Automobile Engineering",
+      icon: "fa-car-side",
+      badgeIcon: "fa-gauge",
+      badgeColor: "#dc2626",
+    },
+    "Food Processing Technology": {
+      name: "Food Processing Technology",
+      icon: "fa-utensils",
+      badgeIcon: "fa-leaf",
+      badgeColor: "#16a34a",
+    }
   };
   return map[branchCode] || {
-    name: `${branchCode} Engineering`,
+    name: `${branchCode}`,
     icon: "fa-users",
     badgeIcon: "fa-user-check",
     badgeColor: "#059669",
