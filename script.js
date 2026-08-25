@@ -2584,12 +2584,12 @@ DEFAULT_COORDINATORS_SEED.forEach((c) => {
 window.copyCoordinatorRefCode = (code) => {
   if (navigator.clipboard) {
     navigator.clipboard.writeText(code).then(() => {
-      alert(`🎟️ Coordinator Referral Code "${code}" copied to clipboard!\n\nEnter this code in your Team Registration Form to credit your technical coordinator.`);
+      alert(`🎟️ Referral Code "${code}" copied to clipboard!\n\nEnter this unique code in your Team Registration Form.`);
     }).catch(() => {
-      prompt("Coordinator Referral Code:", code);
+      prompt("Referral Code:", code);
     });
   } else {
-    prompt("Coordinator Referral Code:", code);
+    prompt("Referral Code:", code);
   }
 };
 
@@ -2614,7 +2614,17 @@ window.handleReferralCodeInput = (val) => {
     if (matchBadge) {
       matchBadge.style.display = "block";
       matchBadge.style.color = "#059669";
-      matchBadge.innerHTML = `<i class="fa-solid fa-user-check"></i> Verified Head: <strong>${escapeHtml(matched.name)}</strong> (${escapeHtml(matched.branch)} - ${escapeHtml(matched.year)})`;
+      matchBadge.innerHTML = `<i class="fa-solid fa-circle-check"></i> Valid Referral Code: <strong>${escapeHtml(code)}</strong> (${escapeHtml(matched.branch)} Department)`;
+    }
+  } else if (code.startsWith("SIHIN")) {
+    if (checkIcon) {
+      checkIcon.style.display = "block";
+      checkIcon.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #059669;"></i>`;
+    }
+    if (matchBadge) {
+      matchBadge.style.display = "block";
+      matchBadge.style.color = "#059669";
+      matchBadge.innerHTML = `<i class="fa-solid fa-circle-check"></i> Valid Referral Code: <strong>${escapeHtml(code)}</strong>`;
     }
   } else {
     if (checkIcon) {
@@ -2624,7 +2634,7 @@ window.handleReferralCodeInput = (val) => {
     if (matchBadge) {
       matchBadge.style.display = "block";
       matchBadge.style.color = "#64748b";
-      matchBadge.innerHTML = `<i class="fa-solid fa-ticket"></i> Custom Referral Code (${escapeHtml(code)})`;
+      matchBadge.innerHTML = `<i class="fa-solid fa-ticket"></i> Referral Code: <strong>${escapeHtml(code)}</strong>`;
     }
   }
 };
