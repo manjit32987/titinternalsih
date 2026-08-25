@@ -4359,6 +4359,70 @@ body.dark-theme [style*="background: #ecfdf5"] {
   background: rgba(16, 185, 129, 0.12) !important;
 }
 
+/* Committee Component Dark Mode */
+html[data-theme="dark"] .committee-card,
+body.dark-theme .committee-card {
+  background: #111a2e;
+  border-color: #1e293b;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .committee-name,
+body.dark-theme .committee-name {
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .committee-contact-links a,
+body.dark-theme .committee-contact-links a {
+  background: #1a253c;
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+html[data-theme="dark"] .branch-filter-bar,
+body.dark-theme .branch-filter-bar {
+  background: #0d1527;
+  border-color: #1e293b;
+}
+
+html[data-theme="dark"] .branch-filter-btn,
+body.dark-theme .branch-filter-btn {
+  color: #94a3b8;
+}
+
+html[data-theme="dark"] .branch-filter-btn:hover,
+body.dark-theme .branch-filter-btn:hover {
+  background: #1e293b;
+  color: #34d399;
+}
+
+html[data-theme="dark"] .dept-branch-block,
+body.dark-theme .dept-branch-block {
+  background: #111a2e;
+  border-color: #1e293b;
+}
+
+html[data-theme="dark"] .dept-branch-header,
+body.dark-theme .dept-branch-header {
+  background: #111a2e;
+}
+
+html[data-theme="dark"] .dept-branch-block.open .dept-branch-header,
+body.dark-theme .dept-branch-block.open .dept-branch-header {
+  background: rgba(5, 150, 105, 0.16);
+  border-color: rgba(5, 150, 105, 0.3);
+}
+
+html[data-theme="dark"] .dept-branch-title,
+body.dark-theme .dept-branch-title {
+  color: #6ee7b7;
+}
+
+html[data-theme="dark"] .year-group-title,
+body.dark-theme .year-group-title {
+  color: #e2e8f0;
+}
+
 /* ==========================================================================
    RADIAL THEME EXPANSION ANIMATION FROM BUTTON
    ========================================================================== */

@@ -82,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderStudentDashboard();
   checkUrlHashRouting();
   initScrollSpy();
+  initLiveDepartmentCoordinators();
 });
 
 function checkUrlHashRouting() {
@@ -2421,6 +2422,380 @@ window.triggerPwaInstall = async () => {
     if (mobInstallItem) mobInstallItem.style.display = "none";
   } else {
     alert("[📲 Install TIT SIH App]\n\n• On iOS (Safari): Tap the Share icon (⎋) and select 'Add to Home Screen'.\n• On Android (Chrome): Tap the three dots (⋮) and select 'Install app' or 'Add to Home Screen'.\n• On Desktop (Chrome / Edge): Click the Install icon in the address bar.");
+  }
+};
+
+/* ==========================================================================
+   17. LIVE GOOGLE SHEET SYNCHRONIZATION ENGINE FOR COMMITTEE COORDINATORS
+   ========================================================================== */
+const GOOGLE_SHEET_COORDINATORS_CSV =
+  "https://docs.google.com/spreadsheets/d/1vUqQk-kvq8fE9fQTlu4ih_dcKsINJmEFyriPTh84jNk/gviz/tq?tqx=out:csv&gid=1802588861";
+
+let liveCoordinatorsData = [];
+let currentActiveBranchFilter = "all";
+
+// Robust CSV Line Parser
+function parseGoogleSheetCsv(text) {
+  const lines = text.split(/\r?\n/).filter((l) => l.trim().length > 0);
+  if (lines.length < 2) return [];
+
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i];
+    const row = [];
+    let insideQuotes = false;
+    let entry = "";
+
+    for (let j = 0; j < line.length; j++) {
+      const char = line[j];
+      if (char === '"') {
+        if (insideQuotes && line[j + 1] === '"') {
+          entry += '"';
+          j++;
+        } else {
+          insideQuotes = !insideQuotes;
+        }
+      } else if (char === "," && !insideQuotes) {
+        row.push(entry.trim());
+        entry = "";
+      } else {
+        entry += char;
+      }
+    }
+    row.push(entry.trim());
+    if (row.length >= 3 && row[2]) {
+      rows.push(row);
+    }
+  }
+  return rows;
+}
+
+// Convert Google Drive view/open links into high-speed direct image URLs
+function getDriveDirectImageUrl(driveUrl, name) {
+  const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(name || "Coordinator")}&background=059669&color=fff&size=200&bold=true`;
+  if (!driveUrl || typeof driveUrl !== "string") return fallbackAvatar;
+
+  const match = driveUrl.match(/(?:id=|\/d\/|open\?id=)([a-zA-Z0-9_-]+)/);
+  if (match && match[1]) {
+    const fileId = match[1];
+    return `https://lh3.googleusercontent.com/d/${fileId}`;
+  }
+  return fallbackAvatar;
+}
+
+function getDriveThumbnailFallback(driveUrl, name) {
+  const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(name || "Coordinator")}&background=059669&color=fff&size=200&bold=true`;
+  if (!driveUrl || typeof driveUrl !== "string") return fallbackAvatar;
+
+  const match = driveUrl.match(/(?:id=|\/d\/|open\?id=)([a-zA-Z0-9_-]+)/);
+  if (match && match[1]) {
+    const fileId = match[1];
+    return `https://drive.google.com/thumbnail?id=${fileId}&sz=w400`;
+  }
+  return fallbackAvatar;
+}
+
+// Normalize branch string
+function normalizeBranchCode(rawBranch) {
+  if (!rawBranch) return "OTHER";
+  const b = rawBranch.toUpperCase().trim();
+  if (b.includes("ECE") || b.includes("ELECTRONIC")) return "ECE";
+  if (b.includes("CSE") || b.includes("COMPUTER")) return "CSE";
+  if (b.includes("EE") || b.includes("ELECTRICAL")) return "EE";
+  if (b.includes("CE") || b.includes("CIVIL")) return "CE";
+  if (b.includes("ME") || b.includes("MECHANICAL")) return "ME";
+  return b;
+}
+
+// Normalize academic year string
+function normalizeAcademicYear(rawYear) {
+  if (!rawYear) return "Student Coordinator";
+  const y = rawYear.trim();
+  if (y.includes("4") || y.toLowerCase().includes("final")) return "4th Year";
+  if (y.includes("3") || y.toLowerCase().includes("pre-final")) return "3rd Year";
+  if (y.includes("2")) return "2nd Year";
+  if (y.includes("1")) return "1st Year";
+  return y;
+}
+
+function getBranchDetails(branchCode) {
+  const map = {
+    ECE: {
+      name: "Electronics & Communication Engineering (ECE)",
+      icon: "fa-satellite-dish",
+      badgeIcon: "fa-microchip",
+      badgeColor: "#059669",
+    },
+    CSE: {
+      name: "Computer Science & Engineering (CSE)",
+      icon: "fa-laptop-code",
+      badgeIcon: "fa-code",
+      badgeColor: "#2563eb",
+    },
+    EE: {
+      name: "Electrical Engineering (EE)",
+      icon: "fa-bolt",
+      badgeIcon: "fa-bolt-lightning",
+      badgeColor: "#d97706",
+    },
+    CE: {
+      name: "Civil Engineering (CE)",
+      icon: "fa-compass-drafting",
+      badgeIcon: "fa-trowel-bricks",
+      badgeColor: "#ea580c",
+    },
+    ME: {
+      name: "Mechanical Engineering (ME)",
+      icon: "fa-wrench",
+      badgeIcon: "fa-gears",
+      badgeColor: "#047857",
+    },
+  };
+  return map[branchCode] || {
+    name: `${branchCode} Engineering`,
+    icon: "fa-users",
+    badgeIcon: "fa-user-check",
+    badgeColor: "#059669",
+  };
+}
+
+// Main Coordinator Fetcher & Realtime Sync Controller
+window.initLiveDepartmentCoordinators = async () => {
+  const container = document.getElementById("dept-coordinators-dynamic-container");
+  if (!container) return; // Not on committee page
+
+  try {
+    const response = await fetch(GOOGLE_SHEET_COORDINATORS_CSV, { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
+    const csvText = await response.text();
+    const rows = parseGoogleSheetCsv(csvText);
+
+    if (rows && rows.length > 0) {
+      // Map and deduplicate (keeping the latest submission)
+      const parsedMap = new Map();
+
+      rows.forEach((r) => {
+        const timestamp = r[0] || "";
+        const photoUrl = r[1] || "";
+        const name = (r[2] || "").trim();
+        const branch = normalizeBranchCode(r[3] || "");
+        const year = normalizeAcademicYear(r[4] || "");
+        const email = (r[5] || "").trim();
+        const phone = (r[6] || "").replace(/[^0-9]/g, "");
+        const instagram = (r[7] || "").trim();
+        const linkedin = (r[8] || "").trim();
+
+        if (!name) return;
+
+        const key = (email || `${name}_${branch}`).toLowerCase();
+        parsedMap.set(key, {
+          timestamp,
+          photoUrl,
+          name,
+          branch,
+          year,
+          email,
+          phone,
+          instagram,
+          linkedin,
+        });
+      });
+
+      liveCoordinatorsData = Array.from(parsedMap.values());
+      localStorage.setItem("tit_sih_coordinators_cache", JSON.stringify(liveCoordinatorsData));
+    }
+  } catch (err) {
+    console.warn("Could not fetch live Google Sheet, loading cached coordinators:", err);
+    const cached = localStorage.getItem("tit_sih_coordinators_cache");
+    if (cached) {
+      try {
+        liveCoordinatorsData = JSON.parse(cached);
+      } catch (e) {}
+    }
+  }
+
+  renderLiveDepartmentCoordinators();
+};
+
+window.refreshLiveCoordinators = () => {
+  const countText = document.getElementById("dept-sync-count-text");
+  if (countText) countText.textContent = "Refreshing responses from Google Form...";
+  initLiveDepartmentCoordinators();
+};
+
+function renderLiveDepartmentCoordinators() {
+  const container = document.getElementById("dept-coordinators-dynamic-container");
+  const countText = document.getElementById("dept-sync-count-text");
+  if (!container) return;
+
+  if (!liveCoordinatorsData || liveCoordinatorsData.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 40px 20px; background: rgba(5,150,105,0.05); border-radius: 16px; border: 1px dashed var(--border-emerald);">
+        <i class="fa-solid fa-users-line" style="font-size: 2.4rem; color: var(--primary); margin-bottom: 12px;"></i>
+        <h4 style="font-size: 1.15rem; margin-bottom: 6px;">No Coordinator Submissions Yet</h4>
+        <p style="font-size: 0.85rem; color: var(--text-muted); max-width: 480px; margin: 0 auto 16px;">
+          Submissions received via the Google Form will automatically appear here with their photos and contact details.
+        </p>
+      </div>
+    `;
+    return;
+  }
+
+  if (countText) {
+    countText.innerHTML = `<strong>${liveCoordinatorsData.length} Coordinators</strong> live connected via Google Form`;
+  }
+
+  // Group by Branch
+  const branchesOrder = ["ECE", "CSE", "EE", "CE", "ME"];
+  const branchGroups = {};
+
+  branchesOrder.forEach((b) => (branchGroups[b] = []));
+
+  liveCoordinatorsData.forEach((coord) => {
+    if (!branchGroups[coord.branch]) {
+      branchGroups[coord.branch] = [];
+    }
+    branchGroups[coord.branch].push(coord);
+  });
+
+  // Year hierarchy sorting order
+  const yearOrder = { "4th Year": 1, "3rd Year": 2, "2nd Year": 3, "1st Year": 4 };
+
+  let html = "";
+
+  branchesOrder.forEach((branchCode) => {
+    const list = branchGroups[branchCode] || [];
+    if (list.length === 0) return;
+
+    const meta = getBranchDetails(branchCode);
+    const isVisible = currentActiveBranchFilter === "all" || currentActiveBranchFilter.toUpperCase() === branchCode;
+
+    // Group by Year inside branch
+    const yearGroups = {};
+    list.forEach((c) => {
+      if (!yearGroups[c.year]) yearGroups[c.year] = [];
+      yearGroups[c.year].push(c);
+    });
+
+    const sortedYears = Object.keys(yearGroups).sort((a, b) => (yearOrder[a] || 99) - (yearOrder[b] || 99));
+
+    html += `
+      <div class="dept-branch-block open" data-branch="${branchCode.toLowerCase()}" style="display: ${isVisible ? "block" : "none"}; margin-bottom: 24px;">
+        <div class="dept-branch-header" onclick="toggleBranchAccordion('${branchCode.toLowerCase()}')">
+          <div class="dept-header-left">
+            <h3 class="dept-branch-title">
+              <i class="fa-solid ${meta.icon}" style="color: ${meta.badgeColor};"></i> ${meta.name}
+            </h3>
+            <span class="dept-badge-summary"><i class="fa-solid fa-users"></i> ${list.length} Coordinator${list.length > 1 ? "s" : ""}</span>
+          </div>
+          <div class="dept-header-right">
+            <button class="dept-accordion-chevron" aria-label="Toggle ${branchCode} Coordinators">
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="dept-branch-content">
+    `;
+
+    sortedYears.forEach((yr) => {
+      const yearCoords = yearGroups[yr];
+      html += `
+        <div class="year-group-title"><i class="fa-solid fa-graduation-cap" style="color: ${meta.badgeColor};"></i> ${yr}</div>
+        <div class="committee-grid" style="margin-bottom: 20px;">
+      `;
+
+      yearCoords.forEach((c) => {
+        const directImg = getDriveDirectImageUrl(c.photoUrl, c.name);
+        const fallbackImg = getDriveThumbnailFallback(c.photoUrl, c.name);
+        const cleanPhone = c.phone ? c.phone.slice(-10) : "";
+
+        // Build contact links
+        let contactHtml = "";
+        if (c.email) {
+          contactHtml += `<a href="mailto:${escapeHtml(c.email)}" title="Email ${escapeHtml(c.name)}"><i class="fa-solid fa-envelope"></i></a>`;
+        }
+        if (cleanPhone) {
+          contactHtml += `<a href="tel:+91${cleanPhone}" title="Call ${escapeHtml(c.name)}"><i class="fa-solid fa-phone"></i></a>`;
+          contactHtml += `<a href="https://wa.me/91${cleanPhone}?text=Hello%20${encodeURIComponent(c.name)},%20regarding%20TIT%20SIH%20Hackathon" target="_blank" rel="noopener" title="WhatsApp ${escapeHtml(c.name)}"><i class="fa-brands fa-whatsapp"></i></a>`;
+        }
+        if (c.linkedin) {
+          const lUrl = c.linkedin.startsWith("http") ? c.linkedin : `https://${c.linkedin}`;
+          contactHtml += `<a href="${escapeHtml(lUrl)}" target="_blank" rel="noopener" title="LinkedIn ${escapeHtml(c.name)}"><i class="fa-brands fa-linkedin-in"></i></a>`;
+        }
+        if (c.instagram) {
+          let instaUrl = c.instagram;
+          if (!instaUrl.startsWith("http")) {
+            const cleanHandle = instaUrl.replace(/^@/, "").trim();
+            instaUrl = `https://www.instagram.com/${cleanHandle}`;
+          }
+          contactHtml += `<a href="${escapeHtml(instaUrl)}" target="_blank" rel="noopener" title="Instagram ${escapeHtml(c.name)}"><i class="fa-brands fa-instagram"></i></a>`;
+        }
+
+        html += `
+          <div class="committee-card">
+            <div class="committee-avatar-wrap" style="overflow: hidden; padding: 0;">
+              <img src="${escapeHtml(directImg)}"
+                   alt="${escapeHtml(c.name)} - ${escapeHtml(c.year)} ${escapeHtml(c.branch)} Coordinator"
+                   width="96" height="96" loading="lazy" decoding="async"
+                   onerror="this.onerror=null; this.src='${escapeHtml(fallbackImg)}';"
+                   style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 50%;">
+              <span class="committee-badge-icon" style="background: ${meta.badgeColor};"><i class="fa-solid ${meta.badgeIcon}"></i></span>
+            </div>
+            <h3 class="committee-name">${escapeHtml(c.name)}</h3>
+            <span class="committee-designation">${escapeHtml(c.year)} • ${escapeHtml(c.branch)}</span>
+            <p class="committee-dept">${escapeHtml(meta.name)}, TIT</p>
+            <div class="committee-contact-links">
+              ${contactHtml}
+            </div>
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+    });
+
+    html += `
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+// Interactive Branch Tab Filter
+window.filterDepartmentBranch = (branchCode) => {
+  currentActiveBranchFilter = branchCode;
+
+  // Update tab buttons
+  const buttons = document.querySelectorAll(".branch-filter-btn");
+  buttons.forEach((btn) => {
+    if (btn.getAttribute("data-branch") === branchCode) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
+
+  // Filter branch blocks
+  const blocks = document.querySelectorAll(".dept-branch-block");
+  blocks.forEach((block) => {
+    const b = block.getAttribute("data-branch");
+    if (branchCode === "all" || b === branchCode) {
+      block.style.display = "block";
+      block.classList.add("open");
+    } else {
+      block.style.display = "none";
+    }
+  });
+};
+
+// Interactive Branch Block Accordion
+window.toggleBranchAccordion = (branchCode) => {
+  const block = document.querySelector(`.dept-branch-block[data-branch="${branchCode}"]`);
+  if (block) {
+    block.classList.toggle("open");
   }
 };
 
