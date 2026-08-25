@@ -395,7 +395,19 @@ window.switchStudentAuthTab = (tab) => {
     if (signupBtn) signupBtn.classList.add("active");
     if (signupForm) signupForm.style.display = "block";
   } else if (tab === "reset") {
-    if (resetForm) resetForm.style.display = "block";
+    if (resetForm) {
+      resetForm.style.display = "block";
+      const step1 = document.getElementById("reset-step-1");
+      const step2 = document.getElementById("reset-step-2");
+      const emailInput = document.getElementById("reset-email");
+      if (step1) step1.style.display = "block";
+      if (step2) step2.style.display = "none";
+      if (emailInput) {
+        emailInput.value = "";
+        emailInput.focus();
+      }
+      currentResetStudent = null;
+    }
   }
 };
 
@@ -415,34 +427,106 @@ window.handleAdminTabPasscodeSubmit = (e) => {
   handleDedicatedAdminPasscodeSubmit(e);
 };
 
+let currentResetStudent = null;
+
+window.verifyResetAccount = () => {
+  const inputEl = document.getElementById("reset-email");
+  const identifier = (inputEl ? inputEl.value : "").trim().toLowerCase();
+
+  if (!identifier) {
+    alert("[TIT SIH] Please enter your registered College Email ID or Roll Number.");
+    return;
+  }
+
+  const student = registeredStudents.find(
+    (s) =>
+      s.email.toLowerCase() === identifier ||
+      (s.roll && s.roll.toLowerCase() === identifier)
+  );
+
+  if (!student) {
+    alert(`[TIT SIH] No registered account found for "${identifier}".\n\nPlease check your email/roll number or register a new student account.`);
+    return;
+  }
+
+  currentResetStudent = student;
+
+  const step1 = document.getElementById("reset-step-1");
+  const step2 = document.getElementById("reset-step-2");
+  const verifiedBanner = document.getElementById("reset-verified-banner");
+  const newPassInput = document.getElementById("reset-new-password");
+  const confirmPassInput = document.getElementById("reset-confirm-password");
+
+  if (verifiedBanner) {
+    verifiedBanner.innerHTML = `
+      <i class="fa-solid fa-circle-check" style="color: #059669;"></i> Account Verified: <strong style="color: #0f172a;">${escapeHtml(student.name)}</strong> (${escapeHtml(student.dept || student.branch)}${student.roll ? ` - ${escapeHtml(student.roll)}` : ""})
+    `;
+  }
+
+  if (newPassInput) newPassInput.value = "";
+  if (confirmPassInput) confirmPassInput.value = "";
+
+  if (step1) step1.style.display = "none";
+  if (step2) {
+    step2.style.display = "block";
+    if (newPassInput) newPassInput.focus();
+  }
+};
+
 window.handlePasswordResetSubmit = (e) => {
   e.preventDefault();
-  const email = document.getElementById("reset-email").value.trim().toLowerCase();
 
-  // Try Firebase Auth Password Reset Email if active
-  if (typeof firebase !== "undefined" && firebase.auth && isFirebaseActive) {
-    firebase
-      .auth()
-      .sendPasswordResetEmail(email)
-      .then(() => {
-        alert(`[TIT SIH] Password Reset Dispatched: A secure reset link has been sent to ${email}. Please check your inbox and spam folder.`);
-        switchAuthTab("login");
-      })
-      .catch((err) => {
-        console.warn("Firebase Auth reset error:", err);
-        alert(`[TIT SIH] Password Reset Dispatched: If an account exists with ${email}, you will receive a reset link shortly.`);
-        switchAuthTab("login");
-      });
-  } else {
-    // Local / Firestore lookup
-    const student = registeredStudents.find((s) => s.email.toLowerCase() === email);
-    if (student) {
-      alert(`[TIT SIH] Password Reset Request: A reset link has been dispatched to ${email}.`);
-    } else {
-      alert(`[TIT SIH] Password Reset Request: If this email is registered with TIT IIC, a reset link will arrive shortly.`);
-    }
-    switchAuthTab("login");
+  if (!currentResetStudent) {
+    window.verifyResetAccount();
+    return;
   }
+
+  const newPass = document.getElementById("reset-new-password").value;
+  const confirmPass = document.getElementById("reset-confirm-password").value;
+
+  if (!newPass || newPass.length < 4) {
+    alert("[TIT SIH] Please enter a new password (minimum 4 characters).");
+    return;
+  }
+
+  if (newPass !== confirmPass) {
+    alert("[TIT SIH] Passwords do not match. Please re-enter your new password.");
+    return;
+  }
+
+  // Update password in memory
+  currentResetStudent.password = newPass;
+
+  // Persist to registeredStudents array
+  const sIdx = registeredStudents.findIndex(
+    (s) => s.email.toLowerCase() === currentResetStudent.email.toLowerCase()
+  );
+  if (sIdx >= 0) {
+    registeredStudents[sIdx].password = newPass;
+  }
+  localStorage.setItem("tit_sih_students", JSON.stringify(registeredStudents));
+
+  // Sync to Firestore if active
+  if (isFirebaseActive && db) {
+    db.collection("students")
+      .doc(currentResetStudent.email.toLowerCase())
+      .update({ password: newPass })
+      .catch((err) => {
+        console.warn("Firestore password update notice:", err);
+      });
+  }
+
+  // Auto-login user
+  currentUser = currentResetStudent;
+  localStorage.setItem("tit_sih_current_user", JSON.stringify(currentUser));
+
+  closeAuthModal();
+  updateNavAuthState();
+  renderStudentDashboard();
+  triggerConfettiBurst();
+
+  alert(`[TIT SIH] Password updated successfully! Welcome, ${currentResetStudent.name}.`);
+  currentResetStudent = null;
 };
 
 window.handleLoginSubmit = (e) => {

@@ -29,7 +29,8 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://titinternalsih.vercel.app/">
   <meta property="og:title" content="TIT IIC - Smart India Hackathon (SIH) Internal Hackathon 2026">
-  <meta property="og:description" content="Official gateway for TIT students to represent Tripura Institute of Technology at SIH 2026 Nationals. Win ₹6,000 Total Cash Prize & 1-Month ChatGPT Go Ignite Award.">
+  <meta property="og:description"
+    content="Official gateway for TIT students to represent Tripura Institute of Technology at SIH 2026 Nationals. Win ₹6,000 Total Cash Prize & 1-Month ChatGPT Go Ignite Award.">
   <meta property="og:image" content="https://titinternalsih.vercel.app/tit_logo.png">
   <meta property="og:site_name" content="Tripura Institute of Technology • IIC">
   <meta property="og:locale" content="en_IN">
@@ -38,7 +39,8 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://titinternalsih.vercel.app/">
   <meta name="twitter:title" content="TIT IIC - Smart India Hackathon (SIH) Internal Hackathon 2026">
-  <meta name="twitter:description" content="Represent TIT at SIH 2026 Nationals. Compete for ₹6,000 Total Cash Prize & 1-Month ChatGPT Go Ignite Award.">
+  <meta name="twitter:description"
+    content="Represent TIT at SIH 2026 Nationals. Compete for ₹6,000 Total Cash Prize & 1-Month ChatGPT Go Ignite Award.">
   <meta name="twitter:image" content="https://titinternalsih.vercel.app/tit_logo.png">
 
   <!-- JSON-LD Event Structured Data -->
@@ -94,11 +96,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="xtyle.css?v=2026.3.5">
+  <link rel="stylesheet" href="xtyle.css?v=2026.3.6">
 
   <!-- Instant Theme Script to prevent FOUC -->
   <script>
-    (function() {
+    (function () {
       const savedTheme = localStorage.getItem("tit_sih_theme") || "light";
       if (savedTheme === "dark") {
         document.documentElement.setAttribute("data-theme", "dark");
@@ -123,7 +125,8 @@
       <nav class="navbar-container">
         <!-- Brand Logo -->
         <a href="#" class="nav-brand">
-          <img src="tit_logo.png" alt="Tripura Institute of Technology Logo" class="brand-logo-img" width="46" height="46" decoding="async">
+          <img src="tit_logo.png" alt="Tripura Institute of Technology Logo" class="brand-logo-img" width="46"
+            height="46" decoding="async">
           <div class="brand-text">
             <div class="brand-title"><span>TIT</span> SIH 2026</div>
             <div class="brand-subtitle">IIC • TIT AGARTALA</div>
@@ -139,16 +142,19 @@
           <li><a href="#resources" class="nav-link"><i class="fa-solid fa-download"></i> Resources</a></li>
           <li><a href="committee.html" class="nav-link"><i class="fa-solid fa-users"></i> Committee</a></li>
           <li><a href="#faq" class="nav-link"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
-          <li id="nav-dashboard-link" style="display:none;"><a href="#student-dashboard" class="nav-link" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-gauge-high"></i> Dashboard</a></li>
+          <li id="nav-dashboard-link" style="display:none;"><a href="#student-dashboard" class="nav-link"
+              style="color: #059669; font-weight: 700;"><i class="fa-solid fa-gauge-high"></i> Dashboard</a></li>
         </ul>
 
         <!-- Right Action Button & Auth Container -->
         <div class="nav-actions">
           <!-- PWA Install Button -->
-          <button id="pwa-install-btn" class="pwa-nav-icon-btn" onclick="triggerPwaInstall()" style="display: none;" title="Install Portal onto Home Screen">
+          <button id="pwa-install-btn" class="pwa-nav-icon-btn" onclick="triggerPwaInstall()" style="display: none;"
+            title="Install Portal onto Home Screen">
             <i class="fa-solid fa-mobile-screen-button"></i>
           </button>
-          <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme(event)" aria-label="Toggle Bright / Dark Theme" title="Toggle Bright / Dark Theme">
+          <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme(event)"
+            aria-label="Toggle Bright / Dark Theme" title="Toggle Bright / Dark Theme">
             <div class="theme-toggle-track">
               <div class="theme-toggle-thumb">
                 <i class="fa-solid fa-sun icon-sun"></i>
@@ -169,19 +175,31 @@
       <div class="mobile-nav-dropdown" id="mobile-nav-dropdown">
         <ul class="mobile-nav-links">
           <li id="mob-pwa-install-item" style="display: none;">
-            <a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); triggerPwaInstall();" style="color: #059669; font-weight: 700;">
+            <a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); triggerPwaInstall();"
+              style="color: #059669; font-weight: 700;">
               <i class="fa-solid fa-mobile-screen-button"></i> Install Mobile App
             </a>
           </li>
-          <li id="mob-auth-link"><a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); openAuthModal('login');"><i class="fa-solid fa-user-lock"></i> Portal Login / Sign Up</a></li>
-          <li id="mob-dashboard-link" style="display:none;"><a href="#student-dashboard" class="mobile-nav-link" onclick="closeMobileMenu();" style="color:#059669; font-weight:700;"><i class="fa-solid fa-gauge-high"></i> My Team Dashboard</a></li>
-          <li><a href="#prizes" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-trophy"></i> Prizes & Awards</a></li>
-          <li><a href="#rules" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-scale-balanced"></i> Rules & Guidelines</a></li>
-          <li><a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="mobile-nav-link" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> SIH 2026 PS</a></li>
-          <li><a href="#resources" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-download"></i> Resources & PPT</a></li>
-          <li><a href="committee.html" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-users"></i> Organizing Committee</a></li>
-          <li><a href="#faq" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
-          <li style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; display: flex; align-items: center; justify-content: space-between;">
+          <li id="mob-auth-link"><a href="#" class="mobile-nav-link"
+              onclick="closeMobileMenu(); openAuthModal('login');"><i class="fa-solid fa-user-lock"></i> Portal Login /
+              Sign Up</a></li>
+          <li id="mob-dashboard-link" style="display:none;"><a href="#student-dashboard" class="mobile-nav-link"
+              onclick="closeMobileMenu();" style="color:#059669; font-weight:700;"><i
+                class="fa-solid fa-gauge-high"></i> My Team Dashboard</a></li>
+          <li><a href="#prizes" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-trophy"></i>
+              Prizes & Awards</a></li>
+          <li><a href="#rules" class="mobile-nav-link" onclick="closeMobileMenu()"><i
+                class="fa-solid fa-scale-balanced"></i> Rules & Guidelines</a></li>
+          <li><a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="mobile-nav-link"
+              style="color: #059669; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> SIH 2026 PS</a></li>
+          <li><a href="#resources" class="mobile-nav-link" onclick="closeMobileMenu()"><i
+                class="fa-solid fa-download"></i> Resources & PPT</a></li>
+          <li><a href="committee.html" class="mobile-nav-link" onclick="closeMobileMenu()"><i
+                class="fa-solid fa-users"></i> Organizing Committee</a></li>
+          <li><a href="#faq" class="mobile-nav-link" onclick="closeMobileMenu()"><i
+                class="fa-solid fa-circle-question"></i> FAQ</a></li>
+          <li
+            style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; display: flex; align-items: center; justify-content: space-between;">
             <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">🌓 Theme Mode</span>
             <button class="theme-toggle-btn" onclick="toggleTheme(event)" aria-label="Toggle Bright / Dark Theme">
               <div class="theme-toggle-track">
@@ -219,7 +237,9 @@
 
         <!-- Subtitle -->
         <p class="hero-subtitle">
-          The official campus launchpad for TIT students. Build bold software & hardware innovations, compete for <strong>₹6,000 prizes</strong> and the <strong>ChatGPT Go Ignite Award</strong>, and qualify to represent TIT at SIH 2026 Nationals.
+          The official campus launchpad for TIT students. Build bold software & hardware innovations, compete for
+          <strong>₹6,000 prizes</strong> and the <strong>ChatGPT Go Ignite Award</strong>, and qualify to represent TIT
+          at SIH 2026 Nationals.
         </p>
 
         <!-- CTA Buttons -->
@@ -289,7 +309,8 @@
       <div class="section-header" style="margin-bottom: 24px;">
         <span class="section-tag"><i class="fa-solid fa-gauge-high"></i> Student Portal</span>
         <h2 class="section-title">My Registered Team Dashboard</h2>
-        <p class="section-subtitle">Manage your squad (2 to 6 members), update details, and view your authenticated digital pass.</p>
+        <p class="section-subtitle">Manage your squad (2 to 6 members), update details, and view your authenticated
+          digital pass.</p>
       </div>
 
       <div id="dashboard-content-box">
@@ -304,7 +325,8 @@
       <div class="section-header">
         <span class="section-tag"><i class="fa-solid fa-award"></i> Rewards & Recognition</span>
         <h2 class="section-title">Prizes & Accolades</h2>
-        <p class="section-subtitle">Standout engineering ingenuity will be rewarded with cash awards, AI subscriptions, and national nominations.</p>
+        <p class="section-subtitle">Standout engineering ingenuity will be rewarded with cash awards, AI subscriptions,
+          and national nominations.</p>
       </div>
 
       <!-- Primary Two Prize Cards -->
@@ -327,7 +349,8 @@
           <ul class="prize-perks-list">
             <li><i class="fa-solid fa-circle-check"></i> ₹6,000 Total Cash pool distributed among top winning teams</li>
             <li><i class="fa-solid fa-circle-check"></i> Direct Nomination to represent TIT at SIH 2026 Nationals</li>
-            <li><i class="fa-solid fa-circle-check"></i> Smart India Hackathon Certificate of Excellence from IIC - TIT</li>
+            <li><i class="fa-solid fa-circle-check"></i> Smart India Hackathon Certificate of Excellence from IIC - TIT
+            </li>
           </ul>
         </div>
 
@@ -346,9 +369,12 @@
           <div class="prize-tagline">1-Month OpenAI ChatGPT Go Subscription</div>
 
           <ul class="prize-perks-list ignite-perks">
-            <li><i class="fa-solid fa-circle-check"></i> 1-Month OpenAI ChatGPT Go Subscription for standout unique innovation</li>
-            <li><i class="fa-solid fa-circle-check"></i> 10x Message & Tool Limits, Image Generation & Reasoning Access</li>
-            <li><i class="fa-solid fa-circle-info" style="color: #8b5cf6;"></i> <em>Awarded strictly if a standout innovative solution is presented; otherwise will not be awarded.</em></li>
+            <li><i class="fa-solid fa-circle-check"></i> 1-Month OpenAI ChatGPT Go Subscription for standout unique
+              innovation</li>
+            <li><i class="fa-solid fa-circle-check"></i> 10x Message & Tool Limits, Image Generation & Reasoning Access
+            </li>
+            <li><i class="fa-solid fa-circle-info" style="color: #8b5cf6;"></i> <em>Awarded strictly if a standout
+                innovative solution is presented; otherwise will not be awarded.</em></li>
           </ul>
         </div>
 
@@ -426,7 +452,8 @@
       <div class="section-header">
         <span class="section-tag"><i class="fa-solid fa-building-columns"></i> Official Central Repository</span>
         <h2 class="section-title">SIH 2026 Problem Statements</h2>
-        <p class="section-subtitle">Official problem statements released by central ministries and departments are hosted on the national portal.</p>
+        <p class="section-subtitle">Official problem statements released by central ministries and departments are
+          hosted on the national portal.</p>
       </div>
 
       <!-- Official SIH Portal Banner Card -->
@@ -441,7 +468,8 @@
             Explore Problem Statements on sih.gov.in
           </h3>
           <p style="color: #d1fae5; font-size: 0.92rem; margin: 0; line-height: 1.55;">
-            Browse official software & hardware problem statements published by central ministries (ISRO, DRDO, AICTE, MoA&FW) with complete technical briefs.
+            Browse official software & hardware problem statements published by central ministries (ISRO, DRDO, AICTE,
+            MoA&FW) with complete technical briefs.
           </p>
         </div>
         <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="btn-3d-primary"
@@ -459,12 +487,13 @@
       <div class="section-header">
         <span class="section-tag"><i class="fa-solid fa-scale-balanced"></i> Official Guidelines</span>
         <h2 class="section-title">Rules & Eligibility</h2>
-        <p class="section-subtitle">Core participation rules, team composition guidelines, and national SIH 2026 nomination requirements.</p>
+        <p class="section-subtitle">Core participation rules, team composition guidelines, and national SIH 2026
+          nomination requirements.</p>
       </div>
 
       <!-- 6 Essential Rule Cards Grid -->
       <div class="rules-cards-grid">
-        
+
         <!-- Rule 1: Problem Statement -->
         <div class="rule-card">
           <div class="rule-card-header">
@@ -473,7 +502,9 @@
           </div>
           <h3 class="rule-card-title">Any Official Problem Statement</h3>
           <p class="rule-card-desc">
-            Select any problem statement from <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" style="color: #059669; font-weight: 700;">sih.gov.in</a> across Software, Hardware, or Student Innovation (Open Theme).
+            Select any problem statement from <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener"
+              style="color: #059669; font-weight: 700;">sih.gov.in</a> across Software, Hardware, or Student Innovation
+            (Open Theme).
           </p>
           <div class="rule-card-footer">
             <i class="fa-solid fa-circle-check"></i> Software & Hardware Categories
@@ -488,7 +519,8 @@
           </div>
           <h3 class="rule-card-title">Only 2 Members Required (Max 6)</h3>
           <p class="rule-card-desc">
-            Only <strong>2 members are required</strong> to register a team for the internal round, with flexibility to add up to 6 members. Cross-branch collaboration is encouraged.
+            Only <strong>2 members are required</strong> to register a team for the internal round, with flexibility to
+            add up to 6 members. Cross-branch collaboration is encouraged.
           </p>
           <div class="rule-card-footer">
             <i class="fa-solid fa-circle-check"></i> 2 Required • Up to 6 Allowed
@@ -503,7 +535,8 @@
           </div>
           <h3 class="rule-card-title">1+ Female Member Mandatory</h3>
           <p class="rule-card-desc">
-            As per AICTE / Ministry of Education SIH directives, every team <strong>must have at least one (1) female student member</strong>.
+            As per AICTE / Ministry of Education SIH directives, every team <strong>must have at least one (1) female
+              student member</strong>.
           </p>
           <div class="rule-card-footer footer-mandatory">
             <i class="fa-solid fa-triangle-exclamation"></i> Non-negotiable Central SIH Rule
@@ -518,7 +551,8 @@
           </div>
           <h3 class="rule-card-title">TIT Students Only</h3>
           <p class="rule-card-desc">
-            All team members must be enrolled students of Tripura Institute of Technology (Diploma, B.Tech, or M.Tech). No inter-college teams allowed.
+            All team members must be enrolled students of Tripura Institute of Technology (Diploma, B.Tech, or M.Tech).
+            No inter-college teams allowed.
           </p>
           <div class="rule-card-footer">
             <i class="fa-solid fa-circle-check"></i> Enrolled TIT Students
@@ -533,7 +567,8 @@
           </div>
           <h3 class="rule-card-title">Final 6 for Nationals</h3>
           <p class="rule-card-desc">
-            Internal teams can have 2–6 members. Teams nominated by SPOC for national SIH finals must be finalized to strictly 6 members on the central portal.
+            Internal teams can have 2–6 members. Teams nominated by SPOC for national SIH finals must be finalized to
+            strictly 6 members on the central portal.
           </p>
           <div class="rule-card-footer">
             <i class="fa-solid fa-circle-check"></i> Top 50 Teams Nominated
@@ -548,7 +583,8 @@
           </div>
           <h3 class="rule-card-title">One Student = One Team</h3>
           <p class="rule-card-desc">
-            A student can only join <strong>one single team</strong> under one Problem Statement to avoid schedule overlap and central AICTE disqualification.
+            A student can only join <strong>one single team</strong> under one Problem Statement to avoid schedule
+            overlap and central AICTE disqualification.
           </p>
           <div class="rule-card-footer">
             <i class="fa-solid fa-circle-check"></i> Unique Roll Number Policy
@@ -590,8 +626,8 @@
           </div>
           <h4>Hackathon Rulebook</h4>
           <p>Official guidelines, evaluation criteria, scoring rubric, and event timeline.</p>
-          <a href="SIH Internal Hackathon 2026 Rule Book - TIT.pdf" download="SIH Internal Hackathon 2026 Rule Book - TIT.pdf"
-            class="btn-download"
+          <a href="SIH Internal Hackathon 2026 Rule Book - TIT.pdf"
+            download="SIH Internal Hackathon 2026 Rule Book - TIT.pdf" class="btn-download"
             style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;"
             onclick="triggerConfettiBurst()">
             <i class="fa-solid fa-cloud-arrow-down"></i> Download Rulebook (.pdf)
@@ -618,7 +654,8 @@
             <i class="fa-solid fa-chevron-down faq-icon-arrow"></i>
           </button>
           <div class="faq-answer">
-            <p>All regular students enrolled in Diploma, B.Tech, or M.Tech branches of <strong>Tripura Institute of Technology (TIT)</strong> are eligible. Inter-college teams are not permitted.</p>
+            <p>All regular students enrolled in Diploma, B.Tech, or M.Tech branches of <strong>Tripura Institute of
+                Technology (TIT)</strong> are eligible. Inter-college teams are not permitted.</p>
           </div>
         </div>
 
@@ -628,7 +665,9 @@
             <i class="fa-solid fa-chevron-down faq-icon-arrow"></i>
           </button>
           <div class="faq-answer">
-            <p>For the campus <strong>Internal Hackathon</strong>, <strong>only 2 members are required</strong> to register, and teams can include up to 6 members. Having at least <strong>1 female student member is strictly mandatory</strong> in every team.</p>
+            <p>For the campus <strong>Internal Hackathon</strong>, <strong>only 2 members are required</strong> to
+              register, and teams can include up to 6 members. Having at least <strong>1 female student member is
+                strictly mandatory</strong> in every team.</p>
           </div>
         </div>
 
@@ -638,7 +677,10 @@
             <i class="fa-solid fa-chevron-down faq-icon-arrow"></i>
           </button>
           <div class="faq-answer">
-            <p>Teams can choose <strong>any Problem Statement</strong> published on the official SIH portal (<a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" style="color: #059669; font-weight: 700;">sih.gov.in/sih2026PS</a>) across Software Edition, Hardware Edition, or Open Student Innovation.</p>
+            <p>Teams can choose <strong>any Problem Statement</strong> published on the official SIH portal (<a
+                href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener"
+                style="color: #059669; font-weight: 700;">sih.gov.in/sih2026PS</a>) across Software Edition, Hardware
+              Edition, or Open Student Innovation.</p>
           </div>
         </div>
 
@@ -648,7 +690,8 @@
             <i class="fa-solid fa-chevron-down faq-icon-arrow"></i>
           </button>
           <div class="faq-answer">
-            <p>The Institute SPOC nominates top teams based on internal review scores. A maximum of <strong>50 Teams (45 Shortlisted + 5 Waitlisted)</strong> will be nominated to represent TIT at the national SIH 2026.</p>
+            <p>The Institute SPOC nominates top teams based on internal review scores. A maximum of <strong>50 Teams (45
+                Shortlisted + 5 Waitlisted)</strong> will be nominated to represent TIT at the national SIH 2026.</p>
           </div>
         </div>
 
@@ -658,7 +701,9 @@
             <i class="fa-solid fa-chevron-down faq-icon-arrow"></i>
           </button>
           <div class="faq-answer">
-            <p>The Special Ignite Award is an exclusive discretionary honor providing a 1-Month OpenAI ChatGPT Go subscription. <strong>It will be awarded only if a standout, genuinely innovative solution is presented during evaluations; otherwise, it will not be awarded.</strong></p>
+            <p>The Special Ignite Award is an exclusive discretionary honor providing a 1-Month OpenAI ChatGPT Go
+              subscription. <strong>It will be awarded only if a standout, genuinely innovative solution is presented
+                during evaluations; otherwise, it will not be awarded.</strong></p>
           </div>
         </div>
 
@@ -668,7 +713,9 @@
             <i class="fa-solid fa-chevron-down faq-icon-arrow"></i>
           </button>
           <div class="faq-answer">
-            <p>Click "Register Team" on this site. The Team Leader signs in, enters squad details (Member 1 & 2 required, 3–6 optional), submits the public Idea PPT link, and receives an instant authenticated digital team pass with a QR code.</p>
+            <p>Click "Register Team" on this site. The Team Leader signs in, enters squad details (Member 1 & 2
+              required, 3–6 optional), submits the public Idea PPT link, and receives an instant authenticated digital
+              team pass with a QR code.</p>
           </div>
         </div>
 
@@ -680,7 +727,8 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-bottom">
-        <p>© 2026 Institution Innovation Council (IIC), Tripura Institute of Technology. All Rights Reserved. Built for SIH Aspirants.</p>
+        <p>© 2026 Institution Innovation Council (IIC), Tripura Institute of Technology. All Rights Reserved. Built for
+          SIH Aspirants.</p>
       </div>
     </div>
   </footer>
@@ -707,7 +755,8 @@
       <i class="fa-solid fa-users"></i>
       <span>Team</span>
     </a>
-    <a href="#student-dashboard" class="mob-bottom-item" id="mob-bottom-dash-item" data-target="student-dashboard" style="display: none;">
+    <a href="#student-dashboard" class="mob-bottom-item" id="mob-bottom-dash-item" data-target="student-dashboard"
+      style="display: none;">
       <i class="fa-solid fa-gauge-high"></i>
       <span>Dash</span>
     </a>
@@ -721,8 +770,10 @@
       </button>
 
       <div style="text-align: center; margin-bottom: 16px;">
-        <div style="font-size: 2.2rem; margin-bottom: 6px; color: #059669;"><i class="fa-solid fa-graduation-cap"></i></div>
-        <h3 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;" id="auth-modal-title">Student & Team Portal</h3>
+        <div style="font-size: 2.2rem; margin-bottom: 6px; color: #059669;"><i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <h3 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;" id="auth-modal-title">
+          Student & Team Portal</h3>
         <p style="color: #64748b; font-size: 0.85rem;">Tripura Institute of Technology • SIH 2026</p>
       </div>
 
@@ -737,7 +788,8 @@
       </div>
 
       <!-- Team Leader Notice -->
-      <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 8px 12px; font-size: 0.78rem; color: #065f46; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+      <div
+        style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 8px 12px; font-size: 0.78rem; color: #065f46; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
         <i class="fa-solid fa-crown" style="color: #059669; font-size: 1rem;"></i>
         <span><strong>Team Leader:</strong> Only the Team Leader registers the team (2 to 6 members).</span>
       </div>
@@ -746,14 +798,16 @@
       <form id="login-form" onsubmit="handleLoginSubmit(event)">
         <div class="form-group-item">
           <label class="form-input-label">College Email or Roll Number</label>
-          <input type="text" id="login-identifier" class="form-text-input" placeholder="e.g. 2101004 or name@titagartala.ac.in" required>
+          <input type="text" id="login-identifier" class="form-text-input"
+            placeholder="e.g. 2101004 or name@titagartala.ac.in" required>
         </div>
         <div class="form-group-item" style="margin-bottom: 4px;">
           <label class="form-input-label">Password</label>
           <input type="password" id="login-password" class="form-text-input" placeholder="Enter your password" required>
         </div>
         <div style="display: flex; justify-content: flex-end; margin-bottom: 14px;">
-          <button type="button" class="btn-text-link" style="font-size: 0.78rem;" onclick="switchStudentAuthTab('reset')">
+          <button type="button" class="btn-text-link" style="font-size: 0.78rem;"
+            onclick="switchStudentAuthTab('reset')">
             Forgot Password?
           </button>
         </div>
@@ -764,16 +818,45 @@
 
       <!-- Reset Password Form -->
       <form id="reset-password-form" style="display: none;" onsubmit="handlePasswordResetSubmit(event)">
-        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; color: #1e40af; margin-bottom: 14px; line-height: 1.4;">
-          <i class="fa-solid fa-envelope" style="color: #2563eb;"></i> Enter your registered college email to receive a password reset link.
+        <div
+          style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; color: #1e40af; margin-bottom: 14px; line-height: 1.4;">
+          <i class="fa-solid fa-key" style="color: #2563eb;"></i> Enter your registered college email or roll number to
+          instantly verify your account and set a new password.
         </div>
-        <div class="form-group-item">
-          <label class="form-input-label">Registered College Email</label>
-          <input type="email" id="reset-email" class="form-text-input" placeholder="e.g. yourname@titagartala.ac.in" required autocomplete="email">
+
+        <!-- Step 1: Account Verification -->
+        <div id="reset-step-1">
+          <div class="form-group-item">
+            <label class="form-input-label">Registered College Email or Roll Number *</label>
+            <input type="text" id="reset-email" class="form-text-input"
+              placeholder="e.g. name@titagartala.ac.in or Roll No" autocomplete="email">
+          </div>
+          <button type="button" class="btn-3d-primary" onclick="verifyResetAccount()"
+            style="width: 100%; justify-content: center; margin-top: 14px;">
+            <i class="fa-solid fa-user-check"></i> Verify Account
+          </button>
         </div>
-        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
-          <i class="fa-solid fa-paper-plane"></i> Send Password Reset Email
-        </button>
+
+        <!-- Step 2: Set New Password (Revealed after verification) -->
+        <div id="reset-step-2" style="display: none; margin-top: 6px;">
+          <div id="reset-verified-banner"
+            style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; color: #065f46; margin-bottom: 12px;">
+            <!-- Rendered dynamically -->
+          </div>
+          <div class="form-group-item" style="margin-bottom: 10px;">
+            <label class="form-input-label">Enter New Password *</label>
+            <input type="password" id="reset-new-password" class="form-text-input" placeholder="Minimum 4 characters">
+          </div>
+          <div class="form-group-item" style="margin-bottom: 14px;">
+            <label class="form-input-label">Confirm New Password *</label>
+            <input type="password" id="reset-confirm-password" class="form-text-input"
+              placeholder="Re-enter new password">
+          </div>
+          <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 4px;">
+            <i class="fa-solid fa-lock-open"></i> Update & Save Password
+          </button>
+        </div>
+
         <div style="text-align: center; margin-top: 14px;">
           <button type="button" class="btn-text-link" onclick="switchStudentAuthTab('login')">← Back to Sign In</button>
         </div>
@@ -783,7 +866,8 @@
       <form id="signup-form" style="display: none;" onsubmit="handleSignupSubmit(event)">
         <div class="form-group-item">
           <label class="form-input-label">Full Name *</label>
-          <input type="text" id="signup-name" class="form-text-input" placeholder="e.g. Student Name" required maxlength="60">
+          <input type="text" id="signup-name" class="form-text-input" placeholder="e.g. Student Name" required
+            maxlength="60">
         </div>
         <div class="form-row-2">
           <div class="form-group-item">
@@ -826,17 +910,21 @@
         <div class="form-group-item">
           <label class="form-input-label" style="display: flex; justify-content: space-between; align-items: center;">
             <span>Roll / Enrollment No.</span>
-            <span style="font-size: 0.72rem; color: #059669; font-weight: 700; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; border: 1px solid #a7f3d0;">Optional</span>
+            <span
+              style="font-size: 0.72rem; color: #059669; font-weight: 700; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; border: 1px solid #a7f3d0;">Optional</span>
           </label>
-          <input type="text" id="signup-roll" class="form-text-input" placeholder="e.g. 21CSE042 or leave blank if not allotted" maxlength="20">
+          <input type="text" id="signup-roll" class="form-text-input"
+            placeholder="e.g. 21CSE042 or leave blank if not allotted" maxlength="20">
         </div>
         <div class="form-group-item">
           <label class="form-input-label">Email ID *</label>
-          <input type="email" id="signup-email" class="form-text-input" placeholder="e.g. student@titagartala.ac.in" required autocomplete="email">
+          <input type="email" id="signup-email" class="form-text-input" placeholder="e.g. student@titagartala.ac.in"
+            required autocomplete="email">
         </div>
         <div class="form-group-item">
           <label class="form-input-label">Create Password (Min. 6 chars) *</label>
-          <input type="password" id="signup-password" class="form-text-input" placeholder="Minimum 6 characters" minlength="6" required autocomplete="new-password">
+          <input type="password" id="signup-password" class="form-text-input" placeholder="Minimum 6 characters"
+            minlength="6" required autocomplete="new-password">
         </div>
         <div class="form-group-item">
           <label class="form-input-label" style="display: flex; justify-content: space-between; align-items: center;">
@@ -844,9 +932,12 @@
             <span style="font-size: 0.72rem; color: #64748b; font-weight: normal;">(Optional)</span>
           </label>
           <div style="position: relative;">
-            <input type="text" id="signup-referral-code" class="form-text-input" placeholder="e.g. SIHIN1001" oninput="handleReferralCodeInput(this.value, 'signup')" style="text-transform: uppercase; font-family: var(--font-mono); font-weight: 700;">
+            <input type="text" id="signup-referral-code" class="form-text-input" placeholder="e.g. SIHIN1001"
+              oninput="handleReferralCodeInput(this.value, 'signup')"
+              style="text-transform: uppercase; font-family: var(--font-mono); font-weight: 700;">
           </div>
-          <div id="signup-referral-badge" style="font-size: 0.76rem; margin-top: 4px; font-weight: 700; color: #059669; display: none;"></div>
+          <div id="signup-referral-badge"
+            style="font-size: 0.76rem; margin-top: 4px; font-weight: 700; color: #059669; display: none;"></div>
         </div>
         <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
           <i class="fa-solid fa-user-plus"></i> Create Student Account
@@ -855,7 +946,8 @@
 
       <!-- Discreet Admin Gateway Trigger -->
       <div style="text-align: center; margin-top: 18px; padding-top: 12px; border-top: 1px dashed #e2e8f0;">
-        <button type="button" class="btn-text-link" style="font-size: 0.76rem; color: #64748b; font-weight: 600;" onclick="closeAuthModal(); openDedicatedAdminModal();">
+        <button type="button" class="btn-text-link" style="font-size: 0.76rem; color: #64748b; font-weight: 600;"
+          onclick="closeAuthModal(); openDedicatedAdminModal();">
           <i class="fa-solid fa-lock" style="color: #059669;"></i> SPOC / Jury / Admin Gateway
         </button>
       </div>
@@ -870,23 +962,29 @@
       </button>
 
       <div style="text-align: center; margin-bottom: 20px;">
-        <div style="width: 56px; height: 56px; border-radius: 50%; background: #ecfdf5; color: #059669; display: inline-flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 10px; border: 2px solid #a7f3d0;">
+        <div
+          style="width: 56px; height: 56px; border-radius: 50%; background: #ecfdf5; color: #059669; display: inline-flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 10px; border: 2px solid #a7f3d0;">
           <i class="fa-solid fa-shield-halved"></i>
         </div>
         <h3 style="font-size: 1.4rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;">SPOC & Jury Gateway</h3>
         <p style="color: #64748b; font-size: 0.82rem;">Authorized Committee Evaluation Access</p>
       </div>
 
-      <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px; font-size: 0.82rem; color: #1e40af; margin-bottom: 18px; line-height: 1.45;">
-        <i class="fa-solid fa-circle-info" style="color: #2563eb;"></i> Enter the authorized institutional passcode to manage registrations, score presentations, and export submission files.
+      <div
+        style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px; font-size: 0.82rem; color: #1e40af; margin-bottom: 18px; line-height: 1.45;">
+        <i class="fa-solid fa-circle-info" style="color: #2563eb;"></i> Enter the authorized institutional passcode to
+        manage registrations, score presentations, and export submission files.
       </div>
 
       <form id="dedicated-admin-passcode-form" onsubmit="handleDedicatedAdminPasscodeSubmit(event)">
         <div class="form-group-item">
           <label class="form-input-label">Committee Master Passcode</label>
           <div style="position: relative;">
-            <input type="password" id="dedicated-admin-passcode-input" class="form-text-input" placeholder="Enter SPOC Passcode" required style="text-align: center; font-weight: 700; font-size: 1.05rem; letter-spacing: 2px; padding-right: 40px;">
-            <button type="button" onclick="togglePasscodeVisibility('dedicated-admin-passcode-input')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94a3b8; cursor: pointer;">
+            <input type="password" id="dedicated-admin-passcode-input" class="form-text-input"
+              placeholder="Enter SPOC Passcode" required
+              style="text-align: center; font-weight: 700; font-size: 1.05rem; letter-spacing: 2px; padding-right: 40px;">
+            <button type="button" onclick="togglePasscodeVisibility('dedicated-admin-passcode-input')"
+              style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94a3b8; cursor: pointer;">
               <i class="fa-solid fa-eye" id="passcode-eye-icon"></i>
             </button>
           </div>
@@ -907,17 +1005,21 @@
 
   <!-- Dedicated Modal: Internal Hackathon Rulebook & Rubric Handbook -->
   <div class="modal-overlay" id="rulebook-modal">
-    <div class="modal-container" style="max-width: 840px; text-align: left; max-height: 90vh; display: flex; flex-direction: column;">
+    <div class="modal-container"
+      style="max-width: 840px; text-align: left; max-height: 90vh; display: flex; flex-direction: column;">
       <button class="modal-close-btn" onclick="closeRulebookModal()" aria-label="Close Rulebook Modal">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
-      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #ecfdf5; padding-bottom: 14px; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+      <div
+        style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #ecfdf5; padding-bottom: 14px; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
         <div>
-          <h3 style="font-size: 1.35rem; font-weight: 800; color: #064e3b; margin: 0; display: flex; align-items: center; gap: 8px;">
+          <h3
+            style="font-size: 1.35rem; font-weight: 800; color: #064e3b; margin: 0; display: flex; align-items: center; gap: 8px;">
             <i class="fa-solid fa-book-bookmark" style="color: #059669;"></i> TIT SIH 2026 Internal Hackathon Rulebook
           </h3>
-          <p style="color: #64748b; font-size: 0.82rem; margin: 2px 0 0 0;">Official Handbook & Evaluation Guidelines • Institution Innovation Council (IIC)</p>
+          <p style="color: #64748b; font-size: 0.82rem; margin: 2px 0 0 0;">Official Handbook & Evaluation Guidelines •
+            Institution Innovation Council (IIC)</p>
         </div>
         <button class="btn-3d-outline" onclick="window.print()" style="padding: 6px 14px; font-size: 0.82rem;">
           <i class="fa-solid fa-print"></i> Print / Save as PDF
@@ -925,36 +1027,56 @@
       </div>
 
       <div style="overflow-y: auto; padding-right: 6px; font-size: 0.9rem; color: #334155; line-height: 1.6;">
-        <div style="background: #f0fdf4; border-left: 4px solid #059669; padding: 14px 16px; border-radius: 0 8px 8px 0; margin-bottom: 18px;">
-          <h4 style="margin: 0 0 6px 0; color: #065f46; font-size: 0.96rem;"><i class="fa-solid fa-bullhorn"></i> Institute SPOC Nomination & SIH 2026 Policy</h4>
+        <div
+          style="background: #f0fdf4; border-left: 4px solid #059669; padding: 14px 16px; border-radius: 0 8px 8px 0; margin-bottom: 18px;">
+          <h4 style="margin: 0 0 6px 0; color: #065f46; font-size: 0.96rem;"><i class="fa-solid fa-bullhorn"></i>
+            Institute SPOC Nomination & SIH 2026 Policy</h4>
           <p style="margin: 0 0 6px 0; font-size: 0.85rem; color: #047857;">
-            • <strong>ONLY students / teams selected in this Internal Hackathon</strong> can be registered and nominated for the national <strong>Smart India Hackathon 2026</strong>.
+            • <strong>ONLY students / teams selected in this Internal Hackathon</strong> can be registered and nominated
+            for the national <strong>Smart India Hackathon 2026</strong>.
           </p>
           <p style="margin: 0 0 6px 0; font-size: 0.85rem; color: #047857;">
-            • The College SPOC nominates top teams based purely on Internal Hackathon results. A maximum of <strong>50 Teams (45 Shortlisted + 5 Waitlisted)</strong> can participate in Smart India Hackathon 2026 from the Institute.
+            • The College SPOC nominates top teams based purely on Internal Hackathon results. A maximum of <strong>50
+              Teams (45 Shortlisted + 5 Waitlisted)</strong> can participate in Smart India Hackathon 2026 from the
+            Institute.
           </p>
           <p style="margin: 0; font-size: 0.85rem; color: #047857;">
-            • <strong>Final 6-Member SIH Squad:</strong> While internal campus registration allows 2–6 members, each nominated team submitted onto the central SIH portal <strong>must strictly consist of 6 members</strong> (including the Team Leader + at least 1 female member).
+            • <strong>Final 6-Member SIH Squad:</strong> While internal campus registration allows 2–6 members, each
+            nominated team submitted onto the central SIH portal <strong>must strictly consist of 6 members</strong>
+            (including the Team Leader + at least 1 female member).
           </p>
         </div>
 
-        <h4 style="color: #0f172a; font-size: 1.05rem; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px;">
+        <h4
+          style="color: #0f172a; font-size: 1.05rem; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px;">
           <i class="fa-solid fa-users" style="color: #059669;"></i> 1. Team Formation, Problem Statement & Eligibility
         </h4>
         <ul style="margin: 0 0 16px 20px;">
-          <li><strong>Problem Statement:</strong> Can be <strong>any problem statement</strong> from the official SIH 2026 PS repository on <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" style="color: #059669; font-weight: 700;">sih.gov.in</a> (Software Edition, Hardware Edition, or Student Innovation / Open Theme).</li>
-          <li><strong>Internal Hackathon Team Size:</strong> <strong>Only 2 members are required</strong> to participate, with flexibility to have <strong>up to a maximum of 6 members</strong> (including Team Leader).</li>
-          <li><strong>Mandatory Female Member:</strong> At least <strong>1 female student member</strong> is strictly mandatory in every team (central AICTE / Ministry of Education SIH directive).</li>
-          <li><strong>Same College Eligibility:</strong> All team members must be active, regular enrolled students of <strong>Tripura Institute of Technology (TIT)</strong> (Diploma, B.Tech, or M.Tech). No inter-college teams are permitted.</li>
-          <li><strong>Cross-Department Collaboration:</strong> Inter-branch, cross-departmental, and inter-year collaborations within TIT are warmly encouraged.</li>
-          <li><strong>Single Team Registration:</strong> A student can register with only <strong>one team</strong> under one Problem Statement.</li>
+          <li><strong>Problem Statement:</strong> Can be <strong>any problem statement</strong> from the official SIH
+            2026 PS repository on <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener"
+              style="color: #059669; font-weight: 700;">sih.gov.in</a> (Software Edition, Hardware Edition, or Student
+            Innovation / Open Theme).</li>
+          <li><strong>Internal Hackathon Team Size:</strong> <strong>Only 2 members are required</strong> to
+            participate, with flexibility to have <strong>up to a maximum of 6 members</strong> (including Team Leader).
+          </li>
+          <li><strong>Mandatory Female Member:</strong> At least <strong>1 female student member</strong> is strictly
+            mandatory in every team (central AICTE / Ministry of Education SIH directive).</li>
+          <li><strong>Same College Eligibility:</strong> All team members must be active, regular enrolled students of
+            <strong>Tripura Institute of Technology (TIT)</strong> (Diploma, B.Tech, or M.Tech). No inter-college teams
+            are permitted.</li>
+          <li><strong>Cross-Department Collaboration:</strong> Inter-branch, cross-departmental, and inter-year
+            collaborations within TIT are warmly encouraged.</li>
+          <li><strong>Single Team Registration:</strong> A student can register with only <strong>one team</strong>
+            under one Problem Statement.</li>
         </ul>
 
-        <h4 style="color: #0f172a; font-size: 1.05rem; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px;">
+        <h4
+          style="color: #0f172a; font-size: 1.05rem; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px;">
           <i class="fa-solid fa-chart-pie" style="color: #059669;"></i> 2. Evaluation Criteria & Scoring Weightage
         </h4>
         <div style="overflow-x: auto; margin-bottom: 16px;">
-          <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+          <table
+            style="width: 100%; border-collapse: collapse; font-size: 0.85rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
             <thead>
               <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0; text-align: left;">
                 <th style="padding: 10px 14px; color: #475569;">Evaluation Criterion</th>
@@ -966,33 +1088,40 @@
               <tr style="border-bottom: 1px solid #f1f5f9;">
                 <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">Innovation & Novelty</td>
                 <td style="padding: 10px 14px; text-align: center; font-weight: 800; color: #059669;">30%</td>
-                <td style="padding: 10px 14px; color: #64748b;">Uniqueness of solution, creative approach, USP over existing market alternatives.</td>
+                <td style="padding: 10px 14px; color: #64748b;">Uniqueness of solution, creative approach, USP over
+                  existing market alternatives.</td>
               </tr>
               <tr style="border-bottom: 1px solid #f1f5f9;">
-                <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">Technical Feasibility & Architecture</td>
+                <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">Technical Feasibility & Architecture
+                </td>
                 <td style="padding: 10px 14px; text-align: center; font-weight: 800; color: #059669;">25%</td>
-                <td style="padding: 10px 14px; color: #64748b;">Robust tech stack choice, scalability, system workflow, API/hardware design.</td>
+                <td style="padding: 10px 14px; color: #64748b;">Robust tech stack choice, scalability, system workflow,
+                  API/hardware design.</td>
               </tr>
               <tr style="border-bottom: 1px solid #f1f5f9;">
                 <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">Societal & Real-World Impact</td>
                 <td style="padding: 10px 14px; text-align: center; font-weight: 800; color: #059669;">20%</td>
-                <td style="padding: 10px 14px; color: #64748b;">Alignment with Ministry Problem Statement, user impact, sustainability.</td>
+                <td style="padding: 10px 14px; color: #64748b;">Alignment with Ministry Problem Statement, user impact,
+                  sustainability.</td>
               </tr>
               <tr style="border-bottom: 1px solid #f1f5f9;">
                 <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">Prototype / Demo Readiness</td>
                 <td style="padding: 10px 14px; text-align: center; font-weight: 800; color: #059669;">15%</td>
-                <td style="padding: 10px 14px; color: #64748b;">Working wireframes, GitHub repository, live API test or simulated demo.</td>
+                <td style="padding: 10px 14px; color: #64748b;">Working wireframes, GitHub repository, live API test or
+                  simulated demo.</td>
               </tr>
               <tr>
                 <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">Pitch & Presentation Quality</td>
                 <td style="padding: 10px 14px; text-align: center; font-weight: 800; color: #059669;">10%</td>
-                <td style="padding: 10px 14px; color: #64748b;">Adherence to standard 7-slide PPT template, clarity of answers during Q&A.</td>
+                <td style="padding: 10px 14px; color: #64748b;">Adherence to standard 7-slide PPT template, clarity of
+                  answers during Q&A.</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <h4 style="color: #0f172a; font-size: 1.05rem; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px;">
+        <h4
+          style="color: #0f172a; font-size: 1.05rem; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px;">
           <i class="fa-solid fa-file-powerpoint" style="color: #059669;"></i> 3. PPT Template Structure
         </h4>
         <p style="margin-bottom: 6px;">All teams must strictly use the official 7-slide PPT format:</p>
@@ -1006,8 +1135,10 @@
           <li>Slide 7: Team Composition, Branch & Skill Allocation.</li>
         </ol>
 
-        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px; padding-top: 14px; border-top: 1px solid #e2e8f0;">
-          <a href="SIH2026-IDEA-Presentation-Format.pptx" download="SIH2026-IDEA-Presentation-Format.pptx" class="btn-3d-primary" style="font-size: 0.85rem;">
+        <div
+          style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px; padding-top: 14px; border-top: 1px solid #e2e8f0;">
+          <a href="SIH2026-IDEA-Presentation-Format.pptx" download="SIH2026-IDEA-Presentation-Format.pptx"
+            class="btn-3d-primary" style="font-size: 0.85rem;">
             <i class="fa-solid fa-download"></i> Download PPT Template
           </a>
           <button class="btn-3d-secondary" onclick="closeRulebookModal()" style="font-size: 0.85rem;">Close</button>
@@ -1018,96 +1149,129 @@
 
   <!-- Dedicated Modal: Curated Sample Problem Statements & Architecture Blueprints -->
   <div class="modal-overlay" id="sample-ps-modal">
-    <div class="modal-container" style="max-width: 880px; text-align: left; max-height: 90vh; display: flex; flex-direction: column;">
+    <div class="modal-container"
+      style="max-width: 880px; text-align: left; max-height: 90vh; display: flex; flex-direction: column;">
       <button class="modal-close-btn" onclick="closeSamplePSModal()" aria-label="Close Sample PS Modal">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
-      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #ecfdf5; padding-bottom: 14px; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+      <div
+        style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #ecfdf5; padding-bottom: 14px; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
         <div>
-          <h3 style="font-size: 1.35rem; font-weight: 800; color: #064e3b; margin: 0; display: flex; align-items: center; gap: 8px;">
+          <h3
+            style="font-size: 1.35rem; font-weight: 800; color: #064e3b; margin: 0; display: flex; align-items: center; gap: 8px;">
             <i class="fa-solid fa-lightbulb" style="color: #f59e0b;"></i> Sample Problem Statements & Case Studies
           </h3>
-          <p style="color: #64748b; font-size: 0.82rem; margin: 2px 0 0 0;">Reference Winning Architectures & Solution Frameworks for SIH 2026</p>
+          <p style="color: #64748b; font-size: 0.82rem; margin: 2px 0 0 0;">Reference Winning Architectures & Solution
+            Frameworks for SIH 2026</p>
         </div>
-        <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="btn-3d-primary" style="padding: 6px 14px; font-size: 0.82rem; text-decoration: none;">
+        <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="btn-3d-primary"
+          style="padding: 6px 14px; font-size: 0.82rem; text-decoration: none;">
           <i class="fa-solid fa-arrow-up-right-from-square"></i> Open sih.gov.in PS Portal
         </a>
       </div>
 
-      <div style="overflow-y: auto; padding-right: 6px; display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px;">
-        
+      <div
+        style="overflow-y: auto; padding-right: 6px; display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px;">
+
         <!-- Case Study 1 -->
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div
+          style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <span style="background: #ecfdf5; color: #065f46; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">Agriculture • Hardware / Software</span>
+              <span
+                style="background: #ecfdf5; color: #065f46; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">Agriculture
+                • Hardware / Software</span>
               <span style="color: #94a3b8; font-size: 0.75rem; font-family: var(--font-mono);">PS ID: SIH-AG-01</span>
             </div>
-            <h4 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">AI Edge Drone for Early Crop Blight & Pest Detection</h4>
+            <h4 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">AI Edge Drone for Early
+              Crop Blight & Pest Detection</h4>
             <p style="font-size: 0.82rem; color: #475569; margin-bottom: 12px; line-height: 1.45;">
-              Autonomous quadcopter equipped with Raspberry Pi / Jetson Nano running lightweight YOLOv8 models to inspect tea & rubber plantations in Tripura in real time.
+              Autonomous quadcopter equipped with Raspberry Pi / Jetson Nano running lightweight YOLOv8 models to
+              inspect tea & rubber plantations in Tripura in real time.
             </p>
           </div>
-          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: 0.76rem; color: #334155;">
+          <div
+            style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: 0.76rem; color: #334155;">
             <strong>Recommended Tech Stack:</strong> PyTorch, OpenCV, ROS, Flutter Dashboard, MQTT & LoRaWAN.
           </div>
         </div>
 
         <!-- Case Study 2 -->
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div
+          style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <span style="background: #eff6ff; color: #1e40af; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">Disaster Management • IoT</span>
+              <span
+                style="background: #eff6ff; color: #1e40af; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">Disaster
+                Management • IoT</span>
               <span style="color: #94a3b8; font-size: 0.75rem; font-family: var(--font-mono);">PS ID: SIH-DM-04</span>
             </div>
-            <h4 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">Solar-Powered River Level & Flash Flood Early Warning System</h4>
+            <h4 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">Solar-Powered River Level
+              & Flash Flood Early Warning System</h4>
             <p style="font-size: 0.82rem; color: #475569; margin-bottom: 12px; line-height: 1.45;">
-              Ultrasonic river-gauge nodes with GSM/Satellite failover transmitting telemetry data to a geospatial GIS map that automatically triggers localized SMS flood alerts.
+              Ultrasonic river-gauge nodes with GSM/Satellite failover transmitting telemetry data to a geospatial GIS
+              map that automatically triggers localized SMS flood alerts.
             </p>
           </div>
-          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: 0.76rem; color: #334155;">
-            <strong>Recommended Tech Stack:</strong> ESP32, Ultrasonic Sensors, Node.js, Leaflet/Mapbox GIS, Twilio SMS API.
+          <div
+            style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: 0.76rem; color: #334155;">
+            <strong>Recommended Tech Stack:</strong> ESP32, Ultrasonic Sensors, Node.js, Leaflet/Mapbox GIS, Twilio SMS
+            API.
           </div>
         </div>
 
         <!-- Case Study 3 -->
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div
+          style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <span style="background: #faf5ff; color: #6b21a8; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">Healthcare • Web3 / AI</span>
+              <span
+                style="background: #faf5ff; color: #6b21a8; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">Healthcare
+                • Web3 / AI</span>
               <span style="color: #94a3b8; font-size: 0.75rem; font-family: var(--font-mono);">PS ID: SIH-HC-09</span>
             </div>
-            <h4 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">Counterfeit Medicine Tracking & Cold-Chain IoT Ledger</h4>
+            <h4 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">Counterfeit Medicine
+              Tracking & Cold-Chain IoT Ledger</h4>
             <p style="font-size: 0.82rem; color: #475569; margin-bottom: 12px; line-height: 1.45;">
-              Decentralized pharma provenance tracker with cryptographically signed packaging QR codes and real-time cold-chain temperature telemetry logs.
+              Decentralized pharma provenance tracker with cryptographically signed packaging QR codes and real-time
+              cold-chain temperature telemetry logs.
             </p>
           </div>
-          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: 0.76rem; color: #334155;">
-            <strong>Recommended Tech Stack:</strong> Solidity, Polygon / EVM, Next.js, DHT22 Temperature Sensors, QR Scanner.
+          <div
+            style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: 0.76rem; color: #334155;">
+            <strong>Recommended Tech Stack:</strong> Solidity, Polygon / EVM, Next.js, DHT22 Temperature Sensors, QR
+            Scanner.
           </div>
         </div>
 
         <!-- Case Study 4 -->
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div
+          style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <span style="background: #fefce8; color: #854d0e; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">Smart City • Clean Tech</span>
+              <span
+                style="background: #fefce8; color: #854d0e; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">Smart
+                City • Clean Tech</span>
               <span style="color: #94a3b8; font-size: 0.75rem; font-family: var(--font-mono);">PS ID: SIH-SC-14</span>
             </div>
-            <h4 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">Autonomous Solar Microgrid Load-Balancing & Peak Predictor</h4>
+            <h4 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">Autonomous Solar
+              Microgrid Load-Balancing & Peak Predictor</h4>
             <p style="font-size: 0.82rem; color: #475569; margin-bottom: 12px; line-height: 1.45;">
-              Reinforcement learning algorithm that optimizes campus battery storage discharge cycles based on real-time solar irradiance forecasting.
+              Reinforcement learning algorithm that optimizes campus battery storage discharge cycles based on real-time
+              solar irradiance forecasting.
             </p>
           </div>
-          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: 0.76rem; color: #334155;">
+          <div
+            style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: 0.76rem; color: #334155;">
             <strong>Recommended Tech Stack:</strong> Python, FastAPI, TensorFlow/LSTM, InfluxDB, Tailwind/React UI.
           </div>
         </div>
 
       </div>
 
-      <div style="display: flex; justify-content: flex-end; margin-top: 18px; padding-top: 12px; border-top: 1px solid #e2e8f0;">
+      <div
+        style="display: flex; justify-content: flex-end; margin-top: 18px; padding-top: 12px; border-top: 1px solid #e2e8f0;">
         <button class="btn-3d-secondary" onclick="closeSamplePSModal()" style="font-size: 0.85rem;">Close</button>
       </div>
     </div>
@@ -1120,7 +1284,8 @@
         <i class="fa-solid fa-xmark"></i>
       </button>
 
-      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 20px;">
+      <div
+        style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 20px;">
         <div>
           <h3 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin-bottom: 2px;">
             <i class="fa-solid fa-users-viewfinder" style="color: #059669;"></i> SIH Team Registration Wizard
@@ -1133,7 +1298,7 @@
       </div>
 
       <form id="team-reg-form" onsubmit="handleTeamRegistrationSubmit(event)">
-        
+
         <!-- Step 1: Team & Idea Overview -->
         <div class="form-section-card">
           <h4 class="form-section-title"><i class="fa-solid fa-flag"></i> 1. Team & Problem Statement Details</h4>
@@ -1154,7 +1319,8 @@
           <div class="form-row-2">
             <div class="form-group-item">
               <label class="form-input-label">Target SIH 2026 Problem Statement ID *</label>
-              <input type="text" id="reg-ps-id" class="form-text-input" placeholder="e.g. SIH2601 / PS-XXXX / Student Innovation" required>
+              <input type="text" id="reg-ps-id" class="form-text-input"
+                placeholder="e.g. SIH2601 / PS-XXXX / Student Innovation" required>
             </div>
             <div class="form-group-item">
               <label class="form-input-label">PS Theme / Domain *</label>
@@ -1176,37 +1342,48 @@
           <div class="form-row-2">
             <div class="form-group-item">
               <label class="form-input-label">Problem Statement / Solution Title *</label>
-              <input type="text" id="reg-ps-title" class="form-text-input" placeholder="Brief title of your proposed innovation" required>
+              <input type="text" id="reg-ps-title" class="form-text-input"
+                placeholder="Brief title of your proposed innovation" required>
             </div>
             <div class="form-group-item">
-              <label class="form-input-label" style="display: flex; justify-content: space-between; align-items: center;">
+              <label class="form-input-label"
+                style="display: flex; justify-content: space-between; align-items: center;">
                 <span><i class="fa-solid fa-ticket" style="color: #059669;"></i> Coordinator Referral Code</span>
-                <span style="font-size: 0.72rem; color: #059669; font-weight: 700; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; border: 1px solid #a7f3d0;">Optional</span>
+                <span
+                  style="font-size: 0.72rem; color: #059669; font-weight: 700; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; border: 1px solid #a7f3d0;">Optional</span>
               </label>
               <div style="position: relative;">
-                <input type="text" id="reg-referral-code" class="form-text-input" placeholder="e.g. SIHIN1001" oninput="handleReferralCodeInput(this.value)" style="text-transform: uppercase; font-family: var(--font-mono); font-weight: 800; padding-right: 34px;">
-                <span id="referral-check-icon" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 0.95rem; display: none;"></span>
+                <input type="text" id="reg-referral-code" class="form-text-input" placeholder="e.g. SIHIN1001"
+                  oninput="handleReferralCodeInput(this.value)"
+                  style="text-transform: uppercase; font-family: var(--font-mono); font-weight: 800; padding-right: 34px;">
+                <span id="referral-check-icon"
+                  style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 0.95rem; display: none;"></span>
               </div>
-              <div id="referral-match-badge" style="font-size: 0.76rem; margin-top: 4px; font-weight: 700; color: #059669; display: none;"></div>
+              <div id="referral-match-badge"
+                style="font-size: 0.76rem; margin-top: 4px; font-weight: 700; color: #059669; display: none;"></div>
             </div>
           </div>
 
           <div class="form-group-item">
             <label class="form-input-label">Solution Abstract / Key Architecture (2-3 sentences) *</label>
-            <textarea id="reg-abstract" class="form-textarea-input" rows="2" placeholder="Describe how your software/hardware solves the target challenge..." required></textarea>
+            <textarea id="reg-abstract" class="form-textarea-input" rows="2"
+              placeholder="Describe how your software/hardware solves the target challenge..." required></textarea>
           </div>
         </div>
 
         <!-- Step 2: Team Member Roster -->
         <div class="form-section-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
-            <h4 class="form-section-title" style="margin: 0;"><i class="fa-solid fa-users"></i> 2. Team Member Roster (2 Required, up to 4 Optional)</h4>
+          <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+            <h4 class="form-section-title" style="margin: 0;"><i class="fa-solid fa-users"></i> 2. Team Member Roster (2
+              Required, up to 4 Optional)</h4>
             <div id="roster-female-status" style="font-size: 0.8rem; font-weight: 700; color: #dc2626;">
               <i class="fa-solid fa-triangle-exclamation"></i> 1+ Female Member Mandatory
             </div>
           </div>
           <div style="font-size: 0.78rem; color: #64748b; margin-bottom: 12px;">
-            <i class="fa-solid fa-circle-info" style="color: #059669;"></i> <strong>Note:</strong> Internal Hackathon allows 2 to 6 members. If nominated for SIH 2026 Nationals, your squad must be finalized to 6 members.
+            <i class="fa-solid fa-circle-info" style="color: #059669;"></i> <strong>Note:</strong> Internal Hackathon
+            allows 2 to 6 members. If nominated for SIH 2026 Nationals, your squad must be finalized to 6 members.
           </div>
 
           <div class="members-roster-grid" id="members-roster-inputs">
@@ -1216,20 +1393,26 @@
 
         <!-- Step 3: Presentation Submission & Declaration -->
         <div class="form-section-card">
-          <h4 class="form-section-title"><i class="fa-solid fa-file-powerpoint"></i> 3. Idea Presentation & Verification</h4>
-          
+          <h4 class="form-section-title"><i class="fa-solid fa-file-powerpoint"></i> 3. Idea Presentation & Verification
+          </h4>
+
           <div class="form-group-item">
             <label class="form-input-label">Idea PPT Cloud Link (Google Drive / OneDrive / Dropbox) *</label>
-            <input type="url" id="reg-ppt-link" class="form-text-input" placeholder="https://drive.google.com/file/d/... (Make sure view permission is public)" required>
+            <input type="url" id="reg-ppt-link" class="form-text-input"
+              placeholder="https://drive.google.com/file/d/... (Make sure view permission is public)" required>
             <span style="font-size: 0.76rem; color: #64748b; margin-top: 4px; display: block;">
-              <i class="fa-solid fa-info-circle"></i> Use the official <strong>SIH2026-IDEA-Presentation-Format.pptx</strong> template provided on this portal.
+              <i class="fa-solid fa-info-circle"></i> Use the official
+              <strong>SIH2026-IDEA-Presentation-Format.pptx</strong> template provided on this portal.
             </span>
           </div>
 
-          <div style="background: #f0fdf4; border: 1px solid #a7f3d0; border-radius: 10px; padding: 12px 14px; margin-top: 14px;">
-            <label style="display: flex; gap: 10px; align-items: flex-start; cursor: pointer; font-size: 0.82rem; color: #064e3b;">
+          <div
+            style="background: #f0fdf4; border: 1px solid #a7f3d0; border-radius: 10px; padding: 12px 14px; margin-top: 14px;">
+            <label
+              style="display: flex; gap: 10px; align-items: flex-start; cursor: pointer; font-size: 0.82rem; color: #064e3b;">
               <input type="checkbox" id="reg-declaration" required style="margin-top: 3px;">
-              <span>I hereby certify that all registered team members are regular enrolled students of Tripura Institute of Technology (TIT) and agree to abide by all Smart India Hackathon & IIC rules.</span>
+              <span>I hereby certify that all registered team members are regular enrolled students of Tripura Institute
+                of Technology (TIT) and agree to abide by all Smart India Hackathon & IIC rules.</span>
             </label>
           </div>
         </div>
@@ -1273,14 +1456,20 @@
 
       <!-- Passcode Auth Screen -->
       <div id="admin-passcode-view" style="text-align: center; padding: 28px 16px;">
-        <div style="font-size: 2.6rem; margin-bottom: 12px; color: #059669;"><i class="fa-solid fa-user-shield"></i></div>
-        <h3 style="font-size: 1.6rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;">Faculty & Jury Admin Portal</h3>
+        <div style="font-size: 2.6rem; margin-bottom: 12px; color: #059669;"><i class="fa-solid fa-user-shield"></i>
+        </div>
+        <h3 style="font-size: 1.6rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;">Faculty & Jury Admin Portal
+        </h3>
         <p style="color: #64748b; font-size: 0.88rem; max-width: 440px; margin: 0 auto 20px;">
-          Authorized access to view every registered team, inspect all 6 member details, download PPTs, evaluate, and export AICTE CSV files.
+          Authorized access to view every registered team, inspect all 6 member details, download PPTs, evaluate, and
+          export AICTE CSV files.
         </p>
-        
+
         <form onsubmit="handleAdminPasscodeSubmit(event)" style="max-width: 340px; margin: 0 auto;" autocomplete="off">
-          <input type="password" id="admin-passcode-input" class="form-text-input" placeholder="Enter SPOC / Admin Passcode" autocomplete="new-password" data-lpignore="true" data-1p-ignore="true" readonly onfocus="this.removeAttribute('readonly');" required style="text-align: center; margin-bottom: 14px; font-weight: 700;">
+          <input type="password" id="admin-passcode-input" class="form-text-input"
+            placeholder="Enter SPOC / Admin Passcode" autocomplete="new-password" data-lpignore="true"
+            data-1p-ignore="true" readonly onfocus="this.removeAttribute('readonly');" required
+            style="text-align: center; margin-bottom: 14px; font-weight: 700;">
           <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center;">
             <i class="fa-solid fa-key"></i> Log In to Admin Console
           </button>
@@ -1289,24 +1478,28 @@
 
       <!-- Admin Console Dashboard Screen -->
       <div id="admin-console-view" style="display: none;">
-        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
+        <div
+          style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
           <div>
             <div style="display: flex; align-items: center; gap: 10px;">
               <h3 style="font-size: 1.45rem; font-weight: 900; color: #0f172a; margin: 0;">
                 <i class="fa-solid fa-list-check" style="color: #059669;"></i> Master Teams Evaluation Console
               </h3>
             </div>
-            <p style="color: #64748b; font-size: 0.82rem; margin: 2px 0 0;">Tripura Institute of Technology • IIC SIH 2026 Screening Panel</p>
+            <p style="color: #64748b; font-size: 0.82rem; margin: 2px 0 0;">Tripura Institute of Technology • IIC SIH
+              2026 Screening Panel</p>
           </div>
-          
+
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="btn-3d-secondary" onclick="renderAdminConsole()" style="padding: 8px 14px; font-size: 0.82rem;" title="Refresh Data">
+            <button class="btn-3d-secondary" onclick="renderAdminConsole()"
+              style="padding: 8px 14px; font-size: 0.82rem;" title="Refresh Data">
               <i class="fa-solid fa-rotate"></i> Refresh
             </button>
             <button class="btn-3d-primary" onclick="exportTeamsToCSV()" style="padding: 8px 16px; font-size: 0.82rem;">
               <i class="fa-solid fa-file-csv"></i> Export CSV for AICTE
             </button>
-            <button class="btn-3d-outline" onclick="closeAdminModal()" style="padding: 8px 14px; font-size: 0.82rem; background: #ffffff;">
+            <button class="btn-3d-outline" onclick="closeAdminModal()"
+              style="padding: 8px 14px; font-size: 0.82rem; background: #ffffff;">
               <i class="fa-solid fa-xmark"></i> Exit
             </button>
           </div>
@@ -1325,7 +1518,7 @@
       <button class="modal-close-btn" onclick="closeAdminTeamDetails()">
         <i class="fa-solid fa-xmark"></i>
       </button>
-      
+
       <div id="admin-team-details-content">
         <!-- Rendered dynamically by script.js -->
       </div>
@@ -1339,14 +1532,17 @@
         <i class="fa-solid fa-xmark"></i>
       </button>
 
-      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 20px;">
+      <div
+        style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 20px;">
         <div>
           <h3 style="font-size: 1.35rem; font-weight: 800; color: #0f172a; margin-bottom: 2px;">
             <i class="fa-solid fa-pen-to-square" style="color: #059669;"></i> Edit Team & Project Details
           </h3>
-          <p style="color: #64748b; font-size: 0.82rem;">Update your team name, problem statement, or idea presentation</p>
+          <p style="color: #64748b; font-size: 0.82rem;">Update your team name, problem statement, or idea presentation
+          </p>
         </div>
-        <span id="edit-team-badge-id" class="status-badge" style="background:#ecfdf5; color:#065f46; font-family:var(--font-mono); font-weight:800;"></span>
+        <span id="edit-team-badge-id" class="status-badge"
+          style="background:#ecfdf5; color:#065f46; font-family:var(--font-mono); font-weight:800;"></span>
       </div>
 
       <form id="edit-team-form" onsubmit="handleEditTeamSubmit(event)">
@@ -1404,7 +1600,8 @@
           </div>
           <div class="form-group-item">
             <label class="form-input-label">🎟️ Referral Code (Optional)</label>
-            <input type="text" id="edit-team-referral-code" class="form-text-input" placeholder="e.g. SIHIN1001" style="text-transform: uppercase; font-family: var(--font-mono); font-weight: 700;">
+            <input type="text" id="edit-team-referral-code" class="form-text-input" placeholder="e.g. SIHIN1001"
+              style="text-transform: uppercase; font-family: var(--font-mono); font-weight: 700;">
           </div>
         </div>
 
@@ -1429,7 +1626,8 @@
         <h3 style="font-size: 1.3rem; font-weight: 800; color: #0f172a; margin-bottom: 2px;">
           <i class="fa-solid fa-user-pen" style="color: #059669;"></i> Edit Member Details
         </h3>
-        <p style="color: #64748b; font-size: 0.82rem;" id="edit-member-subhead">Update student contact, department, or roll number</p>
+        <p style="color: #64748b; font-size: 0.82rem;" id="edit-member-subhead">Update student contact, department, or
+          roll number</p>
       </div>
 
       <form id="edit-member-form" onsubmit="handleEditMemberSubmit(event)">
@@ -1444,9 +1642,11 @@
           <div class="form-group-item">
             <label class="form-input-label" style="display: flex; justify-content: space-between; align-items: center;">
               <span>Roll / Enrollment No.</span>
-              <span style="font-size: 0.72rem; color: #059669; font-weight: 700; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; border: 1px solid #a7f3d0;">Optional</span>
+              <span
+                style="font-size: 0.72rem; color: #059669; font-weight: 700; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; border: 1px solid #a7f3d0;">Optional</span>
             </label>
-            <input type="text" id="edit-m-roll" class="form-text-input" placeholder="e.g. 21CSE042 or leave blank if not allotted">
+            <input type="text" id="edit-m-roll" class="form-text-input"
+              placeholder="e.g. 21CSE042 or leave blank if not allotted">
           </div>
         </div>
 
@@ -1481,7 +1681,8 @@
           </div>
           <div class="form-group-item">
             <label class="form-input-label">Mobile Phone *</label>
-            <input type="tel" id="edit-m-phone" class="form-text-input" maxlength="10" placeholder="10-digit mobile" required>
+            <input type="tel" id="edit-m-phone" class="form-text-input" maxlength="10" placeholder="10-digit mobile"
+              required>
           </div>
         </div>
 
@@ -1525,9 +1726,11 @@
           <div class="form-group-item">
             <label class="form-input-label" style="display: flex; justify-content: space-between; align-items: center;">
               <span>Roll / Enrollment No.</span>
-              <span style="font-size: 0.72rem; color: #059669; font-weight: 700; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; border: 1px solid #a7f3d0;">Optional</span>
+              <span
+                style="font-size: 0.72rem; color: #059669; font-weight: 700; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; border: 1px solid #a7f3d0;">Optional</span>
             </label>
-            <input type="text" id="add-m-roll" class="form-text-input" placeholder="e.g. 21IT024 or leave blank if not allotted">
+            <input type="text" id="add-m-roll" class="form-text-input"
+              placeholder="e.g. 21IT024 or leave blank if not allotted">
           </div>
         </div>
 
@@ -1562,7 +1765,8 @@
           </div>
           <div class="form-group-item">
             <label class="form-input-label">Mobile Phone *</label>
-            <input type="tel" id="add-m-phone" class="form-text-input" maxlength="10" placeholder="10-digit number" required>
+            <input type="tel" id="add-m-phone" class="form-text-input" maxlength="10" placeholder="10-digit number"
+              required>
           </div>
         </div>
 
