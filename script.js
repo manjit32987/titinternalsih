@@ -475,8 +475,8 @@ function updateNavAuthState() {
   } else {
     // Logged Out State: Unified Single Button
     navAuthContainer.innerHTML = `
-      <button class="btn-nav-register" onclick="openAuthModal('student', 'login')">
-        <i class="fa-solid fa-user-lock"></i> Sign In / Register
+      <button class="btn-nav-register btn-nav-auth" onclick="openAuthModal('student', 'login')" title="Sign In / Register">
+        <i class="fa-solid fa-user-lock"></i> <span class="nav-auth-btn-text">Sign In</span>
       </button>
     `;
 
