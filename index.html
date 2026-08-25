@@ -94,7 +94,18 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="xtyle.css">
+  <link rel="stylesheet" href="xtyle.css?v=2026.3">
+
+  <!-- Instant Theme Script to prevent FOUC -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem("tit_sih_theme") || "light";
+      if (savedTheme === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+        document.documentElement.classList.add("dark-theme");
+      }
+    })();
+  </script>
 </head>
 
 <body>
