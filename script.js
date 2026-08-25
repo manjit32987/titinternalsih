@@ -2509,11 +2509,45 @@ let liveCoordinatorsData = [];
 let currentActiveBranchFilter = "ece";
 window.COORDINATOR_REFERRAL_MAP = {};
 
-// Helper: Generate clean, memorable unique referral code for a coordinator
+// Master fixed unique referral code dictionary (SIHINxxxx) for Department Student Coordinators
+const FIXED_COORDINATOR_SIHIN_CODES = {
+  "alak das": "SIHIN1001",
+  "reshmi karmakar": "SIHIN1002",
+  "neelotpal banik": "SIHIN1003",
+  "sambhu debnath": "SIHIN1004",
+  "anurati bhowmik": "SIHIN1005",
+  "deeptanu shil": "SIHIN1006",
+  "sanjit noatia": "SIHIN1007",
+  "prena saha": "SIHIN1008",
+  "diya das": "SIHIN1009",
+  "sneha chaudhuri": "SIHIN1010",
+  "ronit saha": "SIHIN1011",
+  "sneha debnath": "SIHIN1012",
+  "sujit dey": "SIHIN1013",
+  "sreya deb": "SIHIN1014",
+  "soubik roy": "SIHIN1015",
+  "simran das": "SIHIN1016",
+  "raj arnab debnath": "SIHIN1017",
+  "manash t": "SIHIN1018",
+  "kishore majumder": "SIHIN1019",
+  "prabal kanti paul": "SIHIN1020",
+  "purba gangopadhyay": "SIHIN1021",
+};
+
+// Helper: Generate or look up permanent unique SIHINxxxx code
 function getCoordinatorReferralCode(coord) {
-  const branch = (coord.branch || "TIT").toUpperCase();
-  const firstName = (coord.name || "").split(" ")[0].replace(/[^a-zA-Z]/g, "").toUpperCase();
-  return `${branch}-${firstName}`;
+  const normName = (coord.name || "").trim().toLowerCase();
+  if (FIXED_COORDINATOR_SIHIN_CODES[normName]) {
+    return FIXED_COORDINATOR_SIHIN_CODES[normName];
+  }
+  // Deterministic 4-digit number for any dynamic new form submissions
+  let hash = 0;
+  const str = `${normName}_${(coord.branch || "").toLowerCase()}`;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash * 31 + str.charCodeAt(i)) % 9000;
+  }
+  const num = 1000 + Math.abs(hash);
+  return `SIHIN${num}`;
 }
 
 // Pre-populate seed coordinators for immediate referral resolution
@@ -2550,7 +2584,7 @@ DEFAULT_COORDINATORS_SEED.forEach((c) => {
 window.copyCoordinatorRefCode = (code) => {
   if (navigator.clipboard) {
     navigator.clipboard.writeText(code).then(() => {
-      alert(`🎟️ Referral Code "${code}" copied to clipboard!\n\nEnter this code in your Team Registration Form to credit your technical coordinator.`);
+      alert(`🎟️ Coordinator Referral Code "${code}" copied to clipboard!\n\nEnter this code in your Team Registration Form to credit your technical coordinator.`);
     }).catch(() => {
       prompt("Coordinator Referral Code:", code);
     });
@@ -2920,7 +2954,7 @@ function renderLiveDepartmentCoordinators() {
             <span class="committee-designation">${escapeHtml(c.year)} • ${escapeHtml(c.branch)}</span>
             <p class="committee-dept">${escapeHtml(meta.name)}, TIT</p>
             <div class="coordinator-referral-chip" onclick="copyCoordinatorRefCode('${refCode}')" title="Click to copy Referral Code for Team Registration">
-              <i class="fa-solid fa-ticket"></i> Ref: <strong>${refCode}</strong> <i class="fa-regular fa-copy"></i>
+              <i class="fa-solid fa-ticket"></i> Referral Code: <strong>${refCode}</strong> <i class="fa-regular fa-copy"></i>
             </div>
             <div class="committee-contact-links">
               ${contactHtml}
