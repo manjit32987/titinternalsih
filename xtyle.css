@@ -5260,22 +5260,112 @@ body.dark-theme [style*="background: #ecfdf5"] {
     gap: 6px;
   }
   .navbar {
-    top: 8px;
+    top: 6px;
     padding: 0 8px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
   .navbar-container {
-    padding: 6px 12px;
+    padding: 5px 10px;
+    gap: 6px;
+    justify-content: space-between;
   }
-  .brand-title {
-    font-size: 0.88rem;
+  .nav-brand {
+    min-width: 0;
+    flex-shrink: 1;
+    gap: 6px;
+    overflow: hidden;
   }
   .brand-logo-img {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+  }
+  .brand-text {
+    min-width: 0;
+    overflow: hidden;
+  }
+  .brand-title {
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .brand-subtitle {
+    font-size: 0.58rem;
   }
   .nav-links {
     display: none;
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+
+  /* Theme Toggle Switch on Mobile */
+  .theme-toggle-btn {
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+  }
+  .theme-toggle-track {
+    width: 42px;
+    height: 24px;
+    padding: 2px;
+  }
+  .theme-toggle-thumb {
+    width: 20px;
+    height: 20px;
+    font-size: 0.62rem;
+  }
+  .theme-toggle-btn.dark .theme-toggle-thumb,
+  html[data-theme="dark"] .theme-toggle-thumb,
+  body.dark-theme .theme-toggle-thumb {
+    transform: translateX(18px);
+  }
+
+  /* Mobile Top-Right User Profile Avatar Badge */
+  #nav-auth-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .user-profile-badge {
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    cursor: pointer;
+  }
+  .user-profile-badge .user-name-text {
+    display: none !important; /* Hide long name on mobile so navbar never overflows */
+  }
+  .user-avatar-circle {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.76rem !important;
+    font-weight: 800 !important;
+    border: 2px solid #10b981 !important;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35) !important;
+    background: #059669 !important;
+    color: #ffffff !important;
+    flex-shrink: 0;
+  }
+  .btn-nav-logout {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 0.72rem !important;
+    flex-shrink: 0;
+    padding: 0 !important;
+  }
+  .btn-nav-register,
+  .btn-nav-auth {
+    padding: 5px 9px !important;
+    font-size: 0.74rem !important;
+    gap: 4px !important;
   }
 
   /* Hero Section Layout on Smartphones */

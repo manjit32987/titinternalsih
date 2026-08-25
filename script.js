@@ -456,9 +456,9 @@ function updateNavAuthState() {
       .toUpperCase();
 
     navAuthContainer.innerHTML = `
-      <div class="user-profile-badge" title="${escapeHtml(currentUser.name)} (${escapeHtml(currentUser.roll)} - ${escapeHtml(currentUser.dept)})">
+      <div class="user-profile-badge" onclick="navigateToStudentDashboard()" title="${escapeHtml(currentUser.name)} (${escapeHtml(currentUser.roll)} - ${escapeHtml(currentUser.dept)}) - Click to open Dashboard">
         <span class="user-avatar-circle">${initials}</span>
-        <span>${escapeHtml(currentUser.name.split(" ")[0])} (${escapeHtml(currentUser.dept)})</span>
+        <span class="user-name-text">${escapeHtml(currentUser.name.split(" ")[0])} (${escapeHtml(currentUser.dept)})</span>
       </div>
       <button class="btn-nav-logout" onclick="handleLogout()" title="Sign Out">
         <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -489,6 +489,14 @@ function updateNavAuthState() {
     }
   }
 }
+
+window.navigateToStudentDashboard = () => {
+  const dashSection = document.getElementById("student-dashboard");
+  if (dashSection) {
+    dashSection.style.display = "block";
+    dashSection.scrollIntoView({ behavior: "smooth" });
+  }
+};
 
 /* ==========================================================================
    3. 6-MEMBER TEAM REGISTRATION WIZARD ENGINE
