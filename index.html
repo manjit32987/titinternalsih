@@ -96,7 +96,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="xtyle.css?v=2026.4.2">
+  <link rel="stylesheet" href="xtyle.css?v=2026.4.4">
 
   <!-- Instant Theme Script to prevent FOUC -->
   <script>
@@ -824,46 +824,22 @@
         </button>
       </form>
 
-      <!-- Reset Password Form -->
+      <!-- Reset Password Form (Secure Official Firebase Reset Link) -->
       <form id="reset-password-form" style="display: none;" onsubmit="handlePasswordResetSubmit(event)">
         <div
           style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; color: #1e40af; margin-bottom: 14px; line-height: 1.4;">
-          <i class="fa-solid fa-key" style="color: #2563eb;"></i> Enter your registered college email or roll number to
-          instantly verify your account and set a new password.
+          <i class="fa-solid fa-shield-halved" style="color: #2563eb;"></i> <strong>Secure Password Recovery:</strong> Enter your registered college email. We will send an official, encrypted password reset link directly to your inbox.
         </div>
 
-        <!-- Step 1: Account Verification -->
-        <div id="reset-step-1">
-          <div class="form-group-item">
-            <label class="form-input-label">Registered College Email or Roll Number *</label>
-            <input type="text" id="reset-email" class="form-text-input"
-              placeholder="e.g. name@titagartala.ac.in or Roll No" autocomplete="email">
-          </div>
-          <button type="button" class="btn-3d-primary" onclick="verifyResetAccount()"
-            style="width: 100%; justify-content: center; margin-top: 14px;">
-            <i class="fa-solid fa-user-check"></i> Verify Account
-          </button>
+        <div class="form-group-item">
+          <label class="form-input-label">Registered College Email *</label>
+          <input type="email" id="reset-email" class="form-text-input"
+            placeholder="e.g. yourname@titagartala.ac.in" required autocomplete="email">
         </div>
 
-        <!-- Step 2: Set New Password (Revealed after verification) -->
-        <div id="reset-step-2" style="display: none; margin-top: 6px;">
-          <div id="reset-verified-banner"
-            style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; color: #065f46; margin-bottom: 12px;">
-            <!-- Rendered dynamically -->
-          </div>
-          <div class="form-group-item" style="margin-bottom: 10px;">
-            <label class="form-input-label">Enter New Password *</label>
-            <input type="password" id="reset-new-password" class="form-text-input" placeholder="Minimum 4 characters">
-          </div>
-          <div class="form-group-item" style="margin-bottom: 14px;">
-            <label class="form-input-label">Confirm New Password *</label>
-            <input type="password" id="reset-confirm-password" class="form-text-input"
-              placeholder="Re-enter new password">
-          </div>
-          <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 4px;">
-            <i class="fa-solid fa-lock-open"></i> Update & Save Password
-          </button>
-        </div>
+        <button type="submit" id="btn-send-reset-link" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 14px;">
+          <i class="fa-solid fa-paper-plane"></i> Send Password Reset Link
+        </button>
 
         <div style="text-align: center; margin-top: 14px;">
           <button type="button" class="btn-text-link" onclick="switchStudentAuthTab('login')">← Back to Sign In</button>
@@ -1876,7 +1852,7 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <!-- Main Application Script -->
-  <script src="script.js?v=2026.4.2"></script>
+  <script src="script.js?v=2026.4.4"></script>
 </body>
 
 </html>

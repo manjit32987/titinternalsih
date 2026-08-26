@@ -221,6 +221,26 @@ function initFirebaseCloud() {
 
       // Start Real-Time Snapshot Listeners from Cloud Database
       startFirebaseRealtimeListeners();
+
+      // Check for Google Sign-In Redirect Results on page return
+      if (typeof firebase.auth === "function") {
+        firebase
+          .auth()
+          .getRedirectResult()
+          .then((result) => {
+            if (result && result.user && result.user.email) {
+              console.log("✅ Google Auth Redirect sign-in success:", result.user.email);
+              if (typeof window.handleGoogleAuthSuccess === "function") {
+                window.handleGoogleAuthSuccess(result.user.email, result.user.displayName);
+              }
+            }
+          })
+          .catch((err) => {
+            if (err.code !== "auth/credential-already-in-use") {
+              console.warn("Redirect auth check notice:", err);
+            }
+          });
+      }
     } else {
       console.log("ℹ️ Running in Local Storage Mode. (To enable multi-device live cloud sync, add your free Firebase config in script.js).");
     }
@@ -401,16 +421,11 @@ window.switchStudentAuthTab = (tab) => {
   } else if (tab === "reset") {
     if (resetForm) {
       resetForm.style.display = "block";
-      const step1 = document.getElementById("reset-step-1");
-      const step2 = document.getElementById("reset-step-2");
       const emailInput = document.getElementById("reset-email");
-      if (step1) step1.style.display = "block";
-      if (step2) step2.style.display = "none";
       if (emailInput) {
         emailInput.value = "";
         emailInput.focus();
       }
-      currentResetStudent = null;
     }
   }
 };
@@ -431,106 +446,49 @@ window.handleAdminTabPasscodeSubmit = (e) => {
   handleDedicatedAdminPasscodeSubmit(e);
 };
 
-let currentResetStudent = null;
-
-window.verifyResetAccount = () => {
-  const inputEl = document.getElementById("reset-email");
-  const identifier = (inputEl ? inputEl.value : "").trim().toLowerCase();
-
-  if (!identifier) {
-    alert("[TIT SIH] Please enter your registered College Email ID or Roll Number.");
-    return;
-  }
-
-  const student = registeredStudents.find(
-    (s) =>
-      s.email.toLowerCase() === identifier ||
-      (s.roll && s.roll.toLowerCase() === identifier)
-  );
-
-  if (!student) {
-    alert(`[TIT SIH] No registered account found for "${identifier}".\n\nPlease check your email/roll number or register a new student account.`);
-    return;
-  }
-
-  currentResetStudent = student;
-
-  const step1 = document.getElementById("reset-step-1");
-  const step2 = document.getElementById("reset-step-2");
-  const verifiedBanner = document.getElementById("reset-verified-banner");
-  const newPassInput = document.getElementById("reset-new-password");
-  const confirmPassInput = document.getElementById("reset-confirm-password");
-
-  if (verifiedBanner) {
-    verifiedBanner.innerHTML = `
-      <i class="fa-solid fa-circle-check" style="color: #059669;"></i> Account Verified: <strong style="color: #0f172a;">${escapeHtml(student.name)}</strong> (${escapeHtml(student.dept || student.branch)}${student.roll ? ` - ${escapeHtml(student.roll)}` : ""})
-    `;
-  }
-
-  if (newPassInput) newPassInput.value = "";
-  if (confirmPassInput) confirmPassInput.value = "";
-
-  if (step1) step1.style.display = "none";
-  if (step2) {
-    step2.style.display = "block";
-    if (newPassInput) newPassInput.focus();
-  }
-};
-
-window.handlePasswordResetSubmit = (e) => {
+/* ==========================================================================
+   SECURE FIREBASE PASSWORD RECOVERY (CRYPTOGRAPHIC EMAIL LINK ONLY)
+   ========================================================================== */
+window.handlePasswordResetSubmit = async (e) => {
   e.preventDefault();
+  const emailInput = document.getElementById("reset-email");
+  const email = (emailInput ? emailInput.value : "").trim().toLowerCase();
 
-  if (!currentResetStudent) {
-    window.verifyResetAccount();
+  if (!email || !isValidEmail(email)) {
+    alert("[TIT SIH] Please enter a valid registered college email address.");
     return;
   }
 
-  const newPass = document.getElementById("reset-new-password").value;
-  const confirmPass = document.getElementById("reset-confirm-password").value;
-
-  if (!newPass || newPass.length < 4) {
-    alert("[TIT SIH] Please enter a new password (minimum 4 characters).");
-    return;
+  const btn = document.getElementById("btn-send-reset-link");
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sending Recovery Link...`;
   }
 
-  if (newPass !== confirmPass) {
-    alert("[TIT SIH] Passwords do not match. Please re-enter your new password.");
-    return;
+  try {
+    if (typeof firebase !== "undefined" && firebase.auth && isFirebaseActive) {
+      await firebase.auth().sendPasswordResetEmail(email);
+      alert(`[TIT SIH] 🔒 Secure Reset Link Dispatched!\n\nAn official, encrypted password recovery link has been sent to:\n${email}\n\nPlease check your inbox (and spam folder) and click the link to securely set your new password.`);
+      switchStudentAuthTab("login");
+    } else {
+      alert(`[TIT SIH] 🔒 Password Reset Request:\nIf an account is registered with ${email}, a secure reset link has been dispatched.`);
+      switchStudentAuthTab("login");
+    }
+  } catch (err) {
+    console.warn("Firebase Auth reset error:", err);
+    if (err.code === "auth/user-not-found") {
+      alert(`[TIT SIH] No registered account found with email: ${email}.\nPlease check for typos or create a new student account.`);
+    } else if (err.code === "auth/invalid-email") {
+      alert("[TIT SIH] Invalid email format. Please enter a valid email address.");
+    } else {
+      alert(`[TIT SIH] Password Recovery Notice: ${err.message || "Failed to dispatch recovery link. Please try again."}`);
+    }
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Send Password Reset Link`;
+    }
   }
-
-  // Update password in memory
-  currentResetStudent.password = newPass;
-
-  // Persist to registeredStudents array
-  const sIdx = registeredStudents.findIndex(
-    (s) => s.email.toLowerCase() === currentResetStudent.email.toLowerCase()
-  );
-  if (sIdx >= 0) {
-    registeredStudents[sIdx].password = newPass;
-  }
-  localStorage.setItem("tit_sih_students", JSON.stringify(registeredStudents));
-
-  // Sync to Firestore if active
-  if (isFirebaseActive && db) {
-    db.collection("students")
-      .doc(currentResetStudent.email.toLowerCase())
-      .update({ password: newPass })
-      .catch((err) => {
-        console.warn("Firestore password update notice:", err);
-      });
-  }
-
-  // Auto-login user
-  currentUser = currentResetStudent;
-  localStorage.setItem("tit_sih_current_user", JSON.stringify(currentUser));
-
-  closeAuthModal();
-  updateNavAuthState();
-  renderStudentDashboard();
-  triggerConfettiBurst();
-
-  alert(`[TIT SIH] Password updated successfully! Welcome, ${currentResetStudent.name}.`);
-  currentResetStudent = null;
 };
 
 /* ==========================================================================
@@ -554,25 +512,11 @@ function parseJwt(token) {
   }
 }
 
-window.handleGoogleCredentialResponse = async (response) => {
-  if (!response || !response.credential) return;
-  const payload = parseJwt(response.credential);
-  if (!payload || !payload.email) return;
+window.handleGoogleAuthSuccess = async (email, name) => {
+  if (!email) return;
+  email = email.toLowerCase();
+  name = name || email.split("@")[0];
 
-  const email = payload.email.toLowerCase();
-  const name = payload.name || payload.email.split("@")[0];
-
-  // Also bridge into Firebase Auth if active
-  if (typeof firebase !== "undefined" && firebase.auth && isFirebaseActive) {
-    try {
-      const credential = firebase.auth.GoogleAuthProvider.credential(response.credential);
-      await firebase.auth().signInWithCredential(credential);
-    } catch (err) {
-      console.warn("Firebase credential sign-in notice:", err);
-    }
-  }
-
-  // Check if student profile exists
   let existingStudent = registeredStudents.find(
     (s) => s.email.toLowerCase() === email
   );
@@ -601,7 +545,25 @@ window.handleGoogleCredentialResponse = async (response) => {
   }
 };
 
-window.signInWithFirebaseGooglePopup = async () => {
+window.handleGoogleCredentialResponse = async (response) => {
+  if (!response || !response.credential) return;
+  const payload = parseJwt(response.credential);
+  if (!payload || !payload.email) return;
+
+  // Also bridge into Firebase Auth if active
+  if (typeof firebase !== "undefined" && firebase.auth && isFirebaseActive) {
+    try {
+      const credential = firebase.auth.GoogleAuthProvider.credential(response.credential);
+      await firebase.auth().signInWithCredential(credential);
+    } catch (err) {
+      console.warn("Firebase credential sign-in notice:", err);
+    }
+  }
+
+  window.handleGoogleAuthSuccess(payload.email, payload.name);
+};
+
+window.handleGoogleSignIn = async () => {
   if (typeof firebase === "undefined" || !firebase.auth) {
     alert("[TIT SIH] Firebase Authentication SDK is loading. Please check your internet connection.");
     return;
@@ -612,72 +574,24 @@ window.signInWithFirebaseGooglePopup = async () => {
 
   try {
     const result = await firebase.auth().signInWithPopup(provider);
-    const gUser = result.user;
-    if (!gUser || !gUser.email) return;
-
-    const email = gUser.email.toLowerCase();
-    const name = gUser.displayName || email.split("@")[0];
-
-    // Check if student profile already exists in registeredStudents or Firestore
-    let existingStudent = registeredStudents.find(
-      (s) => s.email.toLowerCase() === email
-    );
-
-    if (!existingStudent && isFirebaseActive && db) {
-      try {
-        const doc = await db.collection("students").doc(email).get();
-        if (doc.exists) {
-          existingStudent = doc.data();
-        }
-      } catch (e) {
-        console.warn("Firestore lookup note:", e);
-      }
-    }
-
-    if (existingStudent) {
-      currentUser = existingStudent;
-      localStorage.setItem("tit_sih_current_user", JSON.stringify(currentUser));
-      closeAuthModal();
-      updateNavAuthState();
-      renderStudentDashboard();
-      triggerConfettiBurst();
-      alert(`[TIT SIH] Welcome back, ${currentUser.name}! You are logged in.`);
-    } else {
-      openGoogleProfileOnboarding(name, email);
+    if (result && result.user && result.user.email) {
+      window.handleGoogleAuthSuccess(result.user.email, result.user.displayName);
     }
   } catch (error) {
-    console.error("Google Sign-In error:", error);
-    if (error.code === "auth/unauthorized-domain") {
-      alert("[TIT SIH] Domain Authorization Required:\nPlease add your website domain in Firebase Console -> Authentication -> Settings -> Authorized Domains.");
-    } else if (error.code !== "auth/popup-closed-by-user" && error.code !== "auth/cancelled-popup-request") {
-      alert(`[TIT SIH] Google Authentication Notice: ${error.message || "Failed to sign in with Google."}`);
+    console.warn("Google Sign-In popup notice:", error);
+    if (error.code === "auth/popup-blocked" || error.code === "auth/cancelled-popup-request") {
+      console.log("[TIT SIH] Popup blocked by browser. Switching to Google redirect mode...");
+      try {
+        await firebase.auth().signInWithRedirect(provider);
+      } catch (redirectErr) {
+        console.error("Redirect auth error:", redirectErr);
+      }
+    } else if (error.code === "auth/unauthorized-domain") {
+      alert("[TIT SIH] Domain Authorization Notice:\nPlease verify that 'titinternalsih.vercel.app' is in Firebase Console -> Authentication -> Settings -> Authorized Domains.");
+    } else if (error.code !== "auth/popup-closed-by-user") {
+      alert(`[TIT SIH] Google Sign-In Notice: ${error.message || "Authentication could not complete."}`);
     }
   }
-};
-
-window.handleGoogleSignIn = () => {
-  // 1. Try Google Identity Services (GSI)
-  if (typeof google !== "undefined" && google.accounts && google.accounts.id) {
-    try {
-      google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        callback: window.handleGoogleCredentialResponse,
-        auto_select: false,
-        cancel_on_tap_outside: true
-      });
-      google.accounts.id.prompt((notification) => {
-        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          window.signInWithFirebaseGooglePopup();
-        }
-      });
-      return;
-    } catch (gsiErr) {
-      console.warn("Google GSI initialization notice:", gsiErr);
-    }
-  }
-
-  // 2. Direct fallback to Firebase Google Popup
-  window.signInWithFirebaseGooglePopup();
 };
 
 window.openGoogleProfileOnboarding = (name, email) => {
