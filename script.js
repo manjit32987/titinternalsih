@@ -3,6 +3,279 @@
  * Full Dynamic Logic Engine with Google Firebase Cloud Firestore Integration
  */
 
+/* ==========================================================================
+   0. SITE UNDER MAINTENANCE CONTROLLER & DEVELOPER BYPASS SYSTEM
+   ========================================================================== */
+const MAINTENANCE_CONFIG = {
+  enabled: false, // MASTER SWITCH: set to false to open portal to all visitors
+  devPasscode: "TIT_DEV_2026",
+  spocPasscode: "TIT_SIH_2026#SPOC",
+  title: "TIT SIH 2026 • Upgrades in Progress",
+  heading: "System Upgrades in Progress",
+  subheading: "Institution Innovation Council (IIC) • Tripura Institute of Technology",
+  message: "We are currently performing essential platform upgrades, database index optimizations, and security enhancements for the Smart India Hackathon (SIH) 2026 Internal Hackathon portal. The platform will be accessible to all students shortly.",
+  statusText: "Live Engineering & SPOC Deployment",
+  contactEmail: "principal@titagartala.ac.in"
+};
+
+function isDeveloperBypassed() {
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const devParam = (urlParams.get("dev") || urlParams.get("bypass") || urlParams.get("dev_key") || "").trim();
+    if (
+      devParam === "bypass" ||
+      devParam === "TIT_DEV_2026" ||
+      devParam === "TIT_SIH_2026#SPOC" ||
+      devParam === "1" ||
+      devParam === "true" ||
+      devParam === "admin"
+    ) {
+      localStorage.setItem("tit_sih_dev_bypass", "true");
+      return true;
+    }
+  } catch (e) {}
+
+  try {
+    return localStorage.getItem("tit_sih_dev_bypass") === "true";
+  } catch (e) {
+    return false;
+  }
+}
+
+function initMaintenanceMode() {
+  const isDev = isDeveloperBypassed();
+  const overlay = document.getElementById("maintenance-overlay");
+  const floatingBar = document.getElementById("dev-floating-bar");
+
+  if (!MAINTENANCE_CONFIG.enabled) {
+    if (overlay) overlay.remove();
+    if (floatingBar) floatingBar.remove();
+    document.body.style.overflow = "";
+    return;
+  }
+
+  if (isDev) {
+    if (overlay && !overlay.getAttribute("data-preview")) {
+      overlay.remove();
+    }
+    document.body.style.overflow = "";
+    renderDevFloatingBar();
+  } else {
+    document.body.style.overflow = "hidden";
+    if (floatingBar) floatingBar.remove();
+    renderMaintenanceOverlay();
+  }
+}
+
+function renderMaintenanceOverlay(isPreview = false) {
+  let overlay = document.getElementById("maintenance-overlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "maintenance-overlay";
+    document.body.appendChild(overlay);
+  }
+
+  if (isPreview) {
+    overlay.setAttribute("data-preview", "true");
+  } else {
+    overlay.removeAttribute("data-preview");
+  }
+
+  const previewBannerHtml = isPreview ? `
+    <div style="background: #fef3c7; color: #92400e; padding: 10px 16px; border-radius: 12px; font-weight: 800; font-size: 0.82rem; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; border: 1px solid #fcd34d;">
+      <span><i class="fa-solid fa-eye"></i> <strong>Dev Preview Mode:</strong> This is what normal visitors currently see.</span>
+      <button class="btn-dev-unlock-trigger" onclick="closeMaintenancePreview()" style="background: #ffffff; color: #92400e; font-weight: 800; padding: 4px 10px; border: 1px solid #fcd34d;">
+        <i class="fa-solid fa-xmark"></i> Close Preview
+      </button>
+    </div>
+  ` : "";
+
+  overlay.innerHTML = `
+    <div class="maintenance-card">
+      <div class="maintenance-top-stripe"></div>
+      ${previewBannerHtml}
+      <div class="maintenance-icon-box">
+        <div class="maintenance-icon-glow-ring"></div>
+        <div class="maintenance-icon-circle">
+          <i class="fa-solid fa-gears maintenance-gear-spin"></i>
+        </div>
+      </div>
+
+      <div class="maintenance-sub-badge">
+        <span class="maintenance-pulse-dot"></span>
+        <span>${escapeHtml(MAINTENANCE_CONFIG.subheading)}</span>
+      </div>
+
+      <h1 class="maintenance-heading">${escapeHtml(MAINTENANCE_CONFIG.heading)}</h1>
+      <p class="maintenance-subheading"><i class="fa-solid fa-bolt" style="color: #10b981;"></i> Smart India Hackathon (SIH) 2026 Internal Hackathon</p>
+      
+      <p class="maintenance-desc">
+        ${escapeHtml(MAINTENANCE_CONFIG.message)}
+      </p>
+
+      <div class="maintenance-status-box">
+        <div class="maintenance-status-info">
+          <h4><i class="fa-solid fa-circle-check" style="color: #059669;"></i> Portal Status: Under Active Maintenance</h4>
+          <p>System upgrades & database indexes are currently compiling for high traffic.</p>
+        </div>
+        <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(5, 150, 105, 0.12); color: var(--primary); padding: 6px 12px; border-radius: 99px; font-size: 0.76rem; font-weight: 800; border: 1px solid var(--border-emerald);">
+          <i class="fa-solid fa-shield-halved"></i> IIC TIT Cell
+        </div>
+      </div>
+
+      <div class="maintenance-actions-group">
+        <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="btn-3d-primary" style="font-size: 0.88rem; padding: 12px 22px; text-decoration: none;">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Explore Official SIH PS Portal
+        </a>
+        <a href="mailto:${escapeHtml(MAINTENANCE_CONFIG.contactEmail)}" class="btn-3d-secondary" style="font-size: 0.88rem; padding: 12px 20px; text-decoration: none;">
+          <i class="fa-solid fa-envelope"></i> Contact Organizing Body
+        </a>
+      </div>
+
+      <div class="maintenance-footer-note">
+        <span>© 2026 Institution Innovation Council (IIC), TIT Agartala</span>
+        <button type="button" class="btn-dev-unlock-trigger" onclick="openDevUnlockModal()" title="Developer / SPOC Passcode Unlock">
+          <i class="fa-solid fa-lock"></i> Developer / Admin Unlock
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function renderDevFloatingBar() {
+  let bar = document.getElementById("dev-floating-bar");
+  if (!bar) {
+    bar = document.createElement("div");
+    bar.id = "dev-floating-bar";
+    bar.className = "dev-floating-bar";
+    document.body.appendChild(bar);
+  }
+
+  bar.innerHTML = `
+    <div class="dev-bar-status">
+      <i class="fa-solid fa-code"></i>
+      <span>Dev Mode Active</span>
+    </div>
+    <div class="dev-bar-actions">
+      <button class="dev-bar-btn" onclick="toggleMaintenancePreview()" title="Preview what normal users see">
+        <i class="fa-solid fa-eye"></i> Preview
+      </button>
+      <button class="dev-bar-btn dev-bar-btn-exit" onclick="disableDevBypass()" title="Exit Developer Mode and re-enable maintenance block">
+        <i class="fa-solid fa-lock"></i> Lock Site
+      </button>
+    </div>
+  `;
+}
+
+window.toggleMaintenancePreview = () => {
+  const overlay = document.getElementById("maintenance-overlay");
+  if (overlay) {
+    overlay.remove();
+    document.body.style.overflow = "";
+  } else {
+    renderMaintenanceOverlay(true);
+    document.body.style.overflow = "hidden";
+  }
+};
+
+window.closeMaintenancePreview = () => {
+  const overlay = document.getElementById("maintenance-overlay");
+  if (overlay) overlay.remove();
+  document.body.style.overflow = "";
+};
+
+window.disableDevBypass = () => {
+  if (confirm("Lock site and return to normal Maintenance Mode?")) {
+    localStorage.removeItem("tit_sih_dev_bypass");
+    initMaintenanceMode();
+    alert("🔒 Developer Mode disabled. The portal is now locked in Maintenance Mode for normal users.");
+  }
+};
+
+window.openDevUnlockModal = () => {
+  let modal = document.getElementById("dev-unlock-modal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "dev-unlock-modal";
+    modal.className = "modal-overlay";
+    modal.style.zIndex = "1000000";
+    document.body.appendChild(modal);
+  }
+
+  modal.innerHTML = `
+    <div class="modal-container" style="max-width: 420px; text-align: left;">
+      <button class="modal-close-btn" onclick="closeDevUnlockModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div style="text-align: center; margin-bottom: 18px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #ecfdf5; color: #059669; display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 10px; border: 2px solid #a7f3d0;">
+          <i class="fa-solid fa-laptop-code"></i>
+        </div>
+        <h3 style="font-size: 1.35rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;">Developer Access</h3>
+        <p style="color: #64748b; font-size: 0.82rem;">Enter passcode to bypass maintenance mode</p>
+      </div>
+
+      <form onsubmit="handleDevPasscodeSubmit(event)">
+        <div class="form-group-item">
+          <label class="form-input-label">Developer Passcode / SPOC Key</label>
+          <input type="password" id="dev-unlock-passcode-input" class="form-text-input" placeholder="e.g. TIT_DEV_2026" required autofocus style="text-align: center; font-weight: 700; font-size: 1.05rem; letter-spacing: 2px;">
+        </div>
+
+        <button type="submit" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 14px;">
+          <i class="fa-solid fa-unlock"></i> Unlock Developer Access
+        </button>
+
+        <p style="text-align: center; font-size: 0.74rem; color: #94a3b8; margin: 14px 0 0;">
+          💡 Tip: You can also pass <code style="background: #f1f5f9; padding: 2px 5px; border-radius: 4px; color: #059669;">?dev=bypass</code> in the URL.
+        </p>
+      </form>
+    </div>
+  `;
+
+  modal.classList.add("active");
+  setTimeout(() => {
+    const input = document.getElementById("dev-unlock-passcode-input");
+    if (input) input.focus();
+  }, 100);
+};
+
+window.closeDevUnlockModal = () => {
+  const modal = document.getElementById("dev-unlock-modal");
+  if (modal) modal.classList.remove("active");
+};
+
+window.handleDevPasscodeSubmit = (e) => {
+  e.preventDefault();
+  const input = document.getElementById("dev-unlock-passcode-input");
+  if (!input) return;
+
+  const entered = input.value.trim();
+  if (
+    entered === MAINTENANCE_CONFIG.devPasscode ||
+    entered === MAINTENANCE_CONFIG.spocPasscode ||
+    entered === CONFIG.adminPasscode ||
+    entered.toUpperCase() === "TIT_DEV_2026"
+  ) {
+    localStorage.setItem("tit_sih_dev_bypass", "true");
+    closeDevUnlockModal();
+    initMaintenanceMode();
+    if (typeof triggerConfettiBurst === "function") triggerConfettiBurst();
+    alert("✅ Developer Access Granted!\n\nYou can now browse and test all features freely. A floating developer toolbar has been added at the bottom-right.");
+  } else {
+    alert("❌ Invalid Developer Passcode. Access denied.");
+    input.value = "";
+    input.focus();
+  }
+};
+
+// Immediately evaluate maintenance status on initial script parse
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initMaintenanceMode);
+} else {
+  initMaintenanceMode();
+}
+
 // ==========================================================================
 // 1. GOOGLE FIREBASE CLOUD FIRESTORE CONFIGURATION
 // ==========================================================================
@@ -103,14 +376,14 @@ window.getBranchOptionsHtml = (program, selectedBranch) => {
   let matched = false;
   const optionsHtml = list.map((b) => {
     const isSel = selectedBranch && (
-      selectedBranch.toUpperCase() === b.value.toUpperCase() || 
+      selectedBranch.toUpperCase() === b.value.toUpperCase() ||
       selectedBranch.toUpperCase().startsWith(b.value.toUpperCase()) ||
       b.value.toUpperCase().startsWith(selectedBranch.toUpperCase())
     );
     if (isSel) matched = true;
     return `<option value="${b.value}" ${isSel ? "selected" : ""}>${b.label}</option>`;
   }).join("");
-  
+
   if (!matched && selectedBranch) {
     return `<option value="${escapeHtml(selectedBranch)}" selected>${escapeHtml(selectedBranch)}</option>` + optionsHtml;
   }
@@ -294,7 +567,7 @@ function startFirebaseRealtimeListeners() {
       registeredTeams = cloudTeams;
       localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
       renderStudentDashboard();
-      
+
       // If admin console is open, re-render it live
       const adminView = document.getElementById("admin-console-view");
       if (adminView && adminView.style.display !== "none") {
@@ -827,7 +1100,7 @@ window.handleLoginSubmit = async (e) => {
     registeredStudents.push(newProfile);
     localStorage.setItem("tit_sih_students", JSON.stringify(registeredStudents));
     if (isFirebaseActive && db) {
-      db.collection("students").doc(authenticatedEmail).set(newProfile).catch(() => {});
+      db.collection("students").doc(authenticatedEmail).set(newProfile).catch(() => { });
     }
     currentUser = newProfile;
     localStorage.setItem("tit_sih_current_user", JSON.stringify(currentUser));
@@ -902,20 +1175,20 @@ window.handleSignupSubmit = async (e) => {
   }
 
   const signupRefCode = (document.getElementById("signup-referral-code")?.value || "").trim().toUpperCase();
-  const newStudent = { 
-    name, 
-    roll: roll || "", 
-    program, 
-    branch, 
-    dept, 
-    year, 
-    gender, 
-    email, 
-    password, 
+  const newStudent = {
+    name,
+    roll: roll || "",
+    program,
+    branch,
+    dept,
+    year,
+    gender,
+    email,
+    password,
     authProvider: "password",
-    referralCode: signupRefCode || "NONE" 
+    referralCode: signupRefCode || "NONE"
   };
-  
+
   registeredStudents.push(newStudent);
   localStorage.setItem("tit_sih_students", JSON.stringify(registeredStudents));
 
@@ -947,7 +1220,7 @@ window.handleLogout = () => {
     if (typeof firebase !== "undefined" && firebase.auth && isFirebaseActive) {
       try {
         firebase.auth().signOut();
-      } catch (_) {}
+      } catch (_) { }
     }
     currentUser = null;
     localStorage.removeItem("tit_sih_current_user");
@@ -1558,8 +1831,8 @@ function renderStudentDashboard() {
       <!-- Squad Roster Grid -->
       <div class="dashboard-team-grid">
         ${userTeam.members
-          .map(
-            (m, idx) => `
+      .map(
+        (m, idx) => `
           <div class="dashboard-member-box ${m.isLeader ? "leader" : ""}">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
               <strong style="color: #0f172a; font-size: 0.92rem;">${escapeHtml(m.name)}</strong>
@@ -1590,8 +1863,8 @@ function renderStudentDashboard() {
             ` : ''}
           </div>
         `
-          )
-          .join("")}
+      )
+      .join("")}
       </div>
     </div>
   `;
@@ -1700,10 +1973,10 @@ window.openEditMemberModal = (teamId, memberIdx) => {
 
   document.getElementById("edit-m-name").value = member.name || "";
   document.getElementById("edit-m-roll").value = member.roll || "";
-  
+
   const prog = member.program || (window.isDiplomaBranch(member.branch || member.dept) ? "Diploma" : "Degree");
   const branch = member.branch || member.dept || "CSE";
-  
+
   const progEl = document.getElementById("edit-m-program");
   if (progEl) {
     progEl.value = prog;
@@ -1827,7 +2100,7 @@ window.openAddMemberModal = (teamId) => {
   document.getElementById("add-member-team-id").value = teamId;
   document.getElementById("add-m-name").value = "";
   document.getElementById("add-m-roll").value = "";
-  
+
   const progEl = document.getElementById("add-m-program");
   if (progEl) {
     progEl.value = "Degree";
@@ -2066,8 +2339,8 @@ window.openTeamPassModal = (teamId) => {
         </thead>
         <tbody>
           ${team.members
-            .map(
-              (m, idx) => `
+      .map(
+        (m, idx) => `
             <tr style="border-bottom: 1px solid #e2e8f0; ${m.isLeader ? "font-weight: 700; background: #fafafa;" : ""}">
               <td style="padding: 5px 8px;">${idx + 1}</td>
               <td style="padding: 5px 8px;">${m.isLeader ? '<span style="color:#059669; font-weight:700; font-size:0.7rem; background:#ecfdf5; padding:2px 6px; border-radius:4px; border:1px solid #a7f3d0;">Leader</span>' : '<span style="color:#64748b; font-size:0.7rem;">Member</span>'}</td>
@@ -2077,8 +2350,8 @@ window.openTeamPassModal = (teamId) => {
               <td style="padding: 5px 8px;">${m.gender}</td>
             </tr>
           `
-            )
-            .join("")}
+      )
+      .join("")}
         </tbody>
       </table>
 
@@ -2262,7 +2535,7 @@ function renderAdminConsole() {
   const swTeams = registeredTeams.filter((t) => t.edition.includes("Software")).length;
   const hwTeams = registeredTeams.filter((t) => t.edition.includes("Hardware")).length;
   const totalStudents = registeredTeams.reduce((acc, t) => acc + (t.members ? t.members.length : 0), 0);
-  
+
   let totalFemales = 0;
   registeredTeams.forEach(t => {
     t.members.forEach(m => {
@@ -2419,14 +2692,13 @@ function renderAdminConsole() {
           </tr>
         </thead>
         <tbody>
-          ${
-            filteredTeams.length === 0
-              ? `<tr><td colspan="8" style="text-align: center; padding: 32px; color: #64748b;">No registered teams matching your search/filters.</td></tr>`
-              : filteredTeams
-                  .map((t) => {
-                    const femalesInTeam = t.members.filter((m) => m.gender === "Female").length;
-                    const leader = t.members[0] || {};
-                    return `
+          ${filteredTeams.length === 0
+      ? `<tr><td colspan="8" style="text-align: center; padding: 32px; color: #64748b;">No registered teams matching your search/filters.</td></tr>`
+      : filteredTeams
+        .map((t) => {
+          const femalesInTeam = t.members.filter((m) => m.gender === "Female").length;
+          const leader = t.members[0] || {};
+          return `
             <tr>
               <td>
                 <strong style="color: #059669; font-family: var(--font-mono); font-size: 0.88rem;">${t.teamId}</strong>
@@ -2478,9 +2750,9 @@ function renderAdminConsole() {
               </td>
             </tr>
           `;
-                  })
-                  .join("")
-          }
+        })
+        .join("")
+    }
         </tbody>
       </table>
     </div>
@@ -2561,8 +2833,8 @@ window.openAdminTeamDetails = (teamId) => {
 
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 24px;">
       ${team.members
-        .map(
-          (m, idx) => `
+      .map(
+        (m, idx) => `
         <div style="background: ${m.isLeader ? "#f0fdf4" : "#ffffff"}; border: 1px solid ${m.isLeader ? "#a7f3d0" : "#e2e8f0"}; border-radius: 10px; padding: 12px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <strong style="color: #0f172a; font-size: 0.9rem;">${escapeHtml(m.name)}</strong>
@@ -2582,8 +2854,8 @@ window.openAdminTeamDetails = (teamId) => {
           </div>
         </div>
       `
-        )
-        .join("")}
+      )
+      .join("")}
     </div>
 
     <!-- Inspector Actions -->
@@ -2652,7 +2924,7 @@ window.updateTeamStatus = (teamId, newStatus) => {
   if (team) {
     team.status = newStatus;
     localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
-    
+
     // Sync status change to Firebase Firestore if active
     if (isFirebaseActive && db) {
       db.collection("teams").doc(teamId).update({ status: newStatus }).catch((err) => {
@@ -2809,7 +3081,7 @@ function initMobileNav() {
    ========================================================================== */
 function initConfettiTriggers() {
   const grandPrizeCard = document.getElementById("grand-prize-card");
-  
+
   if (grandPrizeCard) {
     grandPrizeCard.addEventListener("click", () => {
       triggerConfettiBurst();
@@ -3146,7 +3418,7 @@ try {
     DYNAMIC_COORDINATOR_REGISTRY = JSON.parse(savedRegistry);
     Object.values(DYNAMIC_COORDINATOR_REGISTRY).forEach((code) => ALLOCATED_REFERRAL_CODES_SET.add(code));
   }
-} catch (e) {}
+} catch (e) { }
 
 // Collision-Free Guaranteed Sequential Assignment Generator for future Google Form submissions
 function getCoordinatorReferralCode(coord) {
@@ -3178,7 +3450,7 @@ function getCoordinatorReferralCode(coord) {
 
   try {
     localStorage.setItem("tit_sih_dyn_coord_codes", JSON.stringify(DYNAMIC_COORDINATOR_REGISTRY));
-  } catch (e) {}
+  } catch (e) { }
 
   return assignedCode;
 }
@@ -3493,7 +3765,7 @@ window.initLiveDepartmentCoordinators = async () => {
           c.referralCode = refCode;
           window.COORDINATOR_REFERRAL_MAP[refCode] = c;
         });
-      } catch (e) {}
+      } catch (e) { }
     }
   }
 
