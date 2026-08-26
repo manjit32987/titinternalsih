@@ -240,6 +240,36 @@ function initFirebaseCloud() {
               console.warn("Redirect auth check notice:", err);
             }
           });
+
+        // Real-Time Auth State Persistence Listener
+        firebase.auth().onAuthStateChanged(async (fbUser) => {
+          if (fbUser && fbUser.email) {
+            const email = fbUser.email.toLowerCase();
+            if (!currentUser || currentUser.email.toLowerCase() !== email) {
+              let student = registeredStudents.find(
+                (s) => s.email.toLowerCase() === email
+              );
+              if (!student && db) {
+                try {
+                  const doc = await db.collection("students").doc(email).get();
+                  if (doc.exists) {
+                    student = doc.data();
+                    registeredStudents.push(student);
+                    localStorage.setItem("tit_sih_students", JSON.stringify(registeredStudents));
+                  }
+                } catch (e) {
+                  console.warn("Firestore student onAuthStateChanged note:", e);
+                }
+              }
+              if (student) {
+                currentUser = student;
+                localStorage.setItem("tit_sih_current_user", JSON.stringify(currentUser));
+                updateNavAuthState();
+                renderStudentDashboard();
+              }
+            }
+          }
+        });
       }
     } else {
       console.log("ℹ️ Running in Local Storage Mode. (To enable multi-device live cloud sync, add your free Firebase config in script.js).");
@@ -682,33 +712,132 @@ window.handleLoginSubmit = async (e) => {
     return;
   }
 
-  // Attempt Firebase Auth sign-in if email is provided
-  if (identifier.includes("@") && typeof firebase !== "undefined" && firebase.auth && isFirebaseActive) {
-    try {
-      await firebase.auth().signInWithEmailAndPassword(identifier, password);
-    } catch (authErr) {
-      console.warn("Firebase Auth login notice:", authErr.code);
-      if (authErr.code === "auth/wrong-password" || authErr.code === "auth/invalid-credential") {
-        alert("[TIT SIH] Invalid password. Please check your credentials or use 'Forgot Password?'.");
-        return;
+  let authenticatedEmail = null;
+
+  // 1. If identifier is an Email, authenticate directly with Firebase Auth
+  if (identifier.includes("@")) {
+    if (typeof firebase !== "undefined" && firebase.auth && isFirebaseActive) {
+      try {
+        const userCred = await firebase.auth().signInWithEmailAndPassword(identifier, password);
+        if (userCred.user && userCred.user.email) {
+          authenticatedEmail = userCred.user.email.toLowerCase();
+        }
+      } catch (authErr) {
+        console.warn("Firebase Auth login notice:", authErr.code);
+        if (authErr.code === "auth/wrong-password" || authErr.code === "auth/invalid-credential") {
+          alert("[TIT SIH] Invalid password. Please check your credentials or click 'Forgot Password?'.");
+          return;
+        } else if (authErr.code === "auth/user-not-found") {
+          alert(`[TIT SIH] No student account found for "${identifier}".\nPlease click Register to create your account.`);
+          return;
+        } else if (authErr.code === "auth/too-many-requests") {
+          alert("[TIT SIH] Access temporarily disabled due to many failed login attempts. Please reset your password or try again later.");
+          return;
+        }
+      }
+    }
+  } else {
+    // 2. If identifier is a Roll Number, resolve student email from database
+    let rollStudent = registeredStudents.find(
+      (s) => s.roll && s.roll.toLowerCase() === identifier
+    );
+
+    if (!rollStudent && isFirebaseActive && db) {
+      try {
+        const query = await db.collection("students").where("roll", "==", identifier.toUpperCase()).get();
+        if (!query.empty) {
+          rollStudent = query.docs[0].data();
+        }
+      } catch (e) {
+        console.warn("Roll query note:", e);
+      }
+    }
+
+    if (rollStudent && rollStudent.email && typeof firebase !== "undefined" && firebase.auth && isFirebaseActive) {
+      try {
+        const userCred = await firebase.auth().signInWithEmailAndPassword(rollStudent.email.toLowerCase(), password);
+        if (userCred.user && userCred.user.email) {
+          authenticatedEmail = userCred.user.email.toLowerCase();
+        }
+      } catch (authErr) {
+        if (authErr.code === "auth/wrong-password" || authErr.code === "auth/invalid-credential") {
+          alert("[TIT SIH] Invalid password. Please check your credentials or click 'Forgot Password?'.");
+          return;
+        }
+      }
+    } else if (rollStudent && rollStudent.password && rollStudent.password !== password) {
+      alert("[TIT SIH] Invalid password. Please check your credentials.");
+      return;
+    } else if (rollStudent) {
+      authenticatedEmail = rollStudent.email ? rollStudent.email.toLowerCase() : null;
+    }
+  }
+
+  // 3. Resolve the full Student Profile by verified email or identifier
+  const targetEmail = authenticatedEmail || (identifier.includes("@") ? identifier : null);
+  let student = null;
+
+  if (targetEmail) {
+    student = registeredStudents.find((s) => s.email.toLowerCase() === targetEmail);
+    if (!student && isFirebaseActive && db) {
+      try {
+        const doc = await db.collection("students").doc(targetEmail).get();
+        if (doc.exists) {
+          student = doc.data();
+          registeredStudents.push(student);
+          localStorage.setItem("tit_sih_students", JSON.stringify(registeredStudents));
+        }
+      } catch (e) {
+        console.warn("Firestore profile fetch note:", e);
       }
     }
   }
 
-  const student = registeredStudents.find(
-    (s) => (s.email.toLowerCase() === identifier || (s.roll && s.roll.toLowerCase() === identifier)) && (!s.password || s.password === password)
-  );
+  if (!student) {
+    student = registeredStudents.find(
+      (s) => s.email.toLowerCase() === identifier || (s.roll && s.roll.toLowerCase() === identifier)
+    );
+  }
 
+  // 4. If student profile is found, log in cleanly
   if (student) {
+    // Keep local cached password updated if changed
+    student.password = password;
     currentUser = student;
     localStorage.setItem("tit_sih_current_user", JSON.stringify(currentUser));
     closeAuthModal();
     updateNavAuthState();
     renderStudentDashboard();
     triggerConfettiBurst();
-    alert(`[TIT SIH] Welcome, ${student.name}. You are logged in as Team Leader.`);
+    alert(`[TIT SIH] Welcome back, ${student.name}! You are logged in as Team Leader.`);
+  } else if (authenticatedEmail) {
+    // User authenticated in Firebase Auth but no Firestore doc yet: create basic profile
+    const fbUser = firebase.auth().currentUser;
+    const newProfile = {
+      name: (fbUser && fbUser.displayName) ? fbUser.displayName : authenticatedEmail.split("@")[0],
+      email: authenticatedEmail,
+      program: "Degree",
+      branch: "CSE",
+      dept: "CSE",
+      year: "3rd Year",
+      gender: "Male",
+      roll: "",
+      referralCode: "NONE"
+    };
+    registeredStudents.push(newProfile);
+    localStorage.setItem("tit_sih_students", JSON.stringify(registeredStudents));
+    if (isFirebaseActive && db) {
+      db.collection("students").doc(authenticatedEmail).set(newProfile).catch(() => {});
+    }
+    currentUser = newProfile;
+    localStorage.setItem("tit_sih_current_user", JSON.stringify(currentUser));
+    closeAuthModal();
+    updateNavAuthState();
+    renderStudentDashboard();
+    triggerConfettiBurst();
+    alert(`[TIT SIH] Welcome, ${newProfile.name}! You are logged in.`);
   } else {
-    alert("[TIT SIH] Invalid credentials. Please check your email/roll number and password, or sign up for a new account.");
+    alert("[TIT SIH] Invalid credentials. Please check your email/roll number and password, or create a new student account.");
   }
 };
 
@@ -815,6 +944,11 @@ window.handleSignupSubmit = async (e) => {
 
 window.handleLogout = () => {
   if (confirm("Are you sure you want to sign out?")) {
+    if (typeof firebase !== "undefined" && firebase.auth && isFirebaseActive) {
+      try {
+        firebase.auth().signOut();
+      } catch (_) {}
+    }
     currentUser = null;
     localStorage.removeItem("tit_sih_current_user");
     updateNavAuthState();
