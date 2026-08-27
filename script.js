@@ -463,6 +463,23 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function checkUrlHashRouting() {
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const refCode = (urlParams.get("ref") || urlParams.get("referral") || urlParams.get("code") || "").trim().toUpperCase();
+    if (refCode) {
+      const regRefInput = document.getElementById("reg-referral-code");
+      const signupRefInput = document.getElementById("signup-referral-code");
+      if (regRefInput) {
+        regRefInput.value = refCode;
+        if (typeof handleReferralCodeInput === "function") handleReferralCodeInput(refCode, "reg");
+      }
+      if (signupRefInput) {
+        signupRefInput.value = refCode;
+        if (typeof handleReferralCodeInput === "function") handleReferralCodeInput(refCode, "signup");
+      }
+    }
+  } catch (e) {}
+
   const hash = window.location.hash.toLowerCase();
   if (hash === "#admin" || hash === "#spoc" || hash === "#jury") {
     setTimeout(() => openDedicatedAdminModal(), 300);
@@ -758,7 +775,7 @@ window.handlePasswordResetSubmit = async (e) => {
   const email = (emailInput ? emailInput.value : "").trim().toLowerCase();
 
   if (!email || !isValidEmail(email)) {
-    alert("[TIT SIH] Please enter a valid registered college email address.");
+    alert("[TIT SIH] Please enter a valid registered personal email address.");
     return;
   }
 
@@ -981,7 +998,7 @@ window.handleLoginSubmit = async (e) => {
   const password = document.getElementById("login-password").value;
 
   if (!identifier || !password) {
-    alert("[TIT SIH] Please enter your College Email / Roll Number and Password.");
+    alert("[TIT SIH] Please enter your Personal Email / Roll Number and Password.");
     return;
   }
 
@@ -1133,7 +1150,7 @@ window.handleSignupSubmit = async (e) => {
   }
 
   if (!isValidEmail(email)) {
-    alert("[TIT SIH] Please enter a valid email address (e.g. student@titagartala.ac.in).");
+    alert("[TIT SIH] Please enter a valid personal email address (e.g. student@gmail.com).");
     return;
   }
 
@@ -1393,7 +1410,7 @@ function renderMembersRosterInputs() {
           </select>
         </div>
         <div class="form-group-item" style="margin-bottom: 8px;">
-          <label class="form-input-label">Email ID *</label>
+          <label class="form-input-label">Personal Email ID *</label>
           <input type="email" id="m1-email" class="form-text-input" value="${escapeHtml(leaderEmail)}" required>
         </div>
       </div>
@@ -1456,8 +1473,8 @@ function renderMembersRosterInputs() {
             </select>
           </div>
           <div class="form-group-item" style="margin-bottom: 8px;">
-            <label class="form-input-label">Email ID${requiredMarker}</label>
-            <input type="email" id="m${i}-email" class="form-text-input" placeholder="member${i}@titagartala.ac.in" ${isRequired ? "required" : ""}>
+            <label class="form-input-label">Personal Email ID${requiredMarker}</label>
+            <input type="email" id="m${i}-email" class="form-text-input" placeholder="member${i}@gmail.com" ${isRequired ? "required" : ""}>
           </div>
         </div>
         <div class="form-group-item" style="margin-bottom: 0;">
