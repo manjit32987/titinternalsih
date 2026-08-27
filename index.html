@@ -805,9 +805,9 @@
         <div class="auth-divider"><span>OR WITH EMAIL & PASSWORD</span></div>
 
         <div class="form-group-item">
-          <label class="form-input-label">College Email or Roll Number</label>
+          <label class="form-input-label">Personal Email or Roll Number</label>
           <input type="text" id="login-identifier" class="form-text-input"
-            placeholder="e.g. 2101004 or name@titagartala.ac.in" required>
+            placeholder="e.g. 2101004 or name@gmail.com" required>
         </div>
         <div class="form-group-item" style="margin-bottom: 4px;">
           <label class="form-input-label">Password</label>
@@ -828,13 +828,13 @@
       <form id="reset-password-form" style="display: none;" onsubmit="handlePasswordResetSubmit(event)">
         <div
           style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; color: #1e40af; margin-bottom: 14px; line-height: 1.4;">
-          <i class="fa-solid fa-shield-halved" style="color: #2563eb;"></i> <strong>Secure Password Recovery:</strong> Enter your registered college email. We will send an official, encrypted password reset link directly to your inbox.
+          <i class="fa-solid fa-shield-halved" style="color: #2563eb;"></i> <strong>Secure Password Recovery:</strong> Enter your registered personal email. We will send an official, encrypted password reset link directly to your inbox.
         </div>
 
         <div class="form-group-item">
-          <label class="form-input-label">Registered College Email *</label>
+          <label class="form-input-label">Registered Personal Email *</label>
           <input type="email" id="reset-email" class="form-text-input"
-            placeholder="e.g. yourname@titagartala.ac.in" required autocomplete="email">
+            placeholder="e.g. yourname@gmail.com" required autocomplete="email">
         </div>
 
         <button type="submit" id="btn-send-reset-link" class="btn-3d-primary" style="width: 100%; justify-content: center; margin-top: 14px;">
@@ -972,8 +972,8 @@
             placeholder="e.g. 21CSE042 or leave blank if not allotted" maxlength="20">
         </div>
         <div class="form-group-item">
-          <label class="form-input-label">Email ID *</label>
-          <input type="email" id="signup-email" class="form-text-input" placeholder="e.g. student@titagartala.ac.in"
+          <label class="form-input-label">Personal Email ID *</label>
+          <input type="email" id="signup-email" class="form-text-input" placeholder="e.g. student@gmail.com"
             required autocomplete="email">
         </div>
         <div class="form-group-item">
@@ -982,9 +982,8 @@
             minlength="6" required autocomplete="new-password">
         </div>
         <div class="form-group-item">
-          <label class="form-input-label" style="display: flex; justify-content: space-between; align-items: center;">
-            <span><i class="fa-solid fa-ticket" style="color: #059669;"></i> Coordinator Referral Code</span>
-            <span style="font-size: 0.72rem; color: #64748b; font-weight: normal;">(Optional)</span>
+          <label class="form-input-label">
+            <i class="fa-solid fa-ticket" style="color: #059669;"></i> Coordinator Referral Code / Link
           </label>
           <div style="position: relative;">
             <input type="text" id="signup-referral-code" class="form-text-input" placeholder="e.g. SIHIN1001"
@@ -1401,11 +1400,8 @@
                 placeholder="Brief title of your proposed innovation" required>
             </div>
             <div class="form-group-item">
-              <label class="form-input-label"
-                style="display: flex; justify-content: space-between; align-items: center;">
-                <span><i class="fa-solid fa-ticket" style="color: #059669;"></i> Coordinator Referral Code</span>
-                <span
-                  style="font-size: 0.72rem; color: #059669; font-weight: 700; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; border: 1px solid #a7f3d0;">Optional</span>
+              <label class="form-input-label">
+                <i class="fa-solid fa-ticket" style="color: #059669;"></i> Coordinator Referral Code / Link
               </label>
               <div style="position: relative;">
                 <input type="text" id="reg-referral-code" class="form-text-input" placeholder="e.g. SIHIN1001"
@@ -1654,7 +1650,7 @@
             <input type="url" id="edit-team-ppt-link" class="form-text-input" required>
           </div>
           <div class="form-group-item">
-            <label class="form-input-label">🎟️ Referral Code (Optional)</label>
+            <label class="form-input-label">🎟️ Referral Code / Link</label>
             <input type="text" id="edit-team-referral-code" class="form-text-input" placeholder="e.g. SIHIN1001"
               style="text-transform: uppercase; font-family: var(--font-mono); font-weight: 700;">
           </div>
@@ -1742,7 +1738,7 @@
         </div>
 
         <div class="form-group-item">
-          <label class="form-input-label">Email ID *</label>
+          <label class="form-input-label">Personal Email ID *</label>
           <input type="email" id="edit-m-email" class="form-text-input" required>
         </div>
 
@@ -1826,8 +1822,8 @@
         </div>
 
         <div class="form-group-item">
-          <label class="form-input-label">Email ID *</label>
-          <input type="email" id="add-m-email" class="form-text-input" placeholder="student@titagartala.ac.in" required>
+          <label class="form-input-label">Personal Email ID *</label>
+          <input type="email" id="add-m-email" class="form-text-input" placeholder="student@gmail.com" required>
         </div>
 
         <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
@@ -1852,7 +1848,7 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <!-- Main Application Script -->
-  <script src="script.js?v=2026.5.0"></script>
+  <script src="script.js?v=2026.5.2"></script>
 </body>
 
 </html>
