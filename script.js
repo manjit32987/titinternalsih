@@ -464,24 +464,52 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ==========================================================================
-   WEBSITE VIEW COUNTER ENGINE (REAL 1-TO-1 FIREBASE FIRESTORE SYNC)
+   WEBSITE VIEW COUNTER ENGINE (REAL 1-TO-1 FIREBASE FIRESTORE ODOMETER)
    ========================================================================== */
-function initSiteViewCounter() {
-  const counterEl = document.getElementById("site-view-count");
-  if (!counterEl) return;
+function renderOdometerDisplay(number, slotCount = 8) {
+  const container = document.getElementById("site-view-odometer");
+  const fallbackCounter = document.getElementById("site-view-count");
 
-  // Clear any old fake baseline if present from previous version
+  if (fallbackCounter) {
+    fallbackCounter.textContent = number.toLocaleString("en-IN");
+  }
+
+  if (!container) return;
+
+  const validNum = Math.max(1, parseInt(number, 10) || 1);
+  const numStr = String(validNum).padStart(slotCount, "0");
+  const digits = numStr.split("");
+
+  let html = "";
+  let nonZeroFound = false;
+
+  digits.forEach((digit, idx) => {
+    if (digit !== "0") nonZeroFound = true;
+    const isLeading = !nonZeroFound && idx < digits.length - 1;
+    const slotClass = isLeading ? "odometer-slot leading-zero" : "odometer-slot active-digit";
+    html += `<span class="${slotClass}">${digit}</span>`;
+  });
+
+  container.innerHTML = html;
+}
+
+function initSiteViewCounter() {
+  const odometerEl = document.getElementById("site-view-odometer");
+  const counterEl = document.getElementById("site-view-count");
+  if (!odometerEl && !counterEl) return;
+
+  // Clear any old fake baseline if present from older versions
   const oldStored = parseInt(localStorage.getItem("tit_sih_site_views") || "0", 10);
   if (oldStored > 500) {
     localStorage.removeItem("tit_sih_site_views");
   }
 
-  // Get current genuine local view count or default to 1
+  // Get current genuine view count or default to 1
   let currentViews = parseInt(localStorage.getItem("tit_sih_real_views") || "1", 10);
   if (isNaN(currentViews) || currentViews < 1) currentViews = 1;
 
-  // Display initial real value
-  animateViewCount(currentViews);
+  // Render current known value immediately
+  renderOdometerDisplay(currentViews);
 
   const sessionKey = "tit_sih_view_recorded";
   const isNewSession = !sessionStorage.getItem(sessionKey);
@@ -491,14 +519,14 @@ function initSiteViewCounter() {
     try {
       const statsRef = db.collection("analytics").doc("site_views");
 
-      // Atomically increment 1 real view for this visitor session
+      // Atomically increment 1 real view for this session
       if (isNewSession) {
         sessionStorage.setItem(sessionKey, "true");
         statsRef.set({
           count: firebase.firestore.FieldValue.increment(1),
           lastVisited: firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true }).catch((err) => {
-          console.warn("[TIT SIH Analytics] Increment note:", err);
+          console.warn("[TIT SIH Analytics] Increment notice:", err);
         });
       }
 
@@ -508,16 +536,16 @@ function initSiteViewCounter() {
           const cloudViews = doc.data()?.count;
           if (typeof cloudViews === "number" && cloudViews > 0) {
             localStorage.setItem("tit_sih_real_views", cloudViews.toString());
-            animateViewCount(cloudViews);
+            animateOdometerCount(cloudViews);
           }
         } else if (isNewSession) {
-          // First time document creation starting at 1
+          // First time document initialization starting at 1
           statsRef.set({
             count: 1,
             lastVisited: firebase.firestore.FieldValue.serverTimestamp()
           }).then(() => {
             localStorage.setItem("tit_sih_real_views", "1");
-            animateViewCount(1);
+            renderOdometerDisplay(1);
           }).catch((err) => {
             console.warn("[TIT SIH Analytics] Initial doc creation note:", err);
           });
@@ -534,24 +562,25 @@ function initSiteViewCounter() {
       sessionStorage.setItem(sessionKey, "true");
       currentViews += 1;
       localStorage.setItem("tit_sih_real_views", currentViews.toString());
-      animateViewCount(currentViews);
+      animateOdometerCount(currentViews);
     }
   }
 }
 
-function animateViewCount(target) {
+function animateOdometerCount(target) {
+  const odometerEl = document.getElementById("site-view-odometer");
   const counterEl = document.getElementById("site-view-count");
-  if (!counterEl) return;
+  if (!odometerEl && !counterEl) return;
 
-  const current = parseInt(counterEl.getAttribute("data-value") || "0", 10);
+  const current = parseInt(odometerEl?.getAttribute("data-value") || counterEl?.getAttribute("data-value") || "0", 10);
   if (current === target) {
-    counterEl.textContent = target.toLocaleString("en-IN");
+    renderOdometerDisplay(target);
     return;
   }
 
-  const startValue = current === 0 ? Math.max(0, target - 5) : current;
+  const startValue = current === 0 ? Math.max(0, target - 6) : current;
   const diff = target - startValue;
-  const duration = Math.min(800, Math.max(300, diff * 60));
+  const duration = Math.min(900, Math.max(300, diff * 70));
   const startTime = performance.now();
 
   function update(now) {
@@ -559,14 +588,16 @@ function animateViewCount(target) {
     const progress = Math.min(elapsed / duration, 1);
     const ease = 1 - Math.pow(1 - progress, 3);
     const value = Math.round(startValue + diff * ease);
-    counterEl.textContent = value.toLocaleString("en-IN");
-    counterEl.setAttribute("data-value", value.toString());
+    renderOdometerDisplay(value);
+    if (odometerEl) odometerEl.setAttribute("data-value", value.toString());
+    if (counterEl) counterEl.setAttribute("data-value", value.toString());
 
     if (progress < 1) {
       requestAnimationFrame(update);
     } else {
-      counterEl.textContent = target.toLocaleString("en-IN");
-      counterEl.setAttribute("data-value", target.toString());
+      renderOdometerDisplay(target);
+      if (odometerEl) odometerEl.setAttribute("data-value", target.toString());
+      if (counterEl) counterEl.setAttribute("data-value", target.toString());
     }
   }
 
