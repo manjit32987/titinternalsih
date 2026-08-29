@@ -1558,12 +1558,73 @@ window.triggerRegistration = () => {
   openTeamRegModal();
 };
 
+let currentRosterCount = 2; // Default 2 required members (Leader + Member 2)
+
+function collectCurrentRosterValues() {
+  const data = {};
+  for (let i = 1; i <= 6; i++) {
+    const nameEl = document.getElementById(`m${i}-name`);
+    if (!nameEl) continue;
+    data[i] = {
+      name: nameEl.value,
+      roll: document.getElementById(`m${i}-roll`)?.value || "",
+      program: document.getElementById(`m${i}-program`)?.value || "Degree",
+      branch: document.getElementById(`m${i}-branch`)?.value || "CSE",
+      gender: document.getElementById(`m${i}-gender`)?.value || (i === 2 ? "Female" : "Male"),
+      email: document.getElementById(`m${i}-email`)?.value || "",
+      phone: document.getElementById(`m${i}-phone`)?.value || ""
+    };
+  }
+  return data;
+}
+
+window.addRosterMember = () => {
+  if (currentRosterCount >= 6) {
+    alert("[TIT SIH] Maximum squad capacity is 6 members.");
+    return;
+  }
+  const saved = collectCurrentRosterValues();
+  currentRosterCount += 1;
+  renderMembersRosterInputs(currentRosterCount, saved);
+
+  // Smooth scroll and focus the new member input
+  setTimeout(() => {
+    const newNameInput = document.getElementById(`m${currentRosterCount}-name`);
+    if (newNameInput) {
+      newNameInput.scrollIntoView({ behavior: "smooth", block: "center" });
+      newNameInput.focus();
+    }
+  }, 100);
+};
+
+window.removeRosterMember = (removeIdx) => {
+  if (currentRosterCount <= 2) {
+    alert("[TIT SIH] Minimum 2 members (Leader + Member 2) are required.");
+    return;
+  }
+  const saved = collectCurrentRosterValues();
+  // Shift values above removeIdx down by 1
+  const newSaved = {};
+  let targetIdx = 1;
+  for (let i = 1; i <= currentRosterCount; i++) {
+    if (i === removeIdx) continue;
+    if (saved[i]) {
+      newSaved[targetIdx] = saved[i];
+    }
+    targetIdx++;
+  }
+  currentRosterCount -= 1;
+  renderMembersRosterInputs(currentRosterCount, newSaved);
+};
+
 window.openTeamRegModal = () => {
   const modal = document.getElementById("team-registration-modal");
   if (!modal) return;
 
+  currentRosterCount = 2; // Always default to 2 members on fresh modal open
+
   try {
-    renderMembersRosterInputs();
+    renderMembersRosterInputs(2);
   } catch (err) {
     console.error("[TIT SIH] Error rendering roster inputs:", err);
   }
@@ -1591,17 +1652,23 @@ window.closeTeamRegModal = () => {
   if (modal) modal.classList.remove("active");
 };
 
-// Render Team Member Input Cards (Members 1-2 Required, Members 3-6 Optional)
-function renderMembersRosterInputs() {
+// Render Team Member Input Cards (Members 1-2 Required by default, Members 3-6 Dynamically added)
+function renderMembersRosterInputs(customCount, savedValues = null) {
   const container = document.getElementById("members-roster-inputs");
+  const actionsContainer = document.getElementById("roster-actions-container");
   if (!container) return;
 
-  const leaderName = currentUser ? currentUser.name : "";
-  const leaderRoll = currentUser ? currentUser.roll : "";
-  const leaderProgram = currentUser ? (currentUser.program || (window.isDiplomaBranch(currentUser.branch || currentUser.dept) ? "Diploma" : "Degree")) : "Degree";
-  const leaderBranch = currentUser ? (currentUser.branch || currentUser.dept || "CSE") : "CSE";
-  const leaderGender = currentUser ? currentUser.gender : "Male";
-  const leaderEmail = currentUser ? currentUser.email : "";
+  if (typeof customCount === "number") {
+    currentRosterCount = Math.max(2, Math.min(6, customCount));
+  }
+
+  const leaderName = savedValues && savedValues[1] ? savedValues[1].name : (currentUser ? currentUser.name : "");
+  const leaderRoll = savedValues && savedValues[1] ? savedValues[1].roll : (currentUser ? currentUser.roll : "");
+  const leaderProgram = savedValues && savedValues[1] ? savedValues[1].program : (currentUser ? (currentUser.program || (window.isDiplomaBranch(currentUser.branch || currentUser.dept) ? "Diploma" : "Degree")) : "Degree");
+  const leaderBranch = savedValues && savedValues[1] ? savedValues[1].branch : (currentUser ? (currentUser.branch || currentUser.dept || "CSE") : "CSE");
+  const leaderGender = savedValues && savedValues[1] ? savedValues[1].gender : (currentUser ? currentUser.gender : "Male");
+  const leaderEmail = savedValues && savedValues[1] ? savedValues[1].email : (currentUser ? currentUser.email : "");
+  const leaderPhone = savedValues && savedValues[1] ? savedValues[1].phone : "";
 
   let html = `
     <!-- Member 1: Team Leader (Required) -->
@@ -1654,50 +1721,62 @@ function renderMembersRosterInputs() {
       </div>
       <div class="form-group-item" style="margin-bottom: 0;">
         <label class="form-input-label">Phone Number *</label>
-        <input type="tel" id="m1-phone" class="form-text-input" placeholder="10-digit mobile" required>
+        <input type="tel" id="m1-phone" class="form-text-input" placeholder="10-digit mobile" value="${escapeHtml(leaderPhone)}" required>
       </div>
     </div>
   `;
 
-  // Members 2 to 6
-  for (let i = 2; i <= 6; i++) {
-    const isRequired = i <= 2;
-    const badgeText = isRequired ? `Member ${i} (Required)` : `Member ${i} (Optional for Internal Round)`;
+  // Render Member 2 and optional members up to currentRosterCount
+  for (let i = 2; i <= currentRosterCount; i++) {
+    const isRequired = i === 2;
+    const badgeText = isRequired ? `Member ${i} (Required)` : `Member ${i} (Optional Squad Slot)`;
     const requiredMarker = isRequired ? " *" : "";
-    const cardBgStyle = isRequired ? "" : "background: #f8fafc; border-style: dashed;";
+    const cardBgStyle = isRequired ? "" : "background: #f8fafc; border-style: dashed; border-color: #cbd5e1;";
     const defaultBranch = i === 2 ? "ECE" : i === 3 ? "EE" : i === 4 ? "ME" : i === 5 ? "CE" : "CSE";
 
+    const memName = savedValues && savedValues[i] ? savedValues[i].name : "";
+    const memRoll = savedValues && savedValues[i] ? savedValues[i].roll : "";
+    const memProg = savedValues && savedValues[i] ? savedValues[i].program : "Degree";
+    const memBranch = savedValues && savedValues[i] ? savedValues[i].branch : defaultBranch;
+    const memGender = savedValues && savedValues[i] ? savedValues[i].gender : (i === 2 ? "Female" : "Male");
+    const memEmail = savedValues && savedValues[i] ? savedValues[i].email : "";
+    const memPhone = savedValues && savedValues[i] ? savedValues[i].phone : "";
+
     html += `
-      <div class="member-input-card" style="${cardBgStyle}">
+      <div class="member-input-card" style="${cardBgStyle}" id="member-slot-${i}">
         <div class="member-card-header">
-          <span class="member-badge-pill" style="${isRequired ? "" : "background:#f1f5f9; color:#475569;"}">${badgeText}</span>
-          <span style="font-size: 0.72rem; color: #64748b;">${isRequired ? "Required TIT Student (Min 2 Required)" : "Optional (Max 6 Allowed)"}</span>
+          <span class="member-badge-pill" style="${isRequired ? "" : "background:#e2e8f0; color:#334155; font-weight: 800;"}">${badgeText}</span>
+          ${
+            isRequired
+              ? '<span style="font-size: 0.72rem; color: #059669; font-weight: 700;">Required (Min 2 Members)</span>'
+              : `<button type="button" class="btn-remove-roster-member" onclick="removeRosterMember(${i})" title="Remove this member slot"><i class="fa-solid fa-trash-can"></i> Remove</button>`
+          }
         </div>
         <div class="form-row-2">
           <div class="form-group-item" style="margin-bottom: 8px;">
             <label class="form-input-label">Full Name${requiredMarker}</label>
-            <input type="text" id="m${i}-name" class="form-text-input" placeholder="Member ${i} Name" ${isRequired ? "required" : ""} oninput="checkRosterFemaleQuota()">
+            <input type="text" id="m${i}-name" class="form-text-input" placeholder="Member ${i} Full Name" value="${escapeHtml(memName)}" ${isRequired ? "required" : ""} oninput="checkRosterFemaleQuota()">
           </div>
           <div class="form-group-item" style="margin-bottom: 8px;">
             <label class="form-input-label" style="display: flex; justify-content: space-between; align-items: center;">
               <span>Roll / Enrollment No.</span>
               <span style="font-size: 0.72rem; color: #059669; font-weight: 700; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; border: 1px solid #a7f3d0;">Optional</span>
             </label>
-            <input type="text" id="m${i}-roll" class="form-text-input" placeholder="e.g. 21IT0${i * 4} or leave blank if not allotted">
+            <input type="text" id="m${i}-roll" class="form-text-input" placeholder="e.g. 21IT0${i * 4} or leave blank" value="${escapeHtml(memRoll)}">
           </div>
         </div>
         <div class="form-row-2">
           <div class="form-group-item" style="margin-bottom: 8px;">
             <label class="form-input-label">Program / Module${requiredMarker}</label>
             <select id="m${i}-program" class="form-select-input" onchange="updateMemberBranchSelect(${i})" ${isRequired ? "required" : ""}>
-              <option value="Degree" selected>Degree (B.Tech)</option>
-              <option value="Diploma">Diploma</option>
+              <option value="Degree" ${memProg === "Degree" ? "selected" : ""}>Degree (B.Tech)</option>
+              <option value="Diploma" ${memProg === "Diploma" ? "selected" : ""}>Diploma</option>
             </select>
           </div>
           <div class="form-group-item" style="margin-bottom: 8px;">
             <label class="form-input-label">Branch${requiredMarker}</label>
             <select id="m${i}-branch" class="form-select-input" ${isRequired ? "required" : ""}>
-              ${window.getBranchOptionsHtml("Degree", defaultBranch)}
+              ${window.getBranchOptionsHtml(memProg, memBranch)}
             </select>
           </div>
         </div>
@@ -1705,25 +1784,48 @@ function renderMembersRosterInputs() {
           <div class="form-group-item" style="margin-bottom: 8px;">
             <label class="form-input-label">Gender${requiredMarker}</label>
             <select id="m${i}-gender" class="form-select-input roster-gender-select" onchange="checkRosterFemaleQuota()" ${isRequired ? "required" : ""}>
-              <option value="Male">Male</option>
-              <option value="Female" ${i === 2 ? "selected" : ""}>Female</option>
-              <option value="Other">Other</option>
+              <option value="Male" ${memGender === "Male" ? "selected" : ""}>Male</option>
+              <option value="Female" ${memGender === "Female" ? "selected" : ""}>Female</option>
+              <option value="Other" ${memGender === "Other" ? "selected" : ""}>Other</option>
             </select>
           </div>
           <div class="form-group-item" style="margin-bottom: 8px;">
             <label class="form-input-label">Email ID${requiredMarker}</label>
-            <input type="email" id="m${i}-email" class="form-text-input" placeholder="member${i}@titagartala.ac.in" ${isRequired ? "required" : ""}>
+            <input type="email" id="m${i}-email" class="form-text-input" placeholder="member${i}@titagartala.ac.in" value="${escapeHtml(memEmail)}" ${isRequired ? "required" : ""}>
           </div>
         </div>
         <div class="form-group-item" style="margin-bottom: 0;">
           <label class="form-input-label">Phone Number${requiredMarker}</label>
-          <input type="tel" id="m${i}-phone" class="form-text-input" placeholder="10-digit mobile" ${isRequired ? "required" : ""}>
+          <input type="tel" id="m${i}-phone" class="form-text-input" placeholder="10-digit mobile" value="${escapeHtml(memPhone)}" ${isRequired ? "required" : ""}>
         </div>
       </div>
     `;
   }
 
   container.innerHTML = html;
+
+  if (actionsContainer) {
+    if (currentRosterCount < 6) {
+      actionsContainer.innerHTML = `
+        <button type="button" class="btn-add-roster-member" onclick="addRosterMember()">
+          <i class="fa-solid fa-user-plus"></i> + Add Member ${currentRosterCount + 1} (Optional)
+        </button>
+        <span class="roster-count-hint">
+          <i class="fa-solid fa-users"></i> ${currentRosterCount} of 6 Squad Slots Active
+        </span>
+      `;
+    } else {
+      actionsContainer.innerHTML = `
+        <span class="roster-max-banner">
+          <i class="fa-solid fa-circle-check"></i> Maximum Squad Limit Reached (6 of 6 Members)
+        </span>
+        <span class="roster-count-hint">
+          <i class="fa-solid fa-users"></i> 6 of 6 Slots Active
+        </span>
+      `;
+    }
+  }
+
   checkRosterFemaleQuota();
 }
 
