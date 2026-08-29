@@ -464,8 +464,125 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ==========================================================================
-   WEBSITE VIEW COUNTER ENGINE (CLASSIC BESPOKE MECHANICAL GLASS HIT COUNTER)
+   WEBSITE VIEW COUNTER ENGINE (AUTHENTIC 5x7 DOT-MATRIX LED DISPLAY)
    ========================================================================== */
+const DOT_MATRIX_5X7 = {
+  '0': [
+    [0,1,1,1,0],
+    [1,0,0,1,1],
+    [1,0,1,0,1],
+    [1,1,0,0,1],
+    [1,0,0,0,1],
+    [1,0,0,0,1],
+    [0,1,1,1,0]
+  ],
+  '1': [
+    [0,0,1,0,0],
+    [0,1,1,0,0],
+    [0,0,1,0,0],
+    [0,0,1,0,0],
+    [0,0,1,0,0],
+    [0,0,1,0,0],
+    [0,1,1,1,0]
+  ],
+  '2': [
+    [0,1,1,1,0],
+    [1,0,0,0,1],
+    [0,0,0,0,1],
+    [0,0,0,1,0],
+    [0,0,1,0,0],
+    [0,1,0,0,0],
+    [1,1,1,1,1]
+  ],
+  '3': [
+    [0,1,1,1,0],
+    [1,0,0,0,1],
+    [0,0,0,0,1],
+    [0,0,1,1,0],
+    [0,0,0,0,1],
+    [1,0,0,0,1],
+    [0,1,1,1,0]
+  ],
+  '4': [
+    [0,0,0,1,0],
+    [0,0,1,1,0],
+    [0,1,0,1,0],
+    [1,0,0,1,0],
+    [1,1,1,1,1],
+    [0,0,0,1,0],
+    [0,0,0,1,0]
+  ],
+  '5': [
+    [1,1,1,1,1],
+    [1,0,0,0,0],
+    [1,1,1,1,0],
+    [0,0,0,0,1],
+    [0,0,0,0,1],
+    [1,0,0,0,1],
+    [0,1,1,1,0]
+  ],
+  '6': [
+    [0,1,1,1,0],
+    [1,0,0,0,0],
+    [1,0,0,0,0],
+    [1,1,1,1,0],
+    [1,0,0,0,1],
+    [1,0,0,0,1],
+    [0,1,1,1,0]
+  ],
+  '7': [
+    [1,1,1,1,1],
+    [0,0,0,0,1],
+    [0,0,0,1,0],
+    [0,0,1,0,0],
+    [0,1,0,0,0],
+    [0,1,0,0,0],
+    [0,1,0,0,0]
+  ],
+  '8': [
+    [0,1,1,1,0],
+    [1,0,0,0,1],
+    [1,0,0,0,1],
+    [0,1,1,1,0],
+    [1,0,0,0,1],
+    [1,0,0,0,1],
+    [0,1,1,1,0]
+  ],
+  '9': [
+    [0,1,1,1,0],
+    [1,0,0,0,1],
+    [1,0,0,0,1],
+    [0,1,1,1,1],
+    [0,0,0,0,1],
+    [1,0,0,0,1],
+    [0,1,1,1,0]
+  ]
+};
+
+function generateDotMatrixSvg(digit) {
+  const matrix = DOT_MATRIX_5X7[digit] || DOT_MATRIX_5X7['0'];
+  const dotRadius = 1.15;
+  const gap = 3.3;
+  const padX = 2.4;
+  const padY = 2.2;
+  
+  let dots = "";
+  for (let r = 0; r < 7; r++) {
+    for (let c = 0; c < 5; c++) {
+      const isLit = matrix[r][c] === 1;
+      const cx = (padX + c * gap).toFixed(2);
+      const cy = (padY + r * gap).toFixed(2);
+      if (isLit) {
+        dots += `<circle cx="${cx}" cy="${cy}" r="${dotRadius}" class="led-dot-lit"/>`;
+      } else {
+        dots += `<circle cx="${cx}" cy="${cy}" r="${dotRadius}" class="led-dot-off"/>`;
+      }
+    }
+  }
+
+  return `<svg class="led-matrix-module" viewBox="0 0 18 24" width="22" height="29" aria-hidden="true"><rect width="18" height="24" rx="1.5" class="led-module-bg"/>${dots}</svg>`;
+}
+
 function renderOdometerDisplay(number, slotCount = 8) {
   const container = document.getElementById("site-view-odometer");
   const fallbackCounter = document.getElementById("site-view-count");
@@ -481,14 +598,8 @@ function renderOdometerDisplay(number, slotCount = 8) {
   const digits = numStr.split("");
 
   let html = "";
-  let nonZeroFound = false;
-
-  digits.forEach((digit, idx) => {
-    if (digit !== "0") nonZeroFound = true;
-    const isLeading = !nonZeroFound && idx < digits.length - 1;
-    const isLast = idx === digits.length - 1;
-    const slotClass = isLeading ? "hit-digit-tile leading-zero" : `hit-digit-tile active-digit${isLast ? " last-digit" : ""}`;
-    html += `<span class="${slotClass}">${digit}</span>`;
+  digits.forEach((digit) => {
+    html += generateDotMatrixSvg(digit);
   });
 
   container.innerHTML = html;
