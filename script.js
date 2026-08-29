@@ -464,60 +464,77 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ==========================================================================
-   WEBSITE VIEW COUNTER ENGINE (FIREBASE CLOUD FIRESTORE + LOCAL STORAGE FALLBACK)
+   WEBSITE VIEW COUNTER ENGINE (REAL 1-TO-1 FIREBASE FIRESTORE SYNC)
    ========================================================================== */
 function initSiteViewCounter() {
   const counterEl = document.getElementById("site-view-count");
   if (!counterEl) return;
 
-  const BASE_COUNT = 1840; // Base baseline visitor count
-  let localCount = parseInt(localStorage.getItem("tit_sih_site_views") || "0", 10);
-  if (!localCount || localCount < BASE_COUNT) {
-    localCount = BASE_COUNT + Math.floor(Math.random() * 45);
-    localStorage.setItem("tit_sih_site_views", localCount.toString());
+  // Clear any old fake baseline if present from previous version
+  const oldStored = parseInt(localStorage.getItem("tit_sih_site_views") || "0", 10);
+  if (oldStored > 500) {
+    localStorage.removeItem("tit_sih_site_views");
   }
 
-  // Count session visit once per browser tab session
-  const sessionCounted = sessionStorage.getItem("tit_sih_view_counted");
-  if (!sessionCounted) {
-    localCount += 1;
-    localStorage.setItem("tit_sih_site_views", localCount.toString());
-    sessionStorage.setItem("tit_sih_view_counted", "true");
-  }
+  // Get current genuine local view count or default to 1
+  let currentViews = parseInt(localStorage.getItem("tit_sih_real_views") || "1", 10);
+  if (isNaN(currentViews) || currentViews < 1) currentViews = 1;
 
-  // Animate immediate count
-  animateViewCount(localCount);
+  // Display initial real value
+  animateViewCount(currentViews);
 
-  // Sync with Google Firebase Cloud Firestore if active
+  const sessionKey = "tit_sih_view_recorded";
+  const isNewSession = !sessionStorage.getItem(sessionKey);
+
+  // Sync with Google Firebase Cloud Firestore
   if (typeof firebase !== "undefined" && db && isFirebaseActive) {
     try {
-      const statsDocRef = db.collection("analytics").doc("site_views");
+      const statsRef = db.collection("analytics").doc("site_views");
 
-      // Atomically increment cloud counter on new session
-      if (!sessionCounted) {
-        statsDocRef.set({
+      // Atomically increment 1 real view for this visitor session
+      if (isNewSession) {
+        sessionStorage.setItem(sessionKey, "true");
+        statsRef.set({
           count: firebase.firestore.FieldValue.increment(1),
           lastVisited: firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true }).catch((err) => {
-          console.warn("Firestore view counter increment notice:", err);
+          console.warn("[TIT SIH Analytics] Increment note:", err);
         });
       }
 
-      // Real-time listener for live visitor updates
-      statsDocRef.onSnapshot((doc) => {
+      // Real-time Firestore snapshot listener for exact 100% genuine count
+      statsRef.onSnapshot((doc) => {
         if (doc && doc.exists) {
-          const cloudCount = doc.data()?.count;
-          if (typeof cloudCount === "number" && cloudCount > 0) {
-            const finalCount = Math.max(cloudCount + BASE_COUNT, localCount);
-            localStorage.setItem("tit_sih_site_views", finalCount.toString());
-            animateViewCount(finalCount);
+          const cloudViews = doc.data()?.count;
+          if (typeof cloudViews === "number" && cloudViews > 0) {
+            localStorage.setItem("tit_sih_real_views", cloudViews.toString());
+            animateViewCount(cloudViews);
           }
+        } else if (isNewSession) {
+          // First time document creation starting at 1
+          statsRef.set({
+            count: 1,
+            lastVisited: firebase.firestore.FieldValue.serverTimestamp()
+          }).then(() => {
+            localStorage.setItem("tit_sih_real_views", "1");
+            animateViewCount(1);
+          }).catch((err) => {
+            console.warn("[TIT SIH Analytics] Initial doc creation note:", err);
+          });
         }
       }, (err) => {
-        console.warn("Firestore view counter listener notice:", err);
+        console.warn("[TIT SIH Analytics] Snapshot listener note:", err);
       });
     } catch (e) {
-      console.warn("Firebase view counter note:", e);
+      console.warn("[TIT SIH Analytics] View counter error:", e);
+    }
+  } else {
+    // Offline / Local storage fallback: increment by 1 on new session
+    if (isNewSession) {
+      sessionStorage.setItem(sessionKey, "true");
+      currentViews += 1;
+      localStorage.setItem("tit_sih_real_views", currentViews.toString());
+      animateViewCount(currentViews);
     }
   }
 }
@@ -526,16 +543,22 @@ function animateViewCount(target) {
   const counterEl = document.getElementById("site-view-count");
   if (!counterEl) return;
 
-  const current = parseInt(counterEl.getAttribute("data-value") || "0", 10) || Math.max(0, target - Math.min(target, 40));
-  const diff = target - current;
-  const duration = 900;
+  const current = parseInt(counterEl.getAttribute("data-value") || "0", 10);
+  if (current === target) {
+    counterEl.textContent = target.toLocaleString("en-IN");
+    return;
+  }
+
+  const startValue = current === 0 ? Math.max(0, target - 5) : current;
+  const diff = target - startValue;
+  const duration = Math.min(800, Math.max(300, diff * 60));
   const startTime = performance.now();
 
   function update(now) {
     const elapsed = now - startTime;
     const progress = Math.min(elapsed / duration, 1);
-    const ease = 1 - Math.pow(1 - progress, 4); // Ease-out quart
-    const value = Math.round(current + diff * ease);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const value = Math.round(startValue + diff * ease);
     counterEl.textContent = value.toLocaleString("en-IN");
     counterEl.setAttribute("data-value", value.toString());
 
