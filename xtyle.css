@@ -2559,8 +2559,18 @@ body.dark-theme .resource-icon {
 .site-views-counter-wrap {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: baseline;
+  gap: 12px;
   margin-bottom: 12px;
+}
+
+.hit-counter-label {
+  font-family: var(--font-heading), -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #a7f3d0;
+  letter-spacing: 0.05em;
+  user-select: none;
 }
 
 .exact-hit-counter {
@@ -2588,9 +2598,15 @@ body.dark-theme .resource-icon {
 }
 
 @media (max-width: 480px) {
+  .site-views-counter-wrap {
+    gap: 8px;
+  }
+  .hit-counter-label {
+    font-size: 0.85rem;
+  }
   .exact-hit-counter {
-    font-size: 1.2rem;
-    letter-spacing: 0.3em;
+    font-size: 1.15rem;
+    letter-spacing: 0.28em;
   }
 }
 
