@@ -464,7 +464,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ==========================================================================
-   WEBSITE VIEW COUNTER ENGINE (REAL 1-TO-1 FIREBASE FIRESTORE ODOMETER)
+   WEBSITE VIEW COUNTER ENGINE (REAL 1-TO-1 EXACT HIT COUNTER)
    ========================================================================== */
 function renderOdometerDisplay(number, slotCount = 8) {
   const container = document.getElementById("site-view-odometer");
@@ -478,19 +478,12 @@ function renderOdometerDisplay(number, slotCount = 8) {
 
   const validNum = Math.max(1, parseInt(number, 10) || 1);
   const numStr = String(validNum).padStart(slotCount, "0");
-  const digits = numStr.split("");
+  
+  // Format as: 0 0 0 0 0 3 0 <sup>1</sup>
+  const mainPart = numStr.slice(0, -1).split("").join(" ");
+  const lastDigit = numStr.slice(-1);
 
-  let html = "";
-  let nonZeroFound = false;
-
-  digits.forEach((digit, idx) => {
-    if (digit !== "0") nonZeroFound = true;
-    const isLeading = !nonZeroFound && idx < digits.length - 1;
-    const slotClass = isLeading ? "odometer-slot leading-zero" : "odometer-slot active-digit";
-    html += `<span class="${slotClass}">${digit}</span>`;
-  });
-
-  container.innerHTML = html;
+  container.innerHTML = `${mainPart} <sup>${lastDigit}</sup>`;
 }
 
 function initSiteViewCounter() {

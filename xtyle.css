@@ -2554,152 +2554,43 @@ body.dark-theme .resource-icon {
 }
 
 /* ==========================================================================
-   PROFESSIONAL MECHANICAL / DIGITAL ODOMETER VISITOR COUNTER
+   EXACT HIT COUNTER (MINIMALIST SPACED DIGITS WITH SUPERSCRIPT)
    ========================================================================== */
-.footer-odometer-container {
+.site-views-counter-wrap {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
-.odometer-counter-card {
+.exact-hit-counter {
+  font-family: 'Courier New', Courier, 'Lucida Console', Monaco, monospace;
+  font-size: 1.45rem;
+  font-weight: 500;
+  color: #e2e8f0;
+  letter-spacing: 0.42em;
+  padding: 4px 8px;
+  background: transparent;
   display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  background: #080d16;
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  padding: 14px 22px 12px;
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  transition: all var(--transition-fast);
+  align-items: baseline;
   user-select: none;
-  max-width: 100%;
+  line-height: 1;
 }
 
-.odometer-counter-card:hover {
-  border-color: #10b981;
-  box-shadow: 0 12px 35px rgba(5, 150, 105, 0.25), 0 0 20px rgba(16, 185, 129, 0.25);
-  transform: translateY(-2px);
-}
-
-.odometer-header-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.odometer-live-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-  animation: odoPulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-@keyframes odoPulse {
-  0% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-  }
-  70% {
-    transform: scale(1.15);
-    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
-  }
-  100% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-  }
-}
-
-.odometer-title-tag {
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 1.2px;
-  color: #6ee7b7;
-  text-transform: uppercase;
-  font-family: var(--font-heading);
-}
-
-.odometer-display-frame {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  background: #04070d;
-  border: 1px solid #1e293b;
-  padding: 6px 10px;
-  border-radius: 8px;
-  box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-.odometer-slot {
-  width: 28px;
-  height: 38px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(180deg, #1b2536 0%, #111a28 48%, #090e17 52%, #05080e 100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 5px;
-  color: #ffffff;
-  font-family: var(--font-mono);
-  font-size: 1.3rem;
-  font-weight: 900;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 2px 5px rgba(0, 0, 0, 0.5);
+.exact-hit-counter sup {
+  font-size: 0.65em;
   position: relative;
-  overflow: hidden;
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.odometer-slot::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 1px;
-  background: rgba(0, 0, 0, 0.6);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
-  pointer-events: none;
-}
-
-.odometer-slot.leading-zero {
-  color: #64748b;
-  opacity: 0.65;
-}
-
-.odometer-slot.active-digit {
-  color: #34d399;
-  text-shadow: 0 0 10px rgba(52, 211, 153, 0.65);
-}
-
-.odometer-caption {
-  font-size: 0.72rem;
-  color: #94a3b8;
-  margin-top: 8px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  top: -0.42em;
+  letter-spacing: normal;
+  color: #e2e8f0;
+  font-family: inherit;
+  margin-left: -0.1em;
 }
 
 @media (max-width: 480px) {
-  .odometer-slot {
-    width: 22px;
-    height: 32px;
-    font-size: 1.05rem;
-  }
-  .odometer-display-frame {
-    gap: 4px;
-    padding: 5px 6px;
-  }
-  .odometer-counter-card {
-    padding: 12px 14px 10px;
+  .exact-hit-counter {
+    font-size: 1.2rem;
+    letter-spacing: 0.3em;
   }
 }
 
