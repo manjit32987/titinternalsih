@@ -1,4 +1,4 @@
-const CACHE_NAME = "tit-sih-2026-v2.5.0";
+const CACHE_NAME = "tit-sih-2026-v2.6.0";
 const PRECACHE_ASSETS = [
   "./",
   "./index.html",
@@ -7,8 +7,9 @@ const PRECACHE_ASSETS = [
   "./script.js",
   "./manifest.json",
   "./tit_logo.png",
+  "./SS_registration.png",
   "./kaberi majumder.jpg",
-  "./rinku.jpeg"
+  "./rinku.png"
 ];
 
 // Install Event: Precaches core shell assets & immediately activates

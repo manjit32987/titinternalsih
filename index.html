@@ -1357,6 +1357,7 @@
         <!-- Step 1: Team & Idea Overview -->
         <div class="form-section-card">
           <h4 class="form-section-title"><i class="fa-solid fa-flag"></i> 1. Team & Problem Statement Details</h4>
+          
           <div class="form-row-2">
             <div class="form-group-item">
               <label class="form-input-label">Team Name *</label>
@@ -1371,58 +1372,59 @@
             </div>
           </div>
 
-          <div class="form-row-2">
-            <div class="form-group-item">
-              <label class="form-input-label">Target SIH 2026 Problem Statement ID *</label>
-              <input type="text" id="reg-ps-id" class="form-text-input"
-                placeholder="e.g. SIH2601 / PS-XXXX / Student Innovation" required>
+          <!-- Problem Statement Reference Guide Card with Annotated Screenshot -->
+          <div class="ps-reference-guide-card">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="background: #059669; color: #ffffff; width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem;"><i class="fa-solid fa-info"></i></span>
+                <strong style="color: #064e3b; font-size: 0.88rem;">How to find PS Number & Title from sih.gov.in:</strong>
+              </div>
+              <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" style="font-size: 0.78rem; color: #059669; font-weight: 700; text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;">
+                Open Official Portal <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
             </div>
-            <div class="form-group-item">
-              <label class="form-input-label">PS Theme / Domain *</label>
-              <select id="reg-ps-domain" class="form-select-input" required>
-                <option value="Disaster Management">Disaster Management</option>
-                <option value="Agriculture & Rural Dev">Agriculture & Rural Dev</option>
-                <option value="Clean & Green Energy">Clean & Green Energy</option>
-                <option value="Smart Education">Smart Education</option>
-                <option value="Robotics & Drones">Robotics & Drones</option>
-                <option value="Healthcare & Biotech">Healthcare & Biotech</option>
-                <option value="Cyber Security & Web3">Cyber Security & Web3</option>
-                <option value="Smart Automation & Cities">Smart Automation & Cities</option>
-                <option value="Heritage & Tourism">Heritage & Tourism</option>
-                <option value="Student Innovation (Open)">Student Innovation (Open Theme)</option>
-              </select>
+            <p style="color: #047857; font-size: 0.8rem; margin: 0 0 10px; line-height: 1.45;">
+              Copy the exact <strong>PS Number</strong> (e.g. <code style="background: #d1fae5; color:#065f46; padding: 2px 6px; border-radius: 4px; font-weight: 700;">SIH26001</code>) and <strong>Problem Statement Title</strong> from the central SIH website as illustrated below:
+            </p>
+            <div class="ps-guide-img-wrap">
+              <a href="SS_registration.png" target="_blank" title="Click to view full-size reference screenshot">
+                <img src="SS_registration.png" alt="Reference: Where to copy Problem Statement Number and Title from SIH portal" class="ps-guide-img" loading="lazy">
+              </a>
+            </div>
+            <div style="font-size: 0.72rem; color: #059669; margin-top: 6px; text-align: center; font-weight: 600;">
+              <i class="fa-solid fa-magnifying-glass-plus"></i> Click image to open high-resolution reference
             </div>
           </div>
 
           <div class="form-row-2">
+            <div class="form-group-item">
+              <label class="form-input-label">Target SIH 2026 Problem Statement ID / Number *</label>
+              <input type="text" id="reg-ps-id" class="form-text-input"
+                placeholder="e.g. SIH26001 (Copy from PS Number column)" required>
+            </div>
             <div class="form-group-item">
               <label class="form-input-label">Problem Statement / Solution Title *</label>
               <input type="text" id="reg-ps-title" class="form-text-input"
-                placeholder="Brief title of your proposed innovation" required>
-            </div>
-            <div class="form-group-item">
-              <label class="form-input-label"
-                style="display: flex; justify-content: space-between; align-items: center;">
-                <span><i class="fa-solid fa-ticket" style="color: #059669;"></i> Coordinator Referral Code</span>
-                <span
-                  style="font-size: 0.72rem; color: #059669; font-weight: 700; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; border: 1px solid #a7f3d0;">Optional</span>
-              </label>
-              <div style="position: relative;">
-                <input type="text" id="reg-referral-code" class="form-text-input" placeholder="e.g. SIHIN1001"
-                  oninput="handleReferralCodeInput(this.value)"
-                  style="text-transform: uppercase; font-family: var(--font-mono); font-weight: 800; padding-right: 34px;">
-                <span id="referral-check-icon"
-                  style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 0.95rem; display: none;"></span>
-              </div>
-              <div id="referral-match-badge"
-                style="font-size: 0.76rem; margin-top: 4px; font-weight: 700; color: #059669; display: none;"></div>
+                placeholder="e.g. AI-Based early warning and landslide Risk Monitoring System in NER" required>
             </div>
           </div>
 
-          <div class="form-group-item">
-            <label class="form-input-label">Solution Abstract / Key Architecture (2-3 sentences) *</label>
-            <textarea id="reg-abstract" class="form-textarea-input" rows="2"
-              placeholder="Describe how your software/hardware solves the target challenge..." required></textarea>
+          <div class="form-group-item" style="margin-bottom: 0;">
+            <label class="form-input-label"
+              style="display: flex; justify-content: space-between; align-items: center;">
+              <span><i class="fa-solid fa-ticket" style="color: #059669;"></i> Coordinator Referral Code</span>
+              <span
+                style="font-size: 0.72rem; color: #059669; font-weight: 700; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; border: 1px solid #a7f3d0;">Optional</span>
+            </label>
+            <div style="position: relative;">
+              <input type="text" id="reg-referral-code" class="form-text-input" placeholder="e.g. SIHIN1001"
+                oninput="handleReferralCodeInput(this.value)"
+                style="text-transform: uppercase; font-family: var(--font-mono); font-weight: 800; padding-right: 34px;">
+              <span id="referral-check-icon"
+                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 0.95rem; display: none;"></span>
+            </div>
+            <div id="referral-match-badge"
+              style="font-size: 0.76rem; margin-top: 4px; font-weight: 700; color: #059669; display: none;"></div>
           </div>
         </div>
 
@@ -1618,34 +1620,13 @@
 
         <div class="form-row-2">
           <div class="form-group-item">
-            <label class="form-input-label">Problem Statement ID *</label>
-            <input type="text" id="edit-team-ps-id" class="form-text-input" required>
+            <label class="form-input-label">Problem Statement ID / Number *</label>
+            <input type="text" id="edit-team-ps-id" class="form-text-input" placeholder="e.g. SIH26001" required>
           </div>
           <div class="form-group-item">
-            <label class="form-input-label">PS Theme / Domain *</label>
-            <select id="edit-team-ps-domain" class="form-select-input" required>
-              <option value="Disaster Management">Disaster Management</option>
-              <option value="Agriculture & Rural Dev">Agriculture & Rural Dev</option>
-              <option value="Clean & Green Energy">Clean & Green Energy</option>
-              <option value="Smart Education">Smart Education</option>
-              <option value="Robotics & Drones">Robotics & Drones</option>
-              <option value="Healthcare & Biotech">Healthcare & Biotech</option>
-              <option value="Cyber Security & Web3">Cyber Security & Web3</option>
-              <option value="Smart Automation & Cities">Smart Automation & Cities</option>
-              <option value="Heritage & Tourism">Heritage & Tourism</option>
-              <option value="Student Innovation (Open)">Student Innovation (Open Theme)</option>
-            </select>
+            <label class="form-input-label">Problem Statement / Solution Title *</label>
+            <input type="text" id="edit-team-title" class="form-text-input" placeholder="Solution Title" required>
           </div>
-        </div>
-
-        <div class="form-group-item">
-          <label class="form-input-label">Solution Title *</label>
-          <input type="text" id="edit-team-title" class="form-text-input" required>
-        </div>
-
-        <div class="form-group-item">
-          <label class="form-input-label">Solution Abstract / Key Architecture *</label>
-          <textarea id="edit-team-abstract" class="form-textarea-input" rows="3" required></textarea>
         </div>
 
         <div class="form-row-2">

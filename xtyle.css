@@ -6413,7 +6413,54 @@ body.dark-theme [style*="background: #ecfdf5"] {
   }
 }
 
+/* ==========================================================================
+   PROBLEM STATEMENT REFERENCE GUIDE & ANNOTATED SCREENSHOT STYLES
+   ========================================================================== */
+.ps-reference-guide-card {
+  background: #f0fdf4;
+  border: 1px solid #a7f3d0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 12px 0 16px;
+  transition: all var(--transition-fast);
+}
 
+html[data-theme="dark"] .ps-reference-guide-card,
+body.dark-theme .ps-reference-guide-card {
+  background: rgba(6, 78, 59, 0.25);
+  border-color: rgba(16, 185, 129, 0.35);
+}
 
+.ps-guide-img-wrap {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #86efac;
+  background: #ffffff;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.08);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
 
+.ps-guide-img-wrap:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.16);
+}
 
+.ps-guide-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 220px;
+  object-fit: contain;
+  cursor: zoom-in;
+  background: #ffffff;
+}
+
+@media (max-width: 640px) {
+  .ps-reference-guide-card {
+    padding: 12px 12px;
+  }
+  .ps-guide-img {
+    max-height: 160px;
+  }
+}

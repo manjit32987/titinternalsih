@@ -1525,9 +1525,9 @@ window.handleTeamRegistrationSubmit = (e) => {
   const teamName = document.getElementById("reg-team-name").value.trim();
   const edition = document.getElementById("reg-edition").value;
   const psId = document.getElementById("reg-ps-id").value.trim().toUpperCase();
-  const domain = document.getElementById("reg-ps-domain").value;
+  const domain = (document.getElementById("reg-ps-domain")?.value || "").trim();
   const title = document.getElementById("reg-ps-title").value.trim();
-  const abstract = document.getElementById("reg-abstract").value.trim();
+  const abstract = (document.getElementById("reg-abstract")?.value || "").trim();
   const pptLink = document.getElementById("reg-ppt-link").value.trim();
   const referralCodeInput = (document.getElementById("reg-referral-code")?.value || "").trim().toUpperCase();
 
@@ -1542,17 +1542,12 @@ window.handleTeamRegistrationSubmit = (e) => {
   }
 
   if (!psId || psId.length < 3) {
-    alert("[TIT SIH] Please enter the Target SIH Problem Statement ID (e.g. SIH2601).");
+    alert("[TIT SIH] Please enter the Target SIH Problem Statement ID / Number (e.g. SIH26001).");
     return;
   }
 
-  if (!title || title.length < 5) {
-    alert("[TIT SIH] Please enter your Solution Title (minimum 5 characters).");
-    return;
-  }
-
-  if (!abstract || abstract.length < 15) {
-    alert("[TIT SIH] Please provide a clear Solution Abstract (minimum 15 characters).");
+  if (!title || title.length < 3) {
+    alert("[TIT SIH] Please enter your Problem Statement / Solution Title.");
     return;
   }
 
@@ -1808,12 +1803,14 @@ function renderStudentDashboard() {
 
       <!-- Problem & Solution Overview -->
       <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-bottom: 20px;">
-        <h4 style="font-size: 0.98rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
-          ${escapeHtml(userTeam.title)}
+        <h4 style="font-size: 0.98rem; font-weight: 800; color: #0f172a; margin-bottom: ${userTeam.abstract ? '6px' : '0'};">
+          <i class="fa-solid fa-lightbulb" style="color: #059669;"></i> ${escapeHtml(userTeam.title)}
         </h4>
-        <p style="font-size: 0.88rem; color: #475569; line-height: 1.5; margin: 0;">
-          ${escapeHtml(userTeam.abstract)}
-        </p>
+        ${userTeam.abstract ? `
+          <p style="font-size: 0.88rem; color: #475569; line-height: 1.5; margin: 6px 0 0;">
+            ${escapeHtml(userTeam.abstract)}
+          </p>
+        ` : ''}
       </div>
 
       <!-- Squad Roster Header & Action -->
@@ -1880,15 +1877,15 @@ window.openEditTeamModal = (teamId) => {
   const modal = document.getElementById("edit-team-modal");
   if (!modal) return;
 
-  document.getElementById("edit-team-id").value = team.teamId;
-  document.getElementById("edit-team-badge-id").textContent = team.teamId;
-  document.getElementById("edit-team-name").value = team.teamName || "";
-  document.getElementById("edit-team-edition").value = team.edition || "Software Edition";
-  document.getElementById("edit-team-ps-id").value = team.psId || "";
-  document.getElementById("edit-team-ps-domain").value = team.domain || "Student Innovation (Open)";
-  document.getElementById("edit-team-title").value = team.title || "";
-  document.getElementById("edit-team-abstract").value = team.abstract || "";
-  document.getElementById("edit-team-ppt-link").value = team.pptLink || "";
+  if (document.getElementById("edit-team-id")) document.getElementById("edit-team-id").value = team.teamId;
+  if (document.getElementById("edit-team-badge-id")) document.getElementById("edit-team-badge-id").textContent = team.teamId;
+  if (document.getElementById("edit-team-name")) document.getElementById("edit-team-name").value = team.teamName || "";
+  if (document.getElementById("edit-team-edition")) document.getElementById("edit-team-edition").value = team.edition || "Software Edition";
+  if (document.getElementById("edit-team-ps-id")) document.getElementById("edit-team-ps-id").value = team.psId || "";
+  if (document.getElementById("edit-team-ps-domain")) document.getElementById("edit-team-ps-domain").value = team.domain || "";
+  if (document.getElementById("edit-team-title")) document.getElementById("edit-team-title").value = team.title || "";
+  if (document.getElementById("edit-team-abstract")) document.getElementById("edit-team-abstract").value = team.abstract || "";
+  if (document.getElementById("edit-team-ppt-link")) document.getElementById("edit-team-ppt-link").value = team.pptLink || "";
   if (document.getElementById("edit-team-referral-code")) {
     document.getElementById("edit-team-referral-code").value = (team.referralCode && team.referralCode !== "NONE") ? team.referralCode : "";
   }
@@ -1910,13 +1907,13 @@ window.handleEditTeamSubmit = (event) => {
   const teamName = document.getElementById("edit-team-name").value.trim();
   const edition = document.getElementById("edit-team-edition").value;
   const psId = document.getElementById("edit-team-ps-id").value.trim();
-  const domain = document.getElementById("edit-team-ps-domain").value;
+  const domain = (document.getElementById("edit-team-ps-domain")?.value || team.domain || "").trim();
   const title = document.getElementById("edit-team-title").value.trim();
-  const abstract = document.getElementById("edit-team-abstract").value.trim();
+  const abstract = (document.getElementById("edit-team-abstract")?.value || team.abstract || "").trim();
   const pptLink = document.getElementById("edit-team-ppt-link").value.trim();
   const editRefCode = (document.getElementById("edit-team-referral-code")?.value || "").trim().toUpperCase();
 
-  if (!teamName || !psId || !title || !abstract || !pptLink) {
+  if (!teamName || !psId || !title || !pptLink) {
     alert("[TIT SIH Error] Please fill in all required fields.");
     return;
   }
