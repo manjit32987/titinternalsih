@@ -140,7 +140,6 @@
               style="color: #059669; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> SIH PS</a></li>
           <li><a href="#rules" class="nav-link"><i class="fa-solid fa-scale-balanced"></i> Rules</a></li>
           <li><a href="#team-finder" class="nav-link" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-users"></i> Team Finder</a></li>
-          <li><a href="#badge-generator" class="nav-link" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-id-badge"></i> Get Badge</a></li>
           <li><a href="#resources" class="nav-link"><i class="fa-solid fa-download"></i> Resources</a></li>
           <li><a href="committee.html" class="nav-link"><i class="fa-solid fa-users"></i> Committee</a></li>
           <li><a href="#faq" class="nav-link"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
@@ -196,8 +195,6 @@
               style="color: #059669; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> SIH 2026 PS</a></li>
           <li><a href="#team-finder" class="mobile-nav-link" onclick="closeMobileMenu()"><i
                 class="fa-solid fa-users"></i> Team Finder</a></li>
-          <li><a href="#badge-generator" class="mobile-nav-link" onclick="closeMobileMenu()" style="color: #059669; font-weight: 700;"><i
-                class="fa-solid fa-id-badge"></i> Get Digital Badge</a></li>
           <li><a href="#resources" class="mobile-nav-link" onclick="closeMobileMenu()"><i
                 class="fa-solid fa-download"></i> Resources & PPT</a></li>
           <li><a href="committee.html" class="mobile-nav-link" onclick="closeMobileMenu()"><i
@@ -655,157 +652,6 @@
         <!-- Rendered dynamically by script.js -->
       </div>
 
-    </div>
-  </section>
-
-  <!-- 5.7 'I Am Participating!' Digital Social Card & Webcam Badge Generator -->
-  <section class="badge-gen-section" id="badge-generator">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag"><i class="fa-solid fa-id-badge"></i> Verified Student Pass</span>
-        <h2 class="section-title">"I'm Participating!" Digital Badge</h2>
-        <p class="section-subtitle">Exclusive for signed-in TIT students. Snap your live selfie, generate your official verified SIH 2026 card with TIT & IIC logos, and share it on WhatsApp & Instagram!</p>
-      </div>
-
-      <!-- Auth Gate: Displayed when student is not logged in -->
-      <div class="badge-auth-gate-card" id="badge-auth-gate">
-        <div class="badge-gate-icon">
-          <i class="fa-solid fa-lock"></i>
-        </div>
-        <h3 class="badge-gate-title">Sign In to Unlock Your Badge</h3>
-        <p class="badge-gate-desc">
-          You need to be signed in to generate and download your official verified participation badge. Sign in with your TIT student account to load your profile automatically.
-        </p>
-        <button type="button" class="btn-3d-primary" onclick="openAuthModal('login')" style="padding: 14px 36px; font-size: 1rem;">
-          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to Generate Badge
-        </button>
-      </div>
-
-      <!-- Main Generator: Displayed when student is signed in -->
-      <div class="badge-gen-layout" id="badge-gen-main-content" style="display: none;">
-        <!-- Left Column: Customization Controls & Photo Input -->
-        <div class="badge-controls-card">
-          <div class="badge-controls-header">
-            <div class="badge-user-avatar-tag" id="badge-user-avatar-initials">TIT</div>
-            <div>
-              <h3 id="badge-user-display-name">Welcome, Innovator</h3>
-              <p id="badge-user-display-sub">Verified TIT Student Profile</p>
-            </div>
-          </div>
-
-          <!-- Photo Selection: Webcam (Default) & Upload -->
-          <div class="badge-photo-action-box">
-            <label class="form-input-label"><i class="fa-solid fa-camera"></i> Student Photo (Webcam Default)</label>
-            <div class="badge-photo-btn-group">
-              <button type="button" class="btn-badge-photo-mode active" id="btn-mode-camera" onclick="openBadgeWebcamModal()">
-                <i class="fa-solid fa-camera"></i> Snap Live Selfie
-              </button>
-              <label class="btn-badge-photo-mode" id="btn-mode-upload">
-                <i class="fa-solid fa-cloud-arrow-up"></i> Upload Image
-                <input type="file" id="badge-photo-upload-input" accept="image/*" style="display: none;" onchange="handleBadgePhotoUpload(event)">
-              </label>
-            </div>
-
-            <!-- Active Photo Thumbnail / Status -->
-            <div class="badge-active-photo-preview" id="badge-photo-preview-indicator">
-              <div class="badge-thumb-circle" id="badge-thumb-circle">
-                <i class="fa-solid fa-user"></i>
-              </div>
-              <div class="badge-thumb-meta">
-                <span class="badge-thumb-status" id="badge-thumb-status">Default Avatar Active</span>
-                <button type="button" class="btn-retake-photo" id="btn-retake-photo" onclick="openBadgeWebcamModal()" style="display: inline-flex;">
-                  <i class="fa-solid fa-camera"></i> Snap Live Selfie
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Verified Details (Auto-Fetched) -->
-          <div class="form-row-2">
-            <div class="form-group-item">
-              <label class="form-input-label">Student Name</label>
-              <input type="text" id="badge-input-name" class="form-text-input" placeholder="Your Name" oninput="updateBadgeCanvas()">
-            </div>
-            <div class="form-group-item">
-              <label class="form-input-label">Department / Branch</label>
-              <select id="badge-input-branch" class="form-select-input" onchange="updateBadgeCanvas()">
-                <option value="CSE">CSE - Computer Science</option>
-                <option value="ECE">ECE - Electronics & Comm</option>
-                <option value="EE">EE - Electrical Engg</option>
-                <option value="ME">ME - Mechanical Engg</option>
-                <option value="CE">CE - Civil Engg</option>
-                <option value="IT">IT - Information Tech</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row-2">
-            <div class="form-group-item">
-              <label class="form-input-label">Year of Study</label>
-              <select id="badge-input-year" class="form-select-input" onchange="updateBadgeCanvas()">
-                <option value="1st Year">1st Year Innovator</option>
-                <option value="2nd Year" selected>2nd Year Innovator</option>
-                <option value="3rd Year">3rd Year Innovator</option>
-                <option value="4th Year">4th Year Innovator</option>
-              </select>
-            </div>
-            <div class="form-group-item">
-              <label class="form-input-label">Team Name or Role</label>
-              <input type="text" id="badge-input-role" class="form-text-input" placeholder="e.g. Lead Innovator / Team ByteCraft" value="TIT Innovator" oninput="updateBadgeCanvas()">
-            </div>
-          </div>
-
-          <div class="form-group-item">
-            <label class="form-input-label">Catchy Slogan (Gen Z Vibe)</label>
-            <select id="badge-input-slogan" class="form-select-input" onchange="updateBadgeCanvas()" style="font-weight: 700;">
-              <option value="I'M PARTICIPATING • ARE YOU?" selected>I'M PARTICIPATING • ARE YOU?</option>
-              <option value="HACKATHON MODE: ACTIVATED">HACKATHON MODE: ACTIVATED</option>
-              <option value="COOKING INNOVATION @ SIH 2026">COOKING INNOVATION @ SIH 2026</option>
-              <option value="NO SLEEP, JUST CODE & BUILD">NO SLEEP, JUST CODE & BUILD</option>
-              <option value="OFFICIAL INNOVATOR • TIT AGARTALA">OFFICIAL INNOVATOR • TIT AGARTALA</option>
-            </select>
-          </div>
-
-          <div class="form-group-item">
-            <label class="form-input-label">Cyber Theme Accent</label>
-            <div class="badge-theme-selector">
-              <button type="button" class="badge-theme-btn active" data-theme="emerald" onclick="setBadgeTheme('emerald', this)">
-                <span class="theme-dot dot-emerald"></span> Cyber Emerald
-              </button>
-              <button type="button" class="badge-theme-btn" data-theme="neon" onclick="setBadgeTheme('neon', this)">
-                <span class="theme-dot dot-neon"></span> Hyper Neon
-              </button>
-              <button type="button" class="badge-theme-btn" data-theme="gold" onclick="setBadgeTheme('gold', this)">
-                <span class="theme-dot dot-gold"></span> Solar Gold
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Column: Live High-Resolution Badge Card & Export Actions -->
-        <div class="badge-preview-card">
-          <div class="badge-canvas-wrapper">
-            <canvas id="badge-render-canvas" width="1080" height="1350"></canvas>
-            <div class="badge-canvas-shine"></div>
-          </div>
-
-          <!-- Quick Action Buttons -->
-          <div class="badge-action-buttons">
-            <button type="button" class="btn-3d-primary btn-download-badge" onclick="downloadBadgeImage()">
-              <i class="fa-solid fa-download"></i> Download HD Card (PNG)
-            </button>
-            <button type="button" class="btn-whatsapp-share-badge" onclick="shareBadgeWhatsApp()">
-              <i class="fa-brands fa-whatsapp"></i> Share on WhatsApp
-            </button>
-            <button type="button" class="btn-native-share-badge" onclick="shareBadgeNative()" title="Share to Instagram / Native apps">
-              <i class="fa-solid fa-share-nodes"></i> Share
-            </button>
-          </div>
-          <p class="badge-share-hint">
-            <i class="fa-solid fa-circle-check" style="color: #10b981;"></i> High-res 1080x1350 vertical poster formatted for WhatsApp Status & Instagram Stories.
-          </p>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -2146,40 +1992,6 @@
         </div>
       </form>
     </div>
-  <!-- Modal 10: Live Webcam Selfie Capture Modal -->
-  <div class="modal-overlay" id="badge-webcam-modal">
-    <div class="modal-container webcam-modal-box" style="max-width: 520px; padding: 24px;">
-      <button class="modal-close-btn" onclick="closeBadgeWebcamModal()">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
-      <div class="modal-header-box" style="text-align: left; margin-bottom: 14px;">
-        <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0 0 4px;">
-          <i class="fa-solid fa-camera" style="color: #059669;"></i> Take Your Badge Selfie
-        </h3>
-        <p style="color: #64748b; font-size: 0.82rem; margin: 0;">Align your face inside the circle guide and click Snap Photo.</p>
-      </div>
-
-      <!-- Live Video Viewport -->
-      <div class="webcam-viewport-wrap">
-        <video id="badge-webcam-video" autoplay playsinline muted></video>
-        <div class="webcam-face-guide"></div>
-        <div class="webcam-flash-fx" id="webcam-flash-fx"></div>
-        <canvas id="webcam-capture-canvas" style="display: none;"></canvas>
-      </div>
-
-      <div class="webcam-controls-bar">
-        <button type="button" class="btn-3d-secondary" onclick="switchBadgeCamera()" id="btn-switch-camera" title="Switch Front/Back Camera">
-          <i class="fa-solid fa-camera-rotate"></i> Flip
-        </button>
-        <button type="button" class="btn-3d-primary btn-snap-photo" onclick="captureBadgeSelfie()">
-          <i class="fa-solid fa-circle-dot"></i> Snap Photo
-        </button>
-        <button type="button" class="btn-3d-secondary" onclick="closeBadgeWebcamModal()">
-          Cancel
-        </button>
-      </div>
-    </div>
   </div>
 
   <!-- Canvas Confetti CDN -->
@@ -2194,7 +2006,7 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <!-- Main Application Script -->
-  <script src="script.js?v=2026.9.1"></script>
+  <script src="script.js?v=2026.9.2"></script>
 </body>
 
 </html>
