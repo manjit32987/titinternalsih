@@ -445,6 +445,34 @@ window.updateAddMemberBranchOptions = () => {
   branchEl.innerHTML = window.getBranchOptionsHtml(program, currentVal);
 };
 
+window.updateReqBranchOptions = () => {
+  const progEl = document.getElementById("req-program");
+  const branchEl = document.getElementById("req-branch");
+  const yearEl = document.getElementById("req-year");
+  if (!progEl || !branchEl) return;
+  const program = progEl.value || "Degree";
+  const currentVal = branchEl.value;
+  branchEl.innerHTML = window.getBranchOptionsHtml(program, currentVal);
+
+  if (yearEl) {
+    const currentYear = yearEl.value;
+    if (program === "Diploma") {
+      yearEl.innerHTML = `
+        <option value="1st Year" ${currentYear === "1st Year" ? "selected" : ""}>1st Year</option>
+        <option value="2nd Year" ${currentYear === "2nd Year" ? "selected" : ""}>2nd Year</option>
+        <option value="3rd Year" ${currentYear === "3rd Year" || currentYear === "4th Year" ? "selected" : ""}>3rd Year (Final Year)</option>
+      `;
+    } else {
+      yearEl.innerHTML = `
+        <option value="1st Year" ${currentYear === "1st Year" ? "selected" : ""}>1st Year</option>
+        <option value="2nd Year" ${currentYear === "2nd Year" ? "selected" : ""}>2nd Year</option>
+        <option value="3rd Year" ${currentYear === "3rd Year" ? "selected" : ""}>3rd Year</option>
+        <option value="4th Year" ${currentYear === "4th Year" ? "selected" : ""}>4th Year (Final Year)</option>
+      `;
+    }
+  }
+};
+
 // Initialize Everything on DOM Load
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
@@ -4321,6 +4349,7 @@ window.toggleBranchAccordion = (branchCode) => {
    ========================================================================== */
 let teammateRequests = [];
 let currentTeamFinderFilter = "all";
+let currentTeamFinderProgram = "all";
 let currentTeamFinderBranch = "all";
 let currentTeamFinderSearch = "";
 
@@ -4392,9 +4421,13 @@ function renderTeammateBoard() {
   const filtered = teammateRequests.filter((item) => {
     if (item.status === "closed" || item.id?.startsWith("req_seed_")) return false;
 
-    // Filter Tabs
+    // Filter Tabs (All / Teams / Solo)
     if (currentTeamFinderFilter === "teams" && item.postType !== "team_seeking") return false;
     if (currentTeamFinderFilter === "solo" && item.postType !== "solo_seeking") return false;
+
+    // Module / Program Filter (Degree vs Diploma)
+    const itemProg = item.authorProgram || (window.isDiplomaBranch(item.authorBranch) ? "Diploma" : "Degree");
+    if (currentTeamFinderProgram !== "all" && itemProg.toLowerCase() !== currentTeamFinderProgram.toLowerCase()) return false;
 
     // Branch Filter
     if (currentTeamFinderBranch !== "all" && item.authorBranch !== currentTeamFinderBranch) return false;
@@ -4407,7 +4440,8 @@ function renderTeammateBoard() {
       const matchDesc = item.desc?.toLowerCase().includes(q);
       const matchSkills = item.skills?.some(s => s.toLowerCase().includes(q));
       const matchBranch = item.authorBranch?.toLowerCase().includes(q);
-      if (!matchTitle && !matchAuthor && !matchDesc && !matchSkills && !matchBranch) return false;
+      const matchProgram = itemProg.toLowerCase().includes(q);
+      if (!matchTitle && !matchAuthor && !matchDesc && !matchSkills && !matchBranch && !matchProgram) return false;
     }
 
     return true;
@@ -4435,6 +4469,11 @@ function renderTeammateBoard() {
     const postTypeBadge = isTeam
       ? `<span class="post-type-badge post-type-team"><i class="fa-solid fa-user-group"></i> Team Looking for Members</span>`
       : `<span class="post-type-badge post-type-solo"><i class="fa-solid fa-user-plus"></i> Student Looking for a Team</span>`;
+
+    const authorProgram = req.authorProgram || (window.isDiplomaBranch(req.authorBranch) ? "Diploma" : "Degree");
+    const isDiploma = authorProgram.toLowerCase() === "diploma";
+    const programIcon = isDiploma ? "fa-graduation-cap" : "fa-award";
+    const displayProgramLabel = isDiploma ? "Diploma" : "Degree (B.Tech)";
 
     const initials = (req.authorName || "TIT")
       .split(" ")
@@ -4469,7 +4508,15 @@ function renderTeammateBoard() {
               <div class="author-avatar-chip">${initials}</div>
               <div>
                 <div class="author-meta-name">${escapeHtml(req.authorName)}</div>
-                <div class="author-meta-dept">${escapeHtml(req.authorBranch)} • ${escapeHtml(req.authorYear || "TIT Student")}</div>
+                <div class="author-meta-dept">
+                  <span class="module-chip ${isDiploma ? 'module-chip-diploma' : 'module-chip-degree'}">
+                    <i class="fa-solid ${programIcon}"></i> ${escapeHtml(displayProgramLabel)}
+                  </span>
+                  <span class="dept-dot">•</span>
+                  <span>${escapeHtml(req.authorBranch)}</span>
+                  <span class="dept-dot">•</span>
+                  <span>${escapeHtml(req.authorYear || "TIT Student")}</span>
+                </div>
               </div>
             </div>
             ${postTypeBadge}
@@ -4520,6 +4567,11 @@ window.filterTeamFinder = (filterType, element) => {
   renderTeammateBoard();
 };
 
+window.handleTeamFinderProgram = (progVal) => {
+  currentTeamFinderProgram = progVal;
+  renderTeammateBoard();
+};
+
 window.handleTeamFinderBranch = (branchVal) => {
   currentTeamFinderBranch = branchVal;
   renderTeammateBoard();
@@ -4532,6 +4584,7 @@ window.handleTeamFinderSearch = (query) => {
 
 // Aliases for compatibility
 window.filterTeammateBoard = window.filterTeamFinder;
+window.handleTeammateProgramFilter = window.handleTeamFinderProgram;
 window.handleTeammateBranchFilter = window.handleTeamFinderBranch;
 window.handleTeammateSearch = window.handleTeamFinderSearch;
 
@@ -4539,16 +4592,23 @@ window.openTeammateRequestModal = () => {
   const modal = document.getElementById("teammate-request-modal");
   if (!modal) return;
 
-  if (currentUser) {
-    const authorNameEl = document.getElementById("req-author-name");
-    const emailEl = document.getElementById("req-email");
-    const branchEl = document.getElementById("req-branch");
-    const yearEl = document.getElementById("req-year");
+  const progEl = document.getElementById("req-program");
+  const authorNameEl = document.getElementById("req-author-name");
+  const emailEl = document.getElementById("req-email");
+  const branchEl = document.getElementById("req-branch");
+  const yearEl = document.getElementById("req-year");
 
+  if (currentUser) {
     if (authorNameEl && !authorNameEl.value) authorNameEl.value = currentUser.name || "";
     if (emailEl && !emailEl.value) emailEl.value = currentUser.email || "";
+    if (progEl) {
+      progEl.value = currentUser.program || (window.isDiplomaBranch(currentUser.branch) ? "Diploma" : "Degree");
+    }
+    window.updateReqBranchOptions();
     if (branchEl && currentUser.branch) branchEl.value = currentUser.branch;
     if (yearEl && currentUser.year) yearEl.value = currentUser.year;
+  } else {
+    window.updateReqBranchOptions();
   }
 
   modal.classList.add("active");
@@ -4580,7 +4640,9 @@ window.handleTeammateRequestSubmit = (e) => {
 
   const postType = document.getElementById("req-post-type").value;
   const authorName = document.getElementById("req-author-name").value.trim();
+  const progEl = document.getElementById("req-program");
   const authorBranch = document.getElementById("req-branch").value;
+  const authorProgram = progEl ? progEl.value : (window.isDiplomaBranch(authorBranch) ? "Diploma" : "Degree");
   const authorYear = document.getElementById("req-year").value;
   const title = document.getElementById("req-title").value.trim();
   const category = document.getElementById("req-category").value;
@@ -4618,6 +4680,7 @@ window.handleTeammateRequestSubmit = (e) => {
   const newRequest = {
     id: "req_" + Date.now(),
     authorName,
+    authorProgram,
     authorBranch,
     authorYear,
     postType,

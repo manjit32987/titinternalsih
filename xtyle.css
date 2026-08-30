@@ -6699,8 +6699,8 @@ body.dark-theme .ps-reference-guide-card {
 
 .team-finder-filter-bar {
   display: grid;
-  grid-template-columns: 1fr 280px;
-  gap: 14px;
+  grid-template-columns: 1fr 180px 220px;
+  gap: 12px;
 }
 
 .team-search-wrap {
@@ -6734,9 +6734,11 @@ body.dark-theme .ps-reference-guide-card {
   box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
 }
 
+.team-program-select,
 .team-branch-select {
   padding: 10px 14px;
   font-size: 0.88rem;
+  width: 100%;
 }
 
 /* Team Grid */
@@ -6758,35 +6760,23 @@ body.dark-theme .ps-reference-guide-card {
   justify-content: space-between;
   box-shadow: var(--shadow-sm);
   transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
-  position: relative;
-  overflow: hidden;
 }
 
 .team-card:hover {
   transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
-  border-color: rgba(5, 150, 105, 0.4);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-light);
 }
 
-.team-card.needs-female-card {
-  border-color: rgba(219, 39, 119, 0.3);
-}
-
-.team-card.needs-female-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3.5px;
-  background: linear-gradient(90deg, #db2777, #10b981);
+.needs-female-card {
+  border-left: 4px solid #db2777;
 }
 
 .team-card-header {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
-  gap: 10px;
+  justify-content: space-between;
+  gap: 12px;
   margin-bottom: 12px;
 }
 
@@ -6822,7 +6812,53 @@ body.dark-theme .ps-reference-guide-card {
   font-size: 0.74rem;
   color: var(--text-secondary);
   font-weight: 600;
-  margin-top: 2px;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.module-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 5px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.module-chip-degree {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+.module-chip-diploma {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #fde68a;
+}
+
+html[data-theme="dark"] .module-chip-degree {
+  background: rgba(37, 99, 235, 0.18);
+  color: #60a5fa;
+  border-color: rgba(96, 165, 250, 0.35);
+}
+
+html[data-theme="dark"] .module-chip-diploma {
+  background: rgba(217, 119, 6, 0.18);
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
+.dept-dot {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  opacity: 0.6;
 }
 
 .post-type-badge {

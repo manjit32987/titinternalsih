@@ -631,17 +631,34 @@
         <div class="team-finder-filter-bar">
           <div class="team-search-wrap">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="team-finder-search" class="team-search-input" placeholder="Search by name, skill (e.g. Python, IoT, UI/UX) or branch..." oninput="handleTeamFinderSearch(this.value)">
+            <input type="text" id="team-finder-search" class="team-search-input" placeholder="Search by name, skill (e.g. Python, IoT, UI/UX), module or branch..." oninput="handleTeamFinderSearch(this.value)">
+          </div>
+          <div class="team-program-wrap">
+            <select id="team-finder-program" class="form-select-input team-program-select" onchange="handleTeamFinderProgram(this.value)" style="font-weight: 700;">
+              <option value="all">All Modules (Degree & Diploma)</option>
+              <option value="Degree">Degree (B.Tech)</option>
+              <option value="Diploma">Diploma</option>
+            </select>
           </div>
           <div class="team-branch-wrap">
             <select id="team-finder-branch" class="form-select-input team-branch-select" onchange="handleTeamFinderBranch(this.value)">
-              <option value="all">All Branches (CSE, ECE, EE, ME, CE, IT)</option>
-              <option value="CSE">CSE - Computer Science</option>
-              <option value="ECE">ECE - Electronics & Comm</option>
-              <option value="EE">EE - Electrical Engg</option>
-              <option value="ME">ME - Mechanical Engg</option>
-              <option value="CE">CE - Civil Engg</option>
-              <option value="IT">IT - Information Tech</option>
+              <option value="all">All Branches</option>
+              <optgroup label="Degree (B.Tech)">
+                <option value="CSE">CSE - Computer Science & Engg</option>
+                <option value="ECE">ECE - Electronics & Comm</option>
+                <option value="EE">EE - Electrical Engg</option>
+                <option value="ME">ME - Mechanical Engg</option>
+                <option value="CE">CE - Civil Engg</option>
+              </optgroup>
+              <optgroup label="Diploma">
+                <option value="CST">CST - Computer Science & Tech</option>
+                <option value="ETCE">ETCE - Electronics & Telecom</option>
+                <option value="CE">CE - Civil Engineering</option>
+                <option value="ME">ME - Mechanical Engineering</option>
+                <option value="Architectural Assistantship">Architectural Assistantship</option>
+                <option value="Automobile Engineering">Automobile Engineering</option>
+                <option value="Food Processing Technology">Food Processing Technology</option>
+              </optgroup>
             </select>
           </div>
         </div>
@@ -1919,31 +1936,33 @@
 
         <div class="form-row-2">
           <div class="form-group-item">
-            <label class="form-input-label">Your Department / Branch *</label>
-            <select id="req-branch" class="form-select-input" required>
-              <option value="CSE" selected>CSE - Computer Science & Engg</option>
-              <option value="ECE">ECE - Electronics & Comm Engg</option>
-              <option value="EE">EE - Electrical Engineering</option>
-              <option value="ME">ME - Mechanical Engineering</option>
-              <option value="CE">CE - Civil Engineering</option>
-              <option value="IT">IT - Information Technology</option>
+            <label class="form-input-label">Program / Module *</label>
+            <select id="req-program" class="form-select-input" required onchange="updateReqBranchOptions()" style="font-weight: 700;">
+              <option value="Degree" selected>Degree (B.Tech)</option>
+              <option value="Diploma">Diploma</option>
             </select>
           </div>
           <div class="form-group-item">
-            <label class="form-input-label">Year of Study *</label>
-            <select id="req-year" class="form-select-input" required>
-              <option value="1st Year">1st Year</option>
-              <option value="2nd Year" selected>2nd Year</option>
-              <option value="3rd Year">3rd Year</option>
-              <option value="4th Year">4th Year</option>
+            <label class="form-input-label">Department / Branch *</label>
+            <select id="req-branch" class="form-select-input" required>
+              <option value="ECE">ECE - Electronics & Communication</option>
+              <option value="CSE" selected>CSE - Computer Science & Engg</option>
+              <option value="EE">EE - Electrical Engineering</option>
+              <option value="ME">ME - Mechanical Engineering</option>
+              <option value="CE">CE - Civil Engineering</option>
             </select>
           </div>
         </div>
 
         <div class="form-row-2">
           <div class="form-group-item">
-            <label class="form-input-label" id="req-title-label">Team / Project Title or Topic *</label>
-            <input type="text" id="req-title" class="form-text-input" placeholder="e.g. AI Early Warning Landslide System" required>
+            <label class="form-input-label">Year of Study *</label>
+            <select id="req-year" class="form-select-input" required>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year" selected>2nd Year</option>
+              <option value="3rd Year">3rd Year</option>
+              <option value="4th Year">4th Year (Final Year)</option>
+            </select>
           </div>
           <div class="form-group-item">
             <label class="form-input-label">Category *</label>
@@ -1953,6 +1972,11 @@
               <option value="Open Innovation">Open Innovation</option>
             </select>
           </div>
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-input-label" id="req-title-label">Team / Project Title or Topic *</label>
+          <input type="text" id="req-title" class="form-text-input" placeholder="e.g. AI Early Warning Landslide System" required>
         </div>
 
         <div class="form-group-item">
@@ -2006,7 +2030,7 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <!-- Main Application Script -->
-  <script src="script.js?v=2026.9.2"></script>
+  <script src="script.js?v=2026.9.3"></script>
 </body>
 
 </html>
