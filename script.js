@@ -4317,95 +4317,30 @@ window.toggleBranchAccordion = (branchCode) => {
 };
 
 /* ==========================================================================
-   INTERACTIVE 'FIND A TEAMMATE' SQUAD MATCHMAKER ENGINE
+   TEAM FINDER ENGINE (FIND A TEAM OR JOIN A SQUAD)
    ========================================================================== */
-const DEFAULT_TEAMMATE_REQUESTS = [
-  {
-    id: "req_seed_1",
-    authorName: "Rohan Debnath",
-    authorEmail: "rohan.cse@titagartala.ac.in",
-    authorPhone: "9862145678",
-    authorBranch: "CSE",
-    authorYear: "3rd Year",
-    postType: "team_seeking",
-    title: "Team ByteCraft • Smart Agriculture IoT System",
-    category: "Hardware Edition",
-    skills: ["IoT", "Arduino", "Female Member Needed", "Sensors"],
-    needsFemale: true,
-    desc: "We have our AI model and cloud pipeline ready for PS SIH26001. We specifically need 1 enthusiastic female teammate (ECE / EE preferred for sensor wiring) to fulfill the mandatory SIH quota.",
-    status: "active",
-    createdAt: Date.now() - 3600000 * 4
-  },
-  {
-    id: "req_seed_2",
-    authorName: "Ananya Saha",
-    authorEmail: "ananya.ece@titagartala.ac.in",
-    authorPhone: "9436123456",
-    authorBranch: "ECE",
-    authorYear: "2nd Year",
-    postType: "solo_seeking",
-    title: "Solo Aspirant • Embedded C, Microcontrollers & PCB Design",
-    category: "Hardware Edition",
-    skills: ["Embedded C", "Robotics", "Circuit Design", "IoT"],
-    needsFemale: false,
-    desc: "Looking to join an ambitious hardware or robotics team for SIH 2026. Proficient in circuit simulation, sensor calibration, and ESP32 programming.",
-    status: "active",
-    createdAt: Date.now() - 3600000 * 10
-  },
-  {
-    id: "req_seed_3",
-    authorName: "Debashis Roy",
-    authorEmail: "debashis.it@titagartala.ac.in",
-    authorPhone: "8794561230",
-    authorBranch: "IT",
-    authorYear: "3rd Year",
-    postType: "team_seeking",
-    title: "Team NeuralNet • Disaster Early Warning System",
-    category: "Software Edition",
-    skills: ["React", "Python", "Figma UI/UX", "Female Member Needed"],
-    needsFemale: true,
-    desc: "Working on landslide risk monitoring. Looking for a female teammate with UI/UX or web design skills to craft our mobile dashboard presentation.",
-    status: "active",
-    createdAt: Date.now() - 3600000 * 18
-  },
-  {
-    id: "req_seed_4",
-    authorName: "Pritam Bhowmik",
-    authorEmail: "pritam.me@titagartala.ac.in",
-    authorPhone: "9774128901",
-    authorBranch: "ME",
-    authorYear: "3rd Year",
-    postType: "solo_seeking",
-    title: "Solo Aspirant • 3D CAD Prototyping & SolidWorks Pro",
-    category: "Hardware Edition",
-    skills: ["SolidWorks", "3D Printing", "Mechanical Design", "Drones"],
-    needsFemale: false,
-    desc: "Mechanical engineer with expertise in drone chassis and enclosure design. Seeking a software/AI team needing physical hardware prototyping.",
-    status: "active",
-    createdAt: Date.now() - 3600000 * 26
-  }
-];
-
 let teammateRequests = [];
-let currentTeammateFilter = "all";
-let currentTeammateBranch = "all";
-let currentTeammateSearch = "";
+let currentTeamFinderFilter = "all";
+let currentTeamFinderBranch = "all";
+let currentTeamFinderSearch = "";
 
 function initTeammateBoard() {
   const container = document.getElementById("matchmaker-cards-grid");
   if (!container) return;
 
-  // Load from localStorage or seed
+  // Load from localStorage & clean any legacy seed data
   try {
     const localData = localStorage.getItem("tit_sih_teammate_requests");
     if (localData) {
-      teammateRequests = JSON.parse(localData);
-    } else {
-      teammateRequests = [...DEFAULT_TEAMMATE_REQUESTS];
+      const parsed = JSON.parse(localData);
+      // Filter out any legacy sample seed posts
+      teammateRequests = Array.isArray(parsed) ? parsed.filter(p => !p.id?.startsWith("req_seed_")) : [];
       localStorage.setItem("tit_sih_teammate_requests", JSON.stringify(teammateRequests));
+    } else {
+      teammateRequests = [];
     }
   } catch (err) {
-    teammateRequests = [...DEFAULT_TEAMMATE_REQUESTS];
+    teammateRequests = [];
   }
 
   // Real-time Cloud Sync with Firebase Firestore
@@ -4414,25 +4349,23 @@ function initTeammateBoard() {
       db.collection("teammate_requests")
         .orderBy("createdAt", "desc")
         .onSnapshot((snapshot) => {
-          if (snapshot && !snapshot.empty) {
+          if (snapshot) {
             const cloudList = [];
             snapshot.forEach((doc) => {
-              cloudList.push({ id: doc.id, ...doc.data() });
+              const data = doc.data();
+              if (!doc.id.startsWith("req_seed_")) {
+                cloudList.push({ id: doc.id, ...data });
+              }
             });
             teammateRequests = cloudList;
             localStorage.setItem("tit_sih_teammate_requests", JSON.stringify(teammateRequests));
             renderTeammateBoard();
-          } else if (snapshot && snapshot.empty && teammateRequests.length > 0) {
-            // First time seed write to Firestore
-            teammateRequests.forEach((req) => {
-              db.collection("teammate_requests").doc(req.id).set(req).catch(() => {});
-            });
           }
         }, (err) => {
-          console.warn("[TIT SIH] Teammate sync notice:", err);
+          console.warn("[TIT SIH] Team finder sync notice:", err);
         });
     } catch (e) {
-      console.warn("[TIT SIH] Teammate board error:", e);
+      console.warn("[TIT SIH] Team finder error:", e);
     }
   }
 
@@ -4455,20 +4388,18 @@ function renderTeammateBoard() {
   if (!container) return;
 
   const filtered = teammateRequests.filter((item) => {
-    if (item.status === "closed") return false;
+    if (item.status === "closed" || item.id?.startsWith("req_seed_")) return false;
 
-    // Filter Type Tab
-    if (currentTeammateFilter === "female" && !item.needsFemale) return false;
-    if (currentTeammateFilter === "hardware" && !item.category?.toLowerCase().includes("hardware") && !item.skills?.some(s => s.toLowerCase().includes("hardware") || s.toLowerCase().includes("iot"))) return false;
-    if (currentTeammateFilter === "software" && !item.category?.toLowerCase().includes("software") && !item.skills?.some(s => s.toLowerCase().includes("react") || s.toLowerCase().includes("python") || s.toLowerCase().includes("ai") || s.toLowerCase().includes("ui"))) return false;
-    if (currentTeammateFilter === "solo" && item.postType !== "solo_seeking") return false;
+    // Filter Tabs
+    if (currentTeamFinderFilter === "teams" && item.postType !== "team_seeking") return false;
+    if (currentTeamFinderFilter === "solo" && item.postType !== "solo_seeking") return false;
 
     // Branch Filter
-    if (currentTeammateBranch !== "all" && item.authorBranch !== currentTeammateBranch) return false;
+    if (currentTeamFinderBranch !== "all" && item.authorBranch !== currentTeamFinderBranch) return false;
 
     // Search Query
-    if (currentTeammateSearch) {
-      const q = currentTeammateSearch.toLowerCase();
+    if (currentTeamFinderSearch) {
+      const q = currentTeamFinderSearch.toLowerCase();
       const matchTitle = item.title?.toLowerCase().includes(q);
       const matchAuthor = item.authorName?.toLowerCase().includes(q);
       const matchDesc = item.desc?.toLowerCase().includes(q);
@@ -4482,14 +4413,14 @@ function renderTeammateBoard() {
 
   if (filtered.length === 0) {
     container.innerHTML = `
-      <div class="matchmaker-empty-box">
-        <div style="font-size: 2.4rem; color: #94a3b8; margin-bottom: 12px;"><i class="fa-solid fa-users-slash"></i></div>
-        <h4 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin: 0 0 6px;">No Matching Requests Found</h4>
-        <p style="color: var(--text-secondary); font-size: 0.85rem; max-width: 420px; margin: 0 auto 18px;">
-          Be the first to post a squad recruitment or solo aspirant listing for this category!
+      <div class="team-finder-empty-box">
+        <div class="team-empty-icon"><i class="fa-solid fa-users"></i></div>
+        <h4 class="team-empty-title">No Active Team Posts Yet</h4>
+        <p class="team-empty-desc">
+          Looking for teammates to complete your squad, or wanting to join an existing team? Post your request now!
         </p>
-        <button type="button" class="btn-3d-primary" onclick="openTeammateRequestModal()">
-          <i class="fa-solid fa-plus-circle"></i> Post Squad Request
+        <button type="button" class="btn-3d-primary" onclick="openTeammateRequestModal()" style="margin: 0 auto;">
+          <i class="fa-solid fa-plus-circle"></i> Post a Request (Takes 30s)
         </button>
       </div>
     `;
@@ -4500,8 +4431,8 @@ function renderTeammateBoard() {
   filtered.forEach((req) => {
     const isTeam = req.postType === "team_seeking";
     const postTypeBadge = isTeam
-      ? `<span class="post-type-badge post-type-team"><i class="fa-solid fa-users"></i> Squad Recruiting</span>`
-      : `<span class="post-type-badge post-type-solo"><i class="fa-solid fa-user-astronaut"></i> Solo Aspirant</span>`;
+      ? `<span class="post-type-badge post-type-team"><i class="fa-solid fa-user-group"></i> Team Looking for Members</span>`
+      : `<span class="post-type-badge post-type-solo"><i class="fa-solid fa-user-plus"></i> Student Looking for a Team</span>`;
 
     const initials = (req.authorName || "TIT")
       .split(" ")
@@ -4511,11 +4442,11 @@ function renderTeammateBoard() {
       .toUpperCase();
 
     const cleanPhone = (req.authorPhone || "").replace(/\D/g, "");
-    const waText = encodeURIComponent(`Hi ${req.authorName}! I saw your post "${req.title}" on the TIT SIH 2026 Squad Matchmaker board. Let's discuss teaming up!`);
+    const waText = encodeURIComponent(`Hi ${req.authorName}! I saw your post "${req.title}" on the TIT SIH Team Finder. Let's discuss teaming up!`);
     const waLink = cleanPhone ? `https://wa.me/91${cleanPhone}?text=${waText}` : "#";
 
-    const mailSubject = encodeURIComponent(`TIT SIH 2026 Teammate Connect - ${req.title}`);
-    const mailBody = encodeURIComponent(`Hi ${req.authorName},\n\nI saw your listing on the TIT SIH 2026 Squad Matchmaker board regarding "${req.title}".\n\nI am interested in joining / collaborating. Let's connect!\n\nBest regards,\n[My Name]`);
+    const mailSubject = encodeURIComponent(`TIT SIH 2026 Team Connect - ${req.title}`);
+    const mailBody = encodeURIComponent(`Hi ${req.authorName},\n\nI saw your listing on the TIT SIH Team Finder regarding "${req.title}".\n\nI would love to connect!\n\nBest regards,\n[My Name]`);
     const mailLink = `mailto:${req.authorEmail}?subject=${mailSubject}&body=${mailBody}`;
 
     const isAuthor = currentUser && (
@@ -4529,9 +4460,9 @@ function renderTeammateBoard() {
     }).join("");
 
     html += `
-      <div class="matchmaker-card ${req.needsFemale ? "needs-female-card" : ""}" id="req-card-${req.id}">
+      <div class="team-card ${req.needsFemale ? "needs-female-card" : ""}" id="req-card-${req.id}">
         <div>
-          <div class="matchmaker-card-header">
+          <div class="team-card-header">
             <div class="author-info-group">
               <div class="author-avatar-chip">${initials}</div>
               <div>
@@ -4542,22 +4473,22 @@ function renderTeammateBoard() {
             ${postTypeBadge}
           </div>
 
-          <h4 class="matchmaker-title-text">${escapeHtml(req.title)}</h4>
-          <p class="matchmaker-desc-text">${escapeHtml(req.desc)}</p>
+          <h4 class="team-card-title">${escapeHtml(req.title)}</h4>
+          <p class="team-card-desc">${escapeHtml(req.desc)}</p>
 
-          <div class="matchmaker-skills-wrap">
+          <div class="team-skills-wrap">
             ${skillsHtml}
           </div>
         </div>
 
-        <div class="matchmaker-card-footer">
+        <div class="team-card-footer">
           <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
             ${cleanPhone ? `
               <a href="${waLink}" target="_blank" rel="noopener" class="btn-whatsapp-connect" title="Open direct WhatsApp conversation">
                 <i class="fa-brands fa-whatsapp"></i> WhatsApp
               </a>
             ` : ""}
-            <a href="${mailLink}" class="btn-email-connect" title="Send email to author">
+            <a href="${mailLink}" class="btn-email-connect" title="Send email">
               <i class="fa-regular fa-envelope"></i> Email
             </a>
           </div>
@@ -4567,7 +4498,7 @@ function renderTeammateBoard() {
             </span>
             ${isAuthor ? `
               <button type="button" class="btn-resolve-post" onclick="resolveTeammateRequest('${req.id}')" title="Close this post if squad is full">
-                <i class="fa-solid fa-check"></i> Squad Full
+                <i class="fa-solid fa-check"></i> Remove Post
               </button>
             ` : ""}
           </div>
@@ -4579,29 +4510,33 @@ function renderTeammateBoard() {
   container.innerHTML = html;
 }
 
-window.filterTeammateBoard = (filterType, element) => {
-  currentTeammateFilter = filterType;
-  const buttons = document.querySelectorAll(".matchmaker-tab-btn");
+window.filterTeamFinder = (filterType, element) => {
+  currentTeamFinderFilter = filterType;
+  const buttons = document.querySelectorAll(".team-tab-btn");
   buttons.forEach(btn => btn.classList.remove("active"));
   if (element) element.classList.add("active");
   renderTeammateBoard();
 };
 
-window.handleTeammateBranchFilter = (branchVal) => {
-  currentTeammateBranch = branchVal;
+window.handleTeamFinderBranch = (branchVal) => {
+  currentTeamFinderBranch = branchVal;
   renderTeammateBoard();
 };
 
-window.handleTeammateSearch = (query) => {
-  currentTeammateSearch = (query || "").trim();
+window.handleTeamFinderSearch = (query) => {
+  currentTeamFinderSearch = (query || "").trim();
   renderTeammateBoard();
 };
+
+// Aliases for compatibility
+window.filterTeammateBoard = window.filterTeamFinder;
+window.handleTeammateBranchFilter = window.handleTeamFinderBranch;
+window.handleTeammateSearch = window.handleTeamFinderSearch;
 
 window.openTeammateRequestModal = () => {
   const modal = document.getElementById("teammate-request-modal");
   if (!modal) return;
 
-  // Auto-fill from logged in student profile if available
   if (currentUser) {
     const authorNameEl = document.getElementById("req-author-name");
     const emailEl = document.getElementById("req-email");
@@ -4628,12 +4563,12 @@ window.togglePostTypeFields = (postType) => {
   const femaleWrap = document.getElementById("req-female-quota-wrap");
 
   if (postType === "solo_seeking") {
-    if (titleLabel) titleLabel.textContent = "Your Core Specialization / Target Role *";
-    if (titleInput) titleInput.placeholder = "e.g. Full-Stack Developer & Cloud Architect Seeking Team";
+    if (titleLabel) titleLabel.textContent = "Your Specialization / Skills Offered *";
+    if (titleInput) titleInput.placeholder = "e.g. Python / React Developer Seeking Team";
     if (femaleWrap) femaleWrap.style.display = "none";
   } else {
-    if (titleLabel) titleLabel.textContent = "Team / Solution Title or Topic *";
-    if (titleInput) titleInput.placeholder = "e.g. Team ByteCraft • AI Early Warning Landslide System";
+    if (titleLabel) titleLabel.textContent = "Team / Project Title or Topic *";
+    if (titleInput) titleInput.placeholder = "e.g. AI Early Warning Landslide System";
     if (femaleWrap) femaleWrap.style.display = "block";
   }
 };
@@ -4659,7 +4594,7 @@ window.handleTeammateRequestSubmit = (e) => {
   }
 
   if (!title || title.length < 3) {
-    alert("[TIT SIH] Please enter a valid listing title or specialization.");
+    alert("[TIT SIH] Please enter a valid title or specialization.");
     return;
   }
 
@@ -4673,7 +4608,6 @@ window.handleTeammateRequestSubmit = (e) => {
     return;
   }
 
-  // Parse skill tags
   const skills = rawSkills.split(",").map(s => s.trim()).filter(s => s.length > 0);
   if (needsFemale && !skills.some(s => s.toLowerCase().includes("female"))) {
     skills.unshift("Female Member Needed");
@@ -4702,7 +4636,7 @@ window.handleTeammateRequestSubmit = (e) => {
   // Sync to Firebase Cloud Firestore
   if (typeof firebase !== "undefined" && db && isFirebaseActive) {
     db.collection("teammate_requests").doc(newRequest.id).set(newRequest).catch((err) => {
-      console.warn("[TIT SIH] Cloud post write notice:", err);
+      console.warn("[TIT SIH] Cloud write notice:", err);
     });
   }
 
@@ -4710,11 +4644,11 @@ window.handleTeammateRequestSubmit = (e) => {
   renderTeammateBoard();
   triggerConfettiBurst();
 
-  alert(`[TIT SIH] 🎉 Your squad request "${title}" has been published to the Matchmaker Board!\n\nFellow TIT students can now connect with you via WhatsApp and Email.`);
+  alert(`[TIT SIH] 🎉 Your request "${title}" is now live on the Team Finder board!`);
 };
 
 window.resolveTeammateRequest = (requestId) => {
-  if (confirm("Congratulations! Mark this squad request as filled and remove it from the live board?")) {
+  if (confirm("Remove this post from the Team Finder board?")) {
     teammateRequests = teammateRequests.filter(r => r.id !== requestId);
     localStorage.setItem("tit_sih_teammate_requests", JSON.stringify(teammateRequests));
 
@@ -4723,7 +4657,7 @@ window.resolveTeammateRequest = (requestId) => {
     }
 
     renderTeammateBoard();
-    alert("[TIT SIH] Listing marked as resolved.");
+    alert("[TIT SIH] Post removed.");
   }
 };
 
