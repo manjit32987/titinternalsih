@@ -4328,12 +4328,11 @@ function initTeammateBoard() {
   const container = document.getElementById("matchmaker-cards-grid");
   if (!container) return;
 
-  // Load from localStorage & clean any legacy seed data
+  // Clear any old fake seed data from localStorage
   try {
     const localData = localStorage.getItem("tit_sih_teammate_requests");
     if (localData) {
       const parsed = JSON.parse(localData);
-      // Filter out any legacy sample seed posts
       teammateRequests = Array.isArray(parsed) ? parsed.filter(p => !p.id?.startsWith("req_seed_")) : [];
       localStorage.setItem("tit_sih_teammate_requests", JSON.stringify(teammateRequests));
     } else {
@@ -4343,7 +4342,7 @@ function initTeammateBoard() {
     teammateRequests = [];
   }
 
-  // Real-time Cloud Sync with Firebase Firestore
+  // Real-time Cloud Sync with Firebase Firestore & Purge any legacy sample seeds
   if (typeof firebase !== "undefined" && db && isFirebaseActive) {
     try {
       db.collection("teammate_requests")
@@ -4353,7 +4352,10 @@ function initTeammateBoard() {
             const cloudList = [];
             snapshot.forEach((doc) => {
               const data = doc.data();
-              if (!doc.id.startsWith("req_seed_")) {
+              if (doc.id.startsWith("req_seed_") || data.id?.startsWith("req_seed_")) {
+                // Permanently delete sample seed doc from Firestore
+                db.collection("teammate_requests").doc(doc.id).delete().catch(() => {});
+              } else {
                 cloudList.push({ id: doc.id, ...data });
               }
             });
@@ -4417,10 +4419,10 @@ function renderTeammateBoard() {
         <div class="team-empty-icon"><i class="fa-solid fa-users"></i></div>
         <h4 class="team-empty-title">No Active Team Posts Yet</h4>
         <p class="team-empty-desc">
-          Looking for teammates to complete your squad, or wanting to join an existing team? Post your request now!
+          Looking for teammates to complete your squad, or wanting to join an existing team? Post your requirement now!
         </p>
         <button type="button" class="btn-3d-primary" onclick="openTeammateRequestModal()" style="margin: 0 auto;">
-          <i class="fa-solid fa-plus-circle"></i> Post a Request (Takes 30s)
+          <i class="fa-solid fa-plus"></i> Post a Request
         </button>
       </div>
     `;
@@ -4644,7 +4646,7 @@ window.handleTeammateRequestSubmit = (e) => {
   renderTeammateBoard();
   triggerConfettiBurst();
 
-  alert(`[TIT SIH] 🎉 Your request "${title}" is now live on the Team Finder board!`);
+  alert(`[TIT SIH] Your request "${title}" is now live on the Team Finder board!`);
 };
 
 window.resolveTeammateRequest = (requestId) => {
