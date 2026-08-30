@@ -7049,6 +7049,60 @@ body.dark-theme .ps-reference-guide-card {
   align-items: start;
 }
 
+/* Auth Gate Card */
+.badge-auth-gate-card {
+  max-width: 640px;
+  margin: 20px auto 0;
+  text-align: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 56px 36px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.badge-auth-gate-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #059669, #10b981, #06b6d4);
+}
+
+.badge-gate-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #ecfdf5;
+  color: #059669;
+  font-size: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  border: 2px solid #a7f3d0;
+  box-shadow: 0 4px 16px rgba(5, 150, 105, 0.2);
+}
+
+.badge-gate-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin: 0 0 10px;
+}
+
+.badge-gate-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 480px;
+  margin: 0 auto 26px;
+}
+
 /* Left Panel: Controls */
 .badge-controls-card {
   background: var(--bg-surface);
@@ -7068,17 +7122,19 @@ body.dark-theme .ps-reference-guide-card {
   border-bottom: 1px solid var(--border-color);
 }
 
-.badge-controls-header i {
-  width: 44px;
-  height: 44px;
+.badge-user-avatar-tag {
+  width: 46px;
+  height: 46px;
   border-radius: 12px;
-  background: #ecfdf5;
-  color: #059669;
-  font-size: 1.25rem;
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
 }
 
 .badge-controls-header h3 {

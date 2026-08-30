@@ -662,31 +662,46 @@
   <section class="badge-gen-section" id="badge-generator">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag"><i class="fa-solid fa-id-badge"></i> Viral Social Pass</span>
+        <span class="section-tag"><i class="fa-solid fa-id-badge"></i> Verified Student Pass</span>
         <h2 class="section-title">"I'm Participating!" Digital Badge</h2>
-        <p class="section-subtitle">Take a live selfie or upload your photo, customize your details with official TIT & IIC logos, and generate a customized high-res card for WhatsApp Status & Instagram Stories.</p>
+        <p class="section-subtitle">Exclusive for signed-in TIT students. Snap your live selfie, generate your official verified SIH 2026 card with TIT & IIC logos, and share it on WhatsApp & Instagram!</p>
       </div>
 
-      <div class="badge-gen-layout">
+      <!-- Auth Gate: Displayed when student is not logged in -->
+      <div class="badge-auth-gate-card" id="badge-auth-gate">
+        <div class="badge-gate-icon">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h3 class="badge-gate-title">Sign In to Unlock Your Badge</h3>
+        <p class="badge-gate-desc">
+          You need to be signed in to generate and download your official verified participation badge. Sign in with your TIT student account to load your profile automatically.
+        </p>
+        <button type="button" class="btn-3d-primary" onclick="openAuthModal('login')" style="padding: 14px 36px; font-size: 1rem;">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to Generate Badge
+        </button>
+      </div>
+
+      <!-- Main Generator: Displayed when student is signed in -->
+      <div class="badge-gen-layout" id="badge-gen-main-content" style="display: none;">
         <!-- Left Column: Customization Controls & Photo Input -->
         <div class="badge-controls-card">
           <div class="badge-controls-header">
-            <i class="fa-solid fa-sliders"></i>
+            <div class="badge-user-avatar-tag" id="badge-user-avatar-initials">TIT</div>
             <div>
-              <h3>Customize Your Badge</h3>
-              <p>Personalize your details and photo in real-time</p>
+              <h3 id="badge-user-display-name">Welcome, Innovator</h3>
+              <p id="badge-user-display-sub">Verified TIT Student Profile</p>
             </div>
           </div>
 
-          <!-- Photo Selection Mode: Webcam / Upload -->
+          <!-- Photo Selection: Webcam (Default) & Upload -->
           <div class="badge-photo-action-box">
-            <label class="form-input-label"><i class="fa-solid fa-camera"></i> Your Badge Photo</label>
+            <label class="form-input-label"><i class="fa-solid fa-camera"></i> Student Photo (Webcam Default)</label>
             <div class="badge-photo-btn-group">
               <button type="button" class="btn-badge-photo-mode active" id="btn-mode-camera" onclick="openBadgeWebcamModal()">
-                <i class="fa-solid fa-camera-retro"></i> Snap Live Selfie
+                <i class="fa-solid fa-camera"></i> Snap Live Selfie
               </button>
               <label class="btn-badge-photo-mode" id="btn-mode-upload">
-                <i class="fa-solid fa-cloud-arrow-up"></i> Upload Photo
+                <i class="fa-solid fa-cloud-arrow-up"></i> Upload Image
                 <input type="file" id="badge-photo-upload-input" accept="image/*" style="display: none;" onchange="handleBadgePhotoUpload(event)">
               </label>
             </div>
@@ -698,23 +713,23 @@
               </div>
               <div class="badge-thumb-meta">
                 <span class="badge-thumb-status" id="badge-thumb-status">Default Avatar Active</span>
-                <button type="button" class="btn-retake-photo" id="btn-retake-photo" onclick="openBadgeWebcamModal()" style="display: none;">
-                  <i class="fa-solid fa-rotate-right"></i> Retake Selfie
+                <button type="button" class="btn-retake-photo" id="btn-retake-photo" onclick="openBadgeWebcamModal()" style="display: inline-flex;">
+                  <i class="fa-solid fa-camera"></i> Snap Live Selfie
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- Form Fields -->
+          <!-- Verified Details (Auto-Fetched) -->
           <div class="form-row-2">
             <div class="form-group-item">
-              <label class="form-input-label">Your Full Name *</label>
-              <input type="text" id="badge-input-name" class="form-text-input" placeholder="e.g. Rahul Sharma" value="Rahul Sharma" oninput="updateBadgeCanvas()">
+              <label class="form-input-label">Student Name</label>
+              <input type="text" id="badge-input-name" class="form-text-input" placeholder="Your Name" oninput="updateBadgeCanvas()">
             </div>
             <div class="form-group-item">
-              <label class="form-input-label">Department / Branch *</label>
+              <label class="form-input-label">Department / Branch</label>
               <select id="badge-input-branch" class="form-select-input" onchange="updateBadgeCanvas()">
-                <option value="CSE" selected>CSE - Computer Science</option>
+                <option value="CSE">CSE - Computer Science</option>
                 <option value="ECE">ECE - Electronics & Comm</option>
                 <option value="EE">EE - Electrical Engg</option>
                 <option value="ME">ME - Mechanical Engg</option>
@@ -726,7 +741,7 @@
 
           <div class="form-row-2">
             <div class="form-group-item">
-              <label class="form-input-label">Year of Study *</label>
+              <label class="form-input-label">Year of Study</label>
               <select id="badge-input-year" class="form-select-input" onchange="updateBadgeCanvas()">
                 <option value="1st Year">1st Year Innovator</option>
                 <option value="2nd Year" selected>2nd Year Innovator</option>
@@ -735,32 +750,33 @@
               </select>
             </div>
             <div class="form-group-item">
-              <label class="form-input-label">Team Name or Role *</label>
-              <input type="text" id="badge-input-role" class="form-text-input" placeholder="e.g. Team Lead / Team ByteCraft" value="Team ByteCraft • Lead" oninput="updateBadgeCanvas()">
+              <label class="form-input-label">Team Name or Role</label>
+              <input type="text" id="badge-input-role" class="form-text-input" placeholder="e.g. Lead Innovator / Team ByteCraft" value="TIT Innovator" oninput="updateBadgeCanvas()">
             </div>
           </div>
 
           <div class="form-group-item">
-            <label class="form-input-label">Headline Slogan *</label>
+            <label class="form-input-label">Catchy Slogan (Gen Z Vibe)</label>
             <select id="badge-input-slogan" class="form-select-input" onchange="updateBadgeCanvas()" style="font-weight: 700;">
-              <option value="I AM PARTICIPATING! ARE YOU?" selected>I AM PARTICIPATING! ARE YOU?</option>
-              <option value="READY TO HACK & BUILD @ SIH 2026!">READY TO HACK & BUILD @ SIH 2026!</option>
-              <option value="BUILDING THE FUTURE @ TIT AGARTALA">BUILDING THE FUTURE @ TIT AGARTALA</option>
-              <option value="OFFICIAL INNOVATOR • SIH 2026">OFFICIAL INNOVATOR • SIH 2026</option>
+              <option value="I'M PARTICIPATING • ARE YOU?" selected>I'M PARTICIPATING • ARE YOU?</option>
+              <option value="HACKATHON MODE: ACTIVATED">HACKATHON MODE: ACTIVATED</option>
+              <option value="COOKING INNOVATION @ SIH 2026">COOKING INNOVATION @ SIH 2026</option>
+              <option value="NO SLEEP, JUST CODE & BUILD">NO SLEEP, JUST CODE & BUILD</option>
+              <option value="OFFICIAL INNOVATOR • TIT AGARTALA">OFFICIAL INNOVATOR • TIT AGARTALA</option>
             </select>
           </div>
 
           <div class="form-group-item">
-            <label class="form-input-label">Badge Theme Accent</label>
+            <label class="form-input-label">Cyber Theme Accent</label>
             <div class="badge-theme-selector">
               <button type="button" class="badge-theme-btn active" data-theme="emerald" onclick="setBadgeTheme('emerald', this)">
                 <span class="theme-dot dot-emerald"></span> Cyber Emerald
               </button>
               <button type="button" class="badge-theme-btn" data-theme="neon" onclick="setBadgeTheme('neon', this)">
-                <span class="theme-dot dot-neon"></span> Electric Cyan
+                <span class="theme-dot dot-neon"></span> Hyper Neon
               </button>
               <button type="button" class="badge-theme-btn" data-theme="gold" onclick="setBadgeTheme('gold', this)">
-                <span class="theme-dot dot-gold"></span> Champion Gold
+                <span class="theme-dot dot-gold"></span> Solar Gold
               </button>
             </div>
           </div>
@@ -776,7 +792,7 @@
           <!-- Quick Action Buttons -->
           <div class="badge-action-buttons">
             <button type="button" class="btn-3d-primary btn-download-badge" onclick="downloadBadgeImage()">
-              <i class="fa-solid fa-download"></i> Download HD Badge (PNG)
+              <i class="fa-solid fa-download"></i> Download HD Card (PNG)
             </button>
             <button type="button" class="btn-whatsapp-share-badge" onclick="shareBadgeWhatsApp()">
               <i class="fa-brands fa-whatsapp"></i> Share on WhatsApp
@@ -786,7 +802,7 @@
             </button>
           </div>
           <p class="badge-share-hint">
-            <i class="fa-solid fa-circle-info"></i> High-resolution 1080x1350 card designed for WhatsApp Status & Instagram Stories.
+            <i class="fa-solid fa-circle-check" style="color: #10b981;"></i> High-res 1080x1350 vertical poster formatted for WhatsApp Status & Instagram Stories.
           </p>
         </div>
       </div>
@@ -2178,7 +2194,7 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <!-- Main Application Script -->
-  <script src="script.js?v=2026.9.0"></script>
+  <script src="script.js?v=2026.9.1"></script>
 </body>
 
 </html>

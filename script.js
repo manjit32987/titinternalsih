@@ -1536,6 +1536,10 @@ function updateNavAuthState() {
       mobAuthLink.innerHTML = `<a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); openAuthModal('student', 'login');"><i class="fa-solid fa-user-lock"></i> Sign In / Register</a>`;
     }
   }
+
+  if (typeof updateBadgeAuthState === "function") {
+    updateBadgeAuthState();
+  }
 }
 
 window.navigateToStudentDashboard = () => {
@@ -4664,7 +4668,7 @@ window.resolveTeammateRequest = (requestId) => {
 };
 
 /* ==========================================================================
-   DIGITAL SOCIAL CARD & WEBCAM BADGE GENERATOR ENGINE
+   DIGITAL SOCIAL CARD & WEBCAM BADGE GENERATOR ENGINE (GEN-Z CYBER EDITION)
    ========================================================================== */
 let badgeActiveTheme = "emerald";
 let badgeUserPhotoImg = null;
@@ -4679,22 +4683,67 @@ iicLogoImg.src = "iic-logo.png";
 titLogoImg.onload = () => { updateBadgeCanvas(); };
 iicLogoImg.onload = () => { updateBadgeCanvas(); };
 
-function initBadgeGenerator() {
-  const canvas = document.getElementById("badge-render-canvas");
-  if (!canvas) return;
+function updateBadgeAuthState() {
+  const authGate = document.getElementById("badge-auth-gate");
+  const mainContent = document.getElementById("badge-gen-main-content");
+  if (!authGate || !mainContent) return;
 
-  // Auto-populate with logged in user profile if available
-  if (currentUser) {
-    const nameInput = document.getElementById("badge-input-name");
-    const branchInput = document.getElementById("badge-input-branch");
-    const yearInput = document.getElementById("badge-input-year");
-    if (nameInput && currentUser.name) nameInput.value = currentUser.name;
-    if (branchInput && currentUser.branch) branchInput.value = currentUser.branch;
-    if (yearInput && currentUser.year) yearInput.value = currentUser.year;
+  if (!currentUser) {
+    authGate.style.display = "block";
+    mainContent.style.display = "none";
+    return;
+  }
+
+  // Student is signed in -> Unlock Badge Generator
+  authGate.style.display = "none";
+  mainContent.style.display = "grid";
+
+  // Auto-fill student profile details
+  const nameInput = document.getElementById("badge-input-name");
+  const branchInput = document.getElementById("badge-input-branch");
+  const yearInput = document.getElementById("badge-input-year");
+  const roleInput = document.getElementById("badge-input-role");
+  const dispName = document.getElementById("badge-user-display-name");
+  const dispSub = document.getElementById("badge-user-display-sub");
+  const dispInit = document.getElementById("badge-user-avatar-initials");
+
+  if (dispName) dispName.textContent = currentUser.name || "Student Innovator";
+  if (dispSub) dispSub.textContent = `${currentUser.branch || "CSE"} • ${currentUser.year || "2nd Year"} (Verified)`;
+  
+  const initials = (currentUser.name || "TIT")
+    .split(" ")
+    .map(w => w[0])
+    .join("")
+    .substring(0, 2)
+    .toUpperCase();
+  if (dispInit) dispInit.textContent = initials;
+
+  if (nameInput) nameInput.value = currentUser.name || "";
+  if (branchInput && currentUser.branch) branchInput.value = currentUser.branch;
+  if (yearInput && currentUser.year) yearInput.value = currentUser.year;
+
+  // Auto-detect registered team if student is in one
+  if (roleInput) {
+    const userEmail = (currentUser.email || "").toLowerCase();
+    const myTeam = (registeredTeams || []).find(t => 
+      (t.leaderEmail && t.leaderEmail.toLowerCase() === userEmail) ||
+      (Array.isArray(t.members) && t.members.some(m => m.email && m.email.toLowerCase() === userEmail))
+    );
+    if (myTeam) {
+      roleInput.value = `Team ${myTeam.teamName}`;
+    } else if (!roleInput.value || roleInput.value === "Rahul Sharma") {
+      roleInput.value = "TIT Innovator";
+    }
   }
 
   updateBadgeCanvas();
 }
+
+function initBadgeGenerator() {
+  updateBadgeAuthState();
+}
+
+window.updateBadgeAuthState = updateBadgeAuthState;
 
 window.setBadgeTheme = (themeName, btn) => {
   badgeActiveTheme = themeName;
@@ -4736,7 +4785,7 @@ async function startBadgeWebcam() {
     await video.play();
   } catch (err) {
     console.warn("[TIT SIH] Webcam access error:", err);
-    alert("[TIT SIH] Camera access was denied or not supported on this browser. You can still use 'Upload Photo' to pick a picture from your gallery!");
+    alert("[TIT SIH] Camera access was denied or not supported on this device. You can still use 'Upload Image' to choose a photo from your gallery!");
     closeBadgeWebcamModal();
   }
 }
@@ -4820,7 +4869,7 @@ function updateBadgeThumbnail(dataUrl) {
     thumbCircle.innerHTML = `<img src="${dataUrl}" alt="Selfie">`;
   }
   if (thumbStatus) {
-    thumbStatus.textContent = "Custom Photo Active";
+    thumbStatus.textContent = "Selfie Active";
   }
   if (retakeBtn) {
     retakeBtn.style.display = "inline-flex";
@@ -4838,53 +4887,57 @@ window.updateBadgeCanvas = () => {
   canvas.width = width;
   canvas.height = height;
 
-  // 1. Theme Configuration
-  let themeColors = {
-    bgStart: "#05130f",
-    bgEnd: "#0c281e",
+  // Theme Palettes (Gen-Z High Energy Edition)
+  let theme = {
+    bgDark1: "#030a07",
+    bgDark2: "#071c14",
+    primary: "#00f59b",
     accent: "#10b981",
-    primary: "#059669",
-    glow: "rgba(16, 185, 129, 0.35)",
-    bannerGradient: ["#059669", "#10b981"],
-    textHighlight: "#34d399",
-    border: "#10b981"
+    glow: "rgba(0, 245, 155, 0.45)",
+    bannerBg: "linear-gradient(90deg, #059669, #00f59b)",
+    chipText: "#00f59b",
+    tagBg: "rgba(0, 245, 155, 0.15)",
+    tagBorder: "#00f59b"
   };
 
   if (badgeActiveTheme === "neon") {
-    themeColors = {
-      bgStart: "#071322",
-      bgEnd: "#0e2338",
-      accent: "#38bdf8",
-      primary: "#0284c7",
-      glow: "rgba(56, 189, 248, 0.35)",
-      bannerGradient: ["#0284c7", "#38bdf8"],
-      textHighlight: "#7dd3fc",
-      border: "#38bdf8"
+    theme = {
+      bgDark1: "#040915",
+      bgDark2: "#081b36",
+      primary: "#00f0ff",
+      accent: "#7000ff",
+      glow: "rgba(0, 240, 255, 0.45)",
+      bannerBg: "linear-gradient(90deg, #0070f3, #00f0ff)",
+      chipText: "#00f0ff",
+      tagBg: "rgba(0, 240, 255, 0.15)",
+      tagBorder: "#00f0ff"
     };
   } else if (badgeActiveTheme === "gold") {
-    themeColors = {
-      bgStart: "#150e04",
-      bgEnd: "#291b07",
-      accent: "#fbbf24",
-      primary: "#d97706",
-      glow: "rgba(251, 191, 36, 0.35)",
-      bannerGradient: ["#d97706", "#fbbf24"],
-      textHighlight: "#fde68a",
-      border: "#fbbf24"
+    theme = {
+      bgDark1: "#120701",
+      bgDark2: "#241003",
+      primary: "#ffb800",
+      accent: "#ff4d00",
+      glow: "rgba(255, 184, 0, 0.45)",
+      bannerBg: "linear-gradient(90deg, #d97706, #ffb800)",
+      chipText: "#ffb800",
+      tagBg: "rgba(255, 184, 0, 0.15)",
+      tagBorder: "#ffb800"
     };
   }
 
-  // 2. Background Gradient
-  const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
-  bgGrad.addColorStop(0, themeColors.bgStart);
-  bgGrad.addColorStop(1, themeColors.bgEnd);
+  // 1. Deep Space Cyber Background
+  const bgGrad = ctx.createLinearGradient(0, 0, width, height);
+  bgGrad.addColorStop(0, theme.bgDark1);
+  bgGrad.addColorStop(0.5, theme.bgDark2);
+  bgGrad.addColorStop(1, theme.bgDark1);
   ctx.fillStyle = bgGrad;
   ctx.fillRect(0, 0, width, height);
 
-  // 3. Cyber Tech Grid Pattern
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
+  // 2. Futuristic Cyberpunk Grid
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.035)";
   ctx.lineWidth = 1;
-  const gridGap = 54;
+  const gridGap = 45;
   for (let x = 0; x < width; x += gridGap) {
     ctx.beginPath();
     ctx.moveTo(x, 0);
@@ -4898,275 +4951,306 @@ window.updateBadgeCanvas = () => {
     ctx.stroke();
   }
 
-  // 4. Ambient Radial Glow behind Avatar
-  const glowGrad = ctx.createRadialGradient(width / 2, 590, 80, width / 2, 590, 420);
-  glowGrad.addColorStop(0, themeColors.glow);
-  glowGrad.addColorStop(1, "transparent");
-  ctx.fillStyle = glowGrad;
-  ctx.fillRect(0, 200, width, 800);
+  // 3. Neon Ambient Light Flares
+  // Top Left Flare
+  const flare1 = ctx.createRadialGradient(0, 0, 50, 0, 0, 450);
+  flare1.addColorStop(0, theme.glow);
+  flare1.addColorStop(1, "transparent");
+  ctx.fillStyle = flare1;
+  ctx.fillRect(0, 0, 500, 500);
 
-  // 5. Outer Cyber Corner Accents
-  ctx.strokeStyle = themeColors.accent;
+  // Center Avatar Glow
+  const flare2 = ctx.createRadialGradient(width / 2, 570, 80, width / 2, 570, 420);
+  flare2.addColorStop(0, theme.glow);
+  flare2.addColorStop(1, "transparent");
+  ctx.fillStyle = flare2;
+  ctx.fillRect(0, 200, width, 750);
+
+  // 4. Cyber Corner Tech Frame Brackets
+  ctx.strokeStyle = theme.primary;
   ctx.lineWidth = 3.5;
-  const cornerSize = 40;
-  const pad = 42;
+  const pad = 38;
+  const brk = 42;
 
-  // Top-Left
+  // Top Left
+  ctx.beginPath(); ctx.moveTo(pad, pad + brk); ctx.lineTo(pad, pad); ctx.lineTo(pad + brk, pad); ctx.stroke();
+  // Top Right
+  ctx.beginPath(); ctx.moveTo(width - pad - brk, pad); ctx.lineTo(width - pad, pad); ctx.lineTo(width - pad, pad + brk); ctx.stroke();
+  // Bottom Left
+  ctx.beginPath(); ctx.moveTo(pad, height - pad - brk); ctx.lineTo(pad, height - pad); ctx.lineTo(pad + brk, height - pad); ctx.stroke();
+  // Bottom Right
+  ctx.beginPath(); ctx.moveTo(width - pad - brk, height - pad); ctx.lineTo(width - pad, height - pad); ctx.lineTo(width - pad, height - pad - brk); ctx.stroke();
+
+  // 5. Dual Logos Header Pods (TIT on Left, IIC on Right)
+  const headerY = 65;
+
+  // Left Logo Glass Pod
+  ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
   ctx.beginPath();
-  ctx.moveTo(pad, pad + cornerSize);
-  ctx.lineTo(pad, pad);
-  ctx.lineTo(pad + cornerSize, pad);
+  ctx.roundRect(65, headerY, 96, 96, 18);
+  ctx.fill();
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
+  ctx.lineWidth = 1;
   ctx.stroke();
 
-  // Top-Right
-  ctx.beginPath();
-  ctx.moveTo(width - pad - cornerSize, pad);
-  ctx.lineTo(width - pad, pad);
-  ctx.lineTo(width - pad, pad + cornerSize);
-  ctx.stroke();
-
-  // Bottom-Left
-  ctx.beginPath();
-  ctx.moveTo(pad, height - pad - cornerSize);
-  ctx.lineTo(pad, height - pad);
-  ctx.lineTo(pad + cornerSize, height - pad);
-  ctx.stroke();
-
-  // Bottom-Right
-  ctx.beginPath();
-  ctx.moveTo(width - pad - cornerSize, height - pad);
-  ctx.lineTo(width - pad, height - pad);
-  ctx.lineTo(width - pad, height - pad - cornerSize);
-  ctx.stroke();
-
-  // 6. Header Logos (TIT Logo on left, IIC Logo on right)
-  const headerY = 70;
   if (titLogoImg.complete && titLogoImg.naturalWidth > 0) {
-    ctx.drawImage(titLogoImg, 75, headerY, 95, 95);
+    ctx.drawImage(titLogoImg, 73, headerY + 8, 80, 80);
   }
+
+  // Right Logo Glass Pod
+  ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
+  ctx.beginPath();
+  ctx.roundRect(width - 65 - 96, headerY, 96, 96, 18);
+  ctx.fill();
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
   if (iicLogoImg.complete && iicLogoImg.naturalWidth > 0) {
-    ctx.drawImage(iicLogoImg, width - 75 - 105, headerY + 8, 105, 80);
+    ctx.drawImage(iicLogoImg, width - 65 - 96 + 8, headerY + 14, 80, 68);
   }
 
-  // 7. Header Typography
+  // Center Header Texts
   ctx.textAlign = "center";
-  
-  // Institution Name
-  ctx.fillStyle = themeColors.textHighlight;
-  ctx.font = "800 20px 'Plus Jakarta Sans', Inter, sans-serif";
-  ctx.letterSpacing = "2.5px";
-  ctx.fillText("TRIPURA INSTITUTE OF TECHNOLOGY", width / 2, headerY + 30);
+  ctx.fillStyle = theme.chipText;
+  ctx.font = "800 18px 'Plus Jakarta Sans', Inter, sans-serif";
+  ctx.letterSpacing = "2px";
+  ctx.fillText("TRIPURA INSTITUTE OF TECHNOLOGY", width / 2, headerY + 28);
 
-  // Main Event Name
   ctx.fillStyle = "#ffffff";
   ctx.font = "900 32px 'Plus Jakarta Sans', Inter, sans-serif";
   ctx.letterSpacing = "1.5px";
-  ctx.fillText("SMART INDIA HACKATHON 2026", width / 2, headerY + 68);
+  ctx.fillText("SMART INDIA HACKATHON 2026", width / 2, headerY + 66);
 
-  // IIC Banner
-  ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
-  ctx.font = "700 17px 'Plus Jakarta Sans', Inter, sans-serif";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.65)";
+  ctx.font = "700 16px 'Plus Jakarta Sans', Inter, sans-serif";
   ctx.letterSpacing = "1px";
-  ctx.fillText("INTERNAL ROUND • INSTITUTION'S INNOVATION COUNCIL (IIC)", width / 2, headerY + 98);
+  ctx.fillText("INTERNAL COLLEGE EDITION // IIC TIT", width / 2, headerY + 95);
 
-  // 8. Slogan Headline Banner Pill
-  const slogan = (document.getElementById("badge-input-slogan")?.value || "I AM PARTICIPATING! ARE YOU?").toUpperCase();
-  const bannerY = 220;
-  const bannerWidth = 840;
-  const bannerHeight = 72;
-  const bannerX = (width - bannerWidth) / 2;
+  // 6. Gen Z Slogan Headline Banner Pill
+  const rawSlogan = document.getElementById("badge-input-slogan")?.value || "I'M PARTICIPATING • ARE YOU?";
+  const sloganY = 205;
+  const sloganW = 860;
+  const sloganH = 74;
+  const sloganX = (width - sloganW) / 2;
 
-  // Pill Background
-  ctx.fillStyle = "rgba(0, 0, 0, 0.55)";
+  // Banner Background with Cyber Border
+  ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
   ctx.beginPath();
-  ctx.roundRect(bannerX, bannerY, bannerWidth, bannerHeight, 36);
+  ctx.roundRect(sloganX, sloganY, sloganW, sloganH, 37);
   ctx.fill();
 
-  // Glowing Pill Border
-  ctx.strokeStyle = themeColors.accent;
+  ctx.strokeStyle = theme.primary;
   ctx.lineWidth = 2.5;
   ctx.stroke();
 
-  // Slogan Text
   ctx.fillStyle = "#ffffff";
-  ctx.font = "900 33px 'Plus Jakarta Sans', Inter, sans-serif";
+  ctx.font = "900 32px 'Plus Jakarta Sans', Inter, sans-serif";
   ctx.letterSpacing = "1.5px";
-  ctx.fillText(slogan, width / 2, bannerY + 48);
+  ctx.fillText(rawSlogan, width / 2, sloganY + 49);
 
-  // 9. Central Avatar & Photo Area
-  const avatarCenterX = width / 2;
-  const avatarCenterY = 580;
-  const avatarRadius = 170;
+  // 7. Central Avatar Area (Center at 540, 560)
+  const avX = width / 2;
+  const avY = 565;
+  const avR = 175;
 
-  // Outer Tech Rings
+  // Outer Concentric Rings
   ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
   ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.arc(avatarCenterX, avatarCenterY, avatarRadius + 22, 0, Math.PI * 2);
+  ctx.arc(avX, avY, avR + 24, 0, Math.PI * 2);
   ctx.stroke();
 
-  ctx.strokeStyle = themeColors.accent;
+  ctx.strokeStyle = theme.primary;
   ctx.lineWidth = 4;
   ctx.beginPath();
-  ctx.arc(avatarCenterX, avatarCenterY, avatarRadius + 8, 0, Math.PI * 2);
+  ctx.arc(avX, avY, avR + 8, 0, Math.PI * 2);
   ctx.stroke();
 
-  // Save state for circular clipping
+  // Cyber Crosshair Notches around avatar
+  const crossLen = 14;
+  ctx.strokeStyle = theme.primary;
+  ctx.lineWidth = 3;
+  // Top
+  ctx.beginPath(); ctx.moveTo(avX, avY - avR - 16 - crossLen); ctx.lineTo(avX, avY - avR - 16); ctx.stroke();
+  // Bottom
+  ctx.beginPath(); ctx.moveTo(avX, avY + avR + 16); ctx.lineTo(avX, avY + avR + 16 + crossLen); ctx.stroke();
+  // Left
+  ctx.beginPath(); ctx.moveTo(avX - avR - 16 - crossLen, avY); ctx.lineTo(avX - avR - 16, avY); ctx.stroke();
+  // Right
+  ctx.beginPath(); ctx.moveTo(avX + avR + 16, avY); ctx.lineTo(avX + avR + 16 + crossLen, avY); ctx.stroke();
+
+  // Clip & Draw Photo
   ctx.save();
   ctx.beginPath();
-  ctx.arc(avatarCenterX, avatarCenterY, avatarRadius, 0, Math.PI * 2);
+  ctx.arc(avX, avY, avR, 0, Math.PI * 2);
   ctx.clip();
 
-  // Draw Photo or Default Silhouette
   if (badgeUserPhotoImg && badgeUserPhotoImg.complete && badgeUserPhotoImg.naturalWidth > 0) {
     const img = badgeUserPhotoImg;
     const imgSize = Math.min(img.naturalWidth, img.naturalHeight);
     const sx = (img.naturalWidth - imgSize) / 2;
     const sy = (img.naturalHeight - imgSize) / 2;
-    ctx.drawImage(img, sx, sy, imgSize, imgSize, avatarCenterX - avatarRadius, avatarCenterY - avatarRadius, avatarRadius * 2, avatarRadius * 2);
+    ctx.drawImage(img, sx, sy, imgSize, imgSize, avX - avR, avY - avR, avR * 2, avR * 2);
   } else {
-    // Default avatar gradient & placeholder initials
-    const avGrad = ctx.createLinearGradient(avatarCenterX - avatarRadius, avatarCenterY - avatarRadius, avatarCenterX + avatarRadius, avatarCenterY + avatarRadius);
-    avGrad.addColorStop(0, themeColors.primary);
-    avGrad.addColorStop(1, themeColors.accent);
+    // Default avatar gradient + initials
+    const avGrad = ctx.createLinearGradient(avX - avR, avY - avR, avX + avR, avY + avR);
+    avGrad.addColorStop(0, theme.accent);
+    avGrad.addColorStop(1, theme.primary);
     ctx.fillStyle = avGrad;
-    ctx.fillRect(avatarCenterX - avatarRadius, avatarCenterY - avatarRadius, avatarRadius * 2, avatarRadius * 2);
+    ctx.fillRect(avX - avR, avY - avR, avR * 2, avR * 2);
 
-    const nameVal = document.getElementById("badge-input-name")?.value || "Rahul Sharma";
+    const nameVal = document.getElementById("badge-input-name")?.value || currentUser?.name || "TIT Innovator";
     const initials = nameVal.split(" ").map(w => w[0]).join("").substring(0, 2).toUpperCase() || "TIT";
 
     ctx.fillStyle = "#ffffff";
-    ctx.font = "900 95px 'Plus Jakarta Sans', Inter, sans-serif";
+    ctx.font = "900 96px 'Plus Jakarta Sans', Inter, sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText(initials, avatarCenterX, avatarCenterY + 34);
+    ctx.fillText(initials, avX, avY + 34);
   }
   ctx.restore();
 
-  // 10. "Verified Participant" Badge Ribbon under avatar
-  const ribbonWidth = 320;
-  const ribbonHeight = 44;
-  const ribbonX = (width - ribbonWidth) / 2;
-  const ribbonY = avatarCenterY + avatarRadius - 16;
+  // Holographic Cyber Sticker Badge on avatar bottom-right
+  const stickerW = 280;
+  const stickerH = 42;
+  const stickerX = (width - stickerW) / 2;
+  const stickerY = avY + avR - 16;
 
-  const ribbonGrad = ctx.createLinearGradient(ribbonX, ribbonY, ribbonX + ribbonWidth, ribbonY);
-  ribbonGrad.addColorStop(0, themeColors.bannerGradient[0]);
-  ribbonGrad.addColorStop(1, themeColors.bannerGradient[1]);
-
-  ctx.fillStyle = ribbonGrad;
+  ctx.fillStyle = theme.primary;
   ctx.beginPath();
-  ctx.roundRect(ribbonX, ribbonY, ribbonWidth, ribbonHeight, 22);
+  ctx.roundRect(stickerX, stickerY, stickerW, stickerH, 21);
   ctx.fill();
 
-  ctx.strokeStyle = "#ffffff";
-  ctx.lineWidth = 2;
-  ctx.stroke();
-
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "800 18px 'Plus Jakarta Sans', Inter, sans-serif";
+  ctx.fillStyle = "#000000";
+  ctx.font = "900 17px 'Plus Jakarta Sans', Inter, sans-serif";
   ctx.letterSpacing = "1.5px";
   ctx.textAlign = "center";
-  ctx.fillText("✓ VERIFIED PARTICIPANT", width / 2, ribbonY + 28);
+  ctx.fillText("VERIFIED INNOVATOR", width / 2, stickerY + 27);
 
-  // 11. Student Identity Section
-  const studentName = document.getElementById("badge-input-name")?.value.trim() || "Rahul Sharma";
-  const studentBranch = document.getElementById("badge-input-branch")?.value || "CSE";
-  const studentYear = document.getElementById("badge-input-year")?.value || "2nd Year Innovator";
-  const studentRole = document.getElementById("badge-input-role")?.value.trim() || "Team ByteCraft • Lead";
+  // 8. Student Identity Section
+  const studentName = document.getElementById("badge-input-name")?.value.trim() || currentUser?.name || "Student Innovator";
+  const studentBranch = document.getElementById("badge-input-branch")?.value || currentUser?.branch || "CSE";
+  const studentYear = document.getElementById("badge-input-year")?.value || currentUser?.year || "2nd Year Innovator";
+  const studentRole = document.getElementById("badge-input-role")?.value.trim() || "TIT Innovator";
 
   // Name
   ctx.fillStyle = "#ffffff";
   ctx.font = "900 52px 'Plus Jakarta Sans', Inter, sans-serif";
-  ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
-  ctx.shadowBlur = 12;
+  ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+  ctx.shadowBlur = 14;
   ctx.shadowOffsetY = 4;
-  ctx.fillText(studentName, width / 2, 850);
+  ctx.fillText(studentName, width / 2, 840);
   ctx.shadowBlur = 0;
   ctx.shadowOffsetY = 0;
 
-  // Department & Year Pill
-  const deptPillText = `${studentBranch} • ${studentYear}`.toUpperCase();
-  const deptPillWidth = Math.max(340, ctx.measureText(deptPillText).width + 60);
-  const deptPillHeight = 44;
-  const deptPillX = (width - deptPillWidth) / 2;
-  const deptPillY = 880;
+  // Department & Year Tag Pill
+  const deptText = `[ ${studentBranch} // ${studentYear} ]`.toUpperCase();
+  const deptPillW = Math.max(360, ctx.measureText(deptText).width + 50);
+  const deptPillH = 42;
+  const deptPillX = (width - deptPillW) / 2;
+  const deptPillY = 870;
 
-  ctx.fillStyle = "rgba(255, 255, 255, 0.08)";
+  ctx.fillStyle = theme.tagBg;
   ctx.beginPath();
-  ctx.roundRect(deptPillX, deptPillY, deptPillWidth, deptPillHeight, 22);
+  ctx.roundRect(deptPillX, deptPillY, deptPillW, deptPillH, 12);
   ctx.fill();
 
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+  ctx.strokeStyle = theme.tagBorder;
   ctx.lineWidth = 1.5;
   ctx.stroke();
 
-  ctx.fillStyle = themeColors.textHighlight;
+  ctx.fillStyle = theme.chipText;
   ctx.font = "800 20px 'Plus Jakarta Sans', Inter, sans-serif";
-  ctx.letterSpacing = "1px";
-  ctx.fillText(deptPillText, width / 2, deptPillY + 29);
+  ctx.letterSpacing = "1.5px";
+  ctx.fillText(deptText, width / 2, deptPillY + 28);
 
-  // Role / Team Card Pill
-  const roleText = studentRole.toUpperCase();
+  // Squad / Role Tag
   ctx.fillStyle = "#ffffff";
   ctx.font = "700 24px 'Plus Jakarta Sans', Inter, sans-serif";
   ctx.letterSpacing = "1px";
-  ctx.fillText(roleText, width / 2, 975);
+  ctx.fillText(studentRole.toUpperCase(), width / 2, 960);
 
-  // 12. Bottom Motivational CTA Section
-  // Divider
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(120, 1040);
-  ctx.lineTo(width - 120, 1040);
-  ctx.stroke();
+  // 9. Gen Z 3-Stat Badge Counters
+  const statY = 1015;
+  const statBoxW = 270;
+  const statBoxH = 68;
+  const statGap = 20;
+  const totalStatsW = statBoxW * 3 + statGap * 2;
+  const statStartX = (width - totalStatsW) / 2;
 
-  // Center Diamond on Divider
-  ctx.fillStyle = themeColors.accent;
-  ctx.beginPath();
-  ctx.moveTo(width / 2, 1032);
-  ctx.lineTo(width / 2 + 10, 1040);
-  ctx.lineTo(width / 2, 1048);
-  ctx.lineTo(width / 2 - 10, 1040);
-  ctx.closePath();
-  ctx.fill();
+  const stats = [
+    { label: "EDITION", val: "SIH 2026" },
+    { label: "CAMPUS", val: "TIT AGARTALA" },
+    { label: "AWARDS POOL", val: "₹30,000+" }
+  ];
 
-  // Motivational Tagline
+  stats.forEach((s, idx) => {
+    const sx = statStartX + idx * (statBoxW + statGap);
+    ctx.fillStyle = "rgba(255, 255, 255, 0.04)";
+    ctx.beginPath();
+    ctx.roundRect(sx, statY, statBoxW, statBoxH, 14);
+    ctx.fill();
+
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    ctx.font = "700 13px 'Plus Jakarta Sans', Inter, sans-serif";
+    ctx.letterSpacing = "1px";
+    ctx.fillText(s.label, sx + statBoxW / 2, statY + 25);
+
+    ctx.fillStyle = theme.chipText;
+    ctx.font = "900 20px 'Plus Jakarta Sans', Inter, sans-serif";
+    ctx.letterSpacing = "0.5px";
+    ctx.fillText(s.val, sx + statBoxW / 2, statY + 52);
+  });
+
+  // 10. Motivational Tagline
   ctx.fillStyle = "#ffffff";
-  ctx.font = "800 26px 'Plus Jakarta Sans', Inter, sans-serif";
+  ctx.font = "800 24px 'Plus Jakarta Sans', Inter, sans-serif";
   ctx.letterSpacing = "0.5px";
-  ctx.fillText("Join the Innovation Revolution @ TIT Agartala", width / 2, 1105);
+  ctx.fillText("Join the Innovation Revolution @ TIT Agartala", width / 2, 1135);
 
-  // Secondary Text
-  ctx.fillStyle = "rgba(255, 255, 255, 0.65)";
-  ctx.font = "600 20px 'Plus Jakarta Sans', Inter, sans-serif";
-  ctx.fillText("Register Your Squad • Compete for ₹30,000+ in Awards", width / 2, 1145);
+  // 11. Barcode & Watermark Footer
+  const footerY = 1195;
+  const footerW = 900;
+  const footerH = 64;
+  const footerX = (width - footerW) / 2;
 
-  // 13. Official Portal URL Footer Bar
-  const footerY = 1200;
-  const footerWidth = 920;
-  const footerHeight = 64;
-  const footerX = (width - footerWidth) / 2;
-
-  ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
+  ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
   ctx.beginPath();
-  ctx.roundRect(footerX, footerY, footerWidth, footerHeight, 16);
+  ctx.roundRect(footerX, footerY, footerW, footerH, 16);
   ctx.fill();
 
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
   ctx.lineWidth = 1;
   ctx.stroke();
 
-  ctx.fillStyle = themeColors.accent;
-  ctx.font = "800 20px 'Plus Jakarta Sans', Inter, sans-serif";
+  // Stylized Barcode Graphic
+  const barcodeX = footerX + 40;
+  const barcodeY = footerY + 16;
+  ctx.fillStyle = theme.primary;
+  const barPattern = [3, 1, 4, 2, 1, 3, 2, 4, 1, 2, 3, 1, 4, 2, 3, 1, 2, 4, 1, 3, 2, 1, 4, 2];
+  let curX = barcodeX;
+  barPattern.forEach(w => {
+    ctx.fillRect(curX, barcodeY, w, 32);
+    curX += w + 2.5;
+  });
+
+  // Footer Link
+  ctx.textAlign = "right";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+  ctx.font = "800 19px 'Plus Jakarta Sans', Inter, sans-serif";
   ctx.letterSpacing = "1.5px";
-  ctx.fillText("🌐 OFFICIAL PORTAL: titagartala.ac.in/sih2026", width / 2, footerY + 40);
+  ctx.fillText("OFFICIAL PASS // titagartala.ac.in/sih2026", footerX + footerW - 35, footerY + 39);
 };
 
 window.downloadBadgeImage = () => {
   const canvas = document.getElementById("badge-render-canvas");
   if (!canvas) return;
 
-  const name = (document.getElementById("badge-input-name")?.value || "Student").replace(/[^a-zA-Z0-9]/g, "_");
+  const name = (document.getElementById("badge-input-name")?.value || currentUser?.name || "Student").replace(/[^a-zA-Z0-9]/g, "_");
   const filename = `TIT_SIH2026_Badge_${name}.png`;
 
   canvas.toBlob((blob) => {
@@ -5184,7 +5268,7 @@ window.downloadBadgeImage = () => {
 };
 
 window.shareBadgeWhatsApp = () => {
-  const name = document.getElementById("badge-input-name")?.value || "I";
+  const name = document.getElementById("badge-input-name")?.value || currentUser?.name || "I";
   const text = encodeURIComponent(
     `🔥 ${name} is participating in Smart India Hackathon 2026 @ Tripura Institute of Technology!\n\n` +
     `Get your customized participation badge & register your team now at: https://manjit32987.github.io/titinternalsih/#badge-generator\n\n` +
@@ -5197,7 +5281,7 @@ window.shareBadgeNative = async () => {
   const canvas = document.getElementById("badge-render-canvas");
   if (!canvas) return;
 
-  const name = (document.getElementById("badge-input-name")?.value || "Student").replace(/[^a-zA-Z0-9]/g, "_");
+  const name = (document.getElementById("badge-input-name")?.value || currentUser?.name || "Student").replace(/[^a-zA-Z0-9]/g, "_");
   const filename = `TIT_SIH2026_Badge_${name}.png`;
 
   if (navigator.share && navigator.canShare) {
@@ -5217,7 +5301,6 @@ window.shareBadgeNative = async () => {
           console.log("Share cancelled or failed:", err);
         }
       }
-      // Fallback
       window.shareBadgeWhatsApp();
     }, "image/png");
   } else {
@@ -5235,6 +5318,7 @@ if (document.readyState === "loading") {
   initTeammateBoard();
   initBadgeGenerator();
 }
+
 
 
 
