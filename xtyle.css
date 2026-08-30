@@ -6625,3 +6625,425 @@ body.dark-theme .ps-reference-guide-card {
   }
 }
 
+/* ==========================================================================
+   INTERACTIVE 'FIND A TEAMMATE' MATCHMAKER STYLES
+   ========================================================================== */
+.matchmaker-section {
+  padding: 84px 0;
+  background: var(--bg-surface);
+  position: relative;
+}
+
+.matchmaker-controls-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+.matchmaker-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.matchmaker-tabs-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.matchmaker-tab-btn {
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.matchmaker-tab-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+.matchmaker-tab-btn.active {
+  background: var(--primary-color);
+  color: #ffffff;
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+}
+
+.matchmaker-tab-btn.tab-female.active {
+  background: linear-gradient(135deg, #db2777 0%, #059669 100%);
+  border-color: #db2777;
+}
+
+.btn-post-teammate {
+  padding: 10px 20px;
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
+.matchmaker-filter-row {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 14px;
+}
+
+.matchmaker-search-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.matchmaker-search-input-wrap i {
+  position: absolute;
+  left: 14px;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.matchmaker-search-input {
+  width: 100%;
+  padding: 10px 14px 10px 38px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-family: inherit;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.matchmaker-search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+}
+
+.matchmaker-branch-select {
+  padding: 10px 14px;
+  font-size: 0.88rem;
+}
+
+/* Matchmaker Grid */
+.matchmaker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+/* Matchmaker Card */
+.matchmaker-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.matchmaker-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(5, 150, 105, 0.4);
+}
+
+.matchmaker-card.needs-female-card {
+  border-color: rgba(219, 39, 119, 0.3);
+}
+
+.matchmaker-card.needs-female-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3.5px;
+  background: linear-gradient(90deg, #db2777, #10b981);
+}
+
+.matchmaker-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.author-info-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.author-avatar-chip {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+}
+
+.author-meta-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.author-meta-dept {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.post-type-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.post-type-team {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+.post-type-solo {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+.matchmaker-title-text {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+  line-height: 1.35;
+}
+
+.matchmaker-desc-text {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0 0 14px;
+}
+
+/* Skills Chips */
+.matchmaker-skills-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.skill-chip {
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.skill-chip-female {
+  background: #fdf2f8;
+  color: #db2777;
+  border-color: #fbcfe8;
+  font-weight: 800;
+}
+
+/* Card Actions */
+.matchmaker-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-color);
+}
+
+.btn-whatsapp-connect {
+  background: #25d366;
+  color: #ffffff;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.25);
+}
+
+.btn-whatsapp-connect:hover {
+  background: #1ea952;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+}
+
+.btn-email-connect {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.btn-email-connect:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.btn-resolve-post {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all var(--transition-fast);
+}
+
+.btn-resolve-post:hover {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+/* Callout Banner */
+.matchmaker-callout-banner {
+  background: linear-gradient(135deg, rgba(5, 150, 105, 0.08) 0%, rgba(16, 185, 129, 0.04) 100%);
+  border: 1px dashed rgba(5, 150, 105, 0.35);
+  border-radius: var(--radius-lg);
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.matchmaker-callout-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pulse-beacon-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: beaconPulse 2s infinite;
+  flex-shrink: 0;
+}
+
+.matchmaker-callout-left strong {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  display: block;
+}
+
+.matchmaker-callout-left p {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  margin: 2px 0 0;
+}
+
+/* Empty State */
+.matchmaker-empty-box {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 48px 20px;
+  background: var(--bg-card);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-lg);
+}
+
+@media (max-width: 768px) {
+  .matchmaker-filter-row {
+    grid-template-columns: 1fr;
+  }
+  .matchmaker-top-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn-post-teammate {
+    width: 100%;
+    justify-content: center;
+  }
+  .matchmaker-callout-banner {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  .matchmaker-callout-left {
+    flex-direction: column;
+  }
+}
+
+

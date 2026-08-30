@@ -139,6 +139,7 @@
           <li><a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="nav-link"
               style="color: #059669; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> SIH PS</a></li>
           <li><a href="#rules" class="nav-link"><i class="fa-solid fa-scale-balanced"></i> Rules</a></li>
+          <li><a href="#squad-finder" class="nav-link" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-users-viewfinder"></i> Squad Finder</a></li>
           <li><a href="#resources" class="nav-link"><i class="fa-solid fa-download"></i> Resources</a></li>
           <li><a href="committee.html" class="nav-link"><i class="fa-solid fa-users"></i> Committee</a></li>
           <li><a href="#faq" class="nav-link"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
@@ -591,6 +592,84 @@
           </div>
         </div>
 
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 5.6 Interactive 'Find a Teammate' Matchmaking Board -->
+  <section class="matchmaker-section" id="squad-finder">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-users-viewfinder"></i> TIT Squad Matchmaker</span>
+        <h2 class="section-title">Find a Teammate & Squad Hub</h2>
+        <p class="section-subtitle">Connect with fellow TIT innovators across CSE, ECE, EE, ME & CE. Fulfill the mandatory female member rule or recruit specialized hardware/software talent with 1-click WhatsApp connect.</p>
+      </div>
+
+      <!-- Matchmaker Controls & Search Bar -->
+      <div class="matchmaker-controls-card">
+        <div class="matchmaker-top-row">
+          <!-- Filter Tabs -->
+          <div class="matchmaker-tabs-wrap">
+            <button type="button" class="matchmaker-tab-btn active" data-filter="all" onclick="filterTeammateBoard('all', this)">
+              <i class="fa-solid fa-layer-group"></i> All Requests
+            </button>
+            <button type="button" class="matchmaker-tab-btn tab-female" data-filter="female" onclick="filterTeammateBoard('female', this)">
+              <i class="fa-solid fa-venus"></i> 🚺 1+ Female Member Needed
+            </button>
+            <button type="button" class="matchmaker-tab-btn" data-filter="hardware" onclick="filterTeammateBoard('hardware', this)">
+              <i class="fa-solid fa-microchip"></i> Hardware & IoT
+            </button>
+            <button type="button" class="matchmaker-tab-btn" data-filter="software" onclick="filterTeammateBoard('software', this)">
+              <i class="fa-solid fa-code"></i> Software & AI
+            </button>
+            <button type="button" class="matchmaker-tab-btn" data-filter="solo" onclick="filterTeammateBoard('solo', this)">
+              <i class="fa-solid fa-user-astronaut"></i> Solo Aspirants
+            </button>
+          </div>
+
+          <!-- Post New Request Button -->
+          <button type="button" class="btn-3d-primary btn-post-teammate" onclick="openTeammateRequestModal()">
+            <i class="fa-solid fa-plus-circle"></i> Post Squad Request
+          </button>
+        </div>
+
+        <div class="matchmaker-filter-row">
+          <div class="matchmaker-search-input-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="teammate-search-input" class="matchmaker-search-input" placeholder="Search by skill (e.g. IoT, React, Python, UI/UX, Arduino), name or topic..." oninput="handleTeammateSearch(this.value)">
+          </div>
+          <div class="matchmaker-branch-select-wrap">
+            <select id="teammate-branch-filter" class="form-select-input matchmaker-branch-select" onchange="handleTeammateBranchFilter(this.value)">
+              <option value="all">All Departments / Branches</option>
+              <option value="CSE">Computer Science & Engg (CSE)</option>
+              <option value="ECE">Electronics & Comm Engg (ECE)</option>
+              <option value="EE">Electrical Engg (EE)</option>
+              <option value="ME">Mechanical Engg (ME)</option>
+              <option value="CE">Civil Engg (CE)</option>
+              <option value="IT">Information Technology (IT)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Matchmaker Request Cards Grid -->
+      <div class="matchmaker-grid" id="matchmaker-cards-grid">
+        <!-- Rendered dynamically by script.js -->
+      </div>
+
+      <!-- Matchmaker Stats & Callout Footer -->
+      <div class="matchmaker-callout-banner">
+        <div class="matchmaker-callout-left">
+          <span class="pulse-beacon-dot"></span>
+          <div>
+            <strong>Looking for a squad or have a specialized skill?</strong>
+            <p>Post a request in under 60 seconds. Direct 1-click WhatsApp and Email links allow instant connections.</p>
+          </div>
+        </div>
+        <button type="button" class="btn-3d-secondary" onclick="openTeammateRequestModal()" style="white-space: nowrap;">
+          <i class="fa-solid fa-user-plus"></i> Post Your Request Now
+        </button>
       </div>
 
     </div>
@@ -1828,6 +1907,113 @@
     </div>
   </div>
 
+  <!-- Modal 9: Post Teammate Request Modal -->
+  <div class="modal-overlay" id="teammate-request-modal">
+    <div class="modal-container" style="max-width: 680px; text-align: left; padding: 28px 30px;">
+      <button class="modal-close-btn" onclick="closeTeammateRequestModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="modal-header-box" style="margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px;">
+        <h3 class="modal-title" style="font-size: 1.45rem; font-weight: 900; color: #0f172a; margin-bottom: 4px;">
+          <i class="fa-solid fa-users-viewfinder" style="color: #059669;"></i> Post Squad / Teammate Request
+        </h3>
+        <p style="color: #64748b; font-size: 0.85rem; margin: 0;">Connect with fellow TIT students to assemble your winning SIH squad.</p>
+      </div>
+
+      <form id="teammate-request-form" onsubmit="handleTeammateRequestSubmit(event)">
+        
+        <div class="form-row-2">
+          <div class="form-group-item">
+            <label class="form-input-label">I Am Posting As *</label>
+            <select id="req-post-type" class="form-select-input" required onchange="togglePostTypeFields(this.value)">
+              <option value="team_seeking">A Team Looking for Member(s)</option>
+              <option value="solo_seeking">A Solo Student Looking to Join a Squad</option>
+            </select>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label" id="req-author-name-label">Your Full Name / Team Leader *</label>
+            <input type="text" id="req-author-name" class="form-text-input" placeholder="e.g. Rahul Sharma" required>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group-item">
+            <label class="form-input-label">Your Department / Branch *</label>
+            <select id="req-branch" class="form-select-input" required>
+              <option value="CSE" selected>Computer Science & Engg (CSE)</option>
+              <option value="ECE">Electronics & Comm Engg (ECE)</option>
+              <option value="EE">Electrical Engg (EE)</option>
+              <option value="ME">Mechanical Engg (ME)</option>
+              <option value="CE">Civil Engg (CE)</option>
+              <option value="IT">Information Technology (IT)</option>
+            </select>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Year of Study *</label>
+            <select id="req-year" class="form-select-input" required>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year" selected>2nd Year</option>
+              <option value="3rd Year">3rd Year</option>
+              <option value="4th Year">4th Year</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group-item">
+            <label class="form-input-label" id="req-title-label">Team / Solution Title or Topic *</label>
+            <input type="text" id="req-title" class="form-text-input" placeholder="e.g. AI-Based Early Warning Landslide System" required>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label">Target Category / Domain *</label>
+            <select id="req-category" class="form-select-input" required>
+              <option value="Software Edition">Software Edition</option>
+              <option value="Hardware Edition">Hardware Edition</option>
+              <option value="Open Innovation">Open Innovation / Both</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-input-label" id="req-skills-label">Key Skills Needed or Offered (Comma separated) *</label>
+          <input type="text" id="req-skills" class="form-text-input" placeholder="e.g. IoT, Arduino, Python, React, UI/UX Designer, Circuit Design" required>
+        </div>
+
+        <!-- Special Checkbox for Mandatory Female Member Quota -->
+        <div id="req-female-quota-wrap" style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px;">
+          <label style="display: flex; gap: 10px; align-items: center; cursor: pointer; font-size: 0.84rem; color: #065f46; font-weight: 700;">
+            <input type="checkbox" id="req-needs-female" style="accent-color: #059669; width: 16px; height: 16px;">
+            <span><i class="fa-solid fa-venus"></i> We Specifically Need 1+ Female Student Member (For Mandatory SIH Compliance)</span>
+          </label>
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-input-label">Short Pitch / Description (2-3 lines) *</label>
+          <textarea id="req-desc" class="form-textarea-input" rows="3" placeholder="Briefly describe what your team is building or what role you are excited to take on..." required></textarea>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group-item">
+            <label class="form-input-label"><i class="fa-brands fa-whatsapp" style="color: #25d366;"></i> WhatsApp Mobile Number (10 digits) *</label>
+            <input type="tel" id="req-whatsapp" class="form-text-input" placeholder="e.g. 9876543210" pattern="[0-9]{10}" required>
+          </div>
+          <div class="form-group-item">
+            <label class="form-input-label"><i class="fa-solid fa-envelope" style="color: #059669;"></i> College / Personal Email ID *</label>
+            <input type="email" id="req-email" class="form-text-input" placeholder="student@titagartala.ac.in" required>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
+          <button type="button" class="btn-3d-secondary" onclick="closeTeammateRequestModal()">Cancel</button>
+          <button type="submit" class="btn-3d-primary" style="padding: 12px 28px;">
+            <i class="fa-solid fa-paper-plane"></i> Publish Squad Request
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Canvas Confetti CDN -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -1840,7 +2026,7 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <!-- Main Application Script -->
-  <script src="script.js?v=2026.5.0"></script>
+  <script src="script.js?v=2026.7.0"></script>
 </body>
 
 </html>

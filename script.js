@@ -461,6 +461,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initScrollSpy();
   initLiveDepartmentCoordinators();
   initSiteViewCounter();
+  initTeammateBoard();
 });
 
 /* ==========================================================================
@@ -4314,6 +4315,418 @@ window.toggleBranchAccordion = (branchCode) => {
     block.classList.toggle("open");
   }
 };
+
+/* ==========================================================================
+   INTERACTIVE 'FIND A TEAMMATE' SQUAD MATCHMAKER ENGINE
+   ========================================================================== */
+const DEFAULT_TEAMMATE_REQUESTS = [
+  {
+    id: "req_seed_1",
+    authorName: "Rohan Debnath",
+    authorEmail: "rohan.cse@titagartala.ac.in",
+    authorPhone: "9862145678",
+    authorBranch: "CSE",
+    authorYear: "3rd Year",
+    postType: "team_seeking",
+    title: "Team ByteCraft • Smart Agriculture IoT System",
+    category: "Hardware Edition",
+    skills: ["IoT", "Arduino", "Female Member Needed", "Sensors"],
+    needsFemale: true,
+    desc: "We have our AI model and cloud pipeline ready for PS SIH26001. We specifically need 1 enthusiastic female teammate (ECE / EE preferred for sensor wiring) to fulfill the mandatory SIH quota.",
+    status: "active",
+    createdAt: Date.now() - 3600000 * 4
+  },
+  {
+    id: "req_seed_2",
+    authorName: "Ananya Saha",
+    authorEmail: "ananya.ece@titagartala.ac.in",
+    authorPhone: "9436123456",
+    authorBranch: "ECE",
+    authorYear: "2nd Year",
+    postType: "solo_seeking",
+    title: "Solo Aspirant • Embedded C, Microcontrollers & PCB Design",
+    category: "Hardware Edition",
+    skills: ["Embedded C", "Robotics", "Circuit Design", "IoT"],
+    needsFemale: false,
+    desc: "Looking to join an ambitious hardware or robotics team for SIH 2026. Proficient in circuit simulation, sensor calibration, and ESP32 programming.",
+    status: "active",
+    createdAt: Date.now() - 3600000 * 10
+  },
+  {
+    id: "req_seed_3",
+    authorName: "Debashis Roy",
+    authorEmail: "debashis.it@titagartala.ac.in",
+    authorPhone: "8794561230",
+    authorBranch: "IT",
+    authorYear: "3rd Year",
+    postType: "team_seeking",
+    title: "Team NeuralNet • Disaster Early Warning System",
+    category: "Software Edition",
+    skills: ["React", "Python", "Figma UI/UX", "Female Member Needed"],
+    needsFemale: true,
+    desc: "Working on landslide risk monitoring. Looking for a female teammate with UI/UX or web design skills to craft our mobile dashboard presentation.",
+    status: "active",
+    createdAt: Date.now() - 3600000 * 18
+  },
+  {
+    id: "req_seed_4",
+    authorName: "Pritam Bhowmik",
+    authorEmail: "pritam.me@titagartala.ac.in",
+    authorPhone: "9774128901",
+    authorBranch: "ME",
+    authorYear: "3rd Year",
+    postType: "solo_seeking",
+    title: "Solo Aspirant • 3D CAD Prototyping & SolidWorks Pro",
+    category: "Hardware Edition",
+    skills: ["SolidWorks", "3D Printing", "Mechanical Design", "Drones"],
+    needsFemale: false,
+    desc: "Mechanical engineer with expertise in drone chassis and enclosure design. Seeking a software/AI team needing physical hardware prototyping.",
+    status: "active",
+    createdAt: Date.now() - 3600000 * 26
+  }
+];
+
+let teammateRequests = [];
+let currentTeammateFilter = "all";
+let currentTeammateBranch = "all";
+let currentTeammateSearch = "";
+
+function initTeammateBoard() {
+  const container = document.getElementById("matchmaker-cards-grid");
+  if (!container) return;
+
+  // Load from localStorage or seed
+  try {
+    const localData = localStorage.getItem("tit_sih_teammate_requests");
+    if (localData) {
+      teammateRequests = JSON.parse(localData);
+    } else {
+      teammateRequests = [...DEFAULT_TEAMMATE_REQUESTS];
+      localStorage.setItem("tit_sih_teammate_requests", JSON.stringify(teammateRequests));
+    }
+  } catch (err) {
+    teammateRequests = [...DEFAULT_TEAMMATE_REQUESTS];
+  }
+
+  // Real-time Cloud Sync with Firebase Firestore
+  if (typeof firebase !== "undefined" && db && isFirebaseActive) {
+    try {
+      db.collection("teammate_requests")
+        .orderBy("createdAt", "desc")
+        .onSnapshot((snapshot) => {
+          if (snapshot && !snapshot.empty) {
+            const cloudList = [];
+            snapshot.forEach((doc) => {
+              cloudList.push({ id: doc.id, ...doc.data() });
+            });
+            teammateRequests = cloudList;
+            localStorage.setItem("tit_sih_teammate_requests", JSON.stringify(teammateRequests));
+            renderTeammateBoard();
+          } else if (snapshot && snapshot.empty && teammateRequests.length > 0) {
+            // First time seed write to Firestore
+            teammateRequests.forEach((req) => {
+              db.collection("teammate_requests").doc(req.id).set(req).catch(() => {});
+            });
+          }
+        }, (err) => {
+          console.warn("[TIT SIH] Teammate sync notice:", err);
+        });
+    } catch (e) {
+      console.warn("[TIT SIH] Teammate board error:", e);
+    }
+  }
+
+  renderTeammateBoard();
+}
+
+function getTimeAgo(timestamp) {
+  if (!timestamp) return "Recently";
+  const diff = Date.now() - timestamp;
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `${Math.max(1, mins)}m ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
+
+function renderTeammateBoard() {
+  const container = document.getElementById("matchmaker-cards-grid");
+  if (!container) return;
+
+  const filtered = teammateRequests.filter((item) => {
+    if (item.status === "closed") return false;
+
+    // Filter Type Tab
+    if (currentTeammateFilter === "female" && !item.needsFemale) return false;
+    if (currentTeammateFilter === "hardware" && !item.category?.toLowerCase().includes("hardware") && !item.skills?.some(s => s.toLowerCase().includes("hardware") || s.toLowerCase().includes("iot"))) return false;
+    if (currentTeammateFilter === "software" && !item.category?.toLowerCase().includes("software") && !item.skills?.some(s => s.toLowerCase().includes("react") || s.toLowerCase().includes("python") || s.toLowerCase().includes("ai") || s.toLowerCase().includes("ui"))) return false;
+    if (currentTeammateFilter === "solo" && item.postType !== "solo_seeking") return false;
+
+    // Branch Filter
+    if (currentTeammateBranch !== "all" && item.authorBranch !== currentTeammateBranch) return false;
+
+    // Search Query
+    if (currentTeammateSearch) {
+      const q = currentTeammateSearch.toLowerCase();
+      const matchTitle = item.title?.toLowerCase().includes(q);
+      const matchAuthor = item.authorName?.toLowerCase().includes(q);
+      const matchDesc = item.desc?.toLowerCase().includes(q);
+      const matchSkills = item.skills?.some(s => s.toLowerCase().includes(q));
+      const matchBranch = item.authorBranch?.toLowerCase().includes(q);
+      if (!matchTitle && !matchAuthor && !matchDesc && !matchSkills && !matchBranch) return false;
+    }
+
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="matchmaker-empty-box">
+        <div style="font-size: 2.4rem; color: #94a3b8; margin-bottom: 12px;"><i class="fa-solid fa-users-slash"></i></div>
+        <h4 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin: 0 0 6px;">No Matching Requests Found</h4>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; max-width: 420px; margin: 0 auto 18px;">
+          Be the first to post a squad recruitment or solo aspirant listing for this category!
+        </p>
+        <button type="button" class="btn-3d-primary" onclick="openTeammateRequestModal()">
+          <i class="fa-solid fa-plus-circle"></i> Post Squad Request
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  let html = "";
+  filtered.forEach((req) => {
+    const isTeam = req.postType === "team_seeking";
+    const postTypeBadge = isTeam
+      ? `<span class="post-type-badge post-type-team"><i class="fa-solid fa-users"></i> Squad Recruiting</span>`
+      : `<span class="post-type-badge post-type-solo"><i class="fa-solid fa-user-astronaut"></i> Solo Aspirant</span>`;
+
+    const initials = (req.authorName || "TIT")
+      .split(" ")
+      .map(w => w[0])
+      .join("")
+      .substring(0, 2)
+      .toUpperCase();
+
+    const cleanPhone = (req.authorPhone || "").replace(/\D/g, "");
+    const waText = encodeURIComponent(`Hi ${req.authorName}! I saw your post "${req.title}" on the TIT SIH 2026 Squad Matchmaker board. Let's discuss teaming up!`);
+    const waLink = cleanPhone ? `https://wa.me/91${cleanPhone}?text=${waText}` : "#";
+
+    const mailSubject = encodeURIComponent(`TIT SIH 2026 Teammate Connect - ${req.title}`);
+    const mailBody = encodeURIComponent(`Hi ${req.authorName},\n\nI saw your listing on the TIT SIH 2026 Squad Matchmaker board regarding "${req.title}".\n\nI am interested in joining / collaborating. Let's connect!\n\nBest regards,\n[My Name]`);
+    const mailLink = `mailto:${req.authorEmail}?subject=${mailSubject}&body=${mailBody}`;
+
+    const isAuthor = currentUser && (
+      (currentUser.email && currentUser.email.toLowerCase() === req.authorEmail?.toLowerCase()) ||
+      (currentUser.name && currentUser.name.toLowerCase() === req.authorName?.toLowerCase())
+    );
+
+    const skillsHtml = (req.skills || []).map(skill => {
+      const isFemaleTag = skill.toLowerCase().includes("female");
+      return `<span class="skill-chip ${isFemaleTag ? "skill-chip-female" : ""}"><i class="fa-solid ${isFemaleTag ? "fa-venus" : "fa-tag"}"></i> ${escapeHtml(skill)}</span>`;
+    }).join("");
+
+    html += `
+      <div class="matchmaker-card ${req.needsFemale ? "needs-female-card" : ""}" id="req-card-${req.id}">
+        <div>
+          <div class="matchmaker-card-header">
+            <div class="author-info-group">
+              <div class="author-avatar-chip">${initials}</div>
+              <div>
+                <div class="author-meta-name">${escapeHtml(req.authorName)}</div>
+                <div class="author-meta-dept">${escapeHtml(req.authorBranch)} • ${escapeHtml(req.authorYear || "TIT Student")}</div>
+              </div>
+            </div>
+            ${postTypeBadge}
+          </div>
+
+          <h4 class="matchmaker-title-text">${escapeHtml(req.title)}</h4>
+          <p class="matchmaker-desc-text">${escapeHtml(req.desc)}</p>
+
+          <div class="matchmaker-skills-wrap">
+            ${skillsHtml}
+          </div>
+        </div>
+
+        <div class="matchmaker-card-footer">
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            ${cleanPhone ? `
+              <a href="${waLink}" target="_blank" rel="noopener" class="btn-whatsapp-connect" title="Open direct WhatsApp conversation">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+              </a>
+            ` : ""}
+            <a href="${mailLink}" class="btn-email-connect" title="Send email to author">
+              <i class="fa-regular fa-envelope"></i> Email
+            </a>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 600;">
+              <i class="fa-regular fa-clock"></i> ${getTimeAgo(req.createdAt)}
+            </span>
+            ${isAuthor ? `
+              <button type="button" class="btn-resolve-post" onclick="resolveTeammateRequest('${req.id}')" title="Close this post if squad is full">
+                <i class="fa-solid fa-check"></i> Squad Full
+              </button>
+            ` : ""}
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+window.filterTeammateBoard = (filterType, element) => {
+  currentTeammateFilter = filterType;
+  const buttons = document.querySelectorAll(".matchmaker-tab-btn");
+  buttons.forEach(btn => btn.classList.remove("active"));
+  if (element) element.classList.add("active");
+  renderTeammateBoard();
+};
+
+window.handleTeammateBranchFilter = (branchVal) => {
+  currentTeammateBranch = branchVal;
+  renderTeammateBoard();
+};
+
+window.handleTeammateSearch = (query) => {
+  currentTeammateSearch = (query || "").trim();
+  renderTeammateBoard();
+};
+
+window.openTeammateRequestModal = () => {
+  const modal = document.getElementById("teammate-request-modal");
+  if (!modal) return;
+
+  // Auto-fill from logged in student profile if available
+  if (currentUser) {
+    const authorNameEl = document.getElementById("req-author-name");
+    const emailEl = document.getElementById("req-email");
+    const branchEl = document.getElementById("req-branch");
+    const yearEl = document.getElementById("req-year");
+
+    if (authorNameEl && !authorNameEl.value) authorNameEl.value = currentUser.name || "";
+    if (emailEl && !emailEl.value) emailEl.value = currentUser.email || "";
+    if (branchEl && currentUser.branch) branchEl.value = currentUser.branch;
+    if (yearEl && currentUser.year) yearEl.value = currentUser.year;
+  }
+
+  modal.classList.add("active");
+};
+
+window.closeTeammateRequestModal = () => {
+  const modal = document.getElementById("teammate-request-modal");
+  if (modal) modal.classList.remove("active");
+};
+
+window.togglePostTypeFields = (postType) => {
+  const titleLabel = document.getElementById("req-title-label");
+  const titleInput = document.getElementById("req-title");
+  const femaleWrap = document.getElementById("req-female-quota-wrap");
+
+  if (postType === "solo_seeking") {
+    if (titleLabel) titleLabel.textContent = "Your Core Specialization / Target Role *";
+    if (titleInput) titleInput.placeholder = "e.g. Full-Stack Developer & Cloud Architect Seeking Team";
+    if (femaleWrap) femaleWrap.style.display = "none";
+  } else {
+    if (titleLabel) titleLabel.textContent = "Team / Solution Title or Topic *";
+    if (titleInput) titleInput.placeholder = "e.g. Team ByteCraft • AI Early Warning Landslide System";
+    if (femaleWrap) femaleWrap.style.display = "block";
+  }
+};
+
+window.handleTeammateRequestSubmit = (e) => {
+  e.preventDefault();
+
+  const postType = document.getElementById("req-post-type").value;
+  const authorName = document.getElementById("req-author-name").value.trim();
+  const authorBranch = document.getElementById("req-branch").value;
+  const authorYear = document.getElementById("req-year").value;
+  const title = document.getElementById("req-title").value.trim();
+  const category = document.getElementById("req-category").value;
+  const rawSkills = document.getElementById("req-skills").value.trim();
+  const needsFemale = document.getElementById("req-needs-female") ? document.getElementById("req-needs-female").checked : false;
+  const desc = document.getElementById("req-desc").value.trim();
+  const authorPhone = document.getElementById("req-whatsapp").value.trim().replace(/\D/g, "");
+  const authorEmail = document.getElementById("req-email").value.trim().toLowerCase();
+
+  if (!authorName || authorName.length < 2) {
+    alert("[TIT SIH] Please enter your full name.");
+    return;
+  }
+
+  if (!title || title.length < 3) {
+    alert("[TIT SIH] Please enter a valid listing title or specialization.");
+    return;
+  }
+
+  if (!authorPhone || authorPhone.length !== 10) {
+    alert("[TIT SIH] Please enter a valid 10-digit WhatsApp mobile number.");
+    return;
+  }
+
+  if (!authorEmail || !isValidEmail(authorEmail)) {
+    alert("[TIT SIH] Please enter a valid email address.");
+    return;
+  }
+
+  // Parse skill tags
+  const skills = rawSkills.split(",").map(s => s.trim()).filter(s => s.length > 0);
+  if (needsFemale && !skills.some(s => s.toLowerCase().includes("female"))) {
+    skills.unshift("Female Member Needed");
+  }
+
+  const newRequest = {
+    id: "req_" + Date.now(),
+    authorName,
+    authorBranch,
+    authorYear,
+    postType,
+    title,
+    category,
+    skills,
+    needsFemale,
+    desc,
+    authorPhone,
+    authorEmail,
+    status: "active",
+    createdAt: Date.now()
+  };
+
+  teammateRequests.unshift(newRequest);
+  localStorage.setItem("tit_sih_teammate_requests", JSON.stringify(teammateRequests));
+
+  // Sync to Firebase Cloud Firestore
+  if (typeof firebase !== "undefined" && db && isFirebaseActive) {
+    db.collection("teammate_requests").doc(newRequest.id).set(newRequest).catch((err) => {
+      console.warn("[TIT SIH] Cloud post write notice:", err);
+    });
+  }
+
+  closeTeammateRequestModal();
+  renderTeammateBoard();
+  triggerConfettiBurst();
+
+  alert(`[TIT SIH] 🎉 Your squad request "${title}" has been published to the Matchmaker Board!\n\nFellow TIT students can now connect with you via WhatsApp and Email.`);
+};
+
+window.resolveTeammateRequest = (requestId) => {
+  if (confirm("Congratulations! Mark this squad request as filled and remove it from the live board?")) {
+    teammateRequests = teammateRequests.filter(r => r.id !== requestId);
+    localStorage.setItem("tit_sih_teammate_requests", JSON.stringify(teammateRequests));
+
+    if (typeof firebase !== "undefined" && db && isFirebaseActive) {
+      db.collection("teammate_requests").doc(requestId).delete().catch(() => {});
+    }
+
+    renderTeammateBoard();
+    alert("[TIT SIH] Listing marked as resolved.");
+  }
+};
+
 
 
 
