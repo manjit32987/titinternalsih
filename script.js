@@ -33,7 +33,7 @@ function isDeveloperBypassed() {
       localStorage.setItem("tit_sih_dev_bypass", "true");
       return true;
     }
-  } catch (e) {}
+  } catch (e) { }
 
   try {
     return localStorage.getItem("tit_sih_dev_bypass") === "true";
@@ -356,6 +356,7 @@ window.PROGRAM_BRANCH_MAP = {
   Diploma: [
     { value: "CST", label: "CST - Computer Science & Technology" },
     { value: "ETCE", label: "ETCE - Electronics & Telecommunication" },
+    { value: "EE", label: "EE - Electrical Engineering" },
     { value: "CE", label: "CE - Civil Engineering" },
     { value: "ME", label: "ME - Mechanical Engineering" },
     { value: "Architectural Assistantship", label: "Architectural Assistantship (Architecture)" },
@@ -497,94 +498,94 @@ document.addEventListener("DOMContentLoaded", () => {
    ========================================================================== */
 const DOT_MATRIX_5X7 = {
   '0': [
-    [0,1,1,1,0],
-    [1,0,0,1,1],
-    [1,0,1,0,1],
-    [1,1,0,0,1],
-    [1,0,0,0,1],
-    [1,0,0,0,1],
-    [0,1,1,1,0]
+    [0, 1, 1, 1, 0],
+    [1, 0, 0, 1, 1],
+    [1, 0, 1, 0, 1],
+    [1, 1, 0, 0, 1],
+    [1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 1],
+    [0, 1, 1, 1, 0]
   ],
   '1': [
-    [0,0,1,0,0],
-    [0,1,1,0,0],
-    [0,0,1,0,0],
-    [0,0,1,0,0],
-    [0,0,1,0,0],
-    [0,0,1,0,0],
-    [0,1,1,1,0]
+    [0, 0, 1, 0, 0],
+    [0, 1, 1, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 1, 1, 1, 0]
   ],
   '2': [
-    [0,1,1,1,0],
-    [1,0,0,0,1],
-    [0,0,0,0,1],
-    [0,0,0,1,0],
-    [0,0,1,0,0],
-    [0,1,0,0,0],
-    [1,1,1,1,1]
+    [0, 1, 1, 1, 0],
+    [1, 0, 0, 0, 1],
+    [0, 0, 0, 0, 1],
+    [0, 0, 0, 1, 0],
+    [0, 0, 1, 0, 0],
+    [0, 1, 0, 0, 0],
+    [1, 1, 1, 1, 1]
   ],
   '3': [
-    [0,1,1,1,0],
-    [1,0,0,0,1],
-    [0,0,0,0,1],
-    [0,0,1,1,0],
-    [0,0,0,0,1],
-    [1,0,0,0,1],
-    [0,1,1,1,0]
+    [0, 1, 1, 1, 0],
+    [1, 0, 0, 0, 1],
+    [0, 0, 0, 0, 1],
+    [0, 0, 1, 1, 0],
+    [0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 1],
+    [0, 1, 1, 1, 0]
   ],
   '4': [
-    [0,0,0,1,0],
-    [0,0,1,1,0],
-    [0,1,0,1,0],
-    [1,0,0,1,0],
-    [1,1,1,1,1],
-    [0,0,0,1,0],
-    [0,0,0,1,0]
+    [0, 0, 0, 1, 0],
+    [0, 0, 1, 1, 0],
+    [0, 1, 0, 1, 0],
+    [1, 0, 0, 1, 0],
+    [1, 1, 1, 1, 1],
+    [0, 0, 0, 1, 0],
+    [0, 0, 0, 1, 0]
   ],
   '5': [
-    [1,1,1,1,1],
-    [1,0,0,0,0],
-    [1,1,1,1,0],
-    [0,0,0,0,1],
-    [0,0,0,0,1],
-    [1,0,0,0,1],
-    [0,1,1,1,0]
+    [1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0],
+    [1, 1, 1, 1, 0],
+    [0, 0, 0, 0, 1],
+    [0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 1],
+    [0, 1, 1, 1, 0]
   ],
   '6': [
-    [0,1,1,1,0],
-    [1,0,0,0,0],
-    [1,0,0,0,0],
-    [1,1,1,1,0],
-    [1,0,0,0,1],
-    [1,0,0,0,1],
-    [0,1,1,1,0]
+    [0, 1, 1, 1, 0],
+    [1, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0],
+    [1, 1, 1, 1, 0],
+    [1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 1],
+    [0, 1, 1, 1, 0]
   ],
   '7': [
-    [1,1,1,1,1],
-    [0,0,0,0,1],
-    [0,0,0,1,0],
-    [0,0,1,0,0],
-    [0,1,0,0,0],
-    [0,1,0,0,0],
-    [0,1,0,0,0]
+    [1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 1],
+    [0, 0, 0, 1, 0],
+    [0, 0, 1, 0, 0],
+    [0, 1, 0, 0, 0],
+    [0, 1, 0, 0, 0],
+    [0, 1, 0, 0, 0]
   ],
   '8': [
-    [0,1,1,1,0],
-    [1,0,0,0,1],
-    [1,0,0,0,1],
-    [0,1,1,1,0],
-    [1,0,0,0,1],
-    [1,0,0,0,1],
-    [0,1,1,1,0]
+    [0, 1, 1, 1, 0],
+    [1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 1],
+    [0, 1, 1, 1, 0],
+    [1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 1],
+    [0, 1, 1, 1, 0]
   ],
   '9': [
-    [0,1,1,1,0],
-    [1,0,0,0,1],
-    [1,0,0,0,1],
-    [0,1,1,1,1],
-    [0,0,0,0,1],
-    [1,0,0,0,1],
-    [0,1,1,1,0]
+    [0, 1, 1, 1, 0],
+    [1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 1],
+    [0, 1, 1, 1, 1],
+    [0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 1],
+    [0, 1, 1, 1, 0]
   ]
 };
 
@@ -594,7 +595,7 @@ function generateDotMatrixSvg(digit) {
   const gap = 3.3;
   const padX = 2.4;
   const padY = 2.2;
-  
+
   let dots = "";
   for (let r = 0; r < 7; r++) {
     for (let c = 0; c < 5; c++) {
@@ -1775,11 +1776,10 @@ function renderMembersRosterInputs(customCount, savedValues = null) {
       <div class="member-input-card" style="${cardBgStyle}" id="member-slot-${i}">
         <div class="member-card-header">
           <span class="member-badge-pill" style="${isRequired ? "" : "background:#e2e8f0; color:#334155; font-weight: 800;"}">${badgeText}</span>
-          ${
-            isRequired
-              ? '<span style="font-size: 0.72rem; color: #059669; font-weight: 700;">Required (Min 2 Members)</span>'
-              : `<button type="button" class="btn-remove-roster-member" onclick="removeRosterMember(${i})" title="Remove this member slot"><i class="fa-solid fa-trash-can"></i> Remove</button>`
-          }
+          ${isRequired
+        ? '<span style="font-size: 0.72rem; color: #059669; font-weight: 700;">Required (Min 2 Members)</span>'
+        : `<button type="button" class="btn-remove-roster-member" onclick="removeRosterMember(${i})" title="Remove this member slot"><i class="fa-solid fa-trash-can"></i> Remove</button>`
+      }
         </div>
         <div class="form-row-2">
           <div class="form-group-item" style="margin-bottom: 8px;">
@@ -4383,7 +4383,7 @@ function initTeammateBoard() {
               const data = doc.data();
               if (doc.id.startsWith("req_seed_") || data.id?.startsWith("req_seed_")) {
                 // Permanently delete sample seed doc from Firestore
-                db.collection("teammate_requests").doc(doc.id).delete().catch(() => {});
+                db.collection("teammate_requests").doc(doc.id).delete().catch(() => { });
               } else {
                 cloudList.push({ id: doc.id, ...data });
               }
@@ -4718,7 +4718,7 @@ window.resolveTeammateRequest = (requestId) => {
     localStorage.setItem("tit_sih_teammate_requests", JSON.stringify(teammateRequests));
 
     if (typeof firebase !== "undefined" && db && isFirebaseActive) {
-      db.collection("teammate_requests").doc(requestId).delete().catch(() => {});
+      db.collection("teammate_requests").doc(requestId).delete().catch(() => { });
     }
 
     renderTeammateBoard();
