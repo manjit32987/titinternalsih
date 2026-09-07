@@ -854,8 +854,9 @@ function startFirebaseRealtimeListeners() {
       renderStudentDashboard();
 
       // If admin console is open, re-render it live
+      const adminModal = document.getElementById("admin-review-modal");
       const adminView = document.getElementById("admin-console-view");
-      if (adminView && adminView.style.display !== "none") {
+      if ((adminView && adminView.style.display !== "none") || (adminModal && adminModal.classList.contains("active"))) {
         renderAdminConsole();
       }
     },
@@ -963,7 +964,11 @@ window.handleDedicatedAdminPasscodeSubmit = (e) => {
     if (consoleView) consoleView.style.display = "block";
     if (adminModal) adminModal.classList.add("active");
 
-    renderAdminConsole();
+    if (typeof window.resetAdminFilters === "function") {
+      window.resetAdminFilters();
+    } else {
+      renderAdminConsole();
+    }
   } else {
     alert("[TIT SIH Security Alert] Invalid Passcode: Access restricted to authorized SPOC and Evaluation Committee.");
   }
@@ -2911,7 +2916,7 @@ window.handleAdminPasscodeSubmit = (e) => {
     const consoleView = document.getElementById("admin-console-view");
     if (passcodeView) passcodeView.style.display = "none";
     if (consoleView) consoleView.style.display = "block";
-    renderAdminConsole();
+    resetAdminFilters();
   } else {
     alert("❌ Invalid Admin Passcode. Access restricted to authorized faculty, SPOC, and IIC conveners.");
   }
@@ -2939,11 +2944,11 @@ window.resetAdminFilters = () => {
 function normBranch(str) {
   if (!str) return "CSE";
   const s = String(str).toUpperCase();
-  if (s.includes("ECE") || s.includes("ELECTRONIC")) return "ECE";
-  if (s.includes("CSE") || s.includes("COMPUTER") || s.includes("IT")) return "CSE";
+  if (s.includes("ECE") || s.includes("ELECTRONIC") || s.includes("ETCE")) return "ECE";
+  if (s.includes("CSE") || s.includes("COMPUTER") || s.includes("IT") || s.includes("CST")) return "CSE";
   if (s.includes("EE") || s.includes("ELECTRICAL")) return "EE";
   if (s.includes("CE") || s.includes("CIVIL")) return "CE";
-  if (s.includes("ME") || s.includes("MECHANIC")) return "ME";
+  if (s.includes("ME") || s.includes("MECHANIC") || s.includes("AUTO")) return "ME";
   return "CSE";
 }
 
@@ -2997,7 +3002,7 @@ window.renderAdminConsole = function renderAdminConsole() {
       const map = new Map();
       [...memTeams, ...localTeams].forEach(t => {
         if (t && (t.teamId || t.teamName)) {
-          const key = t.teamId || t.teamName;
+          const key = t.teamId ? String(t.teamId) : String(t.teamName);
           map.set(key, t);
         }
       });
@@ -3008,8 +3013,8 @@ window.renderAdminConsole = function renderAdminConsole() {
     }
 
     const totalTeams = allTeamsList.length;
-    const swTeams = allTeamsList.filter((t) => t && (t.edition || "").includes("Software")).length;
-    const hwTeams = allTeamsList.filter((t) => t && (t.edition || "").includes("Hardware")).length;
+    const swTeams = allTeamsList.filter((t) => t && !String(t.edition || "").toLowerCase().includes("hardware")).length;
+    const hwTeams = allTeamsList.filter((t) => t && String(t.edition || "").toLowerCase().includes("hardware")).length;
     const totalStudents = allTeamsList.reduce((acc, t) => acc + (t && Array.isArray(t.members) ? t.members.length : 0), 0);
 
     let totalFemales = 0;
@@ -3040,7 +3045,7 @@ window.renderAdminConsole = function renderAdminConsole() {
       const leaderBranch = normBranch(leader.branch || leader.dept);
       const leaderYear = normYear(leader.year, leader.roll, leader.email);
 
-      const q = adminSearchQuery;
+      const q = (adminSearchQuery || "").trim().toLowerCase();
       const matchesSearch =
         q === "" ||
         (t.teamId || "").toLowerCase().includes(q) ||
@@ -3048,6 +3053,8 @@ window.renderAdminConsole = function renderAdminConsole() {
         (t.psId || "").toLowerCase().includes(q) ||
         (t.domain || "").toLowerCase().includes(q) ||
         (t.title || "").toLowerCase().includes(q) ||
+        (t.edition || "").toLowerCase().includes(q) ||
+        (t.status || "").toLowerCase().includes(q) ||
         (t.referralCode && String(t.referralCode).toLowerCase().includes(q)) ||
         (t.referredBy && String(t.referredBy).toLowerCase().includes(q)) ||
         membersList.some((m) =>
@@ -3055,33 +3062,46 @@ window.renderAdminConsole = function renderAdminConsole() {
             (m.name || "").toLowerCase().includes(q) ||
             (m.roll || "").toLowerCase().includes(q) ||
             (m.email || "").toLowerCase().includes(q) ||
-            (m.phone || "").toLowerCase().includes(q)
+            (m.phone || "").toLowerCase().includes(q) ||
+            (m.branch || "").toLowerCase().includes(q) ||
+            (m.dept || "").toLowerCase().includes(q)
           )
         );
 
+      const ed = String(t.edition || "").toLowerCase();
       const matchesEdition =
         adminEditionFilter === "ALL" ||
-        (adminEditionFilter === "Software" && (t.edition || "").includes("Software")) ||
-        (adminEditionFilter === "Hardware" && (t.edition || "").includes("Hardware"));
+        (adminEditionFilter === "Software" && !ed.includes("hardware")) ||
+        (adminEditionFilter === "Hardware" && ed.includes("hardware"));
 
+      const st = String(t.status || "").toLowerCase();
       const matchesStatus =
         adminStatusFilter === "ALL" ||
-        (adminStatusFilter === "Review" && (t.status || "").includes("Under Review")) ||
-        (adminStatusFilter === "Shortlisted" && (t.status || "").includes("Shortlisted")) ||
-        (adminStatusFilter === "Nominated" && (t.status || "").includes("Nominated"));
+        (adminStatusFilter === "Review" && !st.includes("shortlist") && !st.includes("nominat")) ||
+        (adminStatusFilter === "Shortlisted" && st.includes("shortlist")) ||
+        (adminStatusFilter === "Nominated" && st.includes("nominat"));
 
-      const matchesBranch = adminBranchFilter === "ALL" || leaderBranch === adminBranchFilter;
-      const matchesYear = adminYearFilter === "ALL" || leaderYear === adminYearFilter;
+      const matchesBranch =
+        adminBranchFilter === "ALL" ||
+        leaderBranch === adminBranchFilter ||
+        membersList.some(m => normBranch(m.branch || m.dept) === adminBranchFilter);
+
+      const matchesYear =
+        adminYearFilter === "ALL" ||
+        leaderYear === adminYearFilter ||
+        membersList.some(m => normYear(m.year, m.roll, m.email) === adminYearFilter);
 
       return matchesSearch && matchesEdition && matchesStatus && matchesBranch && matchesYear;
     });
 
+    const isFiltered = filteredTeams.length !== allTeamsList.length;
+
     const dbStatusBadge = (typeof isFirebaseActive !== "undefined" && isFirebaseActive)
       ? `<span style="display: inline-flex; align-items: center; gap: 6px; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 4px 10px; border-radius: 20px; font-size: 0.76rem; color: #065f46; font-weight: 700;">
-          <i class="fa-solid fa-cloud-check" style="color: #059669;"></i> Live Firebase Firestore Sync
+          <i class="fa-solid fa-cloud-check" style="color: #059669;"></i> Live Firebase Cloud Sync (${allTeamsList.length} Teams)
         </span>`
       : `<span style="display: inline-flex; align-items: center; gap: 6px; background: #fef3c7; border: 1px solid #fde68a; padding: 4px 10px; border-radius: 20px; font-size: 0.76rem; color: #92400e; font-weight: 700;">
-          <i class="fa-solid fa-database" style="color: #d97706;"></i> Local Browser Database
+          <i class="fa-solid fa-database" style="color: #d97706;"></i> Local Browser Database (${allTeamsList.length} Teams)
         </span>`;
 
     let html = `
@@ -3099,8 +3119,8 @@ window.renderAdminConsole = function renderAdminConsole() {
         </div>
 
         <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-          <button class="btn-3d-secondary" onclick="renderAdminConsole()" style="padding: 8px 14px; font-size: 0.82rem;" title="Refresh Registry">
-            <i class="fa-solid fa-rotate"></i> Refresh
+          <button class="btn-3d-secondary" onclick="resetAdminFilters()" style="padding: 8px 14px; font-size: 0.82rem;" title="Reset Filters & Show All Teams">
+            <i class="fa-solid fa-rotate"></i> Show All (${allTeamsList.length})
           </button>
           <button class="btn-3d-primary" onclick="exportTeamsToCSV()" style="padding: 8px 16px; font-size: 0.82rem;" title="Export Full Master Database with All Teams and Members">
             <i class="fa-solid fa-file-csv"></i> Export Full CSV (${allTeamsList.length} Teams)
@@ -3148,7 +3168,7 @@ window.renderAdminConsole = function renderAdminConsole() {
       </div>
 
       <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
-        <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #f1f5f9;">
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9;">
           <div style="position: relative; flex: 1; min-width: 260px;">
             <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 11px; color: #94a3b8; font-size: 0.85rem;"></i>
             <input type="text" class="form-text-input" placeholder="Search team name, team ID, leader name, roll no, branch, PS ID, domain, referral..." 
@@ -3189,6 +3209,19 @@ window.renderAdminConsole = function renderAdminConsole() {
           </div>
         </div>
 
+        ${isFiltered ? `
+          <div style="background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 8px 14px; margin-bottom: 12px; font-size: 0.8rem; color: #92400e; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <span><i class="fa-solid fa-filter"></i> Filters Active: Showing <strong>${filteredTeams.length}</strong> of <strong>${allTeamsList.length}</strong> squads</span>
+            <button class="btn-3d-secondary" onclick="resetAdminFilters()" style="padding: 3px 8px; font-size: 0.75rem; background: #ffffff;">
+              <i class="fa-solid fa-rotate-left"></i> Show All ${allTeamsList.length} Teams
+            </button>
+          </div>
+        ` : `
+          <div style="font-size: 0.78rem; color: #059669; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+            <i class="fa-solid fa-circle-check"></i> Showing all ${allTeamsList.length} registered teams in full master registry
+          </div>
+        `}
+
         <div class="admin-table-wrap">
           <table class="admin-table">
             <thead>
@@ -3205,7 +3238,7 @@ window.renderAdminConsole = function renderAdminConsole() {
             </thead>
             <tbody>
               ${filteredTeams.length === 0
-                ? `<tr><td colspan="8" style="text-align: center; padding: 36px; color: #64748b;">No registered teams matching the filter criteria.</td></tr>`
+                ? `<tr><td colspan="8" style="text-align: center; padding: 36px; color: #64748b;">No registered teams matching the filter criteria. <br><button class="btn-3d-primary" onclick="resetAdminFilters()" style="margin-top: 10px; padding: 6px 12px; font-size: 0.8rem;"><i class="fa-solid fa-rotate"></i> Reset Filters</button></td></tr>`
                 : filteredTeams.map((t) => {
                   const membersList = (Array.isArray(t.members) ? t.members : []).filter(Boolean);
                   const femalesInTeam = membersList.filter((m) => normGender(m.gender) === "Female").length;
