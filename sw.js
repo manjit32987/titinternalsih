@@ -10,6 +10,7 @@ const PRECACHE_ASSETS = [
   "./iic-logo.png",
   "./SS_registration.png",
   "./kaberi majumder.jpg",
+  "./joydeep.jpg",
   "./rinku.png"
 ];
 
