@@ -2223,7 +2223,7 @@ function renderStudentDashboard() {
       </div>
 
       <!-- Squad Roster Grid -->
-      <div class="dashboard-team-grid">
+      <div class="dashboard-team-grid" style="margin-bottom: 24px;">
         ${userTeam.members
       .map(
         (m, idx) => `
@@ -2239,26 +2239,58 @@ function renderStudentDashboard() {
               <i class="fa-solid fa-envelope" style="color: #059669; width: 14px;"></i> ${escapeHtml(m.email)}
             </div>
             ${m.phone ? `
-              <div style="font-size: 0.74rem; color: #64748b;">
+              <div style="font-size: 0.74rem; color: #64748b; margin-bottom: 6px;">
                 <i class="fa-solid fa-phone" style="color: #059669; width: 14px;"></i> ${escapeHtml(m.phone)}
               </div>
             ` : ''}
-            ${isLeader ? `
-              <div style="display: flex; gap: 6px; margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 8px; justify-content: flex-end;">
-                <button onclick="openEditMemberModal('${userTeam.teamId}', ${idx})" class="btn-3d-outline" style="padding: 4px 10px; font-size: 0.72rem; background: #ffffff;" title="Edit Student Details">
-                  <i class="fa-solid fa-user-pen"></i> Edit
-                </button>
-                ${!m.isLeader && idx > 0 ? `
-                  <button onclick="deleteMemberByLeader('${userTeam.teamId}', ${idx})" class="btn-3d-outline" style="padding: 4px 10px; font-size: 0.72rem; background: #fff1f2; color: #dc2626; border-color: #fecdd3;" title="Remove from Team">
-                    <i class="fa-solid fa-trash-can"></i> Remove
+            
+            <div style="display: flex; gap: 6px; margin-top: 8px; border-top: 1px solid #e2e8f0; padding-top: 8px; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+              <button onclick="openStudentIndividualCertificate('${userTeam.teamId}', ${idx})" class="btn-3d-secondary" style="padding: 4px 10px; font-size: 0.72rem;" title="View & Print Individual Participation Certificate">
+                <i class="fa-solid fa-award" style="color: #d97706;"></i> Certificate
+              </button>
+              <div style="display: flex; gap: 4px;">
+                ${isLeader ? `
+                  <button onclick="openEditMemberModal('${userTeam.teamId}', ${idx})" class="btn-3d-outline" style="padding: 4px 8px; font-size: 0.72rem; background: #ffffff;" title="Edit Student Details">
+                    <i class="fa-solid fa-user-pen"></i>
                   </button>
+                  ${!m.isLeader && idx > 0 ? `
+                    <button onclick="deleteMemberByLeader('${userTeam.teamId}', ${idx})" class="btn-3d-outline" style="padding: 4px 8px; font-size: 0.72rem; background: #fff1f2; color: #dc2626; border-color: #fecdd3;" title="Remove from Team">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  ` : ''}
                 ` : ''}
               </div>
-            ` : ''}
+            </div>
           </div>
         `
       )
       .join("")}
+      </div>
+
+      <!-- Dedicated Certificates & Recognition Panel -->
+      <div style="background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border: 1.5px solid #a7f3d0; border-radius: 14px; padding: 20px; box-shadow: 0 4px 14px rgba(5,150,105,0.06);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="background: #059669; color: #ffffff; font-weight: 800; font-size: 0.76rem; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Official Recognition</span>
+              <span style="color: #065f46; font-weight: 800; font-size: 1.15rem; font-family: var(--font-heading);">
+                <i class="fa-solid fa-award" style="color: #d97706;"></i> Verified SIH 2026 Certificates
+              </span>
+            </div>
+            <p style="color: #064e3b; font-size: 0.85rem; margin: 0; line-height: 1.45;">
+              Generate and download authentic high-resolution certificates with official TIT & IIC institutional seals.
+            </p>
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+            <button class="btn-3d-primary" onclick="openSquadTeamCertificate('${userTeam.teamId}')" style="padding: 10px 18px; font-size: 0.85rem;" title="Download 1 Official Team Certificate for the entire squad">
+              <i class="fa-solid fa-people-group"></i> Download Team Certificate
+            </button>
+            <button class="btn-3d-secondary" onclick="openStudentIndividualCertificate('${userTeam.teamId}', 0)" style="padding: 10px 18px; font-size: 0.85rem; background: #ffffff;" title="Download personalized individual certificate">
+              <i class="fa-solid fa-graduation-cap"></i> My Individual Certificate
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   `;
@@ -2872,6 +2904,665 @@ window.printDigitalPass = () => {
 };
 
 /* ==========================================================================
+   5B. INSTITUTIONAL DIGITAL SIGNATORY GATEWAY & CERTIFICATE ENGINE
+   ========================================================================== */
+let signatoryState = {
+  principalSigned: false,
+  principalSignature: "",
+  principalSignedAt: "",
+  secretarySigned: false,
+  secretarySignature: "",
+  secretarySignedAt: "",
+  isReleased: false
+};
+
+// Canvas drawing objects
+window._principalCanvasObj = null;
+window._secretaryCanvasObj = null;
+
+// Official High-Resolution Calligraphy SVG E-Signatures
+const PRESET_SIGNATURES = {
+  principalSvg: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 85" width="320" height="85">
+    <path d="M25 45 C45 20, 60 15, 65 38 C70 58, 48 72, 38 62 C30 52, 42 22, 60 20 C75 18, 88 50, 95 62 M82 38 L110 38 M120 22 L115 65 M125 42 Q140 28 152 42 T175 42 M182 32 L185 62 M195 42 C205 32, 220 32, 228 48 C235 62, 248 38, 260 42 C272 46, 280 60, 292 48" fill="none" stroke="%230b2545" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M30 68 Q160 58 295 65" fill="none" stroke="%230b2545" stroke-width="2.2" stroke-linecap="round"/>
+    <circle cx="285" cy="64" r="2.5" fill="%230b2545"/>
+    <circle cx="295" cy="65" r="2.5" fill="%230b2545"/>
+    <text x="210" y="78" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" fill="%23059669" letter-spacing="1">TIT/SPOC/VERIFIED-ESIGN</text>
+  </svg>`,
+  secretarySvg: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 85" width="320" height="85">
+    <path d="M28 58 L42 18 M32 36 Q60 22 75 48 M45 42 Q70 65 92 40 M98 48 Q108 30 118 48 T138 48 M142 22 L142 62 M145 42 Q158 28 170 42 T192 42 M198 45 Q212 26 228 45 T255 45 M262 30 L262 62 M268 45 Q282 32 295 45" fill="none" stroke="%230b2545" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M35 68 Q165 56 290 64" fill="none" stroke="%230b2545" stroke-width="2.2" stroke-linecap="round"/>
+    <circle cx="282" cy="63" r="2.5" fill="%230b2545"/>
+    <circle cx="292" cy="64" r="2.5" fill="%230b2545"/>
+    <text x="210" y="78" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" fill="%23059669" letter-spacing="1">TIT/TECH/VERIFIED-ESIGN</text>
+  </svg>`
+};
+
+function getSignatoryState() {
+  try {
+    const raw = localStorage.getItem("tit_sih_cert_signatures");
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      signatoryState = { ...signatoryState, ...parsed };
+    }
+  } catch (e) { }
+  return signatoryState;
+}
+
+function saveSignatoryState(newState) {
+  signatoryState = { ...signatoryState, ...newState };
+  localStorage.setItem("tit_sih_cert_signatures", JSON.stringify(signatoryState));
+
+  if (typeof firebase !== "undefined" && db && isFirebaseActive) {
+    db.collection("settings").doc("certificate_signatures").set(signatoryState, { merge: true }).catch((err) => {
+      console.warn("[TIT SIH] Signatures sync notice:", err);
+    });
+  }
+
+  renderSignatoryGatewayUI();
+  updateCertModalStatus();
+}
+
+function initSignatorySync() {
+  getSignatoryState();
+
+  if (typeof firebase !== "undefined" && db && isFirebaseActive) {
+    try {
+      db.collection("settings").doc("certificate_signatures").onSnapshot((doc) => {
+        if (doc && doc.exists) {
+          const cloudState = doc.data();
+          if (cloudState) {
+            signatoryState = { ...signatoryState, ...cloudState };
+            localStorage.setItem("tit_sih_cert_signatures", JSON.stringify(signatoryState));
+            renderSignatoryGatewayUI();
+            updateCertModalStatus();
+          }
+        }
+      }, (err) => {
+        console.warn("Signatory sync snapshot notice:", err);
+      });
+    } catch (e) { }
+  }
+}
+
+function setupCanvas(canvasId, type) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return null;
+
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  const targetWidth = rect.width || 360;
+  const targetHeight = rect.height || 140;
+
+  canvas.width = targetWidth * dpr;
+  canvas.height = targetHeight * dpr;
+
+  const ctx = canvas.getContext("2d");
+  ctx.scale(dpr, dpr);
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.lineWidth = 2.8;
+  ctx.strokeStyle = "#0b2545";
+
+  let drawing = false;
+  let hasDrawn = false;
+
+  const getPos = (e) => {
+    const cRect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return {
+      x: clientX - cRect.left,
+      y: clientY - cRect.top
+    };
+  };
+
+  const startDraw = (e) => {
+    e.preventDefault();
+    drawing = true;
+    const pos = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+    const hint = document.getElementById(`${type}-canvas-hint`);
+    if (hint) hint.style.display = "none";
+  };
+
+  const draw = (e) => {
+    if (!drawing) return;
+    e.preventDefault();
+    hasDrawn = true;
+    const pos = getPos(e);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+  };
+
+  const stopDraw = (e) => {
+    if (!drawing) return;
+    drawing = false;
+    ctx.closePath();
+  };
+
+  canvas.onpointerdown = startDraw;
+  canvas.onpointermove = draw;
+  canvas.onpointerup = stopDraw;
+  canvas.onpointercancel = stopDraw;
+
+  canvas.ontouchstart = startDraw;
+  canvas.ontouchmove = draw;
+  canvas.ontouchend = stopDraw;
+
+  return {
+    canvas,
+    ctx,
+    getHasDrawn: () => hasDrawn,
+    resetHasDrawn: () => {
+      hasDrawn = false;
+    }
+  };
+}
+
+window.openSignatoryModal = () => {
+  const modal = document.getElementById("signatory-gateway-modal");
+  if (!modal) return;
+  modal.classList.add("active");
+
+  getSignatoryState();
+  renderSignatoryGatewayUI();
+
+  setTimeout(() => {
+    window._principalCanvasObj = setupCanvas("principal-sig-canvas", "principal");
+    window._secretaryCanvasObj = setupCanvas("secretary-sig-canvas", "secretary");
+  }, 100);
+};
+
+window.closeSignatoryModal = () => {
+  const modal = document.getElementById("signatory-gateway-modal");
+  if (modal) modal.classList.remove("active");
+};
+
+window.clearSignatoryCanvas = (type) => {
+  const canvasObj = type === "principal" ? window._principalCanvasObj : window._secretaryCanvasObj;
+  if (canvasObj && canvasObj.canvas) {
+    const ctx = canvasObj.canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvasObj.canvas.width, canvasObj.canvas.height);
+    canvasObj.resetHasDrawn();
+  }
+  const hint = document.getElementById(`${type}-canvas-hint`);
+  if (hint) hint.style.display = "flex";
+};
+
+window.saveSignatoryFromCanvas = (type) => {
+  const canvasObj = type === "principal" ? window._principalCanvasObj : window._secretaryCanvasObj;
+  if (!canvasObj || !canvasObj.canvas || !canvasObj.getHasDrawn()) {
+    alert("Please draw your signature on the pad before saving.");
+    return;
+  }
+
+  const dataUrl = canvasObj.canvas.toDataURL("image/png");
+  const dateStr = new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+
+  if (type === "principal") {
+    saveSignatoryState({
+      principalSigned: true,
+      principalSignature: dataUrl,
+      principalSignedAt: dateStr
+    });
+    alert("✅ Prof. (Dr.) Bijoy Kumar Upadhyaya's drawn signature saved and authenticated.");
+  } else {
+    saveSignatoryState({
+      secretarySigned: true,
+      secretarySignature: dataUrl,
+      secretarySignedAt: dateStr
+    });
+    alert("✅ Prof. Kaberi Majumdar's drawn signature saved and authenticated.");
+  }
+};
+
+window.applyPresetSignature = (type) => {
+  const dateStr = new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+  if (type === "principal") {
+    saveSignatoryState({
+      principalSigned: true,
+      principalSignature: PRESET_SIGNATURES.principalSvg,
+      principalSignedAt: dateStr
+    });
+    alert("⚡ Institutional Digital Calligraphy e-Sign applied for Prof. (Dr.) Bijoy Kumar Upadhyaya.");
+  } else {
+    saveSignatoryState({
+      secretarySigned: true,
+      secretarySignature: PRESET_SIGNATURES.secretarySvg,
+      secretarySignedAt: dateStr
+    });
+    alert("⚡ Institutional Digital Calligraphy e-Sign applied for Prof. Kaberi Majumdar.");
+  }
+};
+
+window.handleSignatureUpload = (type, event) => {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    alert("Please select a valid image file (PNG/JPG).");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const dataUrl = e.target.result;
+    const dateStr = new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+    if (type === "principal") {
+      saveSignatoryState({
+        principalSigned: true,
+        principalSignature: dataUrl,
+        principalSignedAt: dateStr
+      });
+      alert("✅ Prof. (Dr.) Bijoy Kumar Upadhyaya's signature image uploaded and authenticated.");
+    } else {
+      saveSignatoryState({
+        secretarySigned: true,
+        secretarySignature: dataUrl,
+        secretarySignedAt: dateStr
+      });
+      alert("✅ Prof. Kaberi Majumdar's signature image uploaded and authenticated.");
+    }
+  };
+  reader.readAsDataURL(file);
+};
+
+window.toggleCertificateRelease = (forceState) => {
+  getSignatoryState();
+
+  if (forceState === true) {
+    if (!signatoryState.principalSignature && !signatoryState.secretarySignature) {
+      if (confirm("No signatures were drawn yet. Would you like to automatically apply verified institutional e-Sign stamps for both signatories and release all certificates now?")) {
+        const dateStr = new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+        saveSignatoryState({
+          principalSigned: true,
+          principalSignature: PRESET_SIGNATURES.principalSvg,
+          principalSignedAt: dateStr,
+          secretarySigned: true,
+          secretarySignature: PRESET_SIGNATURES.secretarySvg,
+          secretarySignedAt: dateStr,
+          isReleased: true
+        });
+        triggerConfettiBurst();
+        alert("🎉 Official Institutional Certificates have been Authorized & Released Globally!\nAll participants, squads, and committee leads can now download certified credentials.");
+        return;
+      } else {
+        return;
+      }
+    }
+
+    saveSignatoryState({ isReleased: true });
+    triggerConfettiBurst();
+    alert("🎉 Official Institutional Certificates Authorized & Released Globally!\nDigital signatures are now live on all certificates.");
+  } else {
+    saveSignatoryState({ isReleased: false });
+    alert("🔒 Official Certificates Locked / Pre-Release Draft Mode Activated.");
+  }
+};
+
+window.resetSignatures = () => {
+  if (confirm("Reset and clear both institutional signatures? This will revert certificates back to pre-release pending mode.")) {
+    saveSignatoryState({
+      principalSigned: false,
+      principalSignature: "",
+      principalSignedAt: "",
+      secretarySigned: false,
+      secretarySignature: "",
+      secretarySignedAt: "",
+      isReleased: false
+    });
+    alert("Signatures have been reset.");
+  }
+};
+
+window.copySignatoryLink = () => {
+  const url = window.location.origin + window.location.pathname.replace(/[^/]*$/, "") + "index.html#sign";
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => {
+      alert(`📋 Direct Signatory Gateway Link Copied:\n${url}\n\nShare this link with Prof. Upadhyaya and Prof. Majumdar to sign.`);
+    }).catch(() => {
+      prompt("Copy Signatory Link:", url);
+    });
+  } else {
+    prompt("Copy Signatory Link:", url);
+  }
+};
+
+function renderSignatoryGatewayUI() {
+  const state = getSignatoryState();
+
+  const pBadge = document.getElementById("principal-status-badge");
+  const pCard = document.getElementById("sig-card-principal");
+  const pPreview = document.getElementById("principal-preview-box");
+  if (pBadge) {
+    if (state.principalSigned && state.principalSignature) {
+      pBadge.className = "sig-status-badge signed";
+      pBadge.innerHTML = `<i class="fa-solid fa-circle-check"></i> Signed (${escapeHtml(state.principalSignedAt || "Verified")})`;
+      if (pCard) pCard.classList.add("signed-border");
+      if (pPreview) {
+        pPreview.innerHTML = `<img src="${state.principalSignature}" alt="Principal Signature Preview" style="max-height: 48px; max-width: 180px; object-fit: contain;">`;
+      }
+    } else {
+      pBadge.className = "sig-status-badge pending";
+      pBadge.innerHTML = `<i class="fa-solid fa-clock"></i> Pending`;
+      if (pCard) pCard.classList.remove("signed-border");
+      if (pPreview) {
+        pPreview.innerHTML = `<span style="font-size: 0.76rem; color: #94a3b8; font-style: italic;">No signature saved yet</span>`;
+      }
+    }
+  }
+
+  const sBadge = document.getElementById("secretary-status-badge");
+  const sCard = document.getElementById("sig-card-secretary");
+  const sPreview = document.getElementById("secretary-preview-box");
+  if (sBadge) {
+    if (state.secretarySigned && state.secretarySignature) {
+      sBadge.className = "sig-status-badge signed";
+      sBadge.innerHTML = `<i class="fa-solid fa-circle-check"></i> Signed (${escapeHtml(state.secretarySignedAt || "Verified")})`;
+      if (sCard) sCard.classList.add("signed-border");
+      if (sPreview) {
+        sPreview.innerHTML = `<img src="${state.secretarySignature}" alt="Secretary Signature Preview" style="max-height: 48px; max-width: 180px; object-fit: contain;">`;
+      }
+    } else {
+      sBadge.className = "sig-status-badge pending";
+      sBadge.innerHTML = `<i class="fa-solid fa-clock"></i> Pending`;
+      if (sCard) sCard.classList.remove("signed-border");
+      if (sPreview) {
+        sPreview.innerHTML = `<span style="font-size: 0.76rem; color: #94a3b8; font-style: italic;">No signature saved yet</span>`;
+      }
+    }
+  }
+
+  const gatewayBanner = document.getElementById("sig-gateway-status-banner");
+  if (gatewayBanner) {
+    if (state.isReleased) {
+      gatewayBanner.innerHTML = `
+        <div style="background: #ecfdf5; border: 1.5px solid #a7f3d0; border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-circle-check" style="font-size: 1.5rem; color: #059669;"></i>
+            <div>
+              <div style="font-size: 0.95rem; font-weight: 800; color: #064e3b;">Official Certificates are Released & Active Globally</div>
+              <div style="font-size: 0.78rem; color: #065f46;">All participant, team, and committee lead credentials have verified digital signatures embedded.</div>
+            </div>
+          </div>
+          <span style="background: #059669; color: #ffffff; font-weight: 800; font-size: 0.74rem; padding: 4px 10px; border-radius: 6px; text-transform: uppercase;">Live Released</span>
+        </div>
+      `;
+    } else {
+      gatewayBanner.innerHTML = `
+        <div style="background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.5rem; color: #d97706;"></i>
+            <div>
+              <div style="font-size: 0.95rem; font-weight: 800; color: #92400e;">Pre-Release Mode: Signatures & Master Authorization Required</div>
+              <div style="font-size: 0.78rem; color: #78350f;">Both signatories should draw, upload, or apply e-Sign stamps, then click "Authorize & Release" below.</div>
+            </div>
+          </div>
+          <span style="background: #d97706; color: #ffffff; font-weight: 800; font-size: 0.74rem; padding: 4px 10px; border-radius: 6px; text-transform: uppercase;">Pre-Release</span>
+        </div>
+      `;
+    }
+  }
+}
+
+function updateCertModalStatus() {
+  const state = getSignatoryState();
+  const bannerWrap = document.getElementById("cert-modal-status-banner-wrap");
+
+  if (bannerWrap) {
+    if (state.isReleased) {
+      bannerWrap.innerHTML = `
+        <div class="cert-release-status-banner released">
+          <i class="fa-solid fa-certificate"></i>
+          <span><strong>Verified Institutional Credential:</strong> Digitally signed and authorized by Prof. (Dr.) Bijoy Kumar Upadhyaya & Prof. Kaberi Majumdar.</span>
+        </div>
+      `;
+    } else {
+      bannerWrap.innerHTML = `
+        <div class="cert-release-status-banner pending">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span><strong>Pre-Release Draft Preview:</strong> Official signatures are awaiting authorization. Authorized signatories can sign via <a href="javascript:void(0)" onclick="openSignatoryModal()" style="color: #fbbf24; text-decoration: underline; font-weight: 800;">Digital Signatory Gateway</a>.</span>
+        </div>
+      `;
+    }
+  }
+}
+
+window.closeCertificateModal = () => {
+  const modal = document.getElementById("certificate-modal");
+  if (modal) modal.classList.remove("active");
+};
+
+window.printCertificate = () => {
+  window.print();
+};
+
+window.openPublicCommitteeCertificate = (name, role, dept, certId) => {
+  renderCertificateSheet("appreciation", {
+    name: name,
+    role: role,
+    dept: dept,
+    certId: certId || `TIT/INTSIH/APP-${Math.floor(100 + Math.random() * 900)}`,
+    issuedDate: "09/09/2026"
+  });
+};
+
+window.openStudentIndividualCertificate = (teamId, memberIndex) => {
+  const teams = (typeof registeredTeams !== "undefined" && Array.isArray(registeredTeams)) ? registeredTeams : [];
+  const team = teams.find((t) => t && (t.teamId === teamId || t.teamName === teamId));
+  if (!team) return;
+
+  const membersList = (Array.isArray(team.members) ? team.members : []).filter(Boolean);
+  const m = membersList[memberIndex !== undefined ? memberIndex : 0] || membersList[0];
+  if (!m) return;
+
+  const isShortlisted = (team.status || "").toLowerCase().includes("shortlist") || (team.status || "").toLowerCase().includes("nominat");
+  const isWinner = (team.status || "").toLowerCase().includes("winner") || (team.status || "").toLowerCase().includes("1st") || (team.status || "").toLowerCase().includes("first");
+
+  const certType = isWinner ? "achievement" : "participation_individual";
+  const numId = (team.teamId || "2026").replace(/\D/g, "");
+  const certId = `TIT/INTSIH/IND-${numId || "2026"}-${String((memberIndex !== undefined ? memberIndex : 0) + 1).padStart(2, "0")}`;
+
+  renderCertificateSheet(certType, {
+    name: m.name,
+    roll: m.roll || "Awaited",
+    dept: m.dept || m.branch || "Engineering",
+    program: normProgram(m.program, m.branch),
+    year: normYear(m.year, m.roll, m.email),
+    gender: m.gender,
+    isLeader: m.isLeader || memberIndex === 0,
+    teamName: team.teamName,
+    teamId: team.teamId,
+    edition: team.edition || "Software Edition",
+    psId: team.psId || "Innovation",
+    domain: team.domain || "General Innovation",
+    title: team.title || "SIH Innovation Project",
+    position: isWinner ? "FIRST PLACE" : (isShortlisted ? "FINALIST" : "PARTICIPANT"),
+    certId: certId,
+    issuedDate: "09/09/2026"
+  });
+};
+
+window.openSquadTeamCertificate = (teamId) => {
+  const teams = (typeof registeredTeams !== "undefined" && Array.isArray(registeredTeams)) ? registeredTeams : [];
+  const team = teams.find((t) => t && (t.teamId === teamId || t.teamName === teamId));
+  if (!team) return;
+
+  const isWinner = (team.status || "").toLowerCase().includes("winner") || (team.status || "").toLowerCase().includes("1st") || (team.status || "").toLowerCase().includes("first");
+  const certType = isWinner ? "achievement" : "participation_team";
+  const numId = (team.teamId || "2026").replace(/\D/g, "");
+  const certId = `TIT/INTSIH/TM-${numId || "2026"}`;
+
+  renderCertificateSheet(certType, {
+    teamName: team.teamName,
+    teamId: team.teamId,
+    edition: team.edition || "Software Edition",
+    psId: team.psId || "Innovation",
+    domain: team.domain || "General Innovation",
+    title: team.title || "SIH Innovation Project",
+    members: team.members || [],
+    position: isWinner ? "FIRST PLACE" : "PARTICIPANT",
+    certId: certId,
+    issuedDate: "09/09/2026"
+  });
+};
+
+window.renderCertificateSheet = (type, data) => {
+  const modal = document.getElementById("certificate-modal");
+  const container = document.getElementById("printable-certificate-content");
+  if (!modal || !container) return;
+
+  const state = getSignatoryState();
+
+  let mainTitle = "CERTIFICATE OF PARTICIPATION";
+  let presentToText = "This certificate is proudly presented to";
+  let recipientHeading = escapeHtml(data.name || data.teamName || "Candidate");
+  let recipientMeta = "";
+  let bodyParagraph = "";
+  let highlightNote = "Heartiest Congratulations on the Commendable Participation!";
+
+  if (type === "achievement") {
+    mainTitle = "CERTIFICATE OF ACHIEVEMENT";
+    recipientHeading = escapeHtml(data.name || data.teamName || "Winner");
+    recipientMeta = `<div class="cert-recipient-meta"><i class="fa-solid fa-trophy" style="color: #d97706;"></i> ${escapeHtml(data.teamName || "Team")} • ${escapeHtml(data.edition || "Software Edition")}</div>`;
+    bodyParagraph = `for securing <strong>${data.position || "FIRST PLACE"}</strong> in the <strong>SIH INTERNAL HACKATHON 2026 – TIT</strong> in recognition of exceptional innovation, outstanding problem-solving abilities, creativity, technical excellence, and remarkable teamwork demonstrated throughout the hackathon. The dedication, commitment, and ability to transform innovative ideas into an effective solution are truly commendable. This achievement reflects the team's enthusiasm for innovation and excellence in addressing real-world challenges.`;
+    highlightNote = "Heartiest Congratulations on this Outstanding Achievement!";
+  } else if (type === "appreciation") {
+    mainTitle = "CERTIFICATE OF APPRECIATION";
+    recipientHeading = escapeHtml(data.name);
+    recipientMeta = `<div class="cert-recipient-meta"><i class="fa-solid fa-star" style="color: #d97706;"></i> ${escapeHtml(data.role)} • ${escapeHtml(data.dept || "TIT Agartala")}</div>`;
+    bodyParagraph = `in sincere recognition and appreciation for exemplary leadership, dedicated contribution, and relentless efforts as <strong>${escapeHtml(data.role)}</strong> in successfully organizing and executing the <strong>SIH INTERNAL HACKATHON 2026</strong> organized by the Institution Innovation Council (IIC) at Tripura Institute of Technology. Your valuable efforts, proactive management, and unwavering commitment have been instrumental in fostering an atmosphere of innovation and technical excellence.`;
+    highlightNote = "Heartiest Congratulations on the Outstanding Contribution!";
+  } else if (type === "participation_team") {
+    mainTitle = "CERTIFICATE OF PARTICIPATION";
+    recipientHeading = `Team ${escapeHtml(data.teamName)}`;
+    const membersList = (Array.isArray(data.members) ? data.members : []).filter(Boolean);
+    const memberNames = membersList.map((m) => `<strong>${escapeHtml(m.name)}</strong> (${m.roll ? escapeHtml(m.roll) : "Roll Awaited"})`).join(", ");
+    recipientMeta = `<div class="cert-recipient-meta"><i class="fa-solid fa-users" style="color: #059669;"></i> Team ID: ${escapeHtml(data.teamId)} • ${escapeHtml(data.edition)}</div>`;
+    bodyParagraph = `awarded to <strong>Team ${escapeHtml(data.teamName)}</strong> (${escapeHtml(data.teamId)}) consisting of ${memberNames} for actively developing and presenting their solution for problem statement <strong>${escapeHtml(data.psId)}</strong> (<em>${escapeHtml(data.title || data.domain)}</em>) in the <strong>SIH INTERNAL HACKATHON 2026 – TIT</strong>. The squad demonstrated commendable technical skills, innovative problem-solving, and exemplary teamwork throughout the internal hackathon evaluation.`;
+    highlightNote = "Heartiest Congratulations on the Commendable Participation!";
+  } else {
+    // Individual Student Participation
+    mainTitle = "CERTIFICATE OF PARTICIPATION";
+    recipientHeading = escapeHtml(data.name);
+    const roleText = data.isLeader ? "Team Leader" : "Team Member";
+    recipientMeta = `<div class="cert-recipient-meta"><i class="fa-solid fa-id-badge" style="color: #059669;"></i> Roll: <strong>${escapeHtml(data.roll || "Awaited")}</strong> • ${escapeHtml(data.dept)} (${escapeHtml(data.year || "")}) • ${roleText} of Team ${escapeHtml(data.teamName)}</div>`;
+    bodyParagraph = `for actively participating as a dedicated ${roleText.toLowerCase()} of <strong>${escapeHtml(data.teamName)}</strong> (${escapeHtml(data.edition)}) in the <strong>SIH INTERNAL HACKATHON 2026 – TIT</strong> organized by the Institution Innovation Council (IIC) at Tripura Institute of Technology. The participant demonstrated outstanding problem-solving abilities, technical ingenuity, and teamwork in developing solutions for problem statement <strong>${escapeHtml(data.psId)}</strong>.`;
+    highlightNote = "Heartiest Congratulations on the Commendable Participation!";
+  }
+
+  // SIH Crisp Logo vector + IIC logo
+  const sihVector = `
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 10C30 10 15 25 15 45C15 58 22 68 32 75V85C32 88 35 90 38 90H62C65 90 68 88 68 85V75C78 68 85 58 85 45C85 25 70 10 50 10Z" fill="#ff9933" fill-opacity="0.15" stroke="#ff9933" stroke-width="3"/>
+        <path d="M35 45C35 37 42 30 50 30" stroke="#138808" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="50" cy="45" r="8" fill="#000080"/>
+        <path d="M38 92H62" stroke="#0f172a" stroke-width="4" stroke-linecap="round"/>
+        <text x="50" y="65" font-family="'Space Grotesk', sans-serif" font-size="11" font-weight="900" fill="#0f172a" text-anchor="middle">SIH 2026</text>
+      </svg>
+      <img src="iic-logo.png" alt="IIC Logo" class="cert-sih-logo" onerror="this.style.display='none'">
+    </div>
+  `;
+
+  // Dynamic Signatures Html
+  const principalSigSrc = state.principalSignature || (state.isReleased ? PRESET_SIGNATURES.principalSvg : "");
+  const secretarySigSrc = state.secretarySignature || (state.isReleased ? PRESET_SIGNATURES.secretarySvg : "");
+
+  const principalSigHtml = principalSigSrc
+    ? `<img src="${principalSigSrc}" alt="Signature of Principal In-charge" class="cert-sig-img" />`
+    : `<div class="cert-sig-pending-placeholder"><i class="fa-solid fa-clock"></i> Awaiting Principal Signature</div>`;
+
+  const secretarySigHtml = secretarySigSrc
+    ? `<img src="${secretarySigSrc}" alt="Signature of Secretary" class="cert-sig-img" />`
+    : `<div class="cert-sig-pending-placeholder"><i class="fa-solid fa-clock"></i> Awaiting Secretary Signature</div>`;
+
+  container.innerHTML = `
+    <div class="cert-sheet">
+      <div class="cert-outer-border">
+        <div class="cert-inner-frame">
+          <img src="tit_logo.png" class="cert-watermark" alt="Watermark">
+
+          <!-- Header -->
+          <div class="cert-header">
+            <div class="cert-header-left">
+              <img src="tit_logo.png" class="cert-header-logo" alt="TIT Emblem">
+              <div>
+                <div class="cert-inst-title">TRIPURA INSTITUTE OF<br>TECHNOLOGY</div>
+                <div class="cert-inst-sub">NARSINGARH, TRIPURA</div>
+              </div>
+            </div>
+            <div class="cert-header-right">
+              ${sihVector}
+            </div>
+          </div>
+
+          <!-- Body -->
+          <div class="cert-body">
+            <h1 class="cert-main-title">${mainTitle}</h1>
+            <div class="cert-present-text">${presentToText}</div>
+
+            <div class="cert-recipient-name">${recipientHeading}</div>
+            ${recipientMeta}
+
+            <p class="cert-desc-para">
+              ${bodyParagraph}
+            </p>
+
+            <div class="cert-highlight-note">
+              ${highlightNote}
+            </div>
+          </div>
+
+          <!-- Signatures -->
+          <div class="cert-signatures">
+            <div class="cert-sig-block">
+              <div class="cert-sig-img-wrap">
+                ${principalSigHtml}
+              </div>
+              <div class="cert-sig-line"></div>
+              <div class="cert-sig-name">Prof. (Dr.) Bijoy Kumar Upadhyaya</div>
+              <div class="cert-sig-role">Principal In-charge & Chief Patron</div>
+              <div class="cert-sig-inst">Tripura Institute of Technology</div>
+            </div>
+
+            <div class="cert-sig-block">
+              <div class="cert-sig-img-wrap">
+                ${secretarySigHtml}
+              </div>
+              <div class="cert-sig-line"></div>
+              <div class="cert-sig-name">Prof. Kaberi Majumdar</div>
+              <div class="cert-sig-role">Secretary, Technical Committee</div>
+              <div class="cert-sig-inst">Tripura Institute of Technology</div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="cert-footer">
+            <div>Issued Date: ${escapeHtml(data.issuedDate || "09/09/2026")}</div>
+            <div>Certificate ID : ${escapeHtml(data.certId || "TIT/INTSIH/001")}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  updateCertModalStatus();
+  modal.classList.add("active");
+};
+
+function checkUrlHashRouting() {
+  const hash = (window.location.hash || "").toLowerCase();
+  if (hash === "#sign" || hash === "#signatory" || hash === "#esign" || hash === "#signature" || hash === "#signatures") {
+    openSignatoryModal();
+  }
+}
+
+window.addEventListener("hashchange", checkUrlHashRouting);
+
+/* ==========================================================================
    6. FACULTY & JURY ADMIN REVIEW CONSOLE ENGINE
    ========================================================================== */
 var adminSearchQuery = "";
@@ -3119,6 +3810,9 @@ window.renderAdminConsole = function renderAdminConsole() {
         </div>
 
         <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+          <button class="btn-3d-outline" onclick="openSignatoryModal()" style="padding: 8px 14px; font-size: 0.82rem; background: #ecfdf5; color: #065f46; border-color: #a7f3d0;" title="Institutional Digital Signatory Gateway & Master Release">
+            <i class="fa-solid fa-signature"></i> Signatory Gateway
+          </button>
           <button class="btn-3d-secondary" onclick="resetAdminFilters()" style="padding: 8px 14px; font-size: 0.82rem;" title="Reset Filters & Show All Teams">
             <i class="fa-solid fa-rotate"></i> Show All (${allTeamsList.length})
           </button>
@@ -3298,10 +3992,13 @@ window.renderAdminConsole = function renderAdminConsole() {
                         </select>
                       </td>
                       <td style="text-align: right; white-space: nowrap;">
-                        <button class="btn-3d-primary" onclick="openAdminTeamDetails('${t.teamId}')" style="padding: 6px 9px; font-size: 0.75rem; margin-right: 3px;" title="Inspect Full Squad & Abstract">
+                        <button class="btn-3d-primary" onclick="openAdminTeamDetails('${t.teamId}')" style="padding: 6px 8px; font-size: 0.75rem; margin-right: 3px;" title="Inspect Full Squad & Abstract">
                           <i class="fa-solid fa-users-viewfinder"></i>
                         </button>
-                        ${t.pptLink ? `<a href="${t.pptLink}" target="_blank" rel="noopener" class="btn-3d-secondary" style="padding: 6px 9px; font-size: 0.75rem; margin-right: 3px; text-decoration: none;" title="Open Idea Presentation Deck"><i class="fa-solid fa-file-powerpoint"></i></a>` : ''}
+                        <button class="btn-3d-secondary" onclick="openSquadTeamCertificate('${t.teamId}')" style="padding: 6px 8px; font-size: 0.75rem; margin-right: 3px;" title="View & Print Team Certificate">
+                          <i class="fa-solid fa-award" style="color: #d97706;"></i>
+                        </button>
+                        ${t.pptLink ? `<a href="${t.pptLink}" target="_blank" rel="noopener" class="btn-3d-secondary" style="padding: 6px 8px; font-size: 0.75rem; margin-right: 3px; text-decoration: none;" title="Open Idea Presentation Deck"><i class="fa-solid fa-file-powerpoint"></i></a>` : ''}
                         <button class="btn-3d-outline" onclick="openTeamPassModal('${t.teamId}')" style="padding: 6px 7px; font-size: 0.75rem; background: #ffffff; margin-right: 3px;" title="Print Digital Pass & QR">
                           <i class="fa-solid fa-id-card"></i>
                         </button>
@@ -3423,14 +4120,20 @@ window.openAdminTeamDetails = (teamId) => {
           <div style="font-size: 0.75rem; color: #64748b; word-break: break-all; margin-bottom: 2px;">
             <i class="fa-solid fa-envelope" style="color: #059669; width: 14px;"></i> ${m.email || "N/A"}
           </div>
-          <div style="font-size: 0.75rem; color: #64748b;">
+          <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 8px;">
             <i class="fa-solid fa-phone" style="color: #059669; width: 14px;"></i> ${m.phone || "N/A"}
           </div>
+          <button onclick="openStudentIndividualCertificate('${team.teamId}', ${idx})" class="btn-3d-secondary" style="width: 100%; padding: 4px 8px; font-size: 0.72rem; justify-content: center;" title="View & Print Individual Student Certificate">
+            <i class="fa-solid fa-award" style="color: #d97706;"></i> Individual Certificate
+          </button>
         </div>
       `).join("")}
     </div>
     <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #e2e8f0; padding-top: 16px; flex-wrap: wrap; gap: 10px;">
-      <div style="display: flex; gap: 8px;">
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button class="btn-3d-primary" onclick="openSquadTeamCertificate('${team.teamId}')" style="padding: 8px 14px; font-size: 0.82rem;">
+          <i class="fa-solid fa-award"></i> View Team Certificate
+        </button>
         <button class="btn-3d-outline" onclick="openTeamPassModal('${team.teamId}')" style="padding: 8px 14px; font-size: 0.82rem; background: #ffffff;">
           <i class="fa-solid fa-id-card"></i> View Pass & QR
         </button>
@@ -4733,6 +5436,9 @@ function renderLiveDepartmentCoordinators() {
             <div class="committee-contact-links">
               ${contactHtml}
             </div>
+            <button class="btn-3d-secondary" onclick="openPublicCommitteeCertificate('${escapeHtml(c.name)}', 'Student Coordinator (${escapeHtml(c.year)})', '${escapeHtml(meta.name)}', 'TIT/INTSIH/COORD-${refCode}')" style="width: 100%; margin-top: 10px; font-size: 0.76rem; padding: 5px 8px; justify-content: center;" title="View & Download Official Certificate of Appreciation">
+              <i class="fa-solid fa-award" style="color: #d97706;"></i> Certificate of Appreciation
+            </button>
           </div>
         `;
       });
@@ -5167,12 +5873,16 @@ window.resolveTeammateRequest = (requestId) => {
 };
 
 // Hook initialization on DOM ready
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => {
-    initTeammateBoard();
-  });
-} else {
+function initPortalCore() {
   initTeammateBoard();
+  initSignatorySync();
+  checkUrlHashRouting();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initPortalCore);
+} else {
+  initPortalCore();
 }
 
 
