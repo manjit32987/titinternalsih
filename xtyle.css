@@ -7852,6 +7852,111 @@ body.dark-theme .viz-crosstab-table tr:hover td {
   }
 }
 
+/* ==========================================================================
+   DEDICATED CERTIFICATES & RECOGNITION DIRECTORY SECTION STYLING
+   ========================================================================== */
+.cert-recognition-section {
+  position: relative;
+}
+
+.cert-recog-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cert-recog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(5, 150, 105, 0.12);
+  border-color: rgba(5, 150, 105, 0.35);
+}
+
+.cert-recog-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  gap: 8px;
+}
+
+.cert-id-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #059669;
+  background: rgba(5, 150, 105, 0.08);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(5, 150, 105, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cert-badge-role {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.cert-badge-role.faculty {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.cert-badge-role.core {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.cert-recog-body {
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.cert-recog-name {
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 4px 0;
+  font-family: var(--font-heading);
+}
+
+.cert-recog-designation {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+
+.cert-recog-dept {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cert-recog-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 14px;
+}
+
 
 
 

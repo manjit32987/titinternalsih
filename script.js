@@ -5872,6 +5872,50 @@ window.resolveTeammateRequest = (requestId) => {
   }
 };
 
+/* ==========================================================================
+   CERTIFICATES DIRECTORY FILTER & SEARCH ENGINE
+   ========================================================================== */
+let currentCertCategory = "all";
+let currentCertSearch = "";
+
+window.filterCertDirectory = (cat) => {
+  currentCertCategory = cat || "all";
+  
+  // Update active tab buttons
+  const filterBtns = document.querySelectorAll("#cert-filter-bar .branch-filter-btn");
+  filterBtns.forEach(btn => {
+    if (btn.getAttribute("data-cat") === cat) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
+
+  applyCertFilters();
+};
+
+window.searchCertDirectory = (query) => {
+  currentCertSearch = (query || "").trim().toLowerCase();
+  applyCertFilters();
+};
+
+function applyCertFilters() {
+  const cards = document.querySelectorAll("#cert-directory-grid .cert-recog-card");
+  cards.forEach(card => {
+    const cardCat = card.getAttribute("data-cat") || "";
+    const cardSearch = (card.getAttribute("data-search") || "").toLowerCase();
+
+    const matchesCat = currentCertCategory === "all" || cardCat === currentCertCategory;
+    const matchesSearch = currentCertSearch === "" || cardSearch.includes(currentCertSearch);
+
+    if (matchesCat && matchesSearch) {
+      card.style.display = "flex";
+    } else {
+      card.style.display = "none";
+    }
+  });
+}
+
 // Hook initialization on DOM ready
 function initPortalCore() {
   initTeammateBoard();
