@@ -3457,19 +3457,20 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
     lookupKey: `WINNER_3`
   });
 
-  // 2. Team Participation Certificates (004, 005, 006, ...)
+  // 2. Team by Team: Team Squad Certificate IMMEDIATELY followed by all its Individual Members
   allTeams.forEach((team) => {
     const is1st = team === winner1st || (team.status || "").toLowerCase().includes("1st");
     const is2nd = team === winner2nd || (team.status || "").toLowerCase().includes("2nd");
     const is3rd = team === winner3rd || (team.status || "").toLowerCase().includes("3rd");
 
-    const certId = formatCertId(serialCounter++);
     const position = is1st ? "FIRST PLACE" : (is2nd ? "SECOND PLACE" : (is3rd ? "THIRD PLACE" : ((team.status || "").toLowerCase().includes("shortlist") ? "FINALIST" : "PARTICIPANT")));
     const leader = (team.members && team.members[0]) || {};
 
+    // A. Team Squad Certificate
+    const teamCertId = formatCertId(serialCounter++);
     registry.push({
       serialNumber: serialCounter - 1,
-      certId: certId,
+      certId: teamCertId,
       category: "Team Participation",
       certType: "participation_team",
       recipientName: `Team ${team.teamName || "Squad"}`,
@@ -3488,19 +3489,17 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
       issuedDate: "09/09/2026",
       lookupKey: `TEAM_${team.teamId}`
     });
-  });
 
-  // 3. Individual Student Participant Certificates
-  allTeams.forEach((team) => {
+    // B. Individual Student Members of THIS team immediately following the team certificate
     const membersList = (Array.isArray(team.members) ? team.members : []).filter(Boolean);
     membersList.forEach((m, idx) => {
       const isLeader = m.isLeader || idx === 0;
-      const certId = formatCertId(serialCounter++);
+      const memberCertId = formatCertId(serialCounter++);
       const roleText = isLeader ? "Team Leader" : "Team Member";
 
       registry.push({
         serialNumber: serialCounter - 1,
-        certId: certId,
+        certId: memberCertId,
         category: "Individual Participant",
         certType: "participation_individual",
         recipientName: m.name || "Student Innovator",
@@ -3525,7 +3524,7 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
     });
   });
 
-  // 4. Technical Leads (Student Event Head & Domain Technical Leads)
+  // 3. Technical Leads (Student Event Head & Domain Technical Leads)
   const technicalLeads = [
     { name: "Manjit Chakraborty", role: "Event Head & Convener", dept: "Dept. of Electronics & Communication Engineering (Final Year)" },
     { name: "Arindam Deb", role: "Technical & Platform Lead", dept: "Dept. of Electrical Engineering (4th Year)" },
@@ -3557,7 +3556,7 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
     });
   });
 
-  // 5. SIH Cell & Faculty Conveners (Joydeep Sutradhar & Arijit Banik - Note: Signing Authorities Prof. Bijoy Kumar Upadhyaya and Prof. Kaberi Majumdar do not receive certificates)
+  // 4. SIH Cell & Faculty Conveners (Joydeep Sutradhar & Arijit Banik - Note: Signing Authorities Prof. Bijoy Kumar Upadhyaya and Prof. Kaberi Majumdar do not receive certificates)
   const sihCell = [
     { name: "Joydeep Sutradhar", role: "Faculty Convener", dept: "Dept. of Electrical Engineering, TIT" },
     { name: "Arijit Banik", role: "SIH Single Point of Contact (SPOC)", dept: "Dept. of Civil Engineering, TIT" }
@@ -3584,7 +3583,7 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
     });
   });
 
-  // 6. Core Committee (Department Student Coordination Committee across ECE, CSE, EE, CE, ME)
+  // 5. Core Committee (Department Student Coordination Committee across ECE, CSE, EE, CE, ME)
   const deptCoordinatorsList = (typeof liveCoordinatorsData !== "undefined" && Array.isArray(liveCoordinatorsData) && liveCoordinatorsData.length > 0)
     ? liveCoordinatorsData
     : [
@@ -3634,13 +3633,21 @@ window.openPublicCommitteeCertificate = (name, role, dept, certId) => {
   const registry = window.generateMasterCertificatesRegistry();
   const searchName = String(name || "").trim().toLowerCase();
   
-  // Find matching entry in registry
-  const match = registry.find(
-    (c) =>
-      c.recipientName.toLowerCase() === searchName ||
-      (certId && c.certId === certId) ||
-      (c.lookupKey && c.lookupKey.includes(searchName.replace(/\s+/g, "_")))
-  );
+  // Find matching leadership entry in registry (priority to exact certId, then exact role category)
+  let match = null;
+  if (certId) {
+    match = registry.find((c) => c.certId === certId);
+  }
+  if (!match) {
+    match = registry.find(
+      (c) =>
+        (c.category === "Technical Lead" || c.category === "Core Committee" || c.category === "SIH Cell & Faculty") &&
+        c.recipientName.toLowerCase() === searchName
+    );
+  }
+  if (!match) {
+    match = registry.find((c) => c.recipientName.toLowerCase() === searchName);
+  }
 
   const finalCertId = match ? match.certId : (certId || "TIT/INTSIH/APP-001");
   const finalRole = match ? match.recipientRole : role;
@@ -4027,6 +4034,7 @@ var adminYearFilter = "ALL";
 var adminCertCategoryFilter = "ALL";
 var adminCertSignatureFilter = "ALL";
 var adminCertSearchQuery = "";
+var adminCertViewMode = "squads"; // 'squads' | 'table'
 
 window.openAdminModal = () => {
   const modal = document.getElementById("admin-review-modal");
@@ -4078,6 +4086,11 @@ window.switchAdminTab = (tab) => {
   renderAdminConsole();
 };
 
+window.switchCertViewMode = (mode) => {
+  adminCertViewMode = mode;
+  renderAdminConsole();
+};
+
 window.filterAdminTeams = (query, edition, status, branch, year) => {
   if (query !== undefined) adminSearchQuery = query.toLowerCase();
   if (edition !== undefined) adminEditionFilter = edition;
@@ -4103,6 +4116,7 @@ window.resetAdminFilters = () => {
   adminCertSearchQuery = "";
   adminCertCategoryFilter = "ALL";
   adminCertSignatureFilter = "ALL";
+  adminCertViewMode = "squads";
   renderAdminConsole();
 };
 
@@ -4530,14 +4544,196 @@ window.renderAdminConsole = function renderAdminConsole() {
       `;
     } else {
       // MASTER CERTIFICATES REGISTRY VIEW
+
+      const winnerCerts  = masterCerts.filter(c => c.category === 'Winner');
+      const teamCerts    = masterCerts.filter(c => c.category === 'Team Participation');
+      const indivCerts   = masterCerts.filter(c => c.category === 'Individual Participant');
+      const leadCerts    = masterCerts.filter(c => c.category === 'Technical Lead');
+      const facultyCerts = masterCerts.filter(c => c.category === 'SIH Cell & Faculty');
+      const coreCerts    = masterCerts.filter(c => c.category === 'Core Committee');
+
+      // Outer wrapper + view-mode toggle bar
       html += `
-        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+        <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:18px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
+          <div style="display:flex; gap:8px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+            <div style="display:flex; gap:6px;">
+              <button onclick="switchCertViewMode('squads')" style="padding:7px 14px; font-size:0.82rem; font-weight:700; border-radius:8px; border:2px solid ${adminCertViewMode==='squads'?'#059669':'#e2e8f0'}; background:${adminCertViewMode==='squads'?'#ecfdf5':'#fff'}; color:${adminCertViewMode==='squads'?'#065f46':'#64748b'}; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-layer-group"></i> Squad Groups
+              </button>
+              <button onclick="switchCertViewMode('table')" style="padding:7px 14px; font-size:0.82rem; font-weight:700; border-radius:8px; border:2px solid ${adminCertViewMode==='table'?'#059669':'#e2e8f0'}; background:${adminCertViewMode==='table'?'#ecfdf5':'#fff'}; color:${adminCertViewMode==='table'?'#065f46':'#64748b'}; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-table-list"></i> Full Table
+              </button>
+            </div>
+            <span style="font-size:0.78rem; color:#64748b; font-weight:600;">${masterCerts.length} Total &nbsp;•&nbsp; 001–003 Winners &rarr; Teams+Members &rarr; Leads &rarr; Core</span>
+          </div>
+      `;
+
+      if (adminCertViewMode === 'squads') {
+        // ===== SQUAD GROUPS VIEW =====
+
+        // WINNERS
+        html += `
+          <div style="margin-bottom:24px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; padding-bottom:8px; border-bottom:2px solid #fde68a;">
+              <i class="fa-solid fa-trophy" style="color:#d97706;"></i>
+              <strong style="font-size:0.92rem; color:#92400e;">Champions &amp; Winners</strong>
+              <span style="background:#fef3c7; color:#92400e; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:10px; border:1px solid #fde68a;">Cert IDs: 001 &ndash; 003</span>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:12px;">
+              ${winnerCerts.length > 0 ? winnerCerts.map(c => `
+                <div style="background:#fffbeb; border:2px solid #fde68a; border-radius:10px; padding:14px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <strong style="color:#059669; font-family:var(--font-mono); font-size:0.8rem; background:#ecfdf5; padding:2px 7px; border-radius:4px; border:1px solid #a7f3d0;">${c.certId}</strong>
+                    <span style="font-size:0.85rem;">${c.recipientRole.includes('1st')?'&#127947;':c.recipientRole.includes('2nd')?'&#129352;':'&#129353;'}</span>
+                  </div>
+                  <div style="font-weight:800; color:#0f172a; font-size:0.9rem;">${escapeHtml(c.recipientName)}</div>
+                  <div style="font-size:0.73rem; color:#64748b; margin:2px 0 10px;">${escapeHtml(c.recipientRole)}</div>
+                  <button class="btn-3d-primary" onclick="openCertificateByCertId('${c.certId}')" style="width:100%; padding:5px 10px; font-size:0.74rem; justify-content:center;">
+                    <i class="fa-solid fa-award"></i> View &amp; Print
+                  </button>
+                </div>
+              `).join('') : '<div style="color:#94a3b8; font-size:0.82rem; font-style:italic; grid-column:1/-1; padding:8px;">No winner teams registered yet. Load Demo Teams to preview.</div>'}
+            </div>
+          </div>
+        `;
+
+        // TEAMS + MEMBERS
+        html += `
+          <div style="margin-bottom:24px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; padding-bottom:8px; border-bottom:2px solid #bfdbfe;">
+              <i class="fa-solid fa-people-group" style="color:#2563eb;"></i>
+              <strong style="font-size:0.92rem; color:#1e3a8a;">Registered Squads &amp; Members</strong>
+              <span style="background:#eff6ff; color:#1d4ed8; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:10px; border:1px solid #bfdbfe;">${teamCerts.length} Squads &bull; ${indivCerts.length} Individual</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              ${teamCerts.length === 0
+                ? '<div style="text-align:center; padding:24px; color:#64748b; background:#f8fafc; border-radius:8px; font-size:0.86rem;">No team certificates found. Load Demo Teams to preview.</div>'
+                : teamCerts.map(tc => {
+                    const members = indivCerts.filter(ic => ic.teamId === tc.teamId);
+                    return `
+                      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:14px;">
+                        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; ${members.length > 0 ? 'margin-bottom:12px;' : ''}">
+                          <strong style="color:#059669; font-family:var(--font-mono); font-size:0.76rem; background:#ecfdf5; padding:2px 7px; border-radius:4px; border:1px solid #a7f3d0; white-space:nowrap;">${tc.certId}</strong>
+                          <span style="font-weight:800; color:#0f172a; font-size:0.88rem;">${escapeHtml(tc.teamName)}</span>
+                          <span style="background:#e0f2fe; color:#0369a1; font-size:0.68rem; font-weight:700; padding:2px 7px; border-radius:5px;">${escapeHtml(tc.position || 'PARTICIPANT')}</span>
+                          <button class="btn-3d-secondary" onclick="openCertificateByCertId('${tc.certId}')" style="padding:4px 10px; font-size:0.72rem; margin-left:auto; white-space:nowrap;">
+                            <i class="fa-solid fa-users" style="color:#059669;"></i> Squad Cert
+                          </button>
+                        </div>
+                        ${members.length > 0 ? `
+                          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(195px, 1fr)); gap:8px; padding-top:10px; border-top:1px dashed #e2e8f0;">
+                            ${members.map(m => `
+                              <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:7px; padding:10px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                                  <strong style="color:#059669; font-family:var(--font-mono); font-size:0.68rem;">${m.certId}</strong>
+                                  ${m.isLeader ? '<span style="background:#fef3c7; color:#92400e; font-size:0.58rem; font-weight:800; padding:1px 5px; border-radius:3px;">LEADER</span>' : ''}
+                                </div>
+                                <div style="font-weight:700; font-size:0.82rem; color:#0f172a;">${escapeHtml(m.recipientName)}</div>
+                                <div style="font-size:0.67rem; color:#64748b; margin-bottom:6px;">${escapeHtml(m.rollNo && m.rollNo !== 'N/A' && m.rollNo !== 'Roll Awaited' ? m.rollNo + ' • ' : '')}${escapeHtml(m.department || '')}</div>
+                                <button class="btn-3d-primary" onclick="openCertificateByCertId('${m.certId}')" style="width:100%; padding:4px 8px; font-size:0.68rem; justify-content:center;">
+                                  <i class="fa-solid fa-award"></i> View
+                                </button>
+                              </div>
+                            `).join('')}
+                          </div>
+                        ` : ''}
+                      </div>
+                    `;
+                  }).join('')
+              }
+            </div>
+          </div>
+        `;
+
+        // TECHNICAL LEADS
+        if (leadCerts.length > 0) {
+          html += `
+            <div style="margin-bottom:20px;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; padding-bottom:8px; border-bottom:2px solid #e9d5ff;">
+                <i class="fa-solid fa-user-tie" style="color:#7c3aed;"></i>
+                <strong style="font-size:0.9rem; color:#6b21a8;">Technical &amp; Organizing Leads</strong>
+                <span style="background:#faf5ff; color:#6b21a8; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:10px; border:1px solid #e9d5ff;">${leadCerts.length} certificates</span>
+              </div>
+              <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:10px;">
+                ${leadCerts.map(c => `
+                  <div style="background:#faf5ff; border:1px solid #e9d5ff; border-radius:8px; padding:12px;">
+                    <strong style="color:#059669; font-family:var(--font-mono); font-size:0.74rem; background:#ecfdf5; padding:2px 6px; border-radius:4px; display:inline-block; margin-bottom:6px;">${c.certId}</strong>
+                    <div style="font-weight:800; font-size:0.86rem; color:#0f172a; margin-bottom:2px;">${escapeHtml(c.recipientName)}</div>
+                    <div style="font-size:0.72rem; color:#475569; margin-bottom:4px;">${escapeHtml(c.recipientRole)}</div>
+                    <div style="font-size:0.68rem; color:#64748b; margin-bottom:8px;">${escapeHtml(c.department || '')}</div>
+                    <button class="btn-3d-primary" onclick="openCertificateByCertId('${c.certId}')" style="width:100%; padding:5px 10px; font-size:0.73rem; justify-content:center;">
+                      <i class="fa-solid fa-award"></i> View &amp; Print
+                    </button>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+
+        // SIH CELL & FACULTY
+        if (facultyCerts.length > 0) {
+          html += `
+            <div style="margin-bottom:20px;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; padding-bottom:8px; border-bottom:2px solid #fecdd3;">
+                <i class="fa-solid fa-building-columns" style="color:#be123c;"></i>
+                <strong style="font-size:0.9rem; color:#9f1239;">SIH Cell &amp; Faculty Conveners</strong>
+                <span style="background:#fff1f2; color:#9f1239; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:10px; border:1px solid #fecdd3;">${facultyCerts.length} certificates</span>
+              </div>
+              <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:10px;">
+                ${facultyCerts.map(c => `
+                  <div style="background:#fff1f2; border:1px solid #fecdd3; border-radius:8px; padding:12px;">
+                    <strong style="color:#059669; font-family:var(--font-mono); font-size:0.74rem; background:#ecfdf5; padding:2px 6px; border-radius:4px; display:inline-block; margin-bottom:6px;">${c.certId}</strong>
+                    <div style="font-weight:800; font-size:0.86rem; color:#0f172a; margin-bottom:2px;">${escapeHtml(c.recipientName)}</div>
+                    <div style="font-size:0.72rem; color:#475569; margin-bottom:4px;">${escapeHtml(c.recipientRole)}</div>
+                    <div style="font-size:0.68rem; color:#64748b; margin-bottom:8px;">${escapeHtml(c.department || '')}</div>
+                    <button class="btn-3d-primary" onclick="openCertificateByCertId('${c.certId}')" style="width:100%; padding:5px 10px; font-size:0.73rem; justify-content:center;">
+                      <i class="fa-solid fa-award"></i> View &amp; Print
+                    </button>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+
+        // CORE COMMITTEE
+        if (coreCerts.length > 0) {
+          html += `
+            <div style="margin-bottom:10px;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; padding-bottom:8px; border-bottom:2px solid #a7f3d0;">
+                <i class="fa-solid fa-people-roof" style="color:#059669;"></i>
+                <strong style="font-size:0.9rem; color:#166534;">Core Committee (Dept Student Coordinators)</strong>
+                <span style="background:#f0fdf4; color:#166534; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:10px; border:1px solid #a7f3d0;">${coreCerts.length} certificates</span>
+              </div>
+              <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:10px;">
+                ${coreCerts.map(c => `
+                  <div style="background:#f0fdf4; border:1px solid #a7f3d0; border-radius:8px; padding:12px;">
+                    <strong style="color:#059669; font-family:var(--font-mono); font-size:0.74rem; background:#ecfdf5; padding:2px 6px; border-radius:4px; display:inline-block; margin-bottom:6px;">${c.certId}</strong>
+                    <div style="font-weight:800; font-size:0.86rem; color:#0f172a; margin-bottom:2px;">${escapeHtml(c.recipientName)}</div>
+                    <div style="font-size:0.72rem; color:#475569; margin-bottom:4px;">${escapeHtml(c.recipientRole)}</div>
+                    <div style="font-size:0.68rem; color:#64748b; margin-bottom:8px;">${escapeHtml(c.department || '')}</div>
+                    <button class="btn-3d-primary" onclick="openCertificateByCertId('${c.certId}')" style="width:100%; padding:5px 10px; font-size:0.73rem; justify-content:center;">
+                      <i class="fa-solid fa-award"></i> View &amp; Print
+                    </button>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+
+        html += `</div>`; // close outer wrapper
+
+      } else {
+        // ===== FULL TABLE VIEW =====
+        html += `
           <!-- Filters & Search Toolbar -->
           <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #f1f5f9;">
             <div style="position: relative; flex: 1; min-width: 260px;">
               <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 11px; color: #94a3b8; font-size: 0.85rem;"></i>
-              <input type="text" class="form-text-input" placeholder="Search Certificate ID (e.g. TIT/INTSIH/001), Recipient Name, Team, Role, Dept..." 
-                value="${adminCertSearchQuery}" 
+              <input type="text" class="form-text-input" placeholder="Search Certificate ID (e.g. TIT/INTSIH/001), Recipient Name, Team, Role, Dept..."
+                value="${adminCertSearchQuery}"
                 oninput="filterAdminCertificates(this.value, undefined, undefined)"
                 style="padding-left: 34px; font-size: 0.85rem; height: 38px; margin: 0; width: 100%;">
             </div>
@@ -4547,8 +4743,8 @@ window.renderAdminConsole = function renderAdminConsole() {
                 <option value="Winner" ${adminCertCategoryFilter === "Winner" ? "selected" : ""}>Winners (001 - 003)</option>
                 <option value="Team" ${adminCertCategoryFilter === "Team" ? "selected" : ""}>Team Participation (004+)</option>
                 <option value="Individual" ${adminCertCategoryFilter === "Individual" ? "selected" : ""}>Individual Student Participants</option>
-                <option value="TechLead" ${adminCertCategoryFilter === "TechLead" ? "selected" : ""}>Technical Leads (Dept Coordinators)</option>
-                <option value="Faculty" ${adminCertCategoryFilter === "Faculty" ? "selected" : ""}>SIH Cell & Faculty Conveners</option>
+                <option value="TechLead" ${adminCertCategoryFilter === "TechLead" ? "selected" : ""}>Technical Leads</option>
+                <option value="Faculty" ${adminCertCategoryFilter === "Faculty" ? "selected" : ""}>SIH Cell &amp; Faculty Conveners</option>
                 <option value="Core" ${adminCertCategoryFilter === "Core" ? "selected" : ""}>Core Organizing Committee</option>
               </select>
               <select class="form-select-input" onchange="filterAdminCertificates(undefined, undefined, this.value)" style="height: 38px; font-size: 0.82rem; padding: 6px 10px; width: auto; margin: 0;">
@@ -4556,7 +4752,7 @@ window.renderAdminConsole = function renderAdminConsole() {
                 <option value="Signed" ${adminCertSignatureFilter === "Signed" ? "selected" : ""}>Digitally Authorized</option>
                 <option value="Pending" ${adminCertSignatureFilter === "Pending" ? "selected" : ""}>Pending Signatures</option>
               </select>
-              <button class="btn-3d-secondary" onclick="filterAdminCertificates('', 'ALL', 'ALL')" style="height: 38px; padding: 0 12px; font-size: 0.8rem;" title="Reset Certificate Filters">
+              <button class="btn-3d-secondary" onclick="filterAdminCertificates('', 'ALL', 'ALL')" style="height: 38px; padding: 0 12px; font-size: 0.8rem;">
                 <i class="fa-solid fa-filter-circle-xmark"></i> Clear
               </button>
             </div>
@@ -4564,19 +4760,11 @@ window.renderAdminConsole = function renderAdminConsole() {
 
           <!-- Summary Bar -->
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.82rem; color: #475569; flex-wrap: wrap; gap: 8px;">
-            <div>
-              Showing <strong>${filteredCerts.length}</strong> of <strong>${masterCerts.length}</strong> certificates in registry
-            </div>
+            <div>Showing <strong>${filteredCerts.length}</strong> of <strong>${masterCerts.length}</strong> certificates in registry</div>
             <div style="display: flex; gap: 8px; align-items: center;">
-              <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.74rem; font-weight: 700; color: #059669; background: #ecfdf5; padding: 3px 8px; border-radius: 4px;">
-                <i class="fa-solid fa-trophy"></i> 001-003: Winners
-              </span>
-              <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.74rem; font-weight: 700; color: #2563eb; background: #eff6ff; padding: 3px 8px; border-radius: 4px;">
-                <i class="fa-solid fa-people-group"></i> 004+: Teams & Students
-              </span>
-              <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.74rem; font-weight: 700; color: #7c3aed; background: #f5f3ff; padding: 3px 8px; border-radius: 4px;">
-                <i class="fa-solid fa-user-tie"></i> Leads, Faculty & Core
-              </span>
+              <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.74rem; font-weight:700; color:#059669; background:#ecfdf5; padding:3px 8px; border-radius:4px;"><i class="fa-solid fa-trophy"></i> 001-003: Winners</span>
+              <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.74rem; font-weight:700; color:#2563eb; background:#eff6ff; padding:3px 8px; border-radius:4px;"><i class="fa-solid fa-people-group"></i> 004+: Teams &amp; Students</span>
+              <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.74rem; font-weight:700; color:#7c3aed; background:#f5f3ff; padding:3px 8px; border-radius:4px;"><i class="fa-solid fa-user-tie"></i> Leads, Faculty &amp; Core</span>
             </div>
           </div>
 
@@ -4599,57 +4787,48 @@ window.renderAdminConsole = function renderAdminConsole() {
                   ? `<tr><td colspan="7" style="text-align: center; padding: 36px; color: #64748b;">No issued certificates match your filter criteria.<br><button class="btn-3d-primary" onclick="filterAdminCertificates('', 'ALL', 'ALL')" style="margin-top: 10px; padding: 6px 12px; font-size: 0.8rem;"><i class="fa-solid fa-rotate"></i> Reset Certificate Filters</button></td></tr>`
                   : filteredCerts.map((c) => {
                     const isWinnerCat = c.category === "Winner";
-                    const isTeamCat = c.category === "Team Participation";
-                    const isIndivCat = c.category === "Individual Participant";
-                    const isLeadCat = c.category === "Technical Lead";
+                    const isTeamCat   = c.category === "Team Participation";
+                    const isIndivCat  = c.category === "Individual Participant";
+                    const isLeadCat   = c.category === "Technical Lead";
                     const isFacultyCat = c.category === "SIH Cell & Faculty";
-                    const isCoreCat = c.category === "Core Committee";
+                    const isCoreCat   = c.category === "Core Committee";
 
-                    let badgeBg = "#f1f5f9";
-                    let badgeCol = "#475569";
-                    if (isWinnerCat) { badgeBg = "#fef3c7"; badgeCol = "#92400e"; }
-                    else if (isTeamCat) { badgeBg = "#e0f2fe"; badgeCol = "#0369a1"; }
-                    else if (isIndivCat) { badgeBg = "#ecfdf5"; badgeCol = "#065f46"; }
-                    else if (isLeadCat) { badgeBg = "#faf5ff"; badgeCol = "#6b21a8"; }
+                    let badgeBg = "#f1f5f9", badgeCol = "#475569";
+                    if (isWinnerCat)   { badgeBg = "#fef3c7"; badgeCol = "#92400e"; }
+                    else if (isTeamCat)    { badgeBg = "#e0f2fe"; badgeCol = "#0369a1"; }
+                    else if (isIndivCat)   { badgeBg = "#ecfdf5"; badgeCol = "#065f46"; }
+                    else if (isLeadCat)    { badgeBg = "#faf5ff"; badgeCol = "#6b21a8"; }
                     else if (isFacultyCat) { badgeBg = "#fff1f2"; badgeCol = "#9f1239"; }
-                    else if (isCoreCat) { badgeBg = "#f0fdf4"; badgeCol = "#166534"; }
+                    else if (isCoreCat)    { badgeBg = "#f0fdf4"; badgeCol = "#166534"; }
 
                     return `
-                      <tr style="${isWinnerCat ? 'background: #fffbeb;' : ''}">
+                      <tr style="${isWinnerCat ? 'background:#fffbeb;' : ''}">
                         <td>
-                          <strong style="color: #059669; font-family: var(--font-mono); font-size: 0.86rem; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; border: 1px solid #a7f3d0; display: inline-block;">
-                            ${c.certId}
-                          </strong>
-                          <div style="font-size: 0.68rem; color: #94a3b8; margin-top: 2px;">#${c.serialNumber} • ${c.issuedDate}</div>
+                          <strong style="color:#059669; font-family:var(--font-mono); font-size:0.86rem; background:#ecfdf5; padding:2px 6px; border-radius:4px; border:1px solid #a7f3d0; display:inline-block;">${c.certId}</strong>
+                          <div style="font-size:0.68rem; color:#94a3b8; margin-top:2px;">#${c.serialNumber} &bull; ${c.issuedDate}</div>
+                        </td>
+                        <td><span style="background:${badgeBg}; color:${badgeCol}; font-weight:800; font-size:0.72rem; padding:3px 8px; border-radius:6px; display:inline-block;">${escapeHtml(c.category)}</span></td>
+                        <td>
+                          <strong style="color:#0f172a; font-size:0.90rem;">${escapeHtml(c.recipientName)}</strong>
+                          ${c.rollNo && c.rollNo !== "N/A" ? `<div style="font-size:0.72rem; color:#64748b;">Roll: ${escapeHtml(c.rollNo)}</div>` : ''}
                         </td>
                         <td>
-                          <span style="background: ${badgeBg}; color: ${badgeCol}; font-weight: 800; font-size: 0.72rem; padding: 3px 8px; border-radius: 6px; display: inline-block;">
-                            ${escapeHtml(c.category)}
-                          </span>
+                          <div style="font-size:0.82rem; font-weight:700; color:#334155;">${escapeHtml(c.recipientRole)}</div>
+                          <div style="font-size:0.7rem; color:#64748b;">${escapeHtml(c.programYear || "")}</div>
                         </td>
                         <td>
-                          <strong style="color: #0f172a; font-size: 0.90rem;">${escapeHtml(c.recipientName)}</strong>
-                          ${c.rollNo && c.rollNo !== "N/A" ? `<div style="font-size: 0.72rem; color: #64748b;">Roll: ${escapeHtml(c.rollNo)}</div>` : ''}
+                          <strong style="color:#0f172a; font-size:0.82rem;">${escapeHtml(c.teamName || c.department || "TIT")}</strong>
+                          <div style="font-size:0.7rem; color:#64748b; max-width:180px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${escapeHtml(c.department || '')}">${escapeHtml(c.department || "")}</div>
                         </td>
-                        <td>
-                          <div style="font-size: 0.82rem; font-weight: 700; color: #334155;">${escapeHtml(c.recipientRole)}</div>
-                          <div style="font-size: 0.7rem; color: #64748b;">${escapeHtml(c.programYear || "")}</div>
-                        </td>
-                        <td>
-                          <strong style="color: #0f172a; font-size: 0.82rem;">${escapeHtml(c.teamName || c.department || "TIT")}</strong>
-                          <div style="font-size: 0.7rem; color: #64748b; max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${escapeHtml(c.department || '')}">
-                            ${escapeHtml(c.department || "")}
-                          </div>
-                        </td>
-                        <td style="text-align: center;">
+                        <td style="text-align:center;">
                           ${isSigned
-                            ? `<span style="color: #059669; font-weight: 700; font-size: 0.74rem; background: #ecfdf5; padding: 2px 8px; border-radius: 12px; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-circle-check"></i> Authorized</span>`
-                            : `<span style="color: #d97706; font-weight: 700; font-size: 0.74rem; background: #fffbeb; padding: 2px 8px; border-radius: 12px; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-clock"></i> Pending Sign</span>`
+                            ? `<span style="color:#059669; font-weight:700; font-size:0.74rem; background:#ecfdf5; padding:2px 8px; border-radius:12px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-circle-check"></i> Authorized</span>`
+                            : `<span style="color:#d97706; font-weight:700; font-size:0.74rem; background:#fffbeb; padding:2px 8px; border-radius:12px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-clock"></i> Pending Sign</span>`
                           }
                         </td>
-                        <td style="text-align: right; white-space: nowrap;">
-                          <button class="btn-3d-primary" onclick="openCertificateByCertId('${c.certId}')" style="padding: 5px 10px; font-size: 0.75rem;" title="View & Print Official Certificate ${c.certId}">
-                            <i class="fa-solid fa-award"></i> View & Print
+                        <td style="text-align:right; white-space:nowrap;">
+                          <button class="btn-3d-primary" onclick="openCertificateByCertId('${c.certId}')" style="padding:5px 10px; font-size:0.75rem;">
+                            <i class="fa-solid fa-award"></i> View &amp; Print
                           </button>
                         </td>
                       </tr>
@@ -4659,12 +4838,15 @@ window.renderAdminConsole = function renderAdminConsole() {
               </tbody>
             </table>
           </div>
-        </div>
-      `;
+        `;
+
+        html += `</div>`; // close outer wrapper
+      }
     }
 
     container.innerHTML = html;
   } catch (err) {
+
     console.error("[TIT SIH Admin Render Error]:", err);
     container.innerHTML = `
       <div style="background: #fff1f2; border: 1px solid #fecdd3; border-radius: 12px; padding: 24px; text-align: center; color: #9f1239;">
@@ -6573,7 +6755,13 @@ function syncCommitteeCertCardBadges() {
     const badgeEl = card.querySelector(".cert-id-badge");
     if (nameEl && badgeEl) {
       const name = nameEl.textContent.trim().toLowerCase();
-      const match = registry.find(c => c.recipientName.toLowerCase() === name);
+      // For dual-role people, prioritise their leadership/committee cert (not their team-member cert)
+      const match =
+        registry.find(c =>
+          (c.category === 'Technical Lead' || c.category === 'Core Committee' || c.category === 'SIH Cell & Faculty') &&
+          c.recipientName.toLowerCase() === name
+        ) ||
+        registry.find(c => c.recipientName.toLowerCase() === name);
       if (match) {
         badgeEl.innerHTML = `<i class="fa-solid fa-stamp"></i> ${match.certId}`;
       }
