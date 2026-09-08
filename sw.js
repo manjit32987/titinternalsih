@@ -1,4 +1,4 @@
-const CACHE_NAME = "tit-sih-2026-v2.9.4";
+const CACHE_NAME = "tit-sih-2026-v3.4.0";
 const PRECACHE_ASSETS = [
   "./",
   "./index.html",
@@ -7,6 +7,10 @@ const PRECACHE_ASSETS = [
   "./script.js",
   "./manifest.json",
   "./tit_logo.png",
+  "./cert_tit_emblem.png",
+  "./cert_sih_logo.png",
+  "./cert_iic_logo.png",
+  "./cert_ornamental_frame.jpg",
   "./iic-logo.png",
   "./SS_registration.png",
   "./kaberi majumder.jpg",

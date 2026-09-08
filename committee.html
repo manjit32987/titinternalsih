@@ -235,9 +235,9 @@
         </div>
       </div>
 
-      <!-- Category 3: Core Organizing Committee (Functional Domain Leads) -->
+      <!-- Category 3: Technical & Organizing Leads -->
       <div class="committee-category-title">
-        <i class="fa-solid fa-users-gear"></i> Core Organizing Committee
+        <i class="fa-solid fa-users-gear"></i> Technical & Organizing Leads
       </div>
       <div class="committee-grid">
         <div class="committee-card">
@@ -351,12 +351,12 @@
         </div>
       </div>
 
-      <!-- Category 4: Department Student Technical Committee (5 Core Branches across 1st to 4th Years) -->
+      <!-- Category 4: Core Committee (Department Student Coordinators) -->
       <div class="committee-category-title" style="margin-top: 48px;">
-        <i class="fa-solid fa-laptop-code"></i> Department Student Coordination Committee
+        <i class="fa-solid fa-laptop-code"></i> Core Committee (Department Student Coordinators)
       </div>
       <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 18px;">
-        Dedicated male and female student technical coordinators across all academic years (1st, 2nd, 3rd & 4th Year) for each core engineering branch of Tripura Institute of Technology.
+        Dedicated male and female student coordinators across all academic years (1st, 2nd, 3rd & 4th Year) representing each core engineering branch of Tripura Institute of Technology.
       </p>
 
       <!-- Department Branch Filter Tabs & Refresh Action -->
@@ -405,7 +405,7 @@
           Certificates of Appreciation & Recognition
         </h2>
         <p style="color: var(--text-muted); font-size: 0.96rem; line-height: 1.6; margin: 0;">
-          Direct 1-click access to authentic digital certificates for faculty conveners, SIH SPOC, core organizing leads, and student technical committee members.
+          Direct 1-click access to authentic digital certificates for technical leads, faculty conveners, SIH SPOC, and department core committee student coordinators.
         </p>
       </div>
 
@@ -415,11 +415,14 @@
           <button class="branch-filter-btn active" data-cat="all" onclick="filterCertDirectory('all')">
             <i class="fa-solid fa-layer-group"></i> All Recognition
           </button>
+          <button class="branch-filter-btn" data-cat="techlead" onclick="filterCertDirectory('techlead')">
+            <i class="fa-solid fa-star"></i> Technical Leads
+          </button>
           <button class="branch-filter-btn" data-cat="faculty" onclick="filterCertDirectory('faculty')">
             <i class="fa-solid fa-chalkboard-user"></i> Faculty & SPOC
           </button>
           <button class="branch-filter-btn" data-cat="core" onclick="filterCertDirectory('core')">
-            <i class="fa-solid fa-users-gear"></i> Core Committee
+            <i class="fa-solid fa-users-gear"></i> Core Committee (Dept Coordinators)
           </button>
         </div>
 
@@ -432,10 +435,136 @@
       <!-- Recognition Cards Grid -->
       <div class="cert-directory-grid" id="cert-directory-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
 
-        <!-- 1. Joydeep Sutradhar -->
-        <div class="cert-recog-card" data-cat="faculty" data-search="joydeep sutradhar convener lecturer electrical ee">
+        <!-- 1. Technical Leads: Manjit Chakraborty -->
+        <div class="cert-recog-card" data-cat="techlead" data-search="manjit chakraborty event head convener ece electronics technical lead">
           <div class="cert-recog-card-top">
-            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/APP-000</span>
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/192</span>
+            <span class="cert-badge-role techlead">Event Head</span>
+          </div>
+          <div class="cert-recog-body">
+            <h3 class="cert-recog-name">Manjit Chakraborty</h3>
+            <div class="cert-recog-designation">Event Head & Convener</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-graduation-cap"></i> Dept. of Electronics & Comm. Engg (Final Year)</div>
+          </div>
+          <div class="cert-recog-footer">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Manjit Chakraborty', 'Event Head & Convener', 'Dept. of Electronics & Communication Engineering (Final Year)', 'TIT/INTSIH/192')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+              <i class="fa-solid fa-award"></i> View & Print Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Technical Leads: Arindam Deb -->
+        <div class="cert-recog-card" data-cat="techlead" data-search="arindam deb technical platform lead electrical ee">
+          <div class="cert-recog-card-top">
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/193</span>
+            <span class="cert-badge-role techlead">Tech Lead</span>
+          </div>
+          <div class="cert-recog-body">
+            <h3 class="cert-recog-name">Arindam Deb</h3>
+            <div class="cert-recog-designation">Technical & Platform Lead</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-graduation-cap"></i> Dept. of Electrical Engineering (4th Year)</div>
+          </div>
+          <div class="cert-recog-footer">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Arindam Deb', 'Technical & Platform Lead', 'Dept. of Electrical Engineering (4th Year)', 'TIT/INTSIH/193')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+              <i class="fa-solid fa-award"></i> View & Print Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. Technical Leads: Sania Debbarma -->
+        <div class="cert-recog-card" data-cat="techlead" data-search="sania debbarma design creative media lead cse computer">
+          <div class="cert-recog-card-top">
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/194</span>
+            <span class="cert-badge-role techlead">Design Lead</span>
+          </div>
+          <div class="cert-recog-body">
+            <h3 class="cert-recog-name">Sania Debbarma</h3>
+            <div class="cert-recog-designation">Design & Creative Media Lead</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-graduation-cap"></i> Dept. of Computer Science & Engg (4th Year)</div>
+          </div>
+          <div class="cert-recog-footer">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Sania Debbarma', 'Design & Creative Media Lead', 'Dept. of Computer Science & Engineering (4th Year)', 'TIT/INTSIH/194')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+              <i class="fa-solid fa-award"></i> View & Print Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. Technical Leads: Nikita Choudhury -->
+        <div class="cert-recog-card" data-cat="techlead" data-search="nikita choudhury outreach registrations lead ece electronics">
+          <div class="cert-recog-card-top">
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/195</span>
+            <span class="cert-badge-role techlead">Outreach Lead</span>
+          </div>
+          <div class="cert-recog-body">
+            <h3 class="cert-recog-name">Nikita Choudhury</h3>
+            <div class="cert-recog-designation">Outreach & Registrations Lead</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-graduation-cap"></i> Dept. of Electronics & Comm. Engg (4th Year)</div>
+          </div>
+          <div class="cert-recog-footer">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Nikita Choudhury', 'Outreach & Registrations Lead', 'Dept. of Electronics & Communication Engineering (4th Year)', 'TIT/INTSIH/195')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+              <i class="fa-solid fa-award"></i> View & Print Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- 5. Technical Leads: Anup Sarkar -->
+        <div class="cert-recog-card" data-cat="techlead" data-search="anup sarkar pr social media head cse computer">
+          <div class="cert-recog-card-top">
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/196</span>
+            <span class="cert-badge-role techlead">PR Head</span>
+          </div>
+          <div class="cert-recog-body">
+            <h3 class="cert-recog-name">Anup Sarkar</h3>
+            <div class="cert-recog-designation">PR & Social Media Head</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-graduation-cap"></i> Dept. of Computer Science & Engg (3rd Year)</div>
+          </div>
+          <div class="cert-recog-footer">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Anup Sarkar', 'PR & Social Media Head', 'Dept. of Computer Science & Engineering (3rd Year)', 'TIT/INTSIH/196')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+              <i class="fa-solid fa-award"></i> View & Print Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- 6. Technical Leads: Aaniketh Ghosh -->
+        <div class="cert-recog-card" data-cat="techlead" data-search="aaniketh ghosh content program lead cse computer">
+          <div class="cert-recog-card-top">
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/197</span>
+            <span class="cert-badge-role techlead">Program Lead</span>
+          </div>
+          <div class="cert-recog-body">
+            <h3 class="cert-recog-name">Aaniketh Ghosh</h3>
+            <div class="cert-recog-designation">Content & Program Lead</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-graduation-cap"></i> Dept. of Computer Science & Engg (4th Year)</div>
+          </div>
+          <div class="cert-recog-footer">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Aaniketh Ghosh', 'Content & Program Lead', 'Dept. of Computer Science & Engineering (4th Year)', 'TIT/INTSIH/197')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+              <i class="fa-solid fa-award"></i> View & Print Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- 7. Technical Leads: Rinku Kr. Chanda -->
+        <div class="cert-recog-card" data-cat="techlead" data-search="rinku chanda query resolution lead ece electronics">
+          <div class="cert-recog-card-top">
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/198</span>
+            <span class="cert-badge-role techlead">Query Lead</span>
+          </div>
+          <div class="cert-recog-body">
+            <h3 class="cert-recog-name">Rinku Kr. Chanda</h3>
+            <div class="cert-recog-designation">Query Resolution Lead</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-graduation-cap"></i> Dept. of Electronics & Comm. Engg (4th Year)</div>
+          </div>
+          <div class="cert-recog-footer">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Rinku Kr. Chanda', 'Query Resolution Lead', 'Dept. of Electronics & Communication Engineering (4th Year)', 'TIT/INTSIH/198')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+              <i class="fa-solid fa-award"></i> View & Print Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- 8. Faculty: Joydeep Sutradhar -->
+        <div class="cert-recog-card" data-cat="faculty" data-search="joydeep sutradhar convener lecturer electrical ee faculty">
+          <div class="cert-recog-card-top">
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/199</span>
             <span class="cert-badge-role faculty">Convener</span>
           </div>
           <div class="cert-recog-body">
@@ -444,16 +573,16 @@
             <div class="cert-recog-dept"><i class="fa-solid fa-building-columns"></i> Dept. of Electrical Engineering, TIT</div>
           </div>
           <div class="cert-recog-footer">
-            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Joydeep Sutradhar', 'Faculty Convener', 'Dept. of Electrical Engineering', 'TIT/INTSIH/APP-000')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Joydeep Sutradhar', 'Faculty Convener', 'Dept. of Electrical Engineering, TIT', 'TIT/INTSIH/199')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
               <i class="fa-solid fa-award"></i> View & Print Certificate
             </button>
           </div>
         </div>
 
-        <!-- 2. Arijit Banik -->
-        <div class="cert-recog-card" data-cat="faculty" data-search="arijit banik spoc associate professor civil ce structural">
+        <!-- 9. Faculty: Arijit Banik -->
+        <div class="cert-recog-card" data-cat="faculty" data-search="arijit banik spoc associate professor civil ce structural faculty">
           <div class="cert-recog-card-top">
-            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/APP-SPOC</span>
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/200</span>
             <span class="cert-badge-role faculty">SIH SPOC</span>
           </div>
           <div class="cert-recog-body">
@@ -462,133 +591,205 @@
             <div class="cert-recog-dept"><i class="fa-solid fa-building-columns"></i> Dept. of Civil Engineering, TIT</div>
           </div>
           <div class="cert-recog-footer">
-            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Arijit Banik', 'SIH Single Point of Contact (SPOC)', 'Dept. of Civil Engineering', 'TIT/INTSIH/APP-SPOC')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Arijit Banik', 'SIH Single Point of Contact (SPOC)', 'Dept. of Civil Engineering, TIT', 'TIT/INTSIH/200')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
               <i class="fa-solid fa-award"></i> View & Print Certificate
             </button>
           </div>
         </div>
 
-        <!-- 3. Manjit Chakraborty -->
-        <div class="cert-recog-card" data-cat="core" data-search="manjit chakraborty event head convener ece electronics">
+        <!-- 10. Core Committee: Manash Debbarma -->
+        <div class="cert-recog-card" data-cat="core" data-search="manash debbarma cse 4th year student coordinator core committee">
           <div class="cert-recog-card-top">
-            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/APP-001</span>
-            <span class="cert-badge-role core">Event Head</span>
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/201</span>
+            <span class="cert-badge-role core">CSE Lead</span>
           </div>
           <div class="cert-recog-body">
-            <h3 class="cert-recog-name">Manjit Chakraborty</h3>
-            <div class="cert-recog-designation">Event Head & Convener</div>
-            <div class="cert-recog-dept"><i class="fa-solid fa-graduation-cap"></i> Dept. of Electronics & Comm. Engg (Final Year)</div>
+            <h3 class="cert-recog-name">Manash Debbarma</h3>
+            <div class="cert-recog-designation">Department Student Coordinator (4th Year)</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-building-columns"></i> Dept. of Computer Science & Engg, TIT</div>
           </div>
           <div class="cert-recog-footer">
-            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Manjit Chakraborty', 'Event Head & Convener', 'Dept. of Electronics & Communication Engineering (Final Year)', 'TIT/INTSIH/APP-001')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Manash Debbarma', 'Department Student Coordinator (4th Year)', 'Dept. of Computer Science & Engineering, TIT', 'TIT/INTSIH/201')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
               <i class="fa-solid fa-award"></i> View & Print Certificate
             </button>
           </div>
         </div>
 
-        <!-- 4. Arindam Deb -->
-        <div class="cert-recog-card" data-cat="core" data-search="arindam deb technical platform lead electrical ee">
+        <!-- 11. Core Committee: Purba Paul -->
+        <div class="cert-recog-card" data-cat="core" data-search="purba paul ece 4th year student coordinator core committee">
           <div class="cert-recog-card-top">
-            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/APP-002</span>
-            <span class="cert-badge-role core">Tech Lead</span>
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/202</span>
+            <span class="cert-badge-role core">ECE Lead</span>
           </div>
           <div class="cert-recog-body">
-            <h3 class="cert-recog-name">Arindam Deb</h3>
-            <div class="cert-recog-designation">Technical & Platform Lead</div>
-            <div class="cert-recog-dept"><i class="fa-solid fa-graduation-cap"></i> Dept. of Electrical Engineering (4th Year)</div>
+            <h3 class="cert-recog-name">Purba Paul</h3>
+            <div class="cert-recog-designation">Department Student Coordinator (4th Year)</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-building-columns"></i> Dept. of Electronics & Comm. Engg, TIT</div>
           </div>
           <div class="cert-recog-footer">
-            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Arindam Deb', 'Technical & Platform Lead', 'Dept. of Electrical Engineering (4th Year)', 'TIT/INTSIH/APP-002')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Purba Paul', 'Department Student Coordinator (4th Year)', 'Dept. of Electronics & Communication Engineering, TIT', 'TIT/INTSIH/202')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
               <i class="fa-solid fa-award"></i> View & Print Certificate
             </button>
           </div>
         </div>
 
-        <!-- 5. Sania Debbarma -->
-        <div class="cert-recog-card" data-cat="core" data-search="sania debbarma design creative media lead cse computer">
+        <!-- 12. Core Committee: Subham Debnath -->
+        <div class="cert-recog-card" data-cat="core" data-search="subham debnath cse 4th year student coordinator core committee">
           <div class="cert-recog-card-top">
-            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/APP-003</span>
-            <span class="cert-badge-role core">Design Lead</span>
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/203</span>
+            <span class="cert-badge-role core">CSE Lead</span>
           </div>
           <div class="cert-recog-body">
-            <h3 class="cert-recog-name">Sania Debbarma</h3>
-            <div class="cert-recog-designation">Design & Creative Media Lead</div>
-            <div class="cert-recog-dept"><i class="fa-solid fa-graduation-cap"></i> Dept. of Computer Science & Engg (4th Year)</div>
+            <h3 class="cert-recog-name">Subham Debnath</h3>
+            <div class="cert-recog-designation">Department Student Coordinator (4th Year)</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-building-columns"></i> Dept. of Computer Science & Engg, TIT</div>
           </div>
           <div class="cert-recog-footer">
-            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Sania Debbarma', 'Design & Creative Media Lead', 'Dept. of Computer Science & Engineering (4th Year)', 'TIT/INTSIH/APP-003')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Subham Debnath', 'Department Student Coordinator (4th Year)', 'Dept. of Computer Science & Engineering, TIT', 'TIT/INTSIH/203')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
               <i class="fa-solid fa-award"></i> View & Print Certificate
             </button>
           </div>
         </div>
 
-        <!-- 6. Nikita Choudhury -->
-        <div class="cert-recog-card" data-cat="core" data-search="nikita choudhury outreach registrations lead ece electronics">
+        <!-- 13. Core Committee: Pooja Saha -->
+        <div class="cert-recog-card" data-cat="core" data-search="pooja saha cse 4th year student coordinator core committee">
           <div class="cert-recog-card-top">
-            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/APP-004</span>
-            <span class="cert-badge-role core">Outreach Lead</span>
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/204</span>
+            <span class="cert-badge-role core">CSE Lead</span>
           </div>
           <div class="cert-recog-body">
-            <h3 class="cert-recog-name">Nikita Choudhury</h3>
-            <div class="cert-recog-designation">Outreach & Registrations Lead</div>
-            <div class="cert-recog-dept"><i class="fa-solid fa-graduation-cap"></i> Dept. of Electronics & Comm. Engg (4th Year)</div>
+            <h3 class="cert-recog-name">Pooja Saha</h3>
+            <div class="cert-recog-designation">Department Student Coordinator (4th Year)</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-building-columns"></i> Dept. of Computer Science & Engg, TIT</div>
           </div>
           <div class="cert-recog-footer">
-            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Nikita Choudhury', 'Outreach & Registrations Lead', 'Dept. of Electronics & Communication Engineering (4th Year)', 'TIT/INTSIH/APP-004')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Pooja Saha', 'Department Student Coordinator (4th Year)', 'Dept. of Computer Science & Engineering, TIT', 'TIT/INTSIH/204')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
               <i class="fa-solid fa-award"></i> View & Print Certificate
             </button>
           </div>
         </div>
 
-        <!-- 7. Anup Sarkar -->
-        <div class="cert-recog-card" data-cat="core" data-search="anup sarkar pr social media head cse computer">
+        <!-- 14. Core Committee: Debojyoti Paul -->
+        <div class="cert-recog-card" data-cat="core" data-search="debojyoti paul cse 3rd year student coordinator core committee">
           <div class="cert-recog-card-top">
-            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/APP-005</span>
-            <span class="cert-badge-role core">PR Head</span>
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/205</span>
+            <span class="cert-badge-role core">CSE Lead</span>
           </div>
           <div class="cert-recog-body">
-            <h3 class="cert-recog-name">Anup Sarkar</h3>
-            <div class="cert-recog-designation">PR & Social Media Head</div>
-            <div class="cert-recog-dept"><i class="fa-solid fa-graduation-cap"></i> Dept. of Computer Science & Engg (3rd Year)</div>
+            <h3 class="cert-recog-name">Debojyoti Paul</h3>
+            <div class="cert-recog-designation">Department Student Coordinator (3rd Year)</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-building-columns"></i> Dept. of Computer Science & Engg, TIT</div>
           </div>
           <div class="cert-recog-footer">
-            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Anup Sarkar', 'PR & Social Media Head', 'Dept. of Computer Science & Engineering (3rd Year)', 'TIT/INTSIH/APP-005')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Debojyoti Paul', 'Department Student Coordinator (3rd Year)', 'Dept. of Computer Science & Engineering, TIT', 'TIT/INTSIH/205')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
               <i class="fa-solid fa-award"></i> View & Print Certificate
             </button>
           </div>
         </div>
 
-        <!-- 8. Aaniketh Ghosh -->
-        <div class="cert-recog-card" data-cat="core" data-search="aaniketh ghosh content program lead cse computer">
+        <!-- 15. Core Committee: Ananya Roy -->
+        <div class="cert-recog-card" data-cat="core" data-search="ananya roy ece 3rd year student coordinator core committee">
           <div class="cert-recog-card-top">
-            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/APP-006</span>
-            <span class="cert-badge-role core">Program Lead</span>
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/206</span>
+            <span class="cert-badge-role core">ECE Lead</span>
           </div>
           <div class="cert-recog-body">
-            <h3 class="cert-recog-name">Aaniketh Ghosh</h3>
-            <div class="cert-recog-designation">Content & Program Lead</div>
-            <div class="cert-recog-dept"><i class="fa-solid fa-graduation-cap"></i> Dept. of Computer Science & Engg (4th Year)</div>
+            <h3 class="cert-recog-name">Ananya Roy</h3>
+            <div class="cert-recog-designation">Department Student Coordinator (3rd Year)</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-building-columns"></i> Dept. of Electronics & Comm. Engg, TIT</div>
           </div>
           <div class="cert-recog-footer">
-            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Aaniketh Ghosh', 'Content & Program Lead', 'Dept. of Computer Science & Engineering (4th Year)', 'TIT/INTSIH/APP-006')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Ananya Roy', 'Department Student Coordinator (3rd Year)', 'Dept. of Electronics & Communication Engineering, TIT', 'TIT/INTSIH/206')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
               <i class="fa-solid fa-award"></i> View & Print Certificate
             </button>
           </div>
         </div>
 
-        <!-- 9. Rinku Kr. Chanda -->
-        <div class="cert-recog-card" data-cat="core" data-search="rinku chanda query resolution lead ece electronics">
+        <!-- 16. Core Committee: Debarati Deb Purkayastha -->
+        <div class="cert-recog-card" data-cat="core" data-search="debarati deb purkayastha ece 4th year student coordinator core committee">
           <div class="cert-recog-card-top">
-            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/APP-007</span>
-            <span class="cert-badge-role core">Query Lead</span>
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/207</span>
+            <span class="cert-badge-role core">ECE Lead</span>
           </div>
           <div class="cert-recog-body">
-            <h3 class="cert-recog-name">Rinku Kr. Chanda</h3>
-            <div class="cert-recog-designation">Query Resolution Lead</div>
-            <div class="cert-recog-dept"><i class="fa-solid fa-graduation-cap"></i> Dept. of Electronics & Comm. Engg (4th Year)</div>
+            <h3 class="cert-recog-name">Debarati Deb Purkayastha</h3>
+            <div class="cert-recog-designation">Department Student Coordinator (4th Year)</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-building-columns"></i> Dept. of Electronics & Comm. Engg, TIT</div>
           </div>
           <div class="cert-recog-footer">
-            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Rinku Kr. Chanda', 'Query Resolution Lead', 'Dept. of Electronics & Communication Engineering (4th Year)', 'TIT/INTSIH/APP-007')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Debarati Deb Purkayastha', 'Department Student Coordinator (4th Year)', 'Dept. of Electronics & Communication Engineering, TIT', 'TIT/INTSIH/207')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+              <i class="fa-solid fa-award"></i> View & Print Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- 17. Core Committee: Sourav Pal -->
+        <div class="cert-recog-card" data-cat="core" data-search="sourav pal ece 3rd year student coordinator core committee">
+          <div class="cert-recog-card-top">
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/208</span>
+            <span class="cert-badge-role core">ECE Lead</span>
+          </div>
+          <div class="cert-recog-body">
+            <h3 class="cert-recog-name">Sourav Pal</h3>
+            <div class="cert-recog-designation">Department Student Coordinator (3rd Year)</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-building-columns"></i> Dept. of Electronics & Comm. Engg, TIT</div>
+          </div>
+          <div class="cert-recog-footer">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Sourav Pal', 'Department Student Coordinator (3rd Year)', 'Dept. of Electronics & Communication Engineering, TIT', 'TIT/INTSIH/208')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+              <i class="fa-solid fa-award"></i> View & Print Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- 18. Core Committee: Soubik Roy -->
+        <div class="cert-recog-card" data-cat="core" data-search="soubik roy ee 3rd year student coordinator core committee">
+          <div class="cert-recog-card-top">
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/209</span>
+            <span class="cert-badge-role core">EE Lead</span>
+          </div>
+          <div class="cert-recog-body">
+            <h3 class="cert-recog-name">Soubik Roy</h3>
+            <div class="cert-recog-designation">Department Student Coordinator (3rd Year)</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-building-columns"></i> Dept. of Electrical Engineering, TIT</div>
+          </div>
+          <div class="cert-recog-footer">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Soubik Roy', 'Department Student Coordinator (3rd Year)', 'Dept. of Electrical Engineering, TIT', 'TIT/INTSIH/209')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+              <i class="fa-solid fa-award"></i> View & Print Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- 19. Core Committee: Barkha Das -->
+        <div class="cert-recog-card" data-cat="core" data-search="barkha das ee 1st year student coordinator core committee">
+          <div class="cert-recog-card-top">
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/210</span>
+            <span class="cert-badge-role core">EE Lead</span>
+          </div>
+          <div class="cert-recog-body">
+            <h3 class="cert-recog-name">Barkha Das</h3>
+            <div class="cert-recog-designation">Department Student Coordinator (1st Year)</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-building-columns"></i> Dept. of Electrical Engineering, TIT</div>
+          </div>
+          <div class="cert-recog-footer">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Barkha Das', 'Department Student Coordinator (1st Year)', 'Dept. of Electrical Engineering, TIT', 'TIT/INTSIH/210')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
+              <i class="fa-solid fa-award"></i> View & Print Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- 20. Core Committee: Sribrata Debnath -->
+        <div class="cert-recog-card" data-cat="core" data-search="sribrata debnath cse 1st year student coordinator core committee">
+          <div class="cert-recog-card-top">
+            <span class="cert-id-badge"><i class="fa-solid fa-stamp"></i> TIT/INTSIH/211</span>
+            <span class="cert-badge-role core">CSE Lead</span>
+          </div>
+          <div class="cert-recog-body">
+            <h3 class="cert-recog-name">Sribrata Debnath</h3>
+            <div class="cert-recog-designation">Department Student Coordinator (1st Year)</div>
+            <div class="cert-recog-dept"><i class="fa-solid fa-building-columns"></i> Dept. of Computer Science & Engg, TIT</div>
+          </div>
+          <div class="cert-recog-footer">
+            <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('Sribrata Debnath', 'Department Student Coordinator (1st Year)', 'Dept. of Computer Science & Engineering, TIT', 'TIT/INTSIH/211')" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 10px 14px;">
               <i class="fa-solid fa-award"></i> View & Print Certificate
             </button>
           </div>
@@ -610,9 +811,6 @@
           <a href="index.html#dashboard" class="btn-3d-primary" style="padding: 10px 20px; font-size: 0.86rem; text-decoration: none;">
             <i class="fa-solid fa-users-viewfinder"></i> Student Dashboard
           </a>
-          <button class="btn-3d-outline" onclick="openSignatoryModal()" style="padding: 10px 18px; font-size: 0.86rem; background: #ffffff; color: #065f46; border-color: #a7f3d0;">
-            <i class="fa-solid fa-signature"></i> Signatory Gateway
-          </button>
         </div>
       </div>
 
@@ -668,9 +866,6 @@
           <i class="fa-solid fa-award" style="color: #fbbf24;"></i> Official TIT SIH 2026 Certificate
         </div>
         <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-          <button class="btn-3d-outline" onclick="openSignatoryModal()" style="padding: 8px 14px; font-size: 0.82rem; background: rgba(255,255,255,0.08); color: #38bdf8; border-color: rgba(56,189,248,0.3);" title="Open Digital Signatory Gateway">
-            <i class="fa-solid fa-signature"></i> Signatory Gateway
-          </button>
           <button class="btn-3d-secondary" onclick="closeCertificateModal()" style="padding: 8px 16px; font-size: 0.85rem;">
             Close
           </button>
