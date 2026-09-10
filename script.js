@@ -7441,6 +7441,17 @@ window.filterCertHubCategory = function filterCertHubCategory(cat) {
   window.searchPublicCertificates(certHubSearch);
 };
 
+window.toggleTeamCertDrawer = function(teamId) {
+  const drawer = document.getElementById("team-certs-drawer-" + teamId);
+  const icon = document.getElementById("toggle-icon-" + teamId);
+  if (!drawer) return;
+  const isOpen = drawer.style.display === "block";
+  drawer.style.display = isOpen ? "none" : "block";
+  if (icon) {
+    icon.className = isOpen ? "fa-solid fa-chevron-down" : "fa-solid fa-chevron-up";
+  }
+};
+
 window.searchPublicCertificates = function searchPublicCertificates(query) {
   certHubSearch = (query || "").trim().toLowerCase();
   const container = document.getElementById("public-cert-results-container");
@@ -7449,31 +7460,17 @@ window.searchPublicCertificates = function searchPublicCertificates(query) {
   const registry = window.generateMasterCertificatesRegistry();
   const searchQ = certHubSearch;
 
-  // 1. Gather all individual student participants (151+ students across 30 squads)
-  const allParticipants = [];
-  registeredTeams.forEach(t => {
+  // 1. Prepare Teams for Participants Section
+  let filteredTeams = registeredTeams.map((t, idx) => {
     const members = Array.isArray(t.members) ? t.members : [];
-    members.forEach((m, mIdx) => {
-      const indivCert = registry.find(c => (c.category === "Individual Participant" || c.category === "Winner") && c.teamId === t.teamId && c.memberIndex === mIdx);
-      const certId = indivCert ? indivCert.certId : ("TIT/INTSIH/IND-" + (mIdx + 1));
-      const isLeader = m.isLeader || mIdx === 0;
-
-      allParticipants.push({
-        name: m.name,
-        roll: m.roll || "",
-        branch: m.branch || m.dept || t.domain || "TIT",
-        year: m.year || "Student",
-        isLeader: isLeader,
-        teamId: t.teamId,
-        teamName: t.teamName,
-        domain: t.domain || t.edition || "Innovation",
-        memberIndex: mIdx,
-        certId: certId,
-        isWinner: indivCert && indivCert.category === "Winner",
-        rank: indivCert && indivCert.rank ? indivCert.rank : null,
-        awardTitle: indivCert && indivCert.awardTitle ? indivCert.awardTitle : null
-      });
-    });
+    const teamCert = registry.find(c => c.category === "Team Squad" && c.teamId === t.teamId);
+    const certId = teamCert ? teamCert.certId : ("TIT/INTSIH/SQ-" + t.teamId);
+    return {
+      ...t,
+      members,
+      certId,
+      rank: idx + 1
+    };
   });
 
   // 2. Gather Core Committee & Technical Leads
@@ -7481,19 +7478,23 @@ window.searchPublicCertificates = function searchPublicCertificates(query) {
   const allLeads = registry.filter(c => c.category === "Technical Lead");
 
   // 3. Search Filtering
-  let filteredParticipants = allParticipants;
   let filteredCoords = allCoords;
   let filteredLeads = allLeads;
 
   if (searchQ) {
-    filteredParticipants = allParticipants.filter(p =>
-      (p.name || "").toLowerCase().includes(searchQ) ||
-      (p.roll || "").toLowerCase().includes(searchQ) ||
-      (p.teamName || "").toLowerCase().includes(searchQ) ||
-      (p.teamId || "").toLowerCase().includes(searchQ) ||
-      (p.branch || "").toLowerCase().includes(searchQ) ||
-      (p.certId || "").toLowerCase().includes(searchQ)
-    );
+    filteredTeams = filteredTeams.filter(t => {
+      const matchTeam = (t.teamName || "").toLowerCase().includes(searchQ) ||
+                        (t.teamId || "").toLowerCase().includes(searchQ) ||
+                        (t.title || "").toLowerCase().includes(searchQ) ||
+                        (t.domain || t.edition || "").toLowerCase().includes(searchQ) ||
+                        (t.certId || "").toLowerCase().includes(searchQ);
+      const matchMember = (t.members || []).some(m =>
+        (m.name || "").toLowerCase().includes(searchQ) ||
+        (m.roll || "").toLowerCase().includes(searchQ) ||
+        (m.branch || "").toLowerCase().includes(searchQ)
+      );
+      return matchTeam || matchMember;
+    });
 
     filteredCoords = allCoords.filter(c =>
       (c.recipientName || "").toLowerCase().includes(searchQ) ||
@@ -7516,33 +7517,108 @@ window.searchPublicCertificates = function searchPublicCertificates(query) {
   let html = "";
 
   // =========================================================================
-  // SECTION 1: PARTICIPANTS (Individual Certificates for All Team Members)
+  // SECTION 1: PARTICIPANTS (Teams List -> Click to View Team & Individual Certs)
   // =========================================================================
-  if (showParticipants && filteredParticipants.length > 0) {
+  if (showParticipants && filteredTeams.length > 0) {
+    const isSearching = !!searchQ;
     html += `
       <div class="cert-hub-section-block">
         <div class="cert-hub-block-title">
-          <i class="fa-solid fa-user-graduate" style="color: #059669;"></i> Participants (${filteredParticipants.length} Student Innovators)
+          <i class="fa-solid fa-users" style="color: #059669;"></i> Participants (${filteredTeams.length} Teams • Click team to view certificates)
         </div>
-        <div class="cert-hub-leads-grid">
-          ${filteredParticipants.map(p => `
-            <div class="cert-hub-person-card">
-              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; gap:6px; flex-wrap:wrap;">
-                <span class="cert-hub-certid-tag">${p.certId}</span>
-                ${p.isWinner ? `<span style="font-size:0.72rem; color:#92400e; background:#fef3c7; border:1px solid #fde68a; font-weight:800; padding:3px 8px; border-radius:99px;"><i class="fa-solid fa-trophy"></i> Winner</span>` : (p.isLeader ? `<span style="font-size:0.72rem; color:#065f46; background:#ecfdf5; border:1px solid #a7f3d0; font-weight:800; padding:3px 8px; border-radius:99px;"><i class="fa-solid fa-crown"></i> Team Leader</span>` : `<span style="font-size:0.72rem; color:#475569; background:#f1f5f9; font-weight:700; padding:3px 8px; border-radius:99px;">Participant</span>`)}
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          ${filteredTeams.map(t => {
+            const leader = (t.members && t.members[0]) ? t.members[0].name : "Student Leader";
+            const memberCount = (t.members || []).length;
+            const isWinner = t.isWinner || (t.rank && t.rank <= 3);
+            const defaultOpen = isSearching;
+
+            return `
+              <div class="cert-hub-team-card" style="background: var(--bg-card); border: 1.5px solid var(--border-subtle); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-sm); transition: var(--transition-fast);">
+                
+                <!-- Clickable Team Banner Header -->
+                <div class="cert-hub-team-header" onclick="toggleTeamCertDrawer('${t.teamId}')" style="cursor: pointer; padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; background: var(--bg-card); transition: background 0.2s ease;">
+                  <div style="flex: 1; min-width: 240px;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
+                      <span class="cert-hub-certid-tag">${t.certId}</span>
+                      <span class="cert-hub-edition-tag">${escapeHtml(t.domain || t.edition || "Innovation")}</span>
+                      ${isWinner ? `<span style="font-size: 0.72rem; color: #92400e; background: #fef3c7; border: 1px solid #fde68a; font-weight: 800; padding: 2px 8px; border-radius: 99px;"><i class="fa-solid fa-trophy"></i> Winner</span>` : ''}
+                      <span style="font-size: 0.74rem; font-weight: 700; color: #065f46; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 2px 8px; border-radius: 99px;">
+                        <i class="fa-solid fa-users"></i> ${memberCount} Members
+                      </span>
+                    </div>
+                    <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin: 0 0 4px; font-family: var(--font-heading);">
+                      Team ${escapeHtml(t.teamName)}
+                    </h3>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">
+                      <strong style="color: var(--text-main);">Leader:</strong> ${escapeHtml(leader)} • <span style="font-style: italic;">${escapeHtml(t.title || t.psId || "SIH Innovation")}</span>
+                    </p>
+                  </div>
+
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <button class="btn-3d-secondary" style="pointer-events: none; padding: 8px 16px; font-size: 0.84rem; display: inline-flex; align-items: center; gap: 8px;">
+                      <i class="fa-solid fa-certificate" style="color: #059669;"></i>
+                      <span>View Certificates</span>
+                      <i id="toggle-icon-${t.teamId}" class="fa-solid ${defaultOpen ? 'fa-chevron-up' : 'fa-chevron-down'}"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Expandable Drawer for Team Certificate & Individual Certificates -->
+                <div id="team-certs-drawer-${t.teamId}" style="display: ${defaultOpen ? 'block' : 'none'}; padding: 0 22px 22px 22px; border-top: 1px solid var(--border-subtle); background: var(--bg-alt);">
+                  
+                  <!-- Option 1: Download Team Certificate -->
+                  <div style="background: rgba(5, 150, 105, 0.08); border: 1.5px solid #a7f3d0; border-radius: 12px; padding: 14px 18px; margin: 16px 0 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                      <div style="font-weight: 800; font-size: 0.96rem; color: #064e3b; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-award" style="color: #059669;"></i> Official Team Squad Certificate
+                      </div>
+                      <div style="font-size: 0.78rem; color: #047857; margin-top: 2px;">
+                        Institutional Certificate of Excellence/Participation for Team <strong>${escapeHtml(t.teamName)}</strong>
+                      </div>
+                    </div>
+                    <button class="btn-3d-primary" onclick="openSquadTeamCertificate('${t.teamId}')" style="padding: 9px 18px; font-size: 0.84rem;">
+                      <i class="fa-solid fa-cloud-arrow-down"></i> Download Team Certificate
+                    </button>
+                  </div>
+
+                  <!-- Option 2: Individual Member Certificates -->
+                  <div style="font-size: 0.86rem; font-weight: 800; color: var(--text-main); margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                    <i class="fa-solid fa-user-graduate" style="color: #059669;"></i> Individual Member Certificates (${memberCount}):
+                  </div>
+                  
+                  <div class="cert-hub-member-chips-grid">
+                    ${t.members.map((m, mIdx) => {
+                      const indivCert = registry.find(c => (c.category === "Individual Participant" || c.category === "Winner") && c.teamId === t.teamId && c.memberIndex === mIdx);
+                      const memberCertId = indivCert ? indivCert.certId : ("TIT/INTSIH/IND-" + (mIdx + 1));
+                      const isMemberLeader = m.isLeader || mIdx === 0;
+
+                      return `
+                        <div class="cert-hub-member-item" style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                          <div>
+                            <div style="font-weight: 800; font-size: 0.92rem; color: var(--text-main);">
+                              ${escapeHtml(m.name)}
+                              ${isMemberLeader ? '<span style="font-size: 0.68rem; color: #065f46; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 2px 6px; border-radius: 99px; font-weight: 800; margin-left: 4px;"><i class="fa-solid fa-crown"></i> Leader</span>' : ''}
+                            </div>
+                            <div style="font-size: 0.74rem; color: var(--text-muted); margin-top: 2px;">
+                              ${escapeHtml(m.roll || '')} • ${escapeHtml(m.branch || m.dept || t.domain || 'TIT')}
+                            </div>
+                            <div style="font-family: var(--font-mono); font-size: 0.72rem; color: #059669; font-weight: 700; margin-top: 2px;">
+                              ${memberCertId}
+                            </div>
+                          </div>
+                          <button class="btn-3d-secondary" onclick="openStudentIndividualCertificate('${t.teamId}', ${mIdx})" style="padding: 7px 14px; font-size: 0.78rem; flex-shrink: 0; white-space: nowrap;">
+                            <i class="fa-solid fa-stamp"></i> Certificate
+                          </button>
+                        </div>
+                      `;
+                    }).join('')}
+                  </div>
+
+                </div>
               </div>
-              <h4 style="font-size:1.05rem; font-weight:800; color:var(--text-main); margin:0 0 4px;">${escapeHtml(p.name)}</h4>
-              <p style="font-size:0.84rem; color:#059669; font-weight:700; margin:0 0 4px;">
-                <i class="fa-solid fa-users" style="font-size:0.78rem;"></i> Team ${escapeHtml(p.teamName)}
-              </p>
-              <p style="font-size:0.74rem; color:var(--text-muted); margin:0 0 14px;">
-                ${escapeHtml(p.branch)} • ${escapeHtml(p.domain)}
-              </p>
-              <button class="btn-3d-primary" onclick="openStudentIndividualCertificate('${p.teamId}', ${p.memberIndex})" style="width:100%; justify-content:center; padding:8px 12px; font-size:0.8rem;">
-                <i class="fa-solid fa-stamp"></i> View Certificate
-              </button>
-            </div>
-          `).join('')}
+            `;
+          }).join('')}
         </div>
       </div>
     `;
