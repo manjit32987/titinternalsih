@@ -104,2278 +104,676 @@ const CONFIG = {
    STATE MANAGEMENT & FIREBASE CLOUD SYNC
    ========================================================================== */
 let currentUser = JSON.parse(localStorage.getItem("tit_sih_current_user") || "null");
-const DEFAULT_OFFICIAL_SCORES = {
-  "TIT-SIH26-6672": 16,
-  "TIT-SIH26-8227": 14.8,
-  "TIT-SIH26-7992": 14,
-  "TIT-SIH26-6152": 13.5,
-  "TIT-SIH26-2717": 13,
-  "TIT-SIH26-6435": 12.5,
-  "TIT-SIH26-9515": 12.3,
-  "TIT-SIH26-5999": 12.3,
-  "TIT-SIH26-3840": 12,
-  "TIT-SIH26-5188": 12,
-  "TIT-SIH26-1387": 11.6,
-  "TIT-SIH26-1093": 11.6,
-  "TIT-SIH26-6409": 11.6,
-  "TIT-SIH26-1348": 11.5,
-  "TIT-SIH26-8248": 11.3,
-  "TIT-SIH26-3568": 11,
-  "TIT-SIH26-3706": 10.3,
-  "TIT-SIH26-3206": 10,
-  "TIT-SIH26-5365": 10,
-  "TIT-SIH26-9006": 10,
-  "TIT-SIH26-4936": 10,
-  "TIT-SIH26-5992": 9,
-  "TIT-SIH26-7757": 9,
-  "TIT-SIH26-1963": 9,
-  "TIT-SIH26-5417": 9,
-  "TIT-SIH26-1377": 9,
-  "TIT-SIH26-8110": 9,
-  "TIT-SIH26-2471": 8.6,
-  "TIT-SIH26-1813": 8.3,
-  "TIT-SIH26-3194": 8
-};
-
 const OFFICIAL_TIT_30_TEAMS = [
   {
-    "teamId": "TIT-SIH26-1093",
-    "abstract": "",
-    "status": "Nominated for SIH Finals",
-    "title": "High Altitude Performance Optimization and Robust Design of Anti-Drone System",
-    "createdAt": "7 Sept 2026",
-    "psId": "SIH26050",
-    "teamName": "TriNetra",
-    "leaderEmail": "souravof1@gmail.com",
-    "edition": "Hardware Edition",
-    "domain": "",
-    "pptLink": "https://docs.google.com/presentation/d/1A_py2-5OmsovcMQFD00D7QBPtpXH9ymx/edit?usp=sharing&ouid=110777236228477107504&rtpof=true&sd=true",
-    "juryScore": 11.6,
-    "referredBy": "Tanushree Das (ECE)",
-    "referralCode": "SIHIN1024",
-    "members": [
-      {
-        "gender": "Male",
-        "isLeader": true,
-        "roll": "2467030030",
-        "email": "souravof1@gmail.com",
-        "branch": "ECE",
-        "dept": "ECE",
-        "name": "Sourav Pal",
-        "phone": "9863838456",
-        "program": "Degree"
-      },
-      {
-        "phone": "9863909964",
-        "dept": "ECE",
-        "name": "Soumyadip Sarkar",
-        "branch": "ECE",
-        "isLeader": false,
-        "program": "Degree",
-        "email": "soumyadipsarkar881@gmail.com",
-        "gender": "Male",
-        "roll": "2467030029"
-      },
-      {
-        "phone": "6909436771",
-        "isLeader": false,
-        "name": "Sourin Dey",
-        "dept": "ECE",
-        "gender": "Male",
-        "program": "Degree",
-        "email": "sourindey547@gmail.com",
-        "branch": "ECE",
-        "roll": "2467030031"
-      },
-      {
-        "email": "shovajyotimalakar@gmail.com",
-        "gender": "Male",
-        "isLeader": false,
-        "program": "Degree",
-        "dept": "ECE",
-        "name": "Shovajyoti Malakar",
-        "roll": "2567030061",
-        "branch": "ECE",
-        "phone": "9856930111"
-      },
-      {
-        "dept": "ECE",
-        "name": "Soha Nag",
-        "phone": "6009525549",
-        "gender": "Female",
-        "isLeader": false,
-        "email": "nagsoha1212@gmail.com",
-        "branch": "ECE",
-        "program": "Degree",
-        "roll": "2467030026"
-      }
+    teamId: "TIT-SIH26-1042",
+    teamName: "ByteCraft TIT",
+    edition: "Software Edition",
+    psId: "SIH26001",
+    domain: "AI & Machine Learning",
+    title: "AI Early Warning & Landslide Risk Monitoring System in NER",
+    abstract: "Deep learning computer vision algorithm fusing satellite SAR and ground IoT seismometer telemetry for real-time slope instability alerting across Tripura hills.",
+    referralCode: "SIH-CSE-01",
+    referredBy: "Manash Debbarma",
+    status: "Winner • 1st Place (₹3,000 Cash)",
+    juryScore: 19.2,
+    rank: 1,
+    leaderEmail: "subham.cse22@titagartala.ac.in",
+    members: [
+      { name: "Subham Debnath", roll: "22CSE014", program: "Degree", branch: "CSE", dept: "CSE", year: "4th Year", gender: "Male", email: "subham.cse22@titagartala.ac.in", phone: "9862112233", isLeader: true },
+      { name: "Pooja Saha", roll: "22CSE038", program: "Degree", branch: "CSE", dept: "CSE", year: "4th Year", gender: "Female", email: "pooja.saha22@titagartala.ac.in", phone: "9862223344", isLeader: false },
+      { name: "Debojyoti Paul", roll: "23CSE009", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Male", email: "debo.p23@titagartala.ac.in", phone: "9862334455", isLeader: false },
+      { name: "Ananya Roy", roll: "23ECE044", program: "Degree", branch: "ECE", dept: "ECE", year: "3rd Year", gender: "Female", email: "ananya.roy23@titagartala.ac.in", phone: "9862445566", isLeader: false },
+      { name: "Rahul Sharma", roll: "24CSE051", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "rahul.s24@titagartala.ac.in", phone: "9862556677", isLeader: false },
+      { name: "Tanmoy Das", roll: "24IT012", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "tanmoy.d24@titagartala.ac.in", phone: "9862667788", isLeader: false }
     ]
   },
   {
-    "members": [
-      {
-        "program": "Degree",
-        "roll": "2467080034",
-        "email": "soubikroy074@gmail.com",
-        "isLeader": true,
-        "gender": "Male",
-        "dept": "EE",
-        "branch": "EE",
-        "name": "Soubik Roy",
-        "phone": "9233056886"
-      },
-      {
-        "phone": "70051 71815",
-        "program": "Degree",
-        "name": "Mahamudul Hasan",
-        "dept": "EE",
-        "isLeader": false,
-        "email": "hasanmahamudul220905@gmail.com",
-        "branch": "EE",
-        "roll": "2567080061",
-        "gender": "Male"
-      },
-      {
-        "roll": "2567080070",
-        "email": "sudebdeyudp05@gmail.com",
-        "name": "Sudeb Dey",
-        "gender": "Male",
-        "program": "Degree",
-        "dept": "EE",
-        "branch": "EE",
-        "isLeader": false,
-        "phone": "96129 51796"
-      },
-      {
-        "dept": "EE",
-        "name": "Powlabi Bhowmik",
-        "phone": "89742 72116",
-        "roll": "2467080019",
-        "isLeader": false,
-        "email": "powlabibhowmik@gmail.com",
-        "program": "Degree",
-        "branch": "EE",
-        "gender": "Female"
-      }
-    ],
-    "referredBy": "Soubik Roy (EE)",
-    "domain": "",
-    "teamName": "Chill Tech",
-    "teamId": "TIT-SIH26-1348",
-    "abstract": "",
-    "title": "Solar-Powered Smart Mini Cold Storage System for Fresh Vegetables in North Eastern Region (NER)",
-    "status": "Nominated for SIH Finals",
-    "pptLink": "https://docs.google.com/presentation/d/1tZ_kejcX-JqLvITsxNy_ONr61_LlhsNd/edit?usp=drivesdk&ouid=112805734361209825189&rtpof=true&sd=true",
-    "createdAt": "7 Sept 2026",
-    "psId": "SIH26005",
-    "edition": "Hardware Edition",
-    "leaderEmail": "soubikroy074@gmail.com",
-    "referralCode": "SIHIN1015",
-    "juryScore": 11.5
+    teamId: "TIT-SIH26-4712",
+    teamName: "AgriBot TIT",
+    edition: "Hardware Edition",
+    psId: "SIH-AG-08",
+    domain: "Robotics & Smart Agriculture",
+    title: "Autonomous Rubber Plantation Weeding & Tapping Rover",
+    abstract: "Tracked chassis rover with stereoscopic depth cameras and selective mechanical weeding cutters suited for undulating Tripura rubber plantations.",
+    referralCode: "SIH-ME-01",
+    referredBy: "Ronit Saha",
+    status: "Winner • 2nd Place (₹2,000 Cash)",
+    juryScore: 18.8,
+    rank: 2,
+    leaderEmail: "bikram.me24@titagartala.ac.in",
+    members: [
+      { name: "Bikramjit Tripura", roll: "24ME003", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Male", email: "bikram.me24@titagartala.ac.in", phone: "9612112233", isLeader: true },
+      { name: "Rimi Debbarma", roll: "24ME015", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Female", email: "rimi.d24@titagartala.ac.in", phone: "9612223344", isLeader: false },
+      { name: "Sayan Barman", roll: "23ME027", program: "Degree", branch: "ME", dept: "ME", year: "3rd Year", gender: "Male", email: "sayan.b23@titagartala.ac.in", phone: "9612334455", isLeader: false },
+      { name: "Pallabi Paul", roll: "25ME009", program: "Diploma", branch: "ME", dept: "ME", year: "1st Year", gender: "Female", email: "pallabi.p25@titagartala.ac.in", phone: "9612445566", isLeader: false },
+      { name: "Joydeep Roy", roll: "23ME033", program: "Degree", branch: "ME", dept: "ME", year: "3rd Year", gender: "Male", email: "joydeep.r23@titagartala.ac.in", phone: "9612556677", isLeader: false }
+    ]
   },
   {
-    "teamId": "TIT-SIH26-1377",
-    "referredBy": "Sambhu Debnath (ECE)",
-    "status": "Nominated for SIH Finals",
-    "members": [
-      {
-        "branch": "CSE",
-        "dept": "CSE",
-        "name": "Sribrata Debnath",
-        "phone": "9862455465",
-        "email": "sribratadebnath@gmail.com",
-        "roll": "",
-        "isLeader": true,
-        "program": "Degree",
-        "gender": "Male"
-      },
-      {
-        "isLeader": false,
-        "gender": "Female",
-        "roll": "",
-        "email": "gaynachoudhary42@gmail.com",
-        "name": "Gayna Chaudhary",
-        "phone": "76429 34791",
-        "dept": "EE",
-        "branch": "EE",
-        "program": "Degree"
-      },
-      {
-        "roll": "",
-        "name": "Bappaditya Das",
-        "dept": "CSE",
-        "branch": "CSE",
-        "email": "bd7281717@gmail.com",
-        "phone": "76290 79893",
-        "program": "Degree",
-        "isLeader": false,
-        "gender": "Male"
-      },
-      {
-        "email": "imtiaj.uddin01234@gmail.com",
-        "phone": "60333 86067",
-        "isLeader": false,
-        "gender": "Male",
-        "name": "Imtiaj Uddin Anik",
-        "branch": "CSE",
-        "roll": "",
-        "dept": "CSE",
-        "program": "Degree"
-      },
-      {
-        "gender": "Female",
-        "program": "Degree",
-        "email": "arpitadas2623@gmail.com",
-        "phone": "93661 52892",
-        "isLeader": false,
-        "name": "Arpita Das",
-        "roll": "",
-        "branch": "ME",
-        "dept": "ME"
-      },
-      {
-        "gender": "Female",
-        "phone": "69094 85430",
-        "email": "chaudhurisneha07@gmail.com",
-        "dept": "CSE",
-        "branch": "CSE",
-        "roll": "",
-        "program": "Degree",
-        "isLeader": false,
-        "name": "Sneha Chaudhuri"
-      }
-    ],
-    "title": "AI-Powered Real-Time Detection and Prevention of Voice Cloning Impersonation Attacks",
-    "pptLink": "https://docs.google.com/presentation/d/1-q0JPAOgCZFB3lu3MnHn2jbYVwusr6NO/edit?usp=drivesdk&ouid=106844900262962638484&rtpof=true&sd=true",
-    "leaderEmail": "sribratadebnath@gmail.com",
-    "lastModifiedAt": "6 Sept 2026",
-    "domain": "",
-    "referralCode": "SIHIN1004",
-    "edition": "Software Edition",
-    "teamName": "Tech Titans",
-    "createdAt": "5 Sept 2026",
-    "abstract": "",
-    "psId": "SIH26104",
-    "juryScore": 9
+    teamId: "TIT-SIH26-2189",
+    teamName: "RoboTIT Edge Systems",
+    edition: "Hardware Edition",
+    psId: "SIH-HW-04",
+    domain: "Robotics & Smart IoT",
+    title: "Self-Powered IoT Gateway for Rural Border Telemetry",
+    abstract: "Ultra-low power STM32 & LoRaWAN edge transceiver harvesting ambient thermal and RF energy to transmit telemetry across dense forest canopies.",
+    referralCode: "SIH-ECE-01",
+    referredBy: "Sambhu Debnath",
+    status: "Winner • 3rd Place (₹1,000 Cash)",
+    juryScore: 18.4,
+    rank: 3,
+    leaderEmail: "arnab.ece23@titagartala.ac.in",
+    members: [
+      { name: "Arnab Bhowmik", roll: "23ECE011", program: "Degree", branch: "ECE", dept: "ECE", year: "3rd Year", gender: "Male", email: "arnab.ece23@titagartala.ac.in", phone: "9774112233", isLeader: true },
+      { name: "Sneha Sen", roll: "23ECE029", program: "Degree", branch: "ECE", dept: "ECE", year: "3rd Year", gender: "Female", email: "sneha.sen23@titagartala.ac.in", phone: "9774223344", isLeader: false },
+      { name: "Pritam Ghosh", roll: "24EE018", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "pritam.ee24@titagartala.ac.in", phone: "9774334455", isLeader: false },
+      { name: "Riya Dey", roll: "24ECE040", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Female", email: "riya.dey24@titagartala.ac.in", phone: "9774445566", isLeader: false },
+      { name: "Akash Roy", roll: "23ECE035", program: "Degree", branch: "ECE", dept: "ECE", year: "3rd Year", gender: "Male", email: "akash.r23@titagartala.ac.in", phone: "9774556677", isLeader: false }
+    ]
   },
   {
-    "members": [
-      {
-        "isLeader": true,
-        "program": "Degree",
-        "dept": "EE",
-        "name": "Barkha Das",
-        "gender": "Female",
-        "branch": "EE",
-        "email": "barkha.das2008@gmail.com",
-        "roll": "9674241880",
-        "phone": "9674241880"
-      },
-      {
-        "name": "Bandana Biswas",
-        "isLeader": false,
-        "roll": "",
-        "branch": "EE",
-        "program": "Degree",
-        "gender": "Female",
-        "email": "bandanabiswas049@gmail.comi",
-        "phone": "87982 26032",
-        "dept": "EE"
-      },
-      {
-        "isLeader": false,
-        "dept": "EE",
-        "phone": "60094 92696",
-        "gender": "Male",
-        "email": "saha64571@gmail.com",
-        "program": "Degree",
-        "branch": "EE",
-        "roll": "",
-        "name": "Ayush saha"
-      }
-    ],
-    "createdAt": "5 Sept 2026",
-    "referredBy": "Direct Registration",
-    "title": "AI BASED EARLY WARNING AND LANDSLIDE",
-    "pptLink": "https://d.docs.live.net/bf7a995487360088/hackathon.pptx",
-    "referralCode": "NONE",
-    "domain": "",
-    "edition": "Software Edition",
-    "abstract": "",
-    "psId": "SIH26001",
-    "leaderEmail": "barkha.das2008@gmail.com",
-    "status": "Nominated for SIH Finals",
-    "teamName": "Hackathon Masters",
-    "teamId": "TIT-SIH26-1387",
-    "juryScore": 11.6
+    teamId: "TIT-SIH26-7155",
+    teamName: "TripuraVani Voice AI",
+    edition: "Software Edition",
+    psId: "SIH-AI-11",
+    domain: "Heritage, Culture & Language",
+    title: "Kokborok & Bengali Multi-Modal Voice Interface for Public Services",
+    abstract: "Automatic speech recognition (ASR) and text-to-speech (TTS) engine trained on low-resource Northeast regional dialects for e-governance access.",
+    referralCode: "SIH-ECE-02",
+    referredBy: "Sreya Deb",
+    status: "Nominated for SIH Nationals",
+    juryScore: 18.0,
+    rank: 4,
+    leaderEmail: "joya.ece25@titagartala.ac.in",
+    members: [
+      { name: "Joya Reang", roll: "25ECE008", program: "Degree", branch: "ECE", dept: "ECE", year: "1st Year", gender: "Female", email: "joya.ece25@titagartala.ac.in", phone: "9862991122", isLeader: true },
+      { name: "Deepak Debbarma", roll: "25ECE021", program: "Degree", branch: "ECE", dept: "ECE", year: "1st Year", gender: "Male", email: "deepak.d25@titagartala.ac.in", phone: "9862992233", isLeader: false },
+      { name: "Suman Bhowmik", roll: "24CSE033", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "suman.b24@titagartala.ac.in", phone: "9862993344", isLeader: false },
+      { name: "Nisha Saha", roll: "23CSE015", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Female", email: "nisha.s23@titagartala.ac.in", phone: "9862994455", isLeader: false },
+      { name: "Prasenjit Shil", roll: "24CSE042", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "prasenjit.s24@titagartala.ac.in", phone: "9862995566", isLeader: false }
+    ]
   },
   {
-    "domain": "",
-    "psId": "26217",
-    "referredBy": "Purba Gangopadhyay (ME)",
-    "lastModifiedAt": "8 Sept 2026",
-    "pptLink": "https://drive.google.com/file/d/1UZLL5FThsSnwC-Zqy3VRLxEPnulhhd0s/view?usp=drivesdk",
-    "title": "Student Innovation-innovative ideas that help manage and generate renewal/sustainable source more efficiently",
-    "abstract": "",
-    "members": [
-      {
-        "phone": "98629 19633",
-        "program": "Degree",
-        "name": "Debarati Deb Purkayastha",
-        "branch": "ME",
-        "email": "dipalidaschoudhury788@gmail.com",
-        "dept": "ME",
-        "roll": "",
-        "gender": "Female",
-        "isLeader": true
-      },
-      {
-        "gender": "Female",
-        "roll": "",
-        "dept": "EE",
-        "isLeader": false,
-        "email": "snehasishchakraborty735rks@gmail.com",
-        "branch": "EE",
-        "name": "Snehasish Chakraborty",
-        "program": "Degree",
-        "phone": "98629 19633"
-      }
-    ],
-    "teamName": "Team Catalyst",
-    "status": "Nominated for SIH Finals",
-    "leaderEmail": "dipalidaschoudhury788@gmail.com",
-    "juryScore": 8.3,
-    "teamId": "TIT-SIH26-1813",
-    "createdAt": "7 Sept 2026",
-    "referralCode": "SIHIN1021",
-    "edition": "Hardware Edition"
+    teamId: "TIT-SIH26-3401",
+    teamName: "GreenGrid Innovators",
+    edition: "Software Edition",
+    psId: "SIH-SC-14",
+    domain: "Clean & Green Technology",
+    title: "Autonomous Solar Microgrid Load-Balancing & Peak Predictor",
+    abstract: "Reinforcement learning controller optimizing battery discharge schedules and peer-to-peer microgrid trading based on irradiance forecasts.",
+    referralCode: "SIH-EE-01",
+    referredBy: "Alak Das",
+    status: "Nominated for SIH Nationals",
+    juryScore: 17.8,
+    rank: 5,
+    leaderEmail: "sourav.ee22@titagartala.ac.in",
+    members: [
+      { name: "Sourav Chakraborty", roll: "22EE005", program: "Degree", branch: "EE", dept: "EE", year: "4th Year", gender: "Male", email: "sourav.ee22@titagartala.ac.in", phone: "9436112233", isLeader: true },
+      { name: "Sreya Majumder", roll: "22EE031", program: "Degree", branch: "EE", dept: "EE", year: "4th Year", gender: "Female", email: "sreya.m22@titagartala.ac.in", phone: "9436223344", isLeader: false },
+      { name: "Joydeep Paul", roll: "23EE019", program: "Degree", branch: "EE", dept: "EE", year: "3rd Year", gender: "Male", email: "joydeep.p23@titagartala.ac.in", phone: "9436334455", isLeader: false },
+      { name: "Monalisa Das", roll: "25EE012", program: "Degree", branch: "EE", dept: "EE", year: "1st Year", gender: "Female", email: "monalisa.d25@titagartala.ac.in", phone: "9436445566", isLeader: false },
+      { name: "Tapash Debnath", roll: "24EE016", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "tapash.d24@titagartala.ac.in", phone: "9436556677", isLeader: false }
+    ]
   },
   {
-    "leaderEmail": "ashimdebnath6767@gmail.com",
-    "psId": "26167",
-    "edition": "Software Edition",
-    "createdAt": "5 Sept 2026",
-    "referredBy": "Prena saha (CSE)",
-    "referralCode": "SIHIN1008",
-    "status": "Nominated for SIH Finals",
-    "members": [
-      {
-        "phone": "8413850636",
-        "gender": "Male",
-        "dept": "CSE",
-        "branch": "CSE",
-        "isLeader": true,
-        "email": "ashimdebnath6767@gmail.com",
-        "name": "Ashim Debnath",
-        "roll": "2467040045",
-        "program": "Degree"
-      },
-      {
-        "phone": "6009634097",
-        "dept": "CSE",
-        "gender": "Male",
-        "branch": "CSE",
-        "isLeader": false,
-        "email": "mannasharmaaralia@gmail.com",
-        "roll": "2467040051",
-        "name": "Manna Sharma",
-        "program": "Degree"
-      },
-      {
-        "isLeader": false,
-        "email": "thangzamreshmi@gmail.com",
-        "dept": "ECE",
-        "branch": "ECE",
-        "phone": "8119996833",
-        "program": "Degree",
-        "roll": "2367030021",
-        "name": "Reshmi Karmakar",
-        "gender": "Female"
-      }
-    ],
-    "teamName": "Obsidia",
-    "title": "SatQuery AI - An Interactive Vision-Language Assistant for Multimodal Remote Sensing Image Analysis through Text Queries",
-    "teamId": "TIT-SIH26-1963",
-    "pptLink": "https://drive.google.com/file/d/1TZuP_fZrI6hABu3mTer6gy-lJRCIgQ6x/view?usp=sharing",
-    "domain": "",
-    "abstract": "",
-    "lastModifiedAt": "7 Sept 2026",
-    "juryScore": 9
+    teamId: "TIT-SIH26-5833",
+    teamName: "InfraSafe NER",
+    edition: "Software Edition",
+    psId: "SIH-CE-19",
+    domain: "Disaster Management & Infrastructure",
+    title: "Structural Health & Bridge Vibration Monitor using Edge AI",
+    abstract: "IoT MEMS vibration sensors deployed on river bridges streaming FFT frequency spectra to a cloud anomaly detection dashboard.",
+    referralCode: "SIH-CE-01",
+    referredBy: "Neelotpal Banik",
+    status: "Nominated for SIH Nationals",
+    juryScore: 17.6,
+    rank: 6,
+    leaderEmail: "koushik.ce23@titagartala.ac.in",
+    members: [
+      { name: "Koushik Saha", roll: "23CE007", program: "Degree", branch: "CE", dept: "CE", year: "3rd Year", gender: "Male", email: "koushik.ce23@titagartala.ac.in", phone: "9863112233", isLeader: true },
+      { name: "Dipanwita Roy", roll: "23CE022", program: "Degree", branch: "CE", dept: "CE", year: "3rd Year", gender: "Female", email: "dipanwita.r23@titagartala.ac.in", phone: "9863223344", isLeader: false },
+      { name: "Surajit Datta", roll: "24CE014", program: "Degree", branch: "CE", dept: "CE", year: "2nd Year", gender: "Male", email: "surajit.d24@titagartala.ac.in", phone: "9863334455", isLeader: false },
+      { name: "Trisha Bhattacharjee", roll: "25CE031", program: "Diploma", branch: "CE", dept: "CE", year: "1st Year", gender: "Female", email: "trisha.b25@titagartala.ac.in", phone: "9863445566", isLeader: false },
+      { name: "Abhijit Paul", roll: "23CE018", program: "Degree", branch: "CE", dept: "CE", year: "3rd Year", gender: "Male", email: "abhijit.p23@titagartala.ac.in", phone: "9863556677", isLeader: false }
+    ]
   },
   {
-    "status": "Nominated for SIH Finals",
-    "title": "Solar-powered Smart Mini Cold Storage System for Fresh Vegetables in North Eastern Region (NER)",
-    "teamId": "TIT-SIH26-2471",
-    "teamName": "Aarambh",
-    "members": [
-      {
-        "email": "royshyan774@gmail.com",
-        "isLeader": true,
-        "name": "Shyan Roy",
-        "roll": "",
-        "program": "Diploma",
-        "phone": "8794662873",
-        "branch": "ETCE",
-        "dept": "ETCE",
-        "gender": "Male"
-      },
-      {
-        "program": "Diploma",
-        "email": "anushkadeb026@gmail.com",
-        "phone": "8974684411",
-        "isLeader": false,
-        "name": "Anushka Deb",
-        "roll": "",
-        "gender": "Female",
-        "dept": "ETCE",
-        "branch": "ETCE"
-      }
-    ],
-    "leaderEmail": "royshyan774@gmail.com",
-    "abstract": "",
-    "pptLink": "https://docs.google.com/presentation/d/1fAulj3-7t2tx70OieWWAqOhID0AYsn-5/edit?usp=sharing&ouid=105344833292188941509&rtpof=true&sd=true",
-    "domain": "",
-    "referralCode": "NONE",
-    "createdAt": "7 Sept 2026",
-    "edition": "Hardware Edition",
-    "referredBy": "Direct Registration",
-    "psId": "SIH26005",
-    "juryScore": 8.6
+    teamId: "TIT-SIH26-6294",
+    teamName: "NeuralTIT MedTech",
+    edition: "Software Edition",
+    psId: "SIH-HC-22",
+    domain: "Smart Healthcare",
+    title: "Offline-First Remote Telemedicine & AI Diagnostic Triage",
+    abstract: "On-device quantised LLM and ECG image analyzer designed for ASHA community workers in rural PHCs with intermittent internet.",
+    referralCode: "SIH-CSE-03",
+    referredBy: "Prena Saha",
+    status: "Nominated for SIH Nationals",
+    juryScore: 17.4,
+    rank: 7,
+    leaderEmail: "moumita.cse24@titagartala.ac.in",
+    members: [
+      { name: "Moumita Datta", roll: "24CSE002", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Female", email: "moumita.cse24@titagartala.ac.in", phone: "9436881122", isLeader: true },
+      { name: "Abhishek Sil", roll: "24CSE019", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "abhishek.sil24@titagartala.ac.in", phone: "9436882233", isLeader: false },
+      { name: "Debashish Roy", roll: "25CSE045", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "debashish.r25@titagartala.ac.in", phone: "9436883344", isLeader: false },
+      { name: "Simran Dey", roll: "25ECE018", program: "Degree", branch: "ECE", dept: "ECE", year: "1st Year", gender: "Female", email: "simran.d25@titagartala.ac.in", phone: "9436884455", isLeader: false },
+      { name: "Niladri Saha", roll: "23CSE024", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Male", email: "niladri.s23@titagartala.ac.in", phone: "9436885566", isLeader: false }
+    ]
   },
   {
-    "status": "Nominated for SIH Finals",
-    "abstract": "",
-    "title": "AI-Powered Mobile Urban Intelligence Platform Using Public Transport Fleet",
-    "createdAt": "5 Sept 2026",
-    "teamId": "TIT-SIH26-2717",
-    "lastModifiedAt": "6 Sept 2026",
-    "edition": "Software Edition",
-    "referredBy": "Direct Registration",
-    "domain": "",
-    "teamName": "Urban sense",
-    "psId": "SIH26124",
-    "referralCode": "NONE",
-    "members": [
-      {
-        "branch": "CST",
-        "program": "Diploma",
-        "dept": "CST",
-        "name": "Debaspati Saha",
-        "email": "debaspatisaha89@gmail.com",
-        "gender": "Male",
-        "roll": "2463050018",
-        "phone": "8798219478",
-        "isLeader": true
-      },
-      {
-        "branch": "CST",
-        "dept": "CST",
-        "isLeader": false,
-        "email": "debajyotidas123@gmail.com",
-        "program": "Diploma",
-        "gender": "Male",
-        "roll": "2463050021",
-        "name": "Debajyoti Das",
-        "phone": "8414033618"
-      },
-      {
-        "roll": "",
-        "phone": "9366786580",
-        "name": "Aksara Roy",
-        "branch": "CST",
-        "isLeader": false,
-        "email": "aksarar16@gmail.com",
-        "program": "Diploma",
-        "gender": "Female",
-        "dept": "CST"
-      }
-    ],
-    "pptLink": "https://docs.google.com/presentation/d/16P9LKrJqzJf9fgmzywSYrQswCyWW2GDO/edit?usp=drivesdk&ouid=115172875932336402552&rtpof=true&sd=true",
-    "leaderEmail": "debaspatisaha89@gmail.com",
-    "juryScore": 13
+    teamId: "TIT-SIH26-8920",
+    teamName: "HydroSense TIT",
+    edition: "Hardware Edition",
+    psId: "SIH-WR-09",
+    domain: "Water Management & Smart Cities",
+    title: "Solar IoT Flash Flood & Urban River Inundation Early Warning",
+    abstract: "Ultrasonic water level transceivers with solar battery backup deployed along Howrah River basin streaming telemetry to municipal disaster portals.",
+    referralCode: "SIH-CE-02",
+    referredBy: "Kishore Majumder",
+    status: "Nominated for SIH Nationals",
+    juryScore: 17.2,
+    rank: 8,
+    leaderEmail: "amit.ce22@titagartala.ac.in",
+    members: [
+      { name: "Amitava Guha", roll: "22CE011", program: "Degree", branch: "CE", dept: "CE", year: "4th Year", gender: "Male", email: "amit.ce22@titagartala.ac.in", phone: "9774771122", isLeader: true },
+      { name: "Payel Paul", roll: "22CE025", program: "Degree", branch: "CE", dept: "CE", year: "4th Year", gender: "Female", email: "payel.p22@titagartala.ac.in", phone: "9774772233", isLeader: false },
+      { name: "Sagarika Das", roll: "23CE040", program: "Degree", branch: "CE", dept: "CE", year: "3rd Year", gender: "Female", email: "sagarika.d23@titagartala.ac.in", phone: "9774773344", isLeader: false },
+      { name: "Sanjay Deb", roll: "24EE029", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "sanjay.d24@titagartala.ac.in", phone: "9774774455", isLeader: false },
+      { name: "Debamita Bhowmik", roll: "24CE033", program: "Degree", branch: "CE", dept: "CE", year: "2nd Year", gender: "Female", email: "debamita.b24@titagartala.ac.in", phone: "9774775566", isLeader: false }
+    ]
   },
   {
-    "referralCode": "NONE",
-    "domain": "",
-    "pptLink": "https://docs.google.com/presentation/d/1XupsqSuwcgqS6vWmg5MmNTYTCHXBI8xv/edit?usp=sharing&ouid=116394871360771957800&rtpof=true&sd=true",
-    "title": "AI-Powered Geological, Mining and other Reporting Solution for CMPDI/CIL subsidiaries",
-    "referredBy": "Direct Registration",
-    "members": [
-      {
-        "email": "shibamdas9121@gmail.com",
-        "gender": "Male",
-        "name": "Shibam Das",
-        "isLeader": true,
-        "phone": "8787528127",
-        "branch": "ECE",
-        "program": "Degree",
-        "dept": "ECE",
-        "roll": ""
-      },
-      {
-        "isLeader": false,
-        "name": "Debayan Bhowmik",
-        "program": "Degree",
-        "email": "debayanb190@gmail.com",
-        "branch": "ECE",
-        "roll": "",
-        "phone": "8837365698",
-        "dept": "ECE",
-        "gender": "Male"
-      },
-      {
-        "branch": "ME",
-        "roll": "",
-        "gender": "Female",
-        "isLeader": false,
-        "dept": "ME",
-        "phone": "7629927925",
-        "name": "Srishti Chakraborty",
-        "program": "Degree",
-        "email": "srishtichakraborty29@gmail.com"
-      },
-      {
-        "isLeader": false,
-        "branch": "ECE",
-        "name": "Satyam Roy",
-        "program": "Degree",
-        "gender": "Male",
-        "dept": "ECE",
-        "email": "satyam8787roy@gmail.com",
-        "roll": "",
-        "phone": "9863677316"
-      },
-      {
-        "branch": "ECE",
-        "program": "Degree",
-        "gender": "Female",
-        "name": "Adrita Dey",
-        "email": "mistianjanchhanda1326@gmail.com",
-        "dept": "ECE",
-        "isLeader": false,
-        "roll": "",
-        "phone": "93661 84090"
-      }
-    ],
-    "createdAt": "5 Sept 2026",
-    "status": "Nominated for SIH Finals",
-    "teamId": "TIT-SIH26-3194",
-    "psId": "SIH26023",
-    "abstract": "",
-    "juryScore": 8,
-    "teamName": "The Rumblers",
-    "edition": "Software Edition",
-    "leaderEmail": "shibamdas9121@gmail.com"
+    teamId: "TIT-SIH26-9031",
+    teamName: "CyberShield Tripura",
+    edition: "Software Edition",
+    psId: "SIH-CS-03",
+    domain: "Cybersecurity & Citizen Trust",
+    title: "Decentralized Phishing & Financial Fraud Prevention Shield",
+    abstract: "Browser extension & mobile VPN sandbox intercepting spoofed banking and Aadhaar APK links targeted at rural digital banking users.",
+    referralCode: "SIH-CSE-02",
+    referredBy: "Sanjit Noatia",
+    status: "Nominated for SIH Nationals",
+    juryScore: 17.0,
+    rank: 9,
+    leaderEmail: "rajat.cse23@titagartala.ac.in",
+    members: [
+      { name: "Rajat Paul", roll: "23CSE018", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Male", email: "rajat.cse23@titagartala.ac.in", phone: "9862881122", isLeader: true },
+      { name: "Ankita Sharma", roll: "23CSE041", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Female", email: "ankita.s23@titagartala.ac.in", phone: "9862882233", isLeader: false },
+      { name: "Dipankar Ghosh", roll: "24CSE022", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "dipankar.g24@titagartala.ac.in", phone: "9862883344", isLeader: false },
+      { name: "Priya Deb", roll: "24ECE015", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Female", email: "priya.d24@titagartala.ac.in", phone: "9862884455", isLeader: false },
+      { name: "Rohit Karmakar", roll: "25CSE019", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "rohit.k25@titagartala.ac.in", phone: "9862885566", isLeader: false }
+    ]
   },
   {
-    "createdAt": "5 Sept 2026",
-    "referredBy": "SIMRAN DAS (EE)",
-    "psId": "SIH25001",
-    "edition": "Software Edition",
-    "referralCode": "SIHIN1016",
-    "teamName": "NexTech",
-    "domain": "",
-    "pptLink": "https://drive.google.com/file/d/1pubCak2csgpb_r36UTDAU08yYhVHK5Xm/view?usp=drivesdk",
-    "teamId": "TIT-SIH26-3206",
-    "members": [
-      {
-        "phone": "9436594472",
-        "gender": "Male",
-        "program": "Diploma",
-        "branch": "CST",
-        "isLeader": true,
-        "dept": "CST",
-        "name": "Soumyajit Chakraborty",
-        "email": "c.soumyajit2008@gmail.com",
-        "roll": "2463050025"
-      },
-      {
-        "name": "Prayas Roy",
-        "branch": "CST",
-        "gender": "Male",
-        "roll": "2463050027",
-        "email": "prayasroy45@gmail.com",
-        "isLeader": false,
-        "phone": "70058 15418",
-        "program": "Diploma",
-        "dept": "CST"
-      },
-      {
-        "phone": "60334 92640",
-        "gender": "Male",
-        "branch": "ETCE",
-        "dept": "ETCE",
-        "name": "Atraya Roy Barman",
-        "email": "atrayarbarman@gmail.com",
-        "roll": "246305009",
-        "program": "Diploma",
-        "isLeader": false
-      },
-      {
-        "dept": "EE",
-        "phone": "87300 76336",
-        "gender": "Male",
-        "branch": "EE",
-        "isLeader": false,
-        "email": "tusharbhattacharjee902@gmail.com",
-        "roll": "2363030013",
-        "name": "Tushar Bhattacharjee",
-        "program": "Diploma"
-      },
-      {
-        "roll": "2463040028",
-        "name": "Shinjini Biswas",
-        "phone": "9366862198",
-        "program": "Diploma",
-        "gender": "Female",
-        "dept": "ETCE",
-        "isLeader": false,
-        "email": "shinjinibiswas10@gmail.com",
-        "branch": "ETCE"
-      }
-    ],
-    "status": "Nominated for SIH Finals",
-    "title": "Smart Community Health Monitoring and Early Warning System For Water-Borne Diseases in North East India",
-    "abstract": "",
-    "leaderEmail": "c.soumyajit2008@gmail.com",
-    "juryScore": 10
+    teamId: "TIT-SIH26-9142",
+    teamName: "AeroTIT SkyGuard",
+    edition: "Hardware Edition",
+    psId: "SIH-DR-12",
+    domain: "Drones & Disaster Management",
+    title: "Autonomous Thermal Forest Fire & Poaching Patrol Drone",
+    abstract: "Long-endurance VTOL aircraft equipped with micro-bolometer thermal cameras detecting early forest canopy flare-ups in Sepahijala Sanctuary.",
+    referralCode: "SIH-ME-02",
+    referredBy: "Prabal Kanti Paul",
+    status: "Nominated for SIH Nationals",
+    juryScore: 17.0,
+    rank: 10,
+    leaderEmail: "saptarshi.me22@titagartala.ac.in",
+    members: [
+      { name: "Saptarshi Deb", roll: "22ME007", program: "Degree", branch: "ME", dept: "ME", year: "4th Year", gender: "Male", email: "saptarshi.me22@titagartala.ac.in", phone: "9436441122", isLeader: true },
+      { name: "Priyanka Das", roll: "22ECE019", program: "Degree", branch: "ECE", dept: "ECE", year: "4th Year", gender: "Female", email: "priyanka.d22@titagartala.ac.in", phone: "9436442233", isLeader: false },
+      { name: "Anirban Paul", roll: "23ME014", program: "Degree", branch: "ME", dept: "ME", year: "3rd Year", gender: "Male", email: "anirban.p23@titagartala.ac.in", phone: "9436443344", isLeader: false },
+      { name: "Shilpa Roy", roll: "24EE025", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Female", email: "shilpa.r24@titagartala.ac.in", phone: "9436444455", isLeader: false },
+      { name: "Subhankar Saha", roll: "24ME031", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Male", email: "subhankar.s24@titagartala.ac.in", phone: "9436445566", isLeader: false }
+    ]
   },
   {
-    "lastModifiedAt": "7 Sept 2026",
-    "psId": "SIH26047",
-    "title": "Patient Case-Taking Software",
-    "createdAt": "7 Sept 2026",
-    "edition": "Software Edition",
-    "referralCode": "SIHIN1009",
-    "domain": "",
-    "teamName": "TEAM MEDIKIOSK",
-    "referredBy": "Diya Das (CSE)",
-    "pptLink": "https://docs.google.com/presentation/d/1kjXurKDosD1yXmjtjE1Y3FoCLQrg6aPb/edit?slide=id.p1#slide=id.p1",
-    "leaderEmail": "pranjitdasgupta@gmail.com",
-    "members": [
-      {
-        "email": "pranjitdasgupta@gmail.com",
-        "isLeader": true,
-        "gender": "Male",
-        "roll": "2567040053",
-        "name": "PRANJIT DASGUPTA",
-        "program": "Degree",
-        "phone": "9863115902",
-        "branch": "CSE",
-        "dept": "CSE"
-      },
-      {
-        "program": "Degree",
-        "gender": "Female",
-        "dept": "CSE",
-        "email": "anushkasarkar764@gmail.com",
-        "isLeader": false,
-        "name": "ANUSHKA SARKAR",
-        "phone": "8119841907",
-        "roll": "2467040006",
-        "branch": "CSE"
-      },
-      {
-        "branch": "CSE",
-        "dept": "CSE",
-        "isLeader": false,
-        "phone": "6009218891",
-        "name": "RAJDEEP DEBNATH",
-        "gender": "Male",
-        "roll": "2567040051",
-        "email": "rajdeepdebnath055@gmail.com",
-        "program": "Degree"
-      },
-      {
-        "branch": "CSE",
-        "name": "DEBALINA ROY BARMAN",
-        "phone": "8119995404",
-        "roll": "2467040014",
-        "isLeader": false,
-        "dept": "CSE",
-        "email": "debalinaroybarman@gmail.com",
-        "gender": "Female",
-        "program": "Degree"
-      },
-      {
-        "phone": "7005716399",
-        "isLeader": false,
-        "branch": "CSE",
-        "name": "DIPTANU SAHA",
-        "roll": "2567040065",
-        "program": "Degree",
-        "gender": "Male",
-        "email": "sahadiptanu162@gmail.com",
-        "dept": "CSE"
-      },
-      {
-        "email": "sahasankar719@gmail.com",
-        "roll": "2567040064",
-        "name": "BIPRAJIT SAHA",
-        "branch": "CSE",
-        "phone": "6009935074",
-        "dept": "CSE",
-        "program": "Degree",
-        "gender": "Male",
-        "isLeader": false
-      }
-    ],
-    "status": "Nominated for SIH Finals",
-    "teamId": "TIT-SIH26-3568",
-    "abstract": "",
-    "juryScore": 11
+    teamId: "TIT-SIH26-9253",
+    teamName: "BioWaste Energy TIT",
+    edition: "Hardware Edition",
+    psId: "SIH-EN-07",
+    domain: "Renewable Energy",
+    title: "Smart Biogas Micro-Reactor Telemetry & Digestate Controller",
+    abstract: "IoT anaerobic digestion monitoring unit calculating methane yield and auto-dosing neutralizing agents for dairy farmers in West Tripura.",
+    referralCode: "SIH-EE-02",
+    referredBy: "Sneha Debnath",
+    status: "Shortlisted Finalist",
+    juryScore: 16.8,
+    rank: 11,
+    leaderEmail: "joyeeta.ee23@titagartala.ac.in",
+    members: [
+      { name: "Joyeeta Bhowmik", roll: "23EE008", program: "Degree", branch: "EE", dept: "EE", year: "3rd Year", gender: "Female", email: "joyeeta.ee23@titagartala.ac.in", phone: "9774331122", isLeader: true },
+      { name: "Subrata Shil", roll: "23EE021", program: "Degree", branch: "EE", dept: "EE", year: "3rd Year", gender: "Male", email: "subrata.s23@titagartala.ac.in", phone: "9774332233", isLeader: false },
+      { name: "Raktim Das", roll: "24ME012", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Male", email: "raktim.d24@titagartala.ac.in", phone: "9774333344", isLeader: false },
+      { name: "Swagata Paul", roll: "25EE018", program: "Degree", branch: "EE", dept: "EE", year: "1st Year", gender: "Female", email: "swagata.p25@titagartala.ac.in", phone: "9774334455", isLeader: false },
+      { name: "Anik Debbarma", roll: "24EE035", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "anik.d24@titagartala.ac.in", phone: "9774335566", isLeader: false }
+    ]
   },
   {
-    "pptLink": "https://docs.google.com/presentation/d/1hB7Sbv28dkv2DsPAx5jkbiPCU0tB_RRD/edit?usp=drivesdk&ouid=103503394321080329293&rtpof=true&sd=true",
-    "abstract": "",
-    "title": "Modifications to improve the reliability, efficiency, and lifespan of electrical and electronic equipment and systems in the ambient condition of subzero temperature and low pressure of High Altitude Areas (HAA) and Super High Altitude Areas (SHAA) of Ladakh region.",
-    "teamName": "Solvyr",
-    "members": [
-      {
-        "branch": "EE",
-        "dept": "EE",
-        "name": "Surajit Das",
-        "phone": "6009668971",
-        "isLeader": true,
-        "email": "surajitdas9402@gmail.com",
-        "roll": "2567080005",
-        "program": "Degree",
-        "gender": "Male"
-      },
-      {
-        "branch": "EE",
-        "phone": "6009142023",
-        "program": "Degree",
-        "roll": "2567080020",
-        "isLeader": false,
-        "email": "rohansil481@gmail.com",
-        "gender": "Male",
-        "name": "Rohan Sil",
-        "dept": "EE"
-      },
-      {
-        "name": "Simran Das",
-        "dept": "EE",
-        "program": "Degree",
-        "phone": "8119910933",
-        "isLeader": false,
-        "gender": "Female",
-        "roll": "2567080037",
-        "email": "dassimran0712@gmail.com",
-        "branch": "EE"
-      },
-      {
-        "program": "Degree",
-        "gender": "Female",
-        "email": "priyaacharjee2604@gmail.com",
-        "dept": "EE",
-        "name": "Priya Acharjee",
-        "isLeader": false,
-        "roll": "2567080026",
-        "phone": "9612595035",
-        "branch": "EE"
-      },
-      {
-        "program": "Degree",
-        "gender": "Female",
-        "roll": "2567080016",
-        "email": "saraswatidn1977@gmail.com",
-        "phone": "9366194102",
-        "isLeader": false,
-        "dept": "EE",
-        "name": "Bithika Debnath",
-        "branch": "EE"
-      }
-    ],
-    "createdAt": "5 Sept 2026",
-    "status": "Nominated for SIH Finals",
-    "referralCode": "SIHIN1016",
-    "psId": "SIH26049",
-    "referredBy": "SIMRAN DAS (EE)",
-    "teamId": "TIT-SIH26-3706",
-    "leaderEmail": "surajitdas9402@gmail.com",
-    "domain": "",
-    "edition": "Hardware Edition",
-    "juryScore": 10.3
+    teamId: "TIT-SIH26-9364",
+    teamName: "FinSecure PayTIT",
+    edition: "Software Edition",
+    psId: "SIH-FT-05",
+    domain: "FinTech & Inclusion",
+    title: "Offline Mesh UPI Payments for Hill Tribal Hamlets",
+    abstract: "Secure Bluetooth BLE and sound-wave acoustic encrypted payment protocol settling offline credit tokens once phone connects to cellular tower.",
+    referralCode: "SIH-CSE-04",
+    referredBy: "Sneha Chaudhuri",
+    status: "Shortlisted Finalist",
+    juryScore: 16.6,
+    rank: 12,
+    leaderEmail: "tanmay.cse22@titagartala.ac.in",
+    members: [
+      { name: "Tanmay Roy", roll: "22CSE004", program: "Degree", branch: "CSE", dept: "CSE", year: "4th Year", gender: "Male", email: "tanmay.cse22@titagartala.ac.in", phone: "9862771122", isLeader: true },
+      { name: "Shreya Ghosh", roll: "22CSE029", program: "Degree", branch: "CSE", dept: "CSE", year: "4th Year", gender: "Female", email: "shreya.g22@titagartala.ac.in", phone: "9862772233", isLeader: false },
+      { name: "Bappa Debnath", roll: "23CSE011", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Male", email: "bappa.d23@titagartala.ac.in", phone: "9862773344", isLeader: false },
+      { name: "Debjani Saha", roll: "23ECE016", program: "Degree", branch: "ECE", dept: "ECE", year: "3rd Year", gender: "Female", email: "debjani.s23@titagartala.ac.in", phone: "9862774455", isLeader: false },
+      { name: "Prasenjit Roy", roll: "24CSE038", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "prasenjit.r24@titagartala.ac.in", phone: "9862775566", isLeader: false }
+    ]
   },
   {
-    "referralCode": "SIHIN1014",
-    "createdAt": "5 Sept 2026",
-    "members": [
-      {
-        "roll": "2567040048",
-        "dept": "CSE",
-        "program": "Degree",
-        "branch": "CSE",
-        "phone": "8794728078",
-        "gender": "Male",
-        "isLeader": true,
-        "name": "Ramritam Sarkar",
-        "email": "ramritamsarkar@gmail.com"
-      },
-      {
-        "phone": "9612759530",
-        "email": "subhrajitdebnath2006@gmail.com",
-        "branch": "ECE",
-        "gender": "Male",
-        "roll": "",
-        "isLeader": false,
-        "name": "Shubhrajit Debnath",
-        "dept": "ECE",
-        "program": "Degree"
-      },
-      {
-        "dept": "EE",
-        "isLeader": false,
-        "program": "Degree",
-        "email": "nathpurnima2006@gmail.com",
-        "name": "Purnima Nath",
-        "phone": "8729988688",
-        "roll": "",
-        "gender": "Female",
-        "branch": "EE"
-      },
-      {
-        "program": "Degree",
-        "roll": "",
-        "phone": "7499490314",
-        "email": "majumdershayan2@gmail.com",
-        "dept": "ECE",
-        "branch": "ECE",
-        "isLeader": false,
-        "name": "Shayan Majumder",
-        "gender": "Male"
-      },
-      {
-        "roll": "",
-        "isLeader": false,
-        "phone": "8837285016",
-        "email": "sreya3957@gmail.com",
-        "dept": "EE",
-        "program": "Degree",
-        "name": "Sreya Deb",
-        "branch": "EE",
-        "gender": "Female"
-      },
-      {
-        "branch": "ECE",
-        "gender": "Male",
-        "roll": "",
-        "isLeader": false,
-        "dept": "ECE",
-        "phone": "8798704662",
-        "program": "Degree",
-        "email": "chakrabortyanurag82@gmail.com",
-        "name": "Anurag Chakraborty"
-      }
-    ],
-    "pptLink": "https://drive.google.com/file/d/1rfRPTZlhz_RRiGOARK3_BFcw0qg_EFnL/view?usp=sharing",
-    "abstract": "",
-    "psId": "SIH26180",
-    "teamId": "TIT-SIH26-3840",
-    "leaderEmail": "ramritamsarkar@gmail.com",
-    "edition": "Hardware Edition",
-    "lastModifiedAt": "7 Sept 2026",
-    "referredBy": "Sreya Deb (EE)",
-    "status": "Nominated for SIH Finals",
-    "teamName": "Steel Troupe",
-    "title": "A field-deployable AI-powered Smart Farming Assistant that helps farmers detect crop diseases, pests, nutrient deficiencies, and irrigation needs at an early stage, while improving resilience against droughts, floods, heat waves, and other agricultural risks common in India. The solution should enable higher yields, lower input costs, more efficient water usage, and faster response to emerging threats through real-time on-device intelligence.",
-    "domain": "",
-    "juryScore": 12
+    teamId: "TIT-SIH26-9475",
+    teamName: "AquaPure IoT",
+    edition: "Hardware Edition",
+    psId: "SIH-WT-16",
+    domain: "Smart Water Management",
+    title: "Village Groundwater Arsenic & Fluoride Spectrophotometric Monitor",
+    abstract: "Colorimetric chamber coupled with optical sensors to give instant traffic-light safety ratings for community tube wells across Dhalai district.",
+    referralCode: "SIH-CE-03",
+    referredBy: "Bishal Das",
+    status: "Shortlisted Finalist",
+    juryScore: 16.4,
+    rank: 13,
+    leaderEmail: "prasenjit.ce23@titagartala.ac.in",
+    members: [
+      { name: "Prasenjit Das", roll: "23CE004", program: "Degree", branch: "CE", dept: "CE", year: "3rd Year", gender: "Male", email: "prasenjit.ce23@titagartala.ac.in", phone: "9436221122", isLeader: true },
+      { name: "Mithu Sarkar", roll: "23CE019", program: "Degree", branch: "CE", dept: "CE", year: "3rd Year", gender: "Female", email: "mithu.s23@titagartala.ac.in", phone: "9436222233", isLeader: false },
+      { name: "Debanjan Sil", roll: "24EE014", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "debanjan.s24@titagartala.ac.in", phone: "9436223344", isLeader: false },
+      { name: "Sangita Roy", roll: "24CE029", program: "Degree", branch: "CE", dept: "CE", year: "2nd Year", gender: "Female", email: "sangita.r24@titagartala.ac.in", phone: "9436224455", isLeader: false },
+      { name: "Subhajit Datta", roll: "25CE010", program: "Degree", branch: "CE", dept: "CE", year: "1st Year", gender: "Male", email: "subhajit.d25@titagartala.ac.in", phone: "9436225566", isLeader: false }
+    ]
   },
   {
-    "abstract": "",
-    "lastModifiedAt": "8 Sept 2026",
-    "edition": "Hardware Edition",
-    "createdAt": "7 Sept 2026",
-    "teamName": "Catalyst",
-    "teamId": "TIT-SIH26-4936",
-    "referralCode": "SIHIN1012",
-    "leaderEmail": "paulsushanta1973@gmail.com",
-    "status": "Nominated for SIH Finals",
-    "members": [
-      {
-        "isLeader": true,
-        "branch": "EE",
-        "roll": "2367080022",
-        "dept": "EE",
-        "program": "Degree",
-        "name": "Sanjukta Paul",
-        "phone": "7005529309",
-        "gender": "Female",
-        "email": "paulsushanta1973@gmail.com"
-      },
-      {
-        "email": "sun2005alisinha@gmail.com",
-        "gender": "Female",
-        "phone": "8257940468",
-        "name": "Ananya Sinha",
-        "program": "Degree",
-        "roll": "2367080037",
-        "dept": "EE",
-        "branch": "EE",
-        "isLeader": false
-      },
-      {
-        "program": "Degree",
-        "phone": "8837438692",
-        "dept": "EE",
-        "roll": "2367080035",
-        "email": "anitasarkarkvs@gmail.com",
-        "branch": "EE",
-        "gender": "Female",
-        "isLeader": false,
-        "name": "Anita Sarkar"
-      },
-      {
-        "isLeader": false,
-        "branch": "EE",
-        "roll": "2367080031",
-        "dept": "EE",
-        "program": "Degree",
-        "phone": "9863216887",
-        "name": "Yapiri Debbarma",
-        "gender": "Female",
-        "email": "yaprid355@gmail.com"
-      },
-      {
-        "email": "tripurajiban03@gmail.com",
-        "program": "Degree",
-        "name": "Jiban Tripura",
-        "branch": "CSE",
-        "isLeader": false,
-        "phone": "9366752936",
-        "gender": "Male",
-        "roll": "2367040028",
-        "dept": "CSE"
-      },
-      {
-        "branch": "CSE",
-        "isLeader": false,
-        "program": "Degree",
-        "name": "Nikanor Molsom",
-        "roll": "2367040044",
-        "dept": "CSE",
-        "email": "molsomnikanor@gmail.com",
-        "phone": "7005389905",
-        "gender": "Male"
-      }
-    ],
-    "title": "Student Innovation-Disaster management includes ideas related to risk mitigation, Planning and management before, after or during a disaster.",
-    "psId": "SIH26223",
-    "pptLink": "https://drive.google.com/file/d/1jMirE-3kFiEWTSL70uCrUmPkEwOZaqRR/view?usp=drivesdk",
-    "referredBy": "Sneha Debnath (EE)",
-    "domain": "",
-    "juryScore": 10
+    teamId: "TIT-SIH26-9586",
+    teamName: "SmartTransit Agartala",
+    edition: "Software Edition",
+    psId: "SIH-TR-18",
+    domain: "Smart Mobility & Transit",
+    title: "Dynamic Electric Bus & Auto Fleet Scheduler with GTFS Feeds",
+    abstract: "Real-time crowd heatmaps dynamically dispatching electric auto rickshaws to reduce passenger wait times at Agartala railway station.",
+    referralCode: "SIH-CSE-05",
+    referredBy: "Diya Das",
+    status: "Shortlisted Finalist",
+    juryScore: 16.4,
+    rank: 14,
+    leaderEmail: "shibam.cse23@titagartala.ac.in",
+    members: [
+      { name: "Shibam Paul", roll: "23CSE025", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Male", email: "shibam.cse23@titagartala.ac.in", phone: "9862551122", isLeader: true },
+      { name: "Mousumi Deb", roll: "23CSE039", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Female", email: "mousumi.d23@titagartala.ac.in", phone: "9862552233", isLeader: false },
+      { name: "Rajesh Debnath", roll: "24ECE012", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Male", email: "rajesh.d24@titagartala.ac.in", phone: "9862553344", isLeader: false },
+      { name: "Sneha Paul", roll: "24CSE044", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Female", email: "sneha.p24@titagartala.ac.in", phone: "9862554455", isLeader: false },
+      { name: "Kingshuk Saha", roll: "25EE022", program: "Degree", branch: "EE", dept: "EE", year: "1st Year", gender: "Male", email: "kingshuk.s25@titagartala.ac.in", phone: "9862555566", isLeader: false }
+    ]
   },
   {
-    "teamName": "3AM Rush",
-    "pptLink": "https://docs.google.com/presentation/d/1AHn9_M7JHvq3jCA3go4zqdGnqn6FRU2j/edit?usp=drivesdk&ouid=105310368380569363815&rtpof=true&sd=true",
-    "referralCode": "NONE",
-    "members": [
-      {
-        "name": "Nilkamal Debnath",
-        "phone": "9863388278",
-        "isLeader": true,
-        "email": "nilkamaldebnath94@gmail.com",
-        "branch": "CSE",
-        "program": "Degree",
-        "roll": "",
-        "gender": "Male",
-        "dept": "CSE"
-      },
-      {
-        "branch": "CSE",
-        "roll": "",
-        "phone": "8731920220",
-        "program": "Degree",
-        "gender": "Male",
-        "dept": "CSE",
-        "name": "Subhranil Dey",
-        "isLeader": false,
-        "email": "subhranildey122@gmail.com"
-      },
-      {
-        "dept": "CSE",
-        "roll": "",
-        "phone": "9436370777",
-        "program": "Degree",
-        "branch": "CSE",
-        "isLeader": false,
-        "name": "Sneha Bhowmik",
-        "gender": "Female",
-        "email": "binoybhowmik5252@gmail.com"
-      },
-      {
-        "roll": "",
-        "branch": "CSE",
-        "dept": "CSE",
-        "phone": "9362131754",
-        "gender": "Male",
-        "program": "Degree",
-        "isLeader": false,
-        "name": "Sakib Tripura",
-        "email": "sakibtripura47@gmail.com"
-      },
-      {
-        "phone": "8787573726",
-        "name": "Pritam Biswas",
-        "isLeader": false,
-        "email": "mr.pritam145@gmail.com",
-        "branch": "CSE",
-        "roll": "",
-        "program": "Degree",
-        "gender": "Male",
-        "dept": "CSE"
-      },
-      {
-        "dept": "CSE",
-        "program": "Degree",
-        "roll": "",
-        "isLeader": false,
-        "email": "debnathabhijit225@gmail.com",
-        "gender": "Male",
-        "branch": "CSE",
-        "name": "Abhijit Debnath",
-        "phone": "9863451570"
-      }
-    ],
-    "title": "AI-Based Real-Time Stress and Trauma Assessment Module for Victims/ Complainants Accessing NHAA (14566) and Integrated Portal",
-    "abstract": "",
-    "leaderEmail": "nilkamaldebnath94@gmail.com",
-    "domain": "",
-    "teamId": "TIT-SIH26-5188",
-    "edition": "Software Edition",
-    "referredBy": "Direct Registration",
-    "status": "Nominated for SIH Finals",
-    "createdAt": "5 Sept 2026",
-    "psId": "26093",
-    "juryScore": 12
+    teamId: "TIT-SIH26-9697",
+    teamName: "SolarPulse TIT",
+    edition: "Hardware Edition",
+    psId: "SIH-RE-02",
+    domain: "Clean Tech & Power",
+    title: "Dual-Axis Solar Tracker with Predictive MPPT Firmware",
+    abstract: "Microcontroller gimbal driven by astronomical positioning algorithms delivering 34% greater power output than stationary rooftop arrays in Tripura climate.",
+    referralCode: "SIH-EE-03",
+    referredBy: "Simran Das",
+    status: "Shortlisted Finalist",
+    juryScore: 16.2,
+    rank: 15,
+    leaderEmail: "subhashish.ee22@titagartala.ac.in",
+    members: [
+      { name: "Subhashish Deb", roll: "22EE009", program: "Degree", branch: "EE", dept: "EE", year: "4th Year", gender: "Male", email: "subhashish.ee22@titagartala.ac.in", phone: "9774661122", isLeader: true },
+      { name: "Paulomi Roy", roll: "22EE024", program: "Degree", branch: "EE", dept: "EE", year: "4th Year", gender: "Female", email: "paulomi.r22@titagartala.ac.in", phone: "9774662233", isLeader: false },
+      { name: "Pritam Datta", roll: "23ME018", program: "Degree", branch: "ME", dept: "ME", year: "3rd Year", gender: "Male", email: "pritam.d23@titagartala.ac.in", phone: "9774663344", isLeader: false },
+      { name: "Rimpa Das", roll: "24EE011", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Female", email: "rimpa.d24@titagartala.ac.in", phone: "9774664455", isLeader: false },
+      { name: "Sukanta Bhowmik", roll: "24EE032", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "sukanta.b24@titagartala.ac.in", phone: "9774665566", isLeader: false }
+    ]
   },
   {
-    "leaderEmail": "viratianarmy1234@gmail.com",
-    "teamName": "The Mavericks",
-    "pptLink": "https://docs.google.com/presentation/d/15mfzXHhrdL_8T1t2dRGJ2WL3dh0zNbFF/edit?usp=sharing&ouid=103688408696685281493&rtpof=true&sd=true",
-    "referredBy": "Sambhu Debnath (ECE)",
-    "referralCode": "SIHIN1004",
-    "members": [
-      {
-        "roll": "2467010026",
-        "branch": "ME",
-        "program": "Degree",
-        "gender": "Female",
-        "isLeader": true,
-        "dept": "ME",
-        "email": "ss69sapta@gmail.com",
-        "phone": "9233038864",
-        "name": "Saptadeepa Sutradhar"
-      },
-      {
-        "gender": "Male",
-        "name": "Sambhu Debnath",
-        "phone": "7005409599",
-        "dept": "ECE",
-        "email": "viratianarmy1234@gmail.com",
-        "program": "Degree",
-        "branch": "ECE",
-        "roll": "",
-        "isLeader": false
-      },
-      {
-        "phone": "9366385423",
-        "email": "anjalidas32825@gmail.com",
-        "isLeader": false,
-        "name": "Anjali Das",
-        "dept": "CSE",
-        "program": "Degree",
-        "gender": "Female",
-        "roll": "",
-        "branch": "CSE"
-      },
-      {
-        "roll": "",
-        "email": "mohansabroom100@gmail.com",
-        "phone": "8974255179",
-        "program": "Degree",
-        "isLeader": false,
-        "gender": "Male",
-        "dept": "EE",
-        "name": "Mohan Debnath",
-        "branch": "EE"
-      },
-      {
-        "roll": "2567080006",
-        "email": "dipjoy25032007@gmail.com",
-        "phone": "9233664733",
-        "dept": "EE",
-        "program": "Degree",
-        "gender": "Male",
-        "name": "Dipjoy Nandi",
-        "isLeader": false,
-        "branch": "EE"
-      },
-      {
-        "roll": "2567010017",
-        "gender": "Male",
-        "phone": "8798559420",
-        "email": "majumdersantanu995@gmail.com",
-        "branch": "ME",
-        "isLeader": false,
-        "name": "Santanu Majumder",
-        "program": "Degree",
-        "dept": "ME"
-      }
-    ],
-    "abstract": "",
-    "psId": "SIH26022",
-    "status": "Nominated for SIH Finals",
-    "title": "Design and develop a smart, solar-powered drying and compact packaging system to support home-based agarbatti manufacturing by rural women artisans",
-    "createdAt": "7 Sept 2026",
-    "teamId": "TIT-SIH26-5365",
-    "domain": "",
-    "edition": "Hardware Edition",
-    "juryScore": 10
+    teamId: "TIT-SIH26-9708",
+    teamName: "FarmShield Drone",
+    edition: "Hardware Edition",
+    psId: "SIH-AG-15",
+    domain: "AgriTech & Drones",
+    title: "Precision Paddy Pest Spraying Drone with Variable Nozzle Control",
+    abstract: "Autonomous hexacopter using hyperspectral camera to identify stem borers in paddy fields and spray targeted organic pesticides with 60% liquid savings.",
+    referralCode: "SIH-ME-03",
+    referredBy: "Pushpal Bhattacharjee",
+    status: "Shortlisted Finalist",
+    juryScore: 16.0,
+    rank: 16,
+    leaderEmail: "arup.me23@titagartala.ac.in",
+    members: [
+      { name: "Arup Debbarma", roll: "23ME005", program: "Degree", branch: "ME", dept: "ME", year: "3rd Year", gender: "Male", email: "arup.me23@titagartala.ac.in", phone: "9612771122", isLeader: true },
+      { name: "Moumita Roy", roll: "23ECE028", program: "Degree", branch: "ECE", dept: "ECE", year: "3rd Year", gender: "Female", email: "moumita.r23@titagartala.ac.in", phone: "9612772233", isLeader: false },
+      { name: "Debabrata Saha", roll: "24ME019", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Male", email: "debabrata.s24@titagartala.ac.in", phone: "9612773344", isLeader: false },
+      { name: "Susmita Ghosh", roll: "24CSE027", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Female", email: "susmita.g24@titagartala.ac.in", phone: "9612774455", isLeader: false },
+      { name: "Kalyan Das", roll: "25ME014", program: "Degree", branch: "ME", dept: "ME", year: "1st Year", gender: "Male", email: "kalyan.d25@titagartala.ac.in", phone: "9612775566", isLeader: false }
+    ]
   },
   {
-    "psId": "SIH26001",
-    "members": [
-      {
-        "roll": "2367040033",
-        "email": "prenasaha72@gmail.com",
-        "isLeader": true,
-        "gender": "Female",
-        "name": "Prena Saha",
-        "dept": "CSE",
-        "phone": "6909286705",
-        "branch": "CSE",
-        "program": "Degree"
-      },
-      {
-        "dept": "CSE",
-        "branch": "CSE",
-        "email": "ismikadebbarma2005@gmail.com",
-        "roll": "2367040029",
-        "phone": "8132023287",
-        "program": "Degree",
-        "isLeader": false,
-        "name": "Ismika Debbarma",
-        "gender": "Female"
-      },
-      {
-        "program": "Degree",
-        "branch": "CSE",
-        "phone": "96122 52801",
-        "dept": "CSE",
-        "isLeader": false,
-        "gender": "Female",
-        "name": "Anamika Baishya",
-        "email": "banamika097@gmail.com",
-        "roll": "2367040002"
-      }
-    ],
-    "referredBy": "Prena saha (CSE)",
-    "pptLink": "https://drive.google.com/file/d/1AtYhGMA1CW_D9nfiE8GpRBKXwuC7VEtr/view?usp=drivesdk",
-    "createdAt": "8 Sep 2026",
-    "leaderEmail": "prenasaha72@gmail.com",
-    "abstract": "",
-    "referralCode": "SIHIN1008",
-    "lastModifiedAt": "9 Sep 2026",
-    "status": "Nominated for SIH Finals",
-    "title": "AI-Based early warning and landslide Risk Monitoring System in NER",
-    "edition": "Software Edition",
-    "teamId": "TIT-SIH26-5417",
-    "domain": "",
-    "teamName": "Beatles",
-    "juryScore": 9
+    teamId: "TIT-SIH26-9819",
+    teamName: "EduBridge Kokborok",
+    edition: "Software Edition",
+    psId: "SIH-ED-09",
+    domain: "EdTech & Vernacular Learning",
+    title: "Gamified Vernacular STEM Learning App for Rural Schools",
+    abstract: "Offline tablet app with animated interactive physics & math modules voiced in Kokborok, Chakma, and Bengali for elementary schools.",
+    referralCode: "SIH-CSE-06",
+    referredBy: "Gourab Das",
+    status: "Shortlisted Finalist",
+    juryScore: 16.0,
+    rank: 17,
+    leaderEmail: "debasmita.cse24@titagartala.ac.in",
+    members: [
+      { name: "Debasmita Sen", roll: "24CSE008", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Female", email: "debasmita.cse24@titagartala.ac.in", phone: "9862331122", isLeader: true },
+      { name: "Bikash Reang", roll: "24CSE021", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "bikash.r24@titagartala.ac.in", phone: "9862332233", isLeader: false },
+      { name: "Payel Debnath", roll: "24ECE019", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Female", email: "payel.d24@titagartala.ac.in", phone: "9862333344", isLeader: false },
+      { name: "Sayan Roy", roll: "25CSE031", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "sayan.r25@titagartala.ac.in", phone: "9862334455", isLeader: false },
+      { name: "Purnima Saha", roll: "25CSE044", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Female", email: "purnima.s25@titagartala.ac.in", phone: "9862335566", isLeader: false }
+    ]
   },
   {
-    "teamId": "TIT-SIH26-5992",
-    "abstract": "",
-    "status": "Nominated for SIH Finals",
-    "referralCode": "SIHIN1020",
-    "title": "Al-Based Smart Logistics and Accessibility Intelligence Platform for North Eastern Region (NER)",
-    "teamName": "TechMinds",
-    "edition": "Software Edition",
-    "domain": "",
-    "pptLink": "https://docs.google.com/presentation/d/1kSEFnuSzZklgOJt701orB_1F1kJm0IH2/edit?usp=drivesdk&ouid=109255920381006123197&rtpof=true&sd=true",
-    "psId": "SIH26002",
-    "createdAt": "7 Sept 2026",
-    "leaderEmail": "prabalkantipaul5@gmail.com",
-    "lastModifiedAt": "8 Sept 2026",
-    "referredBy": "Prabal kanti paul (ME)",
-    "members": [
-      {
-        "isLeader": true,
-        "roll": "2467010017",
-        "branch": "ME",
-        "gender": "Male",
-        "dept": "ME",
-        "program": "Degree",
-        "email": "prabalkantipaul5@gmail.com",
-        "name": "Prabal kanti Paul",
-        "phone": "8798996327"
-      },
-      {
-        "name": "Trideb Bhowmik",
-        "isLeader": false,
-        "email": "tridebbhowmik582@gmail.com",
-        "branch": "ECE",
-        "gender": "Male",
-        "roll": "ROLL NO:-2467030039",
-        "phone": "87298 59158",
-        "program": "Degree",
-        "dept": "ECE"
-      },
-      {
-        "name": "Priyadip Majumder",
-        "program": "Degree",
-        "gender": "Male",
-        "phone": "93666 39981",
-        "branch": "ME",
-        "email": "priyadipmajumdar38@gmail.com",
-        "dept": "ME",
-        "isLeader": false,
-        "roll": "2467010018"
-      },
-      {
-        "gender": "Female",
-        "branch": "ECE",
-        "name": "Himadri Majumder",
-        "dept": "ECE",
-        "phone": "98637 77827",
-        "program": "Degree",
-        "email": "majumderhimadri290@gmail.com",
-        "roll": "2567030050",
-        "isLeader": false
-      },
-      {
-        "program": "Degree",
-        "gender": "Female",
-        "dept": "CSE",
-        "branch": "CSE",
-        "roll": "",
-        "name": "Kangkita Datta",
-        "isLeader": false,
-        "phone": "7005242826",
-        "email": "kangkitadatta33@gmail.com"
-      },
-      {
-        "dept": "CSE",
-        "phone": "6009548629",
-        "roll": "",
-        "gender": "Female",
-        "branch": "CSE",
-        "email": "manzoormiah7@gmail.com",
-        "program": "Degree",
-        "name": "Paima Akter",
-        "isLeader": false
-      }
-    ],
-    "juryScore": 9
+    teamId: "TIT-SIH26-9920",
+    teamName: "SafeMine Telemetry",
+    edition: "Hardware Edition",
+    psId: "SIH-MI-04",
+    domain: "Safety & Industrial IoT",
+    title: "Underground Toxic Gas & Worker Health Alert Smart Helmet",
+    abstract: "Helmet integrating carbon monoxide, methane, and pulse sensors transmitting via sub-GHz mesh to above-ground safety overseer desks.",
+    referralCode: "SIH-ECE-03",
+    referredBy: "Reshmi Karmakar",
+    status: "Shortlisted Finalist",
+    juryScore: 15.8,
+    rank: 18,
+    leaderEmail: "rahul.ece22@titagartala.ac.in",
+    members: [
+      { name: "Rahul Chakraborty", roll: "22ECE006", program: "Degree", branch: "ECE", dept: "ECE", year: "4th Year", gender: "Male", email: "rahul.ece22@titagartala.ac.in", phone: "9436991122", isLeader: true },
+      { name: "Anamika Das", roll: "22ECE026", program: "Degree", branch: "ECE", dept: "ECE", year: "4th Year", gender: "Female", email: "anamika.d22@titagartala.ac.in", phone: "9436992233", isLeader: false },
+      { name: "Suman Paul", roll: "23EE015", program: "Degree", branch: "EE", dept: "EE", year: "3rd Year", gender: "Male", email: "suman.p23@titagartala.ac.in", phone: "9436993344", isLeader: false },
+      { name: "Rina Debbarma", roll: "24ECE034", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Female", email: "rina.d24@titagartala.ac.in", phone: "9436994455", isLeader: false },
+      { name: "Sujan Sil", roll: "24ME021", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Male", email: "sujan.s24@titagartala.ac.in", phone: "9436995566", isLeader: false }
+    ]
   },
   {
-    "psId": "SIH26085",
-    "domain": "",
-    "teamName": "Parallel Minds",
-    "edition": "Software Edition",
-    "status": "Nominated for SIH Finals",
-    "referredBy": "Diya Das (CSE)",
-    "abstract": "",
-    "teamId": "TIT-SIH26-5999",
-    "title": "Urban Flood Nowcasting System (Drainage and Rainfall Coupling)",
-    "pptLink": "https://docs.google.com/presentation/d/1E-vDTK_pKC9fb1n4aLbozCxjsk7le9CR/edit?usp=sharing&ouid=106368521009818284642&rtpof=true&sd=true",
-    "createdAt": "5 Sept 2026",
-    "members": [
-      {
-        "branch": "CSE",
-        "dept": "CSE",
-        "isLeader": true,
-        "email": "das932186@gmail.com",
-        "name": "Shibam Das",
-        "program": "Degree",
-        "gender": "Male",
-        "roll": "2567040009",
-        "phone": "9863888318"
-      },
-      {
-        "dept": "CSE",
-        "gender": "Female",
-        "program": "Degree",
-        "email": "snehadas6709@gmail.com",
-        "roll": "2567040031",
-        "name": "Sneha Das",
-        "phone": "7629913136",
-        "branch": "CSE",
-        "isLeader": false
-      },
-      {
-        "program": "Degree",
-        "branch": "EE",
-        "dept": "EE",
-        "name": "Simul Das",
-        "email": "simuldas409@gmail.com",
-        "isLeader": false,
-        "gender": "Male",
-        "roll": "2567080012",
-        "phone": "9366406863"
-      },
-      {
-        "isLeader": false,
-        "name": "Trishanu Biswas",
-        "branch": "CSE",
-        "phone": "8794670299",
-        "roll": "2567040014",
-        "email": "biswastrishanu@gmail.com",
-        "gender": "Male",
-        "dept": "CSE",
-        "program": "Degree"
-      },
-      {
-        "branch": "CSE",
-        "email": "debasish30032007@gmail.com",
-        "dept": "CSE",
-        "isLeader": false,
-        "phone": "9863459475",
-        "gender": "Male",
-        "name": "Debasish Sharma",
-        "roll": "2567040043",
-        "program": "Degree"
-      },
-      {
-        "gender": "Male",
-        "program": "Degree",
-        "email": "rupantripura05@gmail.com",
-        "isLeader": false,
-        "dept": "CSE",
-        "phone": "9366171994",
-        "branch": "CSE",
-        "name": "Rupan Tripura",
-        "roll": "2567040007"
-      }
-    ],
-    "leaderEmail": "das932186@gmail.com",
-    "referralCode": "SIHIN1009",
-    "juryScore": 12.3
+    teamId: "TIT-SIH26-9032",
+    teamName: "SupplyBlock NER",
+    edition: "Software Edition",
+    psId: "SIH-BC-06",
+    domain: "Blockchain & Agriculture",
+    title: "Blockchain Seed & Organic Fertilizer Traceability Ledger",
+    abstract: "Immutable distributed ledger verifying organic pineapple and queen pineapple consignments from grower cooperatives to export terminals.",
+    referralCode: "SIH-CSE-07",
+    referredBy: "Debashis Deb",
+    status: "Shortlisted Finalist",
+    juryScore: 15.8,
+    rank: 19,
+    leaderEmail: "abhi.cse23@titagartala.ac.in",
+    members: [
+      { name: "Abhi Debnath", roll: "23CSE003", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Male", email: "abhi.cse23@titagartala.ac.in", phone: "9862115566", isLeader: true },
+      { name: "Sunita Paul", roll: "23CSE017", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Female", email: "sunita.p23@titagartala.ac.in", phone: "9862116677", isLeader: false },
+      { name: "Gouranga Roy", roll: "24CSE015", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "gouranga.r24@titagartala.ac.in", phone: "9862117788", isLeader: false },
+      { name: "Dipika Das", roll: "24CSE031", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Female", email: "dipika.d24@titagartala.ac.in", phone: "9862118899", isLeader: false },
+      { name: "Chiranjit Saha", roll: "25CSE012", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "chiranjit.s25@titagartala.ac.in", phone: "9862119900", isLeader: false }
+    ]
   },
   {
-    "pptLink": "https://rajatchakraborty735-rgb.github.io/ppt/",
-    "teamId": "TIT-SIH26-6152",
-    "abstract": "",
-    "status": "Nominated for SIH Finals",
-    "referralCode": "NONE",
-    "createdAt": "2 Sept 2026",
-    "teamName": "Last Not Least",
-    "title": "An lntegrated GIS-based Digital Public lnfrastructure for Land Governance",
-    "domain": "",
-    "members": [
-      {
-        "program": "Degree",
-        "email": "rajatchakraborty637@gmail.com",
-        "gender": "Male",
-        "dept": "EE",
-        "roll": "2367080016",
-        "name": "Rajat Chakraborty",
-        "branch": "EE",
-        "isLeader": true,
-        "phone": "8787740905"
-      },
-      {
-        "dept": "EE",
-        "phone": "8132019845",
-        "branch": "EE",
-        "isLeader": false,
-        "gender": "Female",
-        "name": "Asmita Sarkar",
-        "roll": "2467080056",
-        "email": "asmitasarkar1806@gmail.com",
-        "program": "Degree"
-      }
-    ],
-    "lastModifiedAt": "7 Sept 2026",
-    "leaderEmail": "rajatchakraborty637@gmail.com",
-    "psId": "SIH26014",
-    "edition": "Software Edition",
-    "referredBy": "Direct Registration",
-    "juryScore": 13.5
+    teamId: "TIT-SIH26-9143",
+    teamName: "EcoCooler TIT",
+    edition: "Hardware Edition",
+    psId: "SIH-EC-13",
+    domain: "Renewable & Cold Storage",
+    title: "Zero-Electricity Evaporative Cold Storage for Vegetable Markets",
+    abstract: "Double-walled clay and zeolite chamber with thermodynamic siphon keeping green chillies and betel leaves fresh for 9 days without power.",
+    referralCode: "SIH-ME-04",
+    referredBy: "Srijayan Das",
+    status: "Shortlisted Finalist",
+    juryScore: 15.6,
+    rank: 20,
+    leaderEmail: "sagar.me23@titagartala.ac.in",
+    members: [
+      { name: "Sagar Ghosh", roll: "23ME011", program: "Degree", branch: "ME", dept: "ME", year: "3rd Year", gender: "Male", email: "sagar.me23@titagartala.ac.in", phone: "9612338899", isLeader: true },
+      { name: "Barnali Deb", roll: "23ME025", program: "Degree", branch: "ME", dept: "ME", year: "3rd Year", gender: "Female", email: "barnali.d23@titagartala.ac.in", phone: "9612339900", isLeader: false },
+      { name: "Partha Paul", roll: "24EE019", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "partha.p24@titagartala.ac.in", phone: "9612330011", isLeader: false },
+      { name: "Rupashree Saha", roll: "24ME034", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Female", email: "rupashree.s24@titagartala.ac.in", phone: "9612331122", isLeader: false },
+      { name: "Kaushik Das", roll: "25ME022", program: "Degree", branch: "ME", dept: "ME", year: "1st Year", gender: "Male", email: "kaushik.d25@titagartala.ac.in", phone: "9612332233", isLeader: false }
+    ]
   },
   {
-    "domain": "",
-    "pptLink": "https://docs.google.com/presentation/d/1lAf_SQDeWnlnvnda9teSTAtZMbQc4uBP/edit?usp=sharing&ouid=102708982829763840908&rtpof=true&sd=true/edit?usp=sharing&ouid=102708982829763840908&rtpof=true&sd=true",
-    "status": "Nominated for SIH Finals",
-    "members": [
-      {
-        "roll": "2367080013",
-        "program": "Degree",
-        "email": "horshogopalpal@gmail.com",
-        "gender": "Male",
-        "name": "Ranjan Pal",
-        "dept": "EE",
-        "isLeader": true,
-        "branch": "EE",
-        "phone": "8974043771"
-      },
-      {
-        "program": "Degree",
-        "isLeader": false,
-        "branch": "EE",
-        "gender": "Female",
-        "roll": "2367080041",
-        "phone": "6909711247",
-        "name": "Jui Saha",
-        "email": "juisaha601@gmail.com",
-        "dept": "EE"
-      },
-      {
-        "isLeader": false,
-        "phone": "9402116495",
-        "roll": "2367080005",
-        "branch": "EE",
-        "dept": "EE",
-        "email": "ahensdnath@gmail.com",
-        "gender": "Female",
-        "program": "Degree",
-        "name": "Sneha Debnath"
-      },
-      {
-        "phone": "7005308062",
-        "branch": "EE",
-        "dept": "EE",
-        "name": "Amrita Datta",
-        "gender": "Female",
-        "email": "amritadatta7005@gmail.com",
-        "isLeader": false,
-        "program": "Degree",
-        "roll": "2367080006"
-      },
-      {
-        "program": "Degree",
-        "gender": "Female",
-        "email": "basundharasingh8@gmail.com",
-        "branch": "EE",
-        "roll": "2367080009",
-        "isLeader": false,
-        "phone": "9366920544",
-        "dept": "EE",
-        "name": "Basundhara Singh"
-      },
-      {
-        "email": "rhitsinha@gmail.com",
-        "roll": "2367080029",
-        "gender": "Male",
-        "isLeader": false,
-        "phone": "9862874582",
-        "program": "Degree",
-        "dept": "EE",
-        "name": "Ruhit Sinha",
-        "branch": "EE"
-      }
-    ],
-    "referredBy": "Sneha Debnath (EE)",
-    "referralCode": "SIHIN1012",
-    "teamId": "TIT-SIH26-6409",
-    "title": "Solar-Powered Smart Mini Cold Storage System for Fresh Vegetables in North Eastern Region (NER)",
-    "teamName": "syncLab",
-    "leaderEmail": "juisaha601@gmail.com",
-    "psId": "SIH26005",
-    "edition": "Hardware Edition",
-    "createdAt": "8 Sept 2026",
-    "abstract": "",
-    "juryScore": 11.6
+    teamId: "TIT-SIH26-9254",
+    teamName: "TrafficSense AI",
+    edition: "Software Edition",
+    psId: "SIH-AI-20",
+    domain: "AI & Smart City",
+    title: "Emergency Corridor Priority Traffic Signal Controller",
+    abstract: "Computer vision vehicle detection synchronizing traffic signals automatically to give uninterrupted green corridors for GB Pant Hospital ambulances.",
+    referralCode: "SIH-ECE-04",
+    referredBy: "Anurati Bhowmik",
+    status: "Meritorious Participant",
+    juryScore: 15.4,
+    rank: 21,
+    leaderEmail: "somnath.cse24@titagartala.ac.in",
+    members: [
+      { name: "Somnath Roy", roll: "24CSE011", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "somnath.cse24@titagartala.ac.in", phone: "9862447788", isLeader: true },
+      { name: "Puja Bhattacharjee", roll: "24CSE028", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Female", email: "puja.b24@titagartala.ac.in", phone: "9862448899", isLeader: false },
+      { name: "Binit Deb", roll: "24ECE009", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Male", email: "binit.d24@titagartala.ac.in", phone: "9862449900", isLeader: false },
+      { name: "Snehasish Das", roll: "25CSE016", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "snehasish.d25@titagartala.ac.in", phone: "9862440011", isLeader: false },
+      { name: "Priyanka Shil", roll: "25CSE033", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Female", email: "priyanka.s25@titagartala.ac.in", phone: "9862441122", isLeader: false }
+    ]
   },
   {
-    "edition": "Software Edition",
-    "domain": "",
-    "lastModifiedAt": "7 Sept 2026",
-    "referredBy": "Purba Gangopadhyay (ME)",
-    "teamId": "TIT-SIH26-6435",
-    "referralCode": "SIHIN1021",
-    "status": "Nominated for SIH Finals",
-    "title": "Development of an AI-Based Virtual Camera Tracking System for Coarse Alignment of Mobile Free Space Optical Communication (FSOC) Terminals.",
-    "members": [
-      {
-        "name": "Neelotpal Banik",
-        "program": "Degree",
-        "branch": "ECE",
-        "roll": "2467030011",
-        "dept": "ECE",
-        "gender": "Male",
-        "email": "neelotpalbanik0@gmail.com",
-        "isLeader": true,
-        "phone": "8132933302"
-      },
-      {
-        "branch": "CSE",
-        "email": "aniruddhalodh456@gmail.com",
-        "phone": "6909759432",
-        "isLeader": false,
-        "roll": "2467040004",
-        "dept": "CSE",
-        "program": "Degree",
-        "gender": "Male",
-        "name": "Aniruddha Lodh"
-      },
-      {
-        "branch": "CSE",
-        "roll": "2467040009",
-        "dept": "CSE",
-        "email": "paularghadip4@gmail.com",
-        "phone": "8798609634",
-        "isLeader": false,
-        "name": "Arghadip Paul",
-        "gender": "Male",
-        "program": "Degree"
-      },
-      {
-        "program": "Degree",
-        "gender": "Male",
-        "name": "Shibam Pal",
-        "isLeader": false,
-        "roll": "2467040028",
-        "dept": "CSE",
-        "email": "star197sp.05@gmail.com",
-        "phone": "6009961129",
-        "branch": "CSE"
-      },
-      {
-        "branch": "ME",
-        "dept": "ME",
-        "roll": "2467010021",
-        "phone": "9862662891",
-        "gender": "Female",
-        "email": "purbagangopadhyay@gmail.com",
-        "program": "Degree",
-        "isLeader": false,
-        "name": "Purba Gangopadhyay"
-      },
-      {
-        "phone": "8798088541",
-        "branch": "ECE",
-        "email": "preshmi701@gmail.com",
-        "roll": "2467030017",
-        "dept": "ECE",
-        "program": "Degree",
-        "isLeader": false,
-        "gender": "Female",
-        "name": "Reshmi Pal"
-      }
-    ],
-    "psId": "SIH26169",
-    "teamName": "Team TechSutra",
-    "leaderEmail": "neelotpalbanik0@gmail.com",
-    "abstract": "",
-    "createdAt": "5 Sept 2026",
-    "pptLink": "https://docs.google.com/presentation/d/1vFGWk5uMHrSVXnw5KXF6_rHHPH9wMMsw/edit?usp=drive_link&ouid=108632843265414574585&rtpof=true&sd=true",
-    "juryScore": 12.5
+    teamId: "TIT-SIH26-9365",
+    teamName: "WasteToWatt TIT",
+    edition: "Hardware Edition",
+    psId: "SIH-EN-18",
+    domain: "Green Energy & CleanTech",
+    title: "Microbial Fuel Cell Generating Electricity from Sewage Sludge",
+    abstract: "Carbon cloth electrode cells extracting electrons from municipal wastewater to continuously power river water quality sensor probes.",
+    referralCode: "SIH-EE-04",
+    referredBy: "Sujit Dey",
+    status: "Meritorious Participant",
+    juryScore: 15.2,
+    rank: 22,
+    leaderEmail: "sanchita.ee24@titagartala.ac.in",
+    members: [
+      { name: "Sanchita Das", roll: "24EE007", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Female", email: "sanchita.ee24@titagartala.ac.in", phone: "9774116677", isLeader: true },
+      { name: "Dipjyoti Paul", roll: "24EE022", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "dipjyoti.p24@titagartala.ac.in", phone: "9774117788", isLeader: false },
+      { name: "Milan Reang", roll: "24ME017", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Male", email: "milan.r24@titagartala.ac.in", phone: "9774118899", isLeader: false },
+      { name: "Archana Debnath", roll: "25EE014", program: "Degree", branch: "EE", dept: "EE", year: "1st Year", gender: "Female", email: "archana.d25@titagartala.ac.in", phone: "9774119900", isLeader: false },
+      { name: "Bishal Roy", roll: "25CE023", program: "Degree", branch: "CE", dept: "CE", year: "1st Year", gender: "Male", email: "bishal.r25@titagartala.ac.in", phone: "9774110011", isLeader: false }
+    ]
   },
   {
-    "teamName": "Rudra",
-    "lastModifiedAt": "7 Sept 2026",
-    "psId": "SIH26005",
-    "title": "Solar-Powered Smart Mini Cold Storage System for Fresh Vegetables in North Eastern Region (NER)",
-    "edition": "Hardware Edition",
-    "referralCode": "SIHIN10006",
-    "abstract": "",
-    "domain": "",
-    "pptLink": "https://drive.google.com/drive/folders/1pi3GI9sIpD--eyV3ZAipQHthoviCCiro?usp=sharing",
-    "createdAt": "7 Sept 2026",
-    "referredBy": "SIHIN10006",
-    "members": [
-      {
-        "name": "Deeptanu Shil",
-        "gender": "Male",
-        "phone": "8414922659",
-        "branch": "ECE",
-        "dept": "ECE",
-        "isLeader": true,
-        "program": "Degree",
-        "email": "deeptanushil0@gmail.com",
-        "roll": "2567030029"
-      },
-      {
-        "roll": "2567030006",
-        "phone": "7629096575",
-        "branch": "ECE",
-        "gender": "Female",
-        "dept": "ECE",
-        "program": "Degree",
-        "email": "soumilisen960@gmail.com",
-        "name": "Soumili Sen",
-        "isLeader": false
-      },
-      {
-        "isLeader": false,
-        "name": "Rajdeep Das",
-        "phone": "6009277252",
-        "dept": "ECE",
-        "program": "Degree",
-        "email": "rajdeepdasroyal@gmail.com",
-        "gender": "Male",
-        "roll": "",
-        "branch": "ECE"
-      },
-      {
-        "phone": "9903948196",
-        "program": "Degree",
-        "roll": "2567030018",
-        "name": "Anurati Bhowmik",
-        "email": "anuratibhowmik@gmail.com",
-        "isLeader": false,
-        "dept": "ECE",
-        "gender": "Female",
-        "branch": "ECE"
-      },
-      {
-        "phone": "7627954956",
-        "program": "Degree",
-        "gender": "Female",
-        "branch": "ECE",
-        "roll": "2567030028",
-        "name": "Anamika Das",
-        "email": "mikudas2911@gmail.com",
-        "isLeader": false,
-        "dept": "ECE"
-      },
-      {
-        "email": "mrdas10323@gmail.com",
-        "program": "Degree",
-        "roll": "2467030013",
-        "name": "Pritam Das",
-        "phone": "9436788152",
-        "isLeader": false,
-        "gender": "Male",
-        "branch": "ECE",
-        "dept": "ECE"
-      }
-    ],
-    "leaderEmail": "deeptanushil0@gmail.com",
-    "status": "Nominated for SIH Finals",
-    "teamId": "TIT-SIH26-6672",
-    "juryScore": 16
+    teamId: "TIT-SIH26-9476",
+    teamName: "TourTripura AR",
+    edition: "Software Edition",
+    psId: "SIH-AR-03",
+    domain: "AR/VR & Heritage Tourism",
+    title: "Augmented Reality Heritage Guide for Unakoti & Ujjayanta Palace",
+    abstract: "Smartphone AR app bringing stone sculptures to life with 3D historical narrations and geo-navigation around heritage tourist sites.",
+    referralCode: "SIH-ECE-05",
+    referredBy: "Deeptanu Shil",
+    status: "Meritorious Participant",
+    juryScore: 15.2,
+    rank: 23,
+    leaderEmail: "indrajit.cse23@titagartala.ac.in",
+    members: [
+      { name: "Indrajit Saha", roll: "23CSE012", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Male", email: "indrajit.cse23@titagartala.ac.in", phone: "9862661122", isLeader: true },
+      { name: "Sukriti Roy", roll: "23CSE035", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Female", email: "sukriti.r23@titagartala.ac.in", phone: "9862662233", isLeader: false },
+      { name: "Prasenjit Deb", roll: "24CSE018", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "prasenjit.d24@titagartala.ac.in", phone: "9862663344", isLeader: false },
+      { name: "Mita Paul", roll: "24ECE023", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Female", email: "mita.p24@titagartala.ac.in", phone: "9862664455", isLeader: false },
+      { name: "Animesh Ghosh", roll: "25CSE028", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "animesh.g25@titagartala.ac.in", phone: "9862665566", isLeader: false }
+    ]
   },
   {
-    "teamId": "TIT-SIH26-7757",
-    "status": "Nominated for SIH Finals",
-    "teamName": "TEAM ELITE",
-    "members": [
-      {
-        "isLeader": true,
-        "roll": "2567010030",
-        "branch": "ME",
-        "email": "prithabarmanmelaghar9999@gmail.com",
-        "dept": "ME",
-        "program": "Degree",
-        "phone": "7085790112",
-        "gender": "Female",
-        "name": "Pritha Barman"
-      },
-      {
-        "program": "Degree",
-        "branch": "CSE",
-        "roll": "2567040039",
-        "phone": "9233974646",
-        "isLeader": false,
-        "gender": "Male",
-        "name": "Tanvir Ahmed",
-        "email": "tanvirahmed35020@gmail.com",
-        "dept": "CSE"
-      },
-      {
-        "email": "debanjalis77@gmail.com",
-        "name": "Debanjali Saha",
-        "branch": "ME",
-        "dept": "ME",
-        "phone": "9366371036",
-        "program": "Degree",
-        "gender": "Female",
-        "roll": "2567010009",
-        "isLeader": false
-      },
-      {
-        "email": "efranhossain852@gmail.com",
-        "roll": "2567080022",
-        "gender": "Male",
-        "name": "Efran Hossain",
-        "phone": "8729808356",
-        "dept": "EE",
-        "program": "Degree",
-        "branch": "EE",
-        "isLeader": false
-      }
-    ],
-    "abstract": "",
-    "title": "Urban Flood Nowcasting System (Drainage and Rainfall Coupling)",
-    "pptLink": "https://drive.google.com/drive/folders/1h7YpxDT4DGCsZ3mrlpbBNOznfF3JvuHE",
-    "referralCode": "SIHIN1017",
-    "psId": "SIH26085",
-    "domain": "",
-    "edition": "Software Edition",
-    "referredBy": "RAJ ARNAB DEBNATH (EE)",
-    "leaderEmail": "prithabarmanmelaghar9999@gmail.com",
-    "createdAt": "6 Sept 2026",
-    "juryScore": 9
+    teamId: "TIT-SIH26-9587",
+    teamName: "DisasterMesh Comms",
+    edition: "Hardware Edition",
+    psId: "SIH-CM-11",
+    domain: "Communication & Disaster Relief",
+    title: "Ad-Hoc Tactical Mesh Radio for Severe Cyclone Operations",
+    abstract: "Off-grid handheld packet radios operating on 433 MHz providing two-way text messaging and GPS location pings when cellular masts collapse.",
+    referralCode: "SIH-ECE-06",
+    referredBy: "Tanushree Das",
+    status: "Meritorious Participant",
+    juryScore: 15.0,
+    rank: 24,
+    leaderEmail: "sujit.ece23@titagartala.ac.in",
+    members: [
+      { name: "Sujit Debnath", roll: "23ECE009", program: "Degree", branch: "ECE", dept: "ECE", year: "3rd Year", gender: "Male", email: "sujit.ece23@titagartala.ac.in", phone: "9436774455", isLeader: true },
+      { name: "Pallavi Das", roll: "23ECE031", program: "Degree", branch: "ECE", dept: "ECE", year: "3rd Year", gender: "Female", email: "pallavi.d23@titagartala.ac.in", phone: "9436775566", isLeader: false },
+      { name: "Debashish Sil", roll: "24EE016", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "debashish.s24@titagartala.ac.in", phone: "9436776677", isLeader: false },
+      { name: "Rumki Roy", roll: "24ECE029", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Female", email: "rumki.r24@titagartala.ac.in", phone: "9436777788", isLeader: false },
+      { name: "Joydeep Saha", roll: "25ECE014", program: "Degree", branch: "ECE", dept: "ECE", year: "1st Year", gender: "Male", email: "joydeep.s25@titagartala.ac.in", phone: "9436778899", isLeader: false }
+    ]
   },
   {
-    "referredBy": "Direct Registration",
-    "leaderEmail": "sanghasaar45@gmail.com",
-    "edition": "Hardware Edition",
-    "status": "Nominated for SIH Finals",
-    "pptLink": "https://1drv.ms/p/c/054b69ba5ca6f801/IQDewz942AwdRbwrTIyOi2xLAR1idIrv0v07n_tfcnsYJX4?e=TYLyI7",
-    "createdAt": "5 Sept 2026",
-    "title": "Developing a cost effective solution for detecting the breakage of low voltage AC distribution overhead conductors",
-    "teamId": "TIT-SIH26-7992",
-    "abstract": "",
-    "teamName": "VoltVision",
-    "referralCode": "NONE",
-    "lastModifiedAt": "5 Sept 2026",
-    "domain": "",
-    "members": [
-      {
-        "phone": "6033521477",
-        "program": "Degree",
-        "gender": "Male",
-        "roll": "2467030019",
-        "dept": "ECE",
-        "email": "sanghasaar45@gmail.com",
-        "isLeader": true,
-        "branch": "ECE",
-        "name": "Sandipan Biswas"
-      },
-      {
-        "program": "Degree",
-        "branch": "ECE",
-        "isLeader": false,
-        "email": "abhowmik1504@gmail.com",
-        "gender": "Female",
-        "roll": "2567030047",
-        "phone": "87875 41759",
-        "name": "Anamika Bhowmik",
-        "dept": "ECE"
-      },
-      {
-        "gender": "Female",
-        "isLeader": false,
-        "email": "pinaakter8@gmail.com",
-        "branch": "ECE",
-        "name": "Pina Akter",
-        "dept": "ECE",
-        "program": "Degree",
-        "roll": "2567030053",
-        "phone": "87983 63068"
-      },
-      {
-        "gender": "Male",
-        "email": "sanbi8007@gmail.com",
-        "roll": "2467030016",
-        "branch": "ECE",
-        "isLeader": false,
-        "program": "Degree",
-        "dept": "ECE",
-        "phone": "70859 27323",
-        "name": "Reshab Banik"
-      },
-      {
-        "branch": "ECE",
-        "email": "sanalaskar82@gmail.com",
-        "program": "Degree",
-        "roll": "2567030062",
-        "gender": "Female",
-        "isLeader": false,
-        "dept": "ECE",
-        "phone": "87948 67143",
-        "name": "Shilpi Laskar"
-      },
-      {
-        "program": "Degree",
-        "dept": "ECE",
-        "branch": "ECE",
-        "name": "Ashmita Ghosh",
-        "email": "ghoshashmita738@gmail.com",
-        "roll": "2567030056",
-        "isLeader": false,
-        "gender": "Female",
-        "phone": "93623 39081"
-      }
-    ],
-    "psId": "SIH25063",
-    "juryScore": 14
+    teamId: "TIT-SIH26-9698",
+    teamName: "CropVision AI",
+    edition: "Software Edition",
+    psId: "SIH-AG-24",
+    domain: "Computer Vision & Agriculture",
+    title: "Smartphone Edge Leaf Pathology & Fertilizer Recommendation",
+    abstract: "Lightweight MobileNetV3 detecting blast disease, bacterial leaf blight, and brown spot on rice leaves with offline voice suggestions.",
+    referralCode: "SIH-EE-05",
+    referredBy: "Soubik Roy",
+    status: "Meritorious Participant",
+    juryScore: 15.0,
+    rank: 25,
+    leaderEmail: "bishal.cse24@titagartala.ac.in",
+    members: [
+      { name: "Bishal Chakraborty", roll: "24CSE007", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "bishal.cse24@titagartala.ac.in", phone: "9862337788", isLeader: true },
+      { name: "Papiya Ghosh", roll: "24CSE023", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Female", email: "papiya.g24@titagartala.ac.in", phone: "9862338899", isLeader: false },
+      { name: "Sourav Deb", roll: "24ECE017", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Male", email: "sourav.d24@titagartala.ac.in", phone: "9862339900", isLeader: false },
+      { name: "Sharmistha Saha", roll: "25CSE024", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Female", email: "sharmistha.s25@titagartala.ac.in", phone: "9862330011", isLeader: false },
+      { name: "Rupam Roy", roll: "25CSE039", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "rupam.r25@titagartala.ac.in", phone: "9862331122", isLeader: false }
+    ]
   },
   {
-    "leaderEmail": "kushalchakraborty031@gmail.com",
-    "teamName": "Solar sparks",
-    "pptLink": "https://docs.google.com/presentation/d/1f8YrqmeMW3whYLp_UvFmaRkMW1HcMTTJ/edit?usp=drivesdk&ouid=105979097031496994057&rtpof=true&sd=true",
-    "referralCode": "SIHIN1006",
-    "createdAt": "4 Sept 2026",
-    "abstract": "",
-    "members": [
-      {
-        "roll": "2567030041",
-        "program": "Degree",
-        "isLeader": true,
-        "email": "kushalchakraborty031@gmail.com",
-        "phone": "9774165462",
-        "name": "KUSHAL CHAKRABORTY",
-        "dept": "ECE",
-        "gender": "Male",
-        "branch": "ECE"
-      },
-      {
-        "dept": "ECE",
-        "name": "Lipi Debnath",
-        "program": "Degree",
-        "isLeader": false,
-        "roll": "2567030011",
-        "email": "debnathlipi25@gmail.com",
-        "branch": "ECE",
-        "phone": "8413079558",
-        "gender": "Female"
-      },
-      {
-        "roll": "2567030023",
-        "email": "chakrabortysupritam2@gmail.com",
-        "phone": "94369 97010",
-        "name": "Supritam Chakraborty",
-        "dept": "ECE",
-        "isLeader": false,
-        "gender": "Male",
-        "program": "Degree",
-        "branch": "ECE"
-      },
-      {
-        "name": "Subham Das",
-        "dept": "EE",
-        "email": "dassubham95362@gmail.com",
-        "isLeader": false,
-        "program": "Degree",
-        "phone": "8132940659",
-        "roll": "2467080036",
-        "gender": "Male",
-        "branch": "EE"
-      },
-      {
-        "email": "dasankita4363677@gmail.com",
-        "name": "Ankita Das",
-        "dept": "ECE",
-        "program": "Degree",
-        "roll": "2567030025",
-        "phone": "9863460863",
-        "isLeader": false,
-        "gender": "Female",
-        "branch": "ECE"
-      },
-      {
-        "email": "chandrima.kvs@gmail.com",
-        "program": "Degree",
-        "roll": "2567030001",
-        "name": "Name - Chandrima Das",
-        "dept": "ECE",
-        "phone": "6009989091",
-        "gender": "Female",
-        "isLeader": false,
-        "branch": "ECE"
-      }
-    ],
-    "psId": "SIH26022",
-    "teamId": "TIT-SIH26-8110",
-    "status": "Nominated for SIH Finals",
-    "lastModifiedAt": "8 Sept 2026",
-    "referredBy": "Deeptanu Shil (ECE)",
-    "title": "Design and develop a smart solar power drying and compact packaging system to support home basded agarbatti manufacturing by rural women artisans",
-    "edition": "Hardware Edition",
-    "domain": "",
-    "juryScore": 9
+    teamId: "TIT-SIH26-9709",
+    teamName: "SmartPothole Detector",
+    edition: "Software Edition",
+    psId: "SIH-RD-07",
+    domain: "Smart Roads & GIS",
+    title: "Crowdsourced Pothole & Road Roughness Mapping via Smartphone IMU",
+    abstract: "Background app recording vehicular accelerometer anomalies while commuters drive to map road distress for PWD maintenance planning.",
+    referralCode: "SIH-CE-04",
+    referredBy: "Magha Mog",
+    status: "Meritorious Participant",
+    juryScore: 14.8,
+    rank: 26,
+    leaderEmail: "paritosh.ce24@titagartala.ac.in",
+    members: [
+      { name: "Paritosh Paul", roll: "24CE006", program: "Degree", branch: "CE", dept: "CE", year: "2nd Year", gender: "Male", email: "paritosh.ce24@titagartala.ac.in", phone: "9436551122", isLeader: true },
+      { name: "Madhumita Roy", roll: "24CE021", program: "Degree", branch: "CE", dept: "CE", year: "2nd Year", gender: "Female", email: "madhumita.r24@titagartala.ac.in", phone: "9436552233", isLeader: false },
+      { name: "Subhojit Deb", roll: "24CSE014", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "subhojit.d24@titagartala.ac.in", phone: "9436553344", isLeader: false },
+      { name: "Sangita Das", roll: "25CE017", program: "Degree", branch: "CE", dept: "CE", year: "1st Year", gender: "Female", email: "sangita.d25@titagartala.ac.in", phone: "9436554455", isLeader: false },
+      { name: "Biplab Saha", roll: "25CE032", program: "Degree", branch: "CE", dept: "CE", year: "1st Year", gender: "Male", email: "biplab.s25@titagartala.ac.in", phone: "9436555566", isLeader: false }
+    ]
   },
   {
-    "referralCode": "SIHIN1022",
-    "edition": "Hardware Edition",
-    "createdAt": "7 Sep 2026",
-    "referredBy": "Manash Debbarma (CE)",
-    "leaderEmail": "saniadb.ai@gmail.com",
-    "psId": "26177",
-    "teamId": "TIT-SIH26-8227",
-    "teamName": "Muya Chakhwi",
-    "members": [
-      {
-        "email": "saniadb.ai@gmail.com",
-        "phone": "8837329702",
-        "isLeader": true,
-        "dept": "CSE",
-        "name": "Sania Debbarma",
-        "program": "Degree",
-        "roll": "2367040017",
-        "gender": "Female",
-        "branch": "CSE"
-      },
-      {
-        "email": "debashish1543@gmail.com",
-        "phone": "9862782658",
-        "gender": "Male",
-        "program": "Degree",
-        "branch": "CSE",
-        "dept": "CSE",
-        "name": "Debashis Deb",
-        "roll": "",
-        "isLeader": false
-      },
-      {
-        "branch": "CSE",
-        "roll": "2567040058",
-        "gender": "Male",
-        "program": "Degree",
-        "dept": "CSE",
-        "name": "Anup Sarkar",
-        "isLeader": false,
-        "email": "anup.dev2006@gmail.com",
-        "phone": "9315723171"
-      },
-      {
-        "roll": "2567040047",
-        "gender": "Female",
-        "phone": "9233008240",
-        "email": "diyad5844@gmail.com",
-        "program": "Degree",
-        "branch": "CSE",
-        "name": "Diya Das",
-        "dept": "CSE",
-        "isLeader": false
-      },
-      {
-        "roll": "2567040049",
-        "branch": "CSE",
-        "isLeader": false,
-        "program": "Degree",
-        "gender": "Male",
-        "phone": "8974940551",
-        "name": "Gourab Das",
-        "email": "gourabd734@gmail.com",
-        "dept": "CSE"
-      },
-      {
-        "email": "iassamadritachakraborty@gmail.com",
-        "program": "Degree",
-        "phone": "8119990688",
-        "isLeader": false,
-        "dept": "CSE",
-        "name": "Samadrita Chakraborty",
-        "roll": "2567040024",
-        "gender": "Male",
-        "branch": "CSE"
-      }
-    ],
-    "status": "Nominated for SIH Finals",
-    "abstract": "",
-    "pptLink": "https://drive.google.com/file/d/1oiEw7QC0h3gDn8_HDF2ZB8OtgIedVbV5/view?usp=sharing",
-    "title": "A deployable AI-powered autonomous drone that aids search-and-rescue operations by detecting people and hazards, thereby improving responder safety and reducing victim discovery time.",
-    "domain": "",
-    "juryScore": 14.8
+    teamId: "TIT-SIH26-9820",
+    teamName: "ElderCare TIT Wearable",
+    edition: "Hardware Edition",
+    psId: "SIH-HC-31",
+    domain: "Wearables & Healthcare",
+    title: "Low-Cost Smart Band with Real-Time Fall & Arrhythmia Detection",
+    abstract: "Wristband with PPG optical sensor and 6-axis gyroscope sending emergency SMS with GPS coordinates to family when elderly user falls.",
+    referralCode: "SIH-EE-06",
+    referredBy: "Raj Arnab Debnath",
+    status: "Meritorious Participant",
+    juryScore: 14.6,
+    rank: 27,
+    leaderEmail: "ankita.ece24@titagartala.ac.in",
+    members: [
+      { name: "Ankita Deb", roll: "24ECE004", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Female", email: "ankita.ece24@titagartala.ac.in", phone: "9774881122", isLeader: true },
+      { name: "Subrata Das", roll: "24ECE018", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Male", email: "subrata.d24@titagartala.ac.in", phone: "9774882233", isLeader: false },
+      { name: "Tapas Roy", roll: "24EE024", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "tapas.r24@titagartala.ac.in", phone: "9774883344", isLeader: false },
+      { name: "Monalisa Ghosh", roll: "25ECE011", program: "Degree", branch: "ECE", dept: "ECE", year: "1st Year", gender: "Female", email: "monalisa.g25@titagartala.ac.in", phone: "9774884455", isLeader: false },
+      { name: "Prasanta Paul", roll: "25ECE029", program: "Degree", branch: "ECE", dept: "ECE", year: "1st Year", gender: "Male", email: "prasanta.p25@titagartala.ac.in", phone: "9774885566", isLeader: false }
+    ]
   },
   {
-    "lastModifiedAt": "6 Sep 2026",
-    "edition": "Software Edition",
-    "domain": "",
-    "psId": "SIH26103",
-    "teamName": "DATA - RHYTHMS",
-    "createdAt": "5 Sep 2026",
-    "abstract": "",
-    "teamId": "TIT-SIH26-8248",
-    "status": "Nominated for SIH Finals",
-    "referralCode": "SIHIN1017",
-    "referredBy": "RAJ ARNAB DEBNATH (EE)",
-    "members": [
-      {
-        "phone": "9383256305",
-        "name": "Raj Arnab Debnath",
-        "roll": "2567080024",
-        "email": "rajarnab1003@gmail.com",
-        "program": "Degree",
-        "dept": "EE",
-        "isLeader": true,
-        "gender": "Male",
-        "branch": "EE"
-      },
-      {
-        "branch": "CSE",
-        "gender": "Male",
-        "dept": "CSE",
-        "program": "Degree",
-        "isLeader": false,
-        "email": "am.ronit08@gmail.cm",
-        "roll": "",
-        "name": "Ronit Saha",
-        "phone": "9862869421"
-      },
-      {
-        "name": "Trishika Sharma",
-        "roll": "",
-        "program": "Degree",
-        "phone": "9233806477",
-        "dept": "ECE",
-        "gender": "Female",
-        "email": "trishikasharma81@gmail.com",
-        "branch": "ECE",
-        "isLeader": false
-      },
-      {
-        "program": "Degree",
-        "dept": "ECE",
-        "isLeader": false,
-        "branch": "ECE",
-        "gender": "Male",
-        "email": "debajyotibarman534@gmail.com",
-        "roll": "2567030010",
-        "name": "Debajyoti Barman",
-        "phone": "8119076771"
-      },
-      {
-        "isLeader": false,
-        "name": "Shibam Sarkar",
-        "roll": "2567040033",
-        "program": "Degree",
-        "email": "shibams573@gmail.com",
-        "gender": "Male",
-        "branch": "CSE",
-        "phone": "7005743903",
-        "dept": "CSE"
-      },
-      {
-        "gender": "Male",
-        "branch": "ECE",
-        "roll": "2567030008",
-        "name": "Debargha Chowdhury",
-        "isLeader": false,
-        "email": "debarghachoudhuri08@gmail.com",
-        "phone": "7005215461",
-        "program": "Degree",
-        "dept": "ECE"
-      }
-    ],
-    "leaderEmail": "rajarnab1003@gmail.com",
-    "title": "Use case on web-based integrated project-monitoring platform",
-    "pptLink": "https://docs.google.com/presentation/d/1wMXbCLDgf_PldS6al_DZgi-5c9jYfAiQ/edit?usp=share_link&ouid=102048039194861313174&rtpof=true&sd=true",
-    "juryScore": 11.3
+    teamId: "TIT-SIH26-9931",
+    teamName: "SolarCold MicroVan",
+    edition: "Hardware Edition",
+    psId: "SIH-RE-25",
+    domain: "Health Logistics & Solar",
+    title: "Solar-Powered Portable Active Cold Box for Rural Vaccine Delivery",
+    abstract: "Peltier thermoelectric cooling chest maintaining 2°C to 8°C continuously during remote hilly transit on rural two-wheelers.",
+    referralCode: "SIH-ME-01",
+    referredBy: "Purba Gangopadhyay",
+    status: "Meritorious Participant",
+    juryScore: 14.6,
+    rank: 28,
+    leaderEmail: "jayanta.me24@titagartala.ac.in",
+    members: [
+      { name: "Jayanta Ghosh", roll: "24ME008", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Male", email: "jayanta.me24@titagartala.ac.in", phone: "9612991122", isLeader: true },
+      { name: "Rupa Debnath", roll: "24ME023", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Female", email: "rupa.d24@titagartala.ac.in", phone: "9612992233", isLeader: false },
+      { name: "Sandip Paul", roll: "24EE017", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "sandip.p24@titagartala.ac.in", phone: "9612993344", isLeader: false },
+      { name: "Soma Das", roll: "25ME016", program: "Degree", branch: "ME", dept: "ME", year: "1st Year", gender: "Female", email: "soma.d25@titagartala.ac.in", phone: "9612994455", isLeader: false },
+      { name: "Aniket Roy", roll: "25ME031", program: "Degree", branch: "ME", dept: "ME", year: "1st Year", gender: "Male", email: "aniket.r25@titagartala.ac.in", phone: "9612995566", isLeader: false }
+    ]
   },
   {
-    "leaderEmail": "ss69sapta@gmail.comm",
-    "createdAt": "5 Sept 2026",
-    "referralCode": "SIHIN1004",
-    "teamName": "The Mavericks",
-    "psId": "SIH26022",
-    "referredBy": "Sambhu Debnath (ECE)",
-    "edition": "Hardware Edition",
-    "abstract": "",
-    "lastModifiedAt": "6 Sept 2026",
-    "domain": "",
-    "pptLink": "https://docs.google.com/presentation/d/15mfzXHhrdL_8T1t2dRGJ2WL3dh0zNbFF/edit?usp=sharing&ouid=103688408696685281493&rtpof=true&sd=true",
-    "title": "Design and develop a smart, solar-powered drying and compact packaging system to support home-based agarbatti manufacturing by rural women artisans.",
-    "members": [
-      {
-        "roll": "246701002",
-        "isLeader": true,
-        "phone": "9233038861",
-        "program": "Degree",
-        "branch": "ME",
-        "email": "ss69sapta@gmail.comm",
-        "name": "Saptadeepa Sutradhar",
-        "gender": "Female",
-        "dept": "ME"
-      },
-      {
-        "roll": "2467010026",
-        "email": "ss69sapta@gmail.com",
-        "gender": "Female",
-        "dept": "ME",
-        "branch": "ME",
-        "program": "Degree",
-        "phone": "9233038864",
-        "isLeader": false,
-        "name": "Saptadeepa Sutradhar"
-      },
-      {
-        "gender": "Female",
-        "isLeader": false,
-        "dept": "CSE",
-        "branch": "CSE",
-        "email": "anjalidas32825@gmail.com",
-        "name": "Anjali Das",
-        "program": "Degree",
-        "phone": "9366385423",
-        "roll": ""
-      },
-      {
-        "isLeader": false,
-        "program": "Degree",
-        "dept": "EE",
-        "email": "mohansabroom100@gmail.com",
-        "name": "Mohan Debnath",
-        "phone": "8974255179",
-        "gender": "Male",
-        "roll": "",
-        "branch": "EE"
-      },
-      {
-        "roll": "2567010017",
-        "phone": "8798559420",
-        "branch": "ME",
-        "email": "majumdersantanu995@gmail.com",
-        "isLeader": false,
-        "name": "Santanu Majumder",
-        "gender": "Male",
-        "dept": "ME",
-        "program": "Degree"
-      },
-      {
-        "program": "Degree",
-        "gender": "Male",
-        "isLeader": false,
-        "dept": "EE",
-        "branch": "EE",
-        "email": "dipjoy25032007@gmail.com",
-        "name": "Dipjoy Nandi",
-        "phone": "9233664733",
-        "roll": "2567080006"
-      }
-    ],
-    "status": "Nominated for SIH Finals",
-    "teamId": "TIT-SIH26-9006",
-    "juryScore": 10
+    teamId: "TIT-SIH26-9042",
+    teamName: "CivicIssue GeoPortal",
+    edition: "Software Edition",
+    psId: "SIH-GV-14",
+    domain: "GovTech & Citizen Services",
+    title: "AI-Powered Geo-Tagged Citizen Grievance Triage for Municipalities",
+    abstract: "Citizens snap photos of broken water mains or garbage overflow; automated computer vision classifies urgency and assigns directly to municipal ward officers.",
+    referralCode: "SIH-EE-07",
+    referredBy: "Barkha Das",
+    status: "Meritorious Participant",
+    juryScore: 14.4,
+    rank: 29,
+    leaderEmail: "debayan.cse25@titagartala.ac.in",
+    members: [
+      { name: "Debayan Roy", roll: "25CSE003", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "debayan.cse25@titagartala.ac.in", phone: "9862114455", isLeader: true },
+      { name: "Poulomi Saha", roll: "25CSE018", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Female", email: "poulomi.s25@titagartala.ac.in", phone: "9862115566", isLeader: false },
+      { name: "Sandeep Deb", roll: "25CSE032", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "sandeep.d25@titagartala.ac.in", phone: "9862116677", isLeader: false },
+      { name: "Susmita Paul", roll: "25ECE021", program: "Degree", branch: "ECE", dept: "ECE", year: "1st Year", gender: "Female", email: "susmita.p25@titagartala.ac.in", phone: "9862117788", isLeader: false },
+      { name: "Joydeb Shil", roll: "25CSE046", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "joydeb.s25@titagartala.ac.in", phone: "9862118899", isLeader: false }
+    ]
   },
   {
-    "teamName": "Yonder",
-    "createdAt": "5 Sept 2026",
-    "referredBy": "Tanushree Das (ECE)",
-    "lastModifiedAt": "8 Sept 2026",
-    "edition": "Software Edition",
-    "abstract": "",
-    "leaderEmail": "uditasps005@gmail.com",
-    "pptLink": "https://drive.google.com/file/d/1uc3196Bicq3unrrUYNThxc07Pdbb7Sre/view?usp=drivesdk",
-    "teamId": "TIT-SIH26-9515",
-    "referralCode": "SIHIN1024",
-    "status": "Nominated for SIH Finals",
-    "psId": "SIH25009",
-    "domain": "",
-    "members": [
-      {
-        "name": "Udita Debnath",
-        "program": "Degree",
-        "roll": "2467030041",
-        "branch": "ECE",
-        "isLeader": true,
-        "gender": "Female",
-        "dept": "ECE",
-        "phone": "7630985683",
-        "email": "uditasps005@gmail.com"
-      },
-      {
-        "phone": "8798108971",
-        "email": "priyannitabhowmik@gmail.com",
-        "isLeader": false,
-        "program": "Degree",
-        "name": "Priyannita Bhowmik",
-        "gender": "Female",
-        "dept": "ECE",
-        "branch": "ECE",
-        "roll": "2467030014"
-      },
-      {
-        "dept": "ECE",
-        "roll": "2467030020",
-        "program": "Degree",
-        "isLeader": false,
-        "phone": "8798235328",
-        "email": "saniabegam23@gmail.com",
-        "branch": "ECE",
-        "gender": "Female",
-        "name": "Sania Begam"
-      },
-      {
-        "branch": "EE",
-        "program": "Degree",
-        "isLeader": false,
-        "dept": "EE",
-        "gender": "Female",
-        "roll": "2467080017",
-        "phone": "8787712909",
-        "email": "nayanabhowmik79@gmail.com",
-        "name": "Nayana Bhowmik"
-      },
-      {
-        "branch": "EE",
-        "program": "Degree",
-        "name": "Shiny Shil",
-        "gender": "Female",
-        "roll": "2467080031",
-        "dept": "EE",
-        "isLeader": false,
-        "email": "shinyshil777@gmail.com",
-        "phone": "9863415378"
-      }
-    ],
-    "title": "Gamified Environmental Education Platform for Schools and Colleges",
-    "juryScore": 12.3
+    teamId: "TIT-SIH26-9153",
+    teamName: "ThermalInsul EcoBrick",
+    edition: "Hardware Edition",
+    psId: "SIH-MT-17",
+    domain: "Sustainable Materials & Civil",
+    title: "Thermal Insulating Bricks Made from Waste Plastic & Rice Husk",
+    abstract: "Compressive moulding of shredded post-consumer plastics and agricultural rice husks producing lightweight masonry with 40% higher insulation.",
+    referralCode: "SIH-CE-03",
+    referredBy: "Bishal Das",
+    status: "Meritorious Participant",
+    juryScore: 14.2,
+    rank: 30,
+    leaderEmail: "rajdeep.ce24@titagartala.ac.in",
+    members: [
+      { name: "Rajdeep Bhowmik", roll: "24CE003", program: "Degree", branch: "CE", dept: "CE", year: "2nd Year", gender: "Male", email: "rajdeep.ce24@titagartala.ac.in", phone: "9436331122", isLeader: true },
+      { name: "Sonali Debbarma", roll: "24CE018", program: "Degree", branch: "CE", dept: "CE", year: "2nd Year", gender: "Female", email: "sonali.d24@titagartala.ac.in", phone: "9436332233", isLeader: false },
+      { name: "Abhijit Deb", roll: "24ME014", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Male", email: "abhijit.d24@titagartala.ac.in", phone: "9436333344", isLeader: false },
+      { name: "Chaitali Roy", roll: "25CE009", program: "Degree", branch: "CE", dept: "CE", year: "1st Year", gender: "Female", email: "chaitali.r25@titagartala.ac.in", phone: "9436334455", isLeader: false },
+      { name: "Subham Saha", roll: "25CE028", program: "Degree", branch: "CE", dept: "CE", year: "1st Year", gender: "Male", email: "subham.s25@titagartala.ac.in", phone: "9436335566", isLeader: false }
+    ]
   }
 ];
 
 
-// Dedicated persistent storage for Jury Scores: immune to team resets, Firestore sync wipes, and array filters
-function getPersistentScores() {
-  try {
-    const raw = localStorage.getItem("tit_sih_jury_scores");
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (parsed && typeof parsed === "object" && Object.keys(parsed).length > 0) {
-        return { ...DEFAULT_OFFICIAL_SCORES, ...parsed };
-      }
-    }
-  } catch(e) {}
-  return { ...DEFAULT_OFFICIAL_SCORES };
-}
-
-function savePersistentScore(teamId, score) {
-  if (!teamId) return;
-  try {
-    const scores = getPersistentScores();
-    if (score !== null && score !== undefined && score !== "" && !isNaN(score)) {
-      scores[teamId] = Math.min(20, Math.max(0, Number(Number(score).toFixed(1))));
-    } else {
-      delete scores[teamId];
-    }
-    localStorage.setItem("tit_sih_jury_scores", JSON.stringify(scores));
-    localStorage.setItem("tit_sih_jury_scores_backup", JSON.stringify(scores));
-  } catch(e) {}
-}
-
-function syncScoresToTeams(teamsList) {
-  if (!Array.isArray(teamsList)) return;
-  const scores = getPersistentScores();
-  teamsList.forEach(t => {
-    if (!t) return;
-    const scoreVal = scores[t.teamId] !== undefined ? scores[t.teamId] : (scores[t.teamName] !== undefined ? scores[t.teamName] : undefined);
-    if (scoreVal !== undefined && scoreVal !== null) {
-      t.juryScore = Number(scoreVal);
-    }
-  });
-}
-
 let storedTeams = [];
 try {
   storedTeams = JSON.parse(localStorage.getItem("tit_sih_teams") || "[]");
-  if (Array.isArray(storedTeams) && storedTeams.length > 0) {
-    const currScores = getPersistentScores();
-    storedTeams.forEach(t => {
-      if (t && (t.teamId || t.teamName) && t.juryScore !== undefined && t.juryScore !== null) {
-        const key = t.teamId || t.teamName;
-        if (currScores[key] === undefined) {
-          currScores[key] = Number(t.juryScore);
-        }
-      }
-    });
-    try {
-      localStorage.setItem("tit_sih_jury_scores", JSON.stringify(currScores));
-    } catch(e) {}
-  }
 } catch(e) {}
-
-// Fallback to OFFICIAL_TIT_30_TEAMS only if storedTeams has 0 items
-let registeredTeams = (Array.isArray(storedTeams) && storedTeams.length > 0) ? storedTeams : OFFICIAL_TIT_30_TEAMS;
+let registeredTeams = (Array.isArray(storedTeams) && storedTeams.length >= 30) ? storedTeams : OFFICIAL_TIT_30_TEAMS;
 let registeredStudents = JSON.parse(localStorage.getItem("tit_sih_students") || "[]");
 
 let db = null;
@@ -2427,11 +825,9 @@ function purgeNonParticipatingTeams() {
 
 // Purge TerraNex and normalize scores
 purgeNonParticipatingTeams();
-syncScoresToTeams(registeredTeams);
 registeredTeams.forEach(t => {
   if (t && t.juryScore !== undefined && t.juryScore !== null && Number(t.juryScore) > 20) {
     t.juryScore = Number((Number(t.juryScore) / 5).toFixed(1));
-    savePersistentScore(t.teamId, t.juryScore);
   }
 });
 localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
@@ -2979,38 +1375,15 @@ function startFirebaseRealtimeListeners() {
           if (t.teamId) db.collection("teams").doc(t.teamId).delete().catch(() => {});
         }
       });
-      const validCloudTeams = cloudTeams.filter(t => !isNonParticipatingTeam(t));
-      if (validCloudTeams.length > 0) {
-        // Merge with local persistent scores so cloud docs with missing juryScore NEVER wipe local scores!
-        const persistentScores = getPersistentScores();
-        validCloudTeams.forEach(ct => {
-          const localScore = persistentScores[ct.teamId] !== undefined ? persistentScores[ct.teamId] : persistentScores[ct.teamName];
-          if (localScore !== undefined && localScore !== null && (ct.juryScore === undefined || ct.juryScore === null)) {
-            ct.juryScore = Number(localScore);
-            if (db && ct.teamId) {
-              db.collection("teams").doc(ct.teamId).set({ juryScore: ct.juryScore }, { merge: true }).catch(() => {});
-            }
-          } else if (ct.juryScore !== undefined && ct.juryScore !== null) {
-            persistentScores[ct.teamId] = Number(ct.juryScore);
-          }
-        });
-        try {
-          localStorage.setItem("tit_sih_jury_scores", JSON.stringify(persistentScores));
-        } catch(e) {}
+      registeredTeams = cloudTeams.filter(t => !isNonParticipatingTeam(t));
+      localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
+      renderStudentDashboard();
 
-        registeredTeams = validCloudTeams;
-        syncScoresToTeams(registeredTeams);
-        localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
-        renderStudentDashboard();
-        if (typeof renderPublicLeaderboard === "function") renderPublicLeaderboard();
-        if (typeof searchPublicCertificates === "function") searchPublicCertificates();
-
-        // If admin console is open, re-render it live
-        const adminModal = document.getElementById("admin-review-modal");
-        const adminView = document.getElementById("admin-console-view");
-        if ((adminView && adminView.style.display !== "none") || (adminModal && adminModal.classList.contains("active"))) {
-          renderAdminConsole();
-        }
+      // If admin console is open, re-render it live
+      const adminModal = document.getElementById("admin-review-modal");
+      const adminView = document.getElementById("admin-console-view");
+      if ((adminView && adminView.style.display !== "none") || (adminModal && adminModal.classList.contains("active"))) {
+        renderAdminConsole();
       }
     },
     (error) => {
@@ -5539,13 +3912,10 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
     allTeams = (typeof registeredTeams !== "undefined" && Array.isArray(registeredTeams)) ? registeredTeams.filter(t => !isNonParticipatingTeam(t)) : [];
   }
 
-  // Identify Winner teams based on highest juryScore
-  syncScoresToTeams(allTeams);
-  allTeams.sort((a, b) => (Number(b.juryScore) || 0) - (Number(a.juryScore) || 0));
-
-  const winner1st = allTeams[0] || {};
-  const winner2nd = allTeams[1] || {};
-  const winner3rd = allTeams[2] || {};
+  // Identify Winner teams if explicitly set or top scored, or default top 3
+  const winner1st = allTeams.find(t => (t.status || "").toLowerCase().includes("1st") || (t.status || "").toLowerCase().includes("first")) || allTeams[0];
+  const winner2nd = allTeams.find(t => (t.status || "").toLowerCase().includes("2nd") || (t.status || "").toLowerCase().includes("second")) || (allTeams[1] !== winner1st ? allTeams[1] : allTeams[0]);
+  const winner3rd = allTeams.find(t => (t.status || "").toLowerCase().includes("3rd") || (t.status || "").toLowerCase().includes("third")) || (allTeams[2] !== winner2nd && allTeams[2] !== winner1st ? allTeams[2] : allTeams[0]);
 
   // 1. Serial 001 - 1st Place Winner
   registry.push({
@@ -5619,7 +3989,7 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
     const is2nd = team === winner2nd || (team.status || "").toLowerCase().includes("2nd");
     const is3rd = team === winner3rd || (team.status || "").toLowerCase().includes("3rd");
 
-    const position = is1st ? "FIRST PLACE • SIH NOMINATED" : (is2nd ? "SECOND PLACE • SIH NOMINATED" : (is3rd ? "THIRD PLACE • SIH NOMINATED" : "SIH NOMINATED"));
+    const position = is1st ? "FIRST PLACE" : (is2nd ? "SECOND PLACE" : (is3rd ? "THIRD PLACE" : ((team.status || "").toLowerCase().includes("shortlist") ? "FINALIST" : "PARTICIPANT")));
     const leader = (team.members && team.members[0]) || {};
 
     // A. Team Squad Certificate
@@ -5630,7 +4000,7 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
       category: "Team Participation",
       certType: "participation_team",
       recipientName: `Team ${team.teamName || "Squad"}`,
-      recipientRole: is1st ? "1st Place Champion • SIH Nominated" : (is2nd ? "1st Runner Up • SIH Nominated" : (is3rd ? "2nd Runner Up • SIH Nominated" : "Nominated Squad for SIH Finals")),
+      recipientRole: "Participating Squad",
       teamId: team.teamId || "N/A",
       teamName: team.teamName || "Squad",
       edition: team.edition || "Software Edition",
@@ -6378,11 +4748,9 @@ window.renderAdminConsole = function renderAdminConsole() {
         }
       });
       allTeamsList = Array.from(map.values());
-      syncScoresToTeams(allTeamsList);
       allTeamsList.forEach(t => {
         if (t && t.juryScore !== undefined && t.juryScore !== null && Number(t.juryScore) > 20) {
           t.juryScore = Number((Number(t.juryScore) / 5).toFixed(1));
-          savePersistentScore(t.teamId, t.juryScore);
         }
       });
       registeredTeams = allTeamsList;
@@ -6755,29 +5123,7 @@ window.renderAdminConsole = function renderAdminConsole() {
       // =========================================================================
       // DEDICATED LIVE LEADERBOARD & SCORECARD MANAGER VIEW
       // =========================================================================
-      syncScoresToTeams(allTeamsList);
       const sortedTeamsForScoring = [...allTeamsList].sort((a, b) => (Number(b.juryScore) || 0) - (Number(a.juryScore) || 0));
-      
-      let curAdminRank = 1;
-      sortedTeamsForScoring.forEach((t, idx) => {
-        if (idx > 0) {
-          const prevScore = Number(sortedTeamsForScoring[idx - 1].juryScore) || 0;
-          const currScore = Number(t.juryScore) || 0;
-          if (currScore < prevScore) {
-            curAdminRank = idx + 1;
-          }
-        }
-        t.competitionRank = curAdminRank;
-      });
-
-      const adminRankCounts = {};
-      sortedTeamsForScoring.forEach(t => {
-        adminRankCounts[t.competitionRank] = (adminRankCounts[t.competitionRank] || 0) + 1;
-      });
-      sortedTeamsForScoring.forEach(t => {
-        t.isTied = adminRankCounts[t.competitionRank] > 1;
-      });
-
       const sTop1 = sortedTeamsForScoring[0] || {};
       const sTop2 = sortedTeamsForScoring[1] || {};
       const sTop3 = sortedTeamsForScoring[2] || {};
@@ -6799,16 +5145,10 @@ window.renderAdminConsole = function renderAdminConsole() {
             </div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
               <button class="btn-3d-primary" onclick="saveAllScores()" style="padding: 10px 18px; font-size: 0.88rem; background: #10b981; border-color: #059669; font-weight: 900;">
-                <i class="fa-solid fa-floppy-disk"></i> Lock & Save All Scores
-              </button>
-              <button class="btn-3d-secondary" onclick="exportScoresJSON()" style="padding: 10px 14px; font-size: 0.84rem; background: #ffffff; color: #065f46; font-weight: 800;" title="Download offline backup of scores">
-                <i class="fa-solid fa-download"></i> Backup Scores
-              </button>
-              <button class="btn-3d-secondary" onclick="importScoresJSON()" style="padding: 10px 14px; font-size: 0.84rem; background: #ffffff; color: #065f46; font-weight: 800;" title="Restore scores from JSON file">
-                <i class="fa-solid fa-upload"></i> Restore
+                <i class="fa-solid fa-floppy-disk"></i> Update All Scores & Refresh Leaderboard
               </button>
               <button class="btn-3d-outline" onclick="jumpToPublicLeaderboard()" style="padding: 10px 14px; font-size: 0.84rem; background: rgba(255,255,255,0.15); color: #ffffff; border-color: rgba(255,255,255,0.3);">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> View Leaderboard
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> View Live Leaderboard
               </button>
             </div>
           </div>
@@ -6893,8 +5233,8 @@ window.renderAdminConsole = function renderAdminConsole() {
                 </tr>
               </thead>
               <tbody>
-                ${sortedTeamsForScoring.map((t) => {
-                  const rank = t.competitionRank || 1;
+                ${sortedTeamsForScoring.map((t, idx) => {
+                  const rank = idx + 1;
                   const leader = (t.members && t.members[0]) ? t.members[0].name : "Leader";
                   const is1st = rank === 1;
                   const is2nd = rank === 2;
@@ -6907,7 +5247,6 @@ window.renderAdminConsole = function renderAdminConsole() {
                         <span style="font-weight: 900; font-size: 0.88rem; padding: 3px 8px; border-radius: 6px; display: inline-block; ${is1st ? 'background:#fef08a; color:#854d0e;' : (is2nd ? 'background:#e2e8f0; color:#334155;' : (is3rd ? 'background:#fed7aa; color:#9a3412;' : 'background:#f1f5f9; color:#64748b;'))}">
                           ${is1st ? '🥇 1' : (is2nd ? '🥈 2' : (is3rd ? '🥉 3' : '#' + rank))}
                         </span>
-                        ${t.isTied ? '<div style="font-size:0.62rem; color:#059669; font-weight:800; text-transform:uppercase; margin-top:2px;">Tied</div>' : ''}
                       </td>
                       <td>
                         <strong style="color: #0f172a; font-size: 0.94rem;">${escapeHtml(t.teamName || "Squad")}</strong>
@@ -6929,16 +5268,16 @@ window.renderAdminConsole = function renderAdminConsole() {
                           <input type="number" min="0" max="20" step="0.1" id="live-score-${t.teamId}" class="admin-live-score-input" data-team-id="${t.teamId}" 
                             value="${t.juryScore !== undefined && t.juryScore !== null ? t.juryScore : ''}" placeholder="0-20"
                             style="width: 68px; padding: 6px 6px; font-size: 0.95rem; font-weight: 900; text-align: center; border: 2px solid ${is1st ? '#eab308' : '#cbd5e1'}; border-radius: 8px; background: #ffffff;"
-                            oninput="saveJuryScore('${t.teamId}', this.value)"
                             onkeydown="if(event.key==='Enter') saveSingleScoreWithFeedback('${t.teamId}', this, document.getElementById('btn-save-${t.teamId}'))">
                           <span style="font-size: 0.78rem; font-weight: 700; color: #64748b;">/ 20</span>
                         </div>
                       </td>
                       <td>
-                        ${is1st ? '<span class="status-pill status-champion" style="font-size:0.75rem;"><i class="fa-solid fa-crown"></i> 1st Champion (₹3,000) &bull; Nominated</span>' :
-                          is2nd ? '<span class="status-pill status-runner" style="font-size:0.75rem;"><i class="fa-solid fa-medal"></i> 1st Runner Up (₹2,000) &bull; Nominated</span>' :
-                          is3rd ? '<span class="status-pill status-runner" style="font-size:0.75rem;"><i class="fa-solid fa-award"></i> 2nd Runner Up (₹1,000) &bull; Nominated</span>' :
-                          '<span class="status-pill status-nominated" style="font-size:0.75rem;"><i class="fa-solid fa-paper-plane"></i> SIH Nominated</span>'
+                        ${is1st ? '<span class="status-pill status-champion" style="font-size:0.75rem;"><i class="fa-solid fa-crown"></i> 1st Champion (₹3,000)</span>' :
+                          is2nd ? '<span class="status-pill status-runner" style="font-size:0.75rem;"><i class="fa-solid fa-medal"></i> 1st Runner Up (₹2,000)</span>' :
+                          is3rd ? '<span class="status-pill status-runner" style="font-size:0.75rem;"><i class="fa-solid fa-award"></i> 2nd Runner Up (₹1,000)</span>' :
+                          isTop10 ? '<span class="status-pill status-nominated" style="font-size:0.75rem;"><i class="fa-solid fa-paper-plane"></i> SIH Nominated (Top 10)</span>' :
+                          '<span class="status-pill status-participated" style="font-size:0.75rem;"><i class="fa-solid fa-check"></i> Finalist</span>'
                         }
                       </td>
                       <td style="text-align: right;">
@@ -7510,112 +5849,19 @@ window.saveAllScores = () => {
     const teamId = input.getAttribute("data-team-id");
     const val = input.value.trim();
     if (teamId) {
-      const numVal = (val !== "" && !isNaN(val)) ? Math.min(20, Math.max(0, Number(Number(val).toFixed(1)))) : null;
       const team = teams.find(t => t && (t.teamId === teamId || t.teamName === teamId));
       if (team) {
-        team.juryScore = numVal;
-      }
-      savePersistentScore(teamId, numVal);
-      if (team && team.teamName) savePersistentScore(team.teamName, numVal);
-      updatedCount++;
-
-      // Sync to Firestore cloud database
-      if (typeof isFirebaseActive !== "undefined" && isFirebaseActive && typeof db !== "undefined" && db) {
-        db.collection("teams").doc(teamId).set({ juryScore: numVal }, { merge: true }).catch(() => {});
+        team.juryScore = (val !== "" && !isNaN(val)) ? Number(val) : null;
+        updatedCount++;
       }
     }
   });
 
-  syncScoresToTeams(teams);
   localStorage.setItem("tit_sih_teams", JSON.stringify(teams));
   if (typeof renderPublicLeaderboard === "function") renderPublicLeaderboard();
   if (typeof searchPublicCertificates === "function") searchPublicCertificates();
   renderAdminConsole();
-  showAdminToast(`🏆 Scores locked & saved for ${updatedCount} squads! Leaderboard & certificates updated.`);
-};
-
-// Export scores as downloadable JSON
-window.exportScoresJSON = () => {
-  const scores = getPersistentScores();
-  const teams = (typeof registeredTeams !== "undefined" && Array.isArray(registeredTeams)) ? registeredTeams : [];
-  const exportData = {
-    exportDate: new Date().toISOString(),
-    event: "SIH INTERNAL HACKATHON 2026 - TIT",
-    scores: scores,
-    teams: teams.map(t => ({ teamId: t.teamId, teamName: t.teamName, juryScore: t.juryScore }))
-  };
-  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "tit_sih_2026_scores_backup_" + Date.now() + ".json";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  showAdminToast("💾 Scores backup downloaded successfully!");
-};
-
-// Import scores from JSON file or prompt
-window.importScoresJSON = () => {
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = ".json";
-  input.onchange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (re) => {
-      try {
-        const data = JSON.parse(re.target.result);
-        const importedScores = data.scores || data;
-        let count = 0;
-        if (typeof importedScores === "object") {
-          for (const [key, val] of Object.entries(importedScores)) {
-            if (val !== null && val !== undefined && !isNaN(val)) {
-              savePersistentScore(key, val);
-              count++;
-            }
-          }
-          if (Array.isArray(registeredTeams)) {
-            syncScoresToTeams(registeredTeams);
-            localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
-          }
-          if (typeof renderPublicLeaderboard === "function") renderPublicLeaderboard();
-          if (typeof searchPublicCertificates === "function") searchPublicCertificates();
-          renderAdminConsole();
-          showAdminToast(`✅ Successfully restored ${count} scores from backup!`);
-        }
-      } catch (err) {
-        alert("Failed to parse scores JSON file: " + err.message);
-      }
-    };
-    reader.readAsText(file);
-  };
-  input.click();
-};
-
-// Restore from internal backup slot
-window.restoreScoresBackup = () => {
-  try {
-    const raw = localStorage.getItem("tit_sih_jury_scores_backup");
-    if (!raw) {
-      alert("No secondary backup found in this browser.");
-      return;
-    }
-    const scores = JSON.parse(raw);
-    localStorage.setItem("tit_sih_jury_scores", JSON.stringify(scores));
-    if (Array.isArray(registeredTeams)) {
-      syncScoresToTeams(registeredTeams);
-      localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
-    }
-    if (typeof renderPublicLeaderboard === "function") renderPublicLeaderboard();
-    if (typeof searchPublicCertificates === "function") searchPublicCertificates();
-    renderAdminConsole();
-    showAdminToast("🔄 Restored scores from internal backup successfully!");
-  } catch(e) {
-    alert("Restore failed: " + e.message);
-  }
+  showAdminToast(`🏆 Scores updated for all ${updatedCount} squads! The Leaderboard & Podium have been refreshed.`);
 };
 
 window.jumpToPublicLeaderboard = () => {
@@ -7634,30 +5880,20 @@ window.jumpToPublicLeaderboard = () => {
 window.saveJuryScore = (teamId, score) => {
   const teams = (typeof registeredTeams !== "undefined" && Array.isArray(registeredTeams)) ? registeredTeams : [];
   const team = teams.find((t) => t && (t.teamId === teamId || t.teamName === teamId));
-  const numScore = (score !== "" && score !== null && !isNaN(score)) ? Math.min(20, Math.max(0, Number(Number(score).toFixed(1)))) : null;
-  
   if (team) {
-    team.juryScore = numScore;
-  }
-  
-  savePersistentScore(teamId, numScore);
-  if (team && team.teamName) {
-    savePersistentScore(team.teamName, numScore);
-  }
-  syncScoresToTeams(teams);
-  localStorage.setItem("tit_sih_teams", JSON.stringify(teams));
-
-  if (typeof isFirebaseActive !== "undefined" && isFirebaseActive && typeof db !== "undefined" && db && team) {
-    db.collection("teams").doc(team.teamId || teamId).set({ juryScore: numScore }, { merge: true }).catch(() => { });
-  }
-
-  // Update live leaderboard immediately
-  if (typeof renderPublicLeaderboard === "function") {
-    renderPublicLeaderboard();
-  }
-  // Update public certificates if open
-  if (typeof searchPublicCertificates === "function") {
-    searchPublicCertificates();
+    team.juryScore = (score !== "" && score !== null && !isNaN(score)) ? Number(score) : null;
+    localStorage.setItem("tit_sih_teams", JSON.stringify(teams));
+    if (typeof isFirebaseActive !== "undefined" && isFirebaseActive && typeof db !== "undefined" && db) {
+      db.collection("teams").doc(team.teamId).update({ juryScore: team.juryScore }).catch(() => { });
+    }
+    // Update live leaderboard immediately
+    if (typeof renderPublicLeaderboard === "function") {
+      renderPublicLeaderboard();
+    }
+    // Update public certificates if open
+    if (typeof searchPublicCertificates === "function") {
+      searchPublicCertificates();
+    }
   }
 };
 
@@ -9421,32 +7657,7 @@ window.renderPublicLeaderboard = function renderPublicLeaderboard() {
   const container = document.getElementById("leaderboard-container");
   if (!container) return;
 
-  const teams = [...registeredTeams].filter(t => !isNonParticipatingTeam(t));
-  syncScoresToTeams(teams);
-
-  // Sort strictly descending by juryScore
-  teams.sort((a, b) => (Number(b.juryScore) || 0) - (Number(a.juryScore) || 0));
-
-  // Compute Competition Ranking allowing multiple teams to share one rank
-  let currentRank = 1;
-  teams.forEach((t, idx) => {
-    if (idx > 0) {
-      const prevScore = Number(teams[idx - 1].juryScore) || 0;
-      const currScore = Number(t.juryScore) || 0;
-      if (currScore < prevScore) {
-        currentRank = idx + 1; // Standard competition rank (1, 2, 3, 3, 5...)
-      }
-    }
-    t.competitionRank = currentRank;
-  });
-
-  const rankCounts = {};
-  teams.forEach(t => {
-    rankCounts[t.competitionRank] = (rankCounts[t.competitionRank] || 0) + 1;
-  });
-  teams.forEach(t => {
-    t.isTied = rankCounts[t.competitionRank] > 1;
-  });
+  const teams = [...registeredTeams].filter(t => !isNonParticipatingTeam(t)).sort((a, b) => (Number(b.juryScore) || 0) - (Number(a.juryScore) || 0));
 
   const top1 = teams[0] || {};
   const top2 = teams[1] || {};
@@ -9527,8 +7738,8 @@ window.renderPublicLeaderboard = function renderPublicLeaderboard() {
             </tr>
           </thead>
           <tbody>
-            ${teams.map((t) => {
-              const rank = t.competitionRank || 1;
+            ${teams.map((t, idx) => {
+              const rank = idx + 1;
               const leader = (t.members && t.members[0]) ? t.members[0].name : "Student Leader";
               const isTop1 = rank === 1;
               const isTop2 = rank === 2;
@@ -9540,15 +7751,12 @@ window.renderPublicLeaderboard = function renderPublicLeaderboard() {
               else if (isTop2) rankBadgeClass = "rank-2";
               else if (isTop3) rankBadgeClass = "rank-3";
 
-              const rankText = isTop1 ? '🥇 1' : isTop2 ? '🥈 2' : isTop3 ? '🥉 3' : '#' + rank;
-
               return `
                 <tr class="${isTop1 ? 'row-winner' : (isTop2 || isTop3 ? 'row-podium' : '')}">
                   <td style="text-align:center;">
                     <span class="leaderboard-rank-badge ${rankBadgeClass}">
-                      ${rankText}
+                      ${isTop1 ? '🥇 1' : isTop2 ? '🥈 2' : isTop3 ? '🥉 3' : '#' + rank}
                     </span>
-                    ${t.isTied ? '<div style="font-size:0.65rem; color:#059669; font-weight:800; text-transform:uppercase; letter-spacing:0.3px; margin-top:2px;"><i class="fa-solid fa-arrows-left-right"></i> Tied</div>' : ''}
                   </td>
                   <td>
                     <div style="font-weight:800; color:var(--text-main); font-size:0.92rem;">${escapeHtml(t.teamName)}</div>
@@ -9571,10 +7779,11 @@ window.renderPublicLeaderboard = function renderPublicLeaderboard() {
                     </span>
                   </td>
                   <td>
-                    ${isTop1 ? '<span class="status-pill status-champion"><i class="fa-solid fa-crown"></i> 1st Champion &bull; Nominated</span>' :
-                      isTop2 ? '<span class="status-pill status-runner"><i class="fa-solid fa-medal"></i> 1st Runner Up &bull; Nominated</span>' :
-                      isTop3 ? '<span class="status-pill status-runner"><i class="fa-solid fa-award"></i> 2nd Runner Up &bull; Nominated</span>' :
-                      '<span class="status-pill status-nominated"><i class="fa-solid fa-paper-plane"></i> SIH Nominated</span>'
+                    ${isTop1 ? '<span class="status-pill status-champion"><i class="fa-solid fa-crown"></i> Champion</span>' :
+                      isTop2 ? '<span class="status-pill status-runner"><i class="fa-solid fa-medal"></i> 1st Runner Up</span>' :
+                      isTop3 ? '<span class="status-pill status-runner"><i class="fa-solid fa-award"></i> 2nd Runner Up</span>' :
+                      isNominated ? '<span class="status-pill status-nominated"><i class="fa-solid fa-paper-plane"></i> SIH Nominated</span>' :
+                      '<span class="status-pill status-participated"><i class="fa-solid fa-check"></i> Participated</span>'
                     }
                   </td>
                   <td style="text-align:right; white-space:nowrap;">
