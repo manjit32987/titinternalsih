@@ -135,17 +135,11 @@
 
         <!-- Desktop Navigation Links -->
         <ul class="nav-links">
-          <li><a href="#prizes" class="nav-link"><i class="fa-solid fa-trophy"></i> Prizes</a></li>
-          <li><a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="nav-link"
-              style="color: #059669; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> SIH PS</a></li>
-          <li><a href="#rules" class="nav-link"><i class="fa-solid fa-scale-balanced"></i> Rules</a></li>
-          <li><a href="#team-finder" class="nav-link" style="color: #059669; font-weight: 700;"><i
-                class="fa-solid fa-users"></i> Team Finder</a></li>
-          <li><a href="#resources" class="nav-link"><i class="fa-solid fa-download"></i> Resources</a></li>
+          <li><a href="#wall-of-fame" class="nav-link"><i class="fa-solid fa-camera-retro"></i> Wall of Fame</a></li>
+          <li><a href="#leaderboard" class="nav-link"><i class="fa-solid fa-trophy"></i> Leaderboard</a></li>
+          <li><a href="#certificates-hub" class="nav-link" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-certificate"></i> Certificates</a></li>
           <li><a href="committee.html" class="nav-link"><i class="fa-solid fa-users"></i> Committee</a></li>
-          <li><a href="#faq" class="nav-link"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
-          <li id="nav-dashboard-link" style="display:none;"><a href="#student-dashboard" class="nav-link"
-              style="color: #059669; font-weight: 700;"><i class="fa-solid fa-gauge-high"></i> Dashboard</a></li>
+          <li><a href="#prizes" class="nav-link"><i class="fa-solid fa-award"></i> Prizes</a></li>
         </ul>
 
         <!-- Right Action Button & Auth Container -->
@@ -176,32 +170,12 @@
       <!-- Mobile Navigation Dropdown Menu -->
       <div class="mobile-nav-dropdown" id="mobile-nav-dropdown">
         <ul class="mobile-nav-links">
-          <li id="mob-pwa-install-item" style="display: none;">
-            <a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); triggerPwaInstall();"
-              style="color: #059669; font-weight: 700;">
-              <i class="fa-solid fa-mobile-screen-button"></i> Install Mobile App
-            </a>
-          </li>
-          <li id="mob-auth-link"><a href="#" class="mobile-nav-link"
-              onclick="closeMobileMenu(); openAuthModal('login');"><i class="fa-solid fa-user-lock"></i> Portal Login /
-              Sign Up</a></li>
-          <li id="mob-dashboard-link" style="display:none;"><a href="#student-dashboard" class="mobile-nav-link"
-              onclick="closeMobileMenu();" style="color:#059669; font-weight:700;"><i
-                class="fa-solid fa-gauge-high"></i> My Team Dashboard</a></li>
-          <li><a href="#prizes" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-trophy"></i>
-              Prizes & Awards</a></li>
-          <li><a href="#rules" class="mobile-nav-link" onclick="closeMobileMenu()"><i
-                class="fa-solid fa-scale-balanced"></i> Rules & Guidelines</a></li>
-          <li><a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="mobile-nav-link"
-              style="color: #059669; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> SIH 2026 PS</a></li>
-          <li><a href="#team-finder" class="mobile-nav-link" onclick="closeMobileMenu()"><i
-                class="fa-solid fa-users"></i> Team Finder</a></li>
-          <li><a href="#resources" class="mobile-nav-link" onclick="closeMobileMenu()"><i
-                class="fa-solid fa-download"></i> Resources & PPT</a></li>
-          <li><a href="committee.html" class="mobile-nav-link" onclick="closeMobileMenu()"><i
-                class="fa-solid fa-users"></i> Organizing Committee</a></li>
-          <li><a href="#faq" class="mobile-nav-link" onclick="closeMobileMenu()"><i
-                class="fa-solid fa-circle-question"></i> FAQ</a></li>
+          <li><a href="#wall-of-fame" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-camera-retro"></i> Wall of Fame</a></li>
+          <li><a href="#leaderboard" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-trophy"></i> Leaderboard & Standings</a></li>
+          <li><a href="#certificates-hub" class="mobile-nav-link" onclick="closeMobileMenu()" style="color: #059669; font-weight: 700;"><i class="fa-solid fa-certificate"></i> Public Certificates Hub</a></li>
+          <li><a href="committee.html" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-users"></i> Organizing Committee</a></li>
+          <li><a href="#prizes" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-award"></i> Prizes & Awards</a></li>
+          <li><a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); openAdminModal();"><i class="fa-solid fa-user-shield"></i> Admin Login</a></li>
           <li
             style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; display: flex; align-items: center; justify-content: space-between;">
             <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">🌓 Theme Mode</span>
@@ -219,107 +193,325 @@
     </div>
   </header>
 
-  <!-- 3. Hero Section -->
-  <section class="hero-section" id="hero">
+  <!-- 3. Hero Section (Minimalist Bold Edition) -->
+  <section class="hero-section" id="hero" style="min-height: 52vh; padding: 70px 0 60px; display: flex; align-items: center; justify-content: center; text-align: center;">
     <div class="container">
-      <div class="hero-content">
+      <div class="hero-content" style="max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; align-items: center;">
 
-        <!-- Organizer Badge -->
-        <div class="hero-badge-container">
-          <div class="hero-council-badge">
-            <img src="tit_logo.png" alt="TIT Emblem" class="badge-mini-logo">
-            <span class="live-indicator"></span>
-            <span>TRIPURA INSTITUTE OF TECHNOLOGY • IIC</span>
+        <!-- TIT Biggest Hackathon Badge -->
+        <div class="hero-badge-container" style="margin-bottom: 20px;">
+          <div class="hero-council-badge" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 24px; font-size: 0.95rem; font-weight: 800; border-radius: 9999px; background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 18px rgba(5, 150, 105, 0.12); border: 1px solid var(--border-emerald); text-transform: uppercase; letter-spacing: 0.06em; color: #059669;">
+            <i class="fa-solid fa-fire" style="color: #f59e0b;"></i>
+            <span>TIT Biggest Hackathon</span>
           </div>
         </div>
 
-        <!-- Main Headline -->
-        <h1 class="hero-headline">
-          Smart India Hackathon <br>
-          <span class="highlight-3d">Internal Hackathon 2026</span>
+        <!-- Big 30 Teams Heading -->
+        <h1 style="font-size: clamp(3.8rem, 8.5vw, 6.2rem); font-weight: 900; line-height: 1.05; margin: 0 0 14px; font-family: var(--font-heading); letter-spacing: -0.02em; color: var(--text-main);">
+          <span style="background: linear-gradient(135deg, #059669 0%, #047857 45%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 2px 8px rgba(5,150,105,0.22));">30 Teams</span>
         </h1>
 
-        <!-- Subtitle -->
-        <p class="hero-subtitle">
-          The official campus launchpad for TIT students. Build bold software & hardware innovations, compete for
-          <strong>₹6,000 prizes</strong> and the <strong>ChatGPT Go Ignite Award</strong>, and qualify to represent TIT
-          at SIH 2026 Nationals.
+        <!-- Subtext 1: 150+ Participants -->
+        <p style="font-size: clamp(1.4rem, 3.2vw, 2.1rem); font-weight: 800; color: #059669; margin: 0 0 14px; font-family: var(--font-heading); letter-spacing: -0.01em;">
+          150+ Participants
         </p>
 
-        <!-- CTA Buttons -->
-        <div class="hero-cta-group">
-          <button class="btn-3d-primary" onclick="triggerRegistration()">
-            <i class="fa-solid fa-bolt"></i> Register Team
-          </button>
-          <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener" class="btn-3d-secondary">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> Official SIH 2026 PS Portal
-          </a>
-          <a href="SIH2026-IDEA-Presentation-Format.pptx" download="SIH2026-IDEA-Presentation-Format.pptx"
-            class="btn-3d-outline" onclick="triggerConfettiBurst()">
-            <i class="fa-solid fa-file-powerpoint"></i> Download PPT Template
-          </a>
-        </div>
-
-        <!-- 4 Key Stat Badges -->
-        <div class="hero-metrics-grid">
-          <div class="metric-card-3d">
-            <div class="metric-icon-wrap icon-gold">
-              <i class="fa-solid fa-trophy"></i>
-            </div>
-            <div class="metric-info">
-              <h4>₹6,000 Cash</h4>
-              <p>Total Prize Pool</p>
-            </div>
-          </div>
-
-          <div class="metric-card-3d">
-            <div class="metric-icon-wrap icon-purple">
-              <i class="fa-solid fa-wand-magic-sparkles"></i>
-            </div>
-            <div class="metric-info">
-              <h4>ChatGPT Go</h4>
-              <p>Ignite Innovation Award</p>
-            </div>
-          </div>
-
-          <div class="metric-card-3d">
-            <div class="metric-icon-wrap icon-blue">
-              <i class="fa-solid fa-certificate"></i>
-            </div>
-            <div class="metric-info">
-              <h4>IIC Certificates</h4>
-              <p>For All Teams</p>
-            </div>
-          </div>
-
-          <div class="metric-card-3d">
-            <div class="metric-icon-wrap icon-emerald">
-              <i class="fa-solid fa-paper-plane"></i>
-            </div>
-            <div class="metric-info">
-              <h4>Top 50 Squads</h4>
-              <p>Nominated for SIH</p>
-            </div>
-          </div>
+        <!-- Subtext 2: Internal SIH 2026 -->
+        <div style="display: inline-flex; align-items: center; gap: 8px; padding: 7px 22px; background: rgba(5, 150, 105, 0.08); border: 1px solid rgba(5, 150, 105, 0.28); border-radius: 9999px;">
+          <i class="fa-solid fa-trophy" style="color: #059669; font-size: 0.95rem;"></i>
+          <span style="font-size: 1.05rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted);">
+            Internal SIH 2026
+          </span>
         </div>
 
       </div>
     </div>
   </section>
 
-  <!-- 3.5 Student Team Dashboard Section (Dynamic) -->
-  <section class="dashboard-section" id="student-dashboard" style="display: none;">
+  
+  <!-- ==========================================================================
+       WALL OF FAME & EVENT MOMENTS SECTION
+       ========================================================================== -->
+  <section class="wall-of-fame-section" id="wall-of-fame">
     <div class="container">
-      <div class="section-header" style="margin-bottom: 24px;">
-        <span class="section-tag"><i class="fa-solid fa-gauge-high"></i> Student Portal</span>
-        <h2 class="section-title">My Registered Team Dashboard</h2>
-        <p class="section-subtitle">Manage your squad (2 to 6 members), update details, and view your authenticated
-          digital pass.</p>
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-camera-retro"></i> Wall of Fame</span>
+        <h2 class="section-title">Wall of Fame & Event Highlights</h2>
+        <p class="section-subtitle">
+          Relive the energy, late-night hacking, jury presentations, and celebration moments from the TIT Internal SIH 2026.
+        </p>
       </div>
 
-      <div id="dashboard-content-box">
-        <!-- Rendered dynamically by script.js -->
+      <!-- Polaroid Photo Wall (Scattered Collage, No Captions) -->
+      <div class="polaroid-wall-container">
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/20260909_204847-COLLAGE.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/20260909_204847-COLLAGE.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/20260909_203110-COLLAGE.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/20260909_203110-COLLAGE.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0176.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0176.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0181.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0181.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0184.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0184.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0187.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0187.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0189.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0189.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0193.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0193.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0210.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0210.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0213.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0213.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0216.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0216.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0263.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0263.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0265.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0265.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0271.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0271.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0277.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0277.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0286.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0286.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0290.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0290.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0292.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0292.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0294.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0294.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0302.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0302.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0310.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0310.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0325.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0325.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0330.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0330.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0333.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0333.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0337.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0337.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0388.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0388.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0557.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0557.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0563.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0563.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('Internal_sih_images/IMG-20260909-WA0571.jpg')">
+          <div class="polaroid-img-wrapper">
+            <img src="Internal_sih_images/IMG-20260909-WA0571.jpg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('InternalSih/IMG-20260909-WA0293.jpg.jpeg')">
+          <div class="polaroid-img-wrapper">
+            <img src="InternalSih/IMG-20260909-WA0293.jpg.jpeg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('InternalSih/IMG-20260909-WA0304.jpg.jpeg')">
+          <div class="polaroid-img-wrapper">
+            <img src="InternalSih/IMG-20260909-WA0304.jpg.jpeg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('InternalSih/IMG-20260909-WA0420.jpg.jpeg')">
+          <div class="polaroid-img-wrapper">
+            <img src="InternalSih/IMG-20260909-WA0420.jpg.jpeg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('InternalSih/IMG-20260909-WA0434.jpg.jpeg')">
+          <div class="polaroid-img-wrapper">
+            <img src="InternalSih/IMG-20260909-WA0434.jpg.jpeg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('InternalSih/IMG_1075.JPG.jpeg')">
+          <div class="polaroid-img-wrapper">
+            <img src="InternalSih/IMG_1075.JPG.jpeg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('InternalSih/IMG_1078.JPG.jpeg')">
+          <div class="polaroid-img-wrapper">
+            <img src="InternalSih/IMG_1078.JPG.jpeg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
+        <div class="polaroid-card" onclick="openPhotoLightbox('InternalSih/IMG_1101.JPG.jpeg')">
+          <div class="polaroid-img-wrapper">
+            <img src="InternalSih/IMG_1101.JPG.jpeg" alt="TIT SIH Moment" class="polaroid-img" loading="lazy">
+          </div>
+        </div>
       </div>
+
+      <!-- Option to Download Photos (Redirects to Google Drive) -->
+      <div class="gallery-drive-download-banner">
+        <div class="drive-banner-inner">
+          <div class="drive-banner-text">
+            <span class="drive-pill-tag"><i class="fa-brands fa-google-drive"></i> Official High-Resolution Archive</span>
+            <h3>Download Full-Resolution Event Photos</h3>
+            <p>Access and download all original uncompressed event photographs, award ceremony moments, presentations, and demo videos directly on Google Drive.</p>
+          </div>
+          <div class="drive-banner-cta">
+            <a href="https://drive.google.com/" target="_blank" rel="noopener" class="btn-3d-primary download-photos-btn">
+              <i class="fa-solid fa-cloud-arrow-down"></i> Download Photos from Drive
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       OFFICIAL LEADERBOARD & SCORES SECTION
+       ========================================================================== -->
+  <section class="leaderboard-section" id="leaderboard">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-ranking-star"></i> Standings & Scores</span>
+        <h2 class="section-title">Official Internal SIH 2026 Leaderboard</h2>
+        <p class="section-subtitle">
+          Final evaluation scores awarded by the internal evaluation panel for all 30 participating squads.
+        </p>
+      </div>
+
+      <!-- Rendered dynamically by window.renderPublicLeaderboard() -->
+      <div id="leaderboard-container"></div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       PUBLIC CERTIFICATE SEARCH & DOWNLOAD HUB (3 DEDICATED SECTIONS)
+       ========================================================================== -->
+  <section class="cert-hub-section" id="certificates-hub">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-certificate"></i> Verified Credentials</span>
+        <h2 class="section-title">Official Certificate Portal</h2>
+        <p class="section-subtitle">
+          View and download verified institutional certificates for all Participants, Core Committee, and Technical Leads. Zero login required!
+        </p>
+      </div>
+
+      <!-- Search & Filter Controls -->
+      <div class="cert-hub-search-card">
+        <div class="cert-hub-search-bar-wrap" style="display: flex; gap: 10px; align-items: center; margin-bottom: 16px;">
+          <div style="position: relative; flex: 1;">
+            <i class="fa-solid fa-magnifying-glass cert-hub-search-icon"></i>
+            <input type="text" id="cert-hub-search-input" class="cert-hub-search-input"
+              placeholder="Search by Student Name, Team Name, Roll No, or Role..."
+              onkeyup="if(event.key==='Enter') searchPublicCertificates(this.value)"
+              oninput="searchPublicCertificates(this.value)" autocomplete="off">
+            <button class="cert-hub-clear-btn" onclick="document.getElementById('cert-hub-search-input').value=''; searchPublicCertificates('');" title="Clear Search">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <button class="btn-3d-primary" onclick="searchPublicCertificates(document.getElementById('cert-hub-search-input').value)" style="height: 52px; padding: 0 26px; font-size: 0.95rem; font-weight: 800; border-radius: 12px; display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; cursor: pointer;">
+            <i class="fa-solid fa-magnifying-glass"></i> Search
+          </button>
+        </div>
+
+        <!-- Filter Category Pills: Participants, Core Committee, Technical Leads -->
+        <div class="cert-hub-filter-pills">
+          <button class="cert-hub-filter-btn active" data-cat="all" onclick="filterCertHubCategory('all')">
+            <i class="fa-solid fa-layer-group"></i> All Certificates
+          </button>
+          <button class="cert-hub-filter-btn" data-cat="participants" onclick="filterCertHubCategory('participants')">
+            <i class="fa-solid fa-user-graduate"></i> Participants (150+)
+          </button>
+          <button class="cert-hub-filter-btn" data-cat="coords" onclick="filterCertHubCategory('coords')">
+            <i class="fa-solid fa-id-badge"></i> Core Committee
+          </button>
+          <button class="cert-hub-filter-btn" data-cat="leads" onclick="filterCertHubCategory('leads')">
+            <i class="fa-solid fa-microchip"></i> Technical Leads
+          </button>
+        </div>
+      </div>
+
+      <!-- Results Container rendered dynamically by script.js -->
+      <div id="public-cert-results-container"></div>
     </div>
   </section>
 
@@ -482,327 +674,6 @@
         </a>
       </div>
 
-    </div>
-  </section>
-
-  <!-- 5.5 Official Rules & Regulations Section -->
-  <section class="rules-section" id="rules">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag"><i class="fa-solid fa-scale-balanced"></i> Official Guidelines</span>
-        <h2 class="section-title">Rules & Eligibility</h2>
-        <p class="section-subtitle">Core participation rules, team composition guidelines, and national SIH 2026
-          nomination requirements.</p>
-      </div>
-
-      <!-- 6 Essential Rule Cards Grid -->
-      <div class="rules-cards-grid">
-
-        <!-- Rule 1: Problem Statement -->
-        <div class="rule-card">
-          <div class="rule-card-header">
-            <div class="rule-badge-num">01</div>
-            <span class="rule-card-tag"><i class="fa-solid fa-list-check"></i> Any SIH 2026 PS</span>
-          </div>
-          <h3 class="rule-card-title">Any Official Problem Statement</h3>
-          <p class="rule-card-desc">
-            Select any problem statement from <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener"
-              style="color: #059669; font-weight: 700;">sih.gov.in</a> across Software, Hardware, or Student Innovation
-            (Open Theme).
-          </p>
-          <div class="rule-card-footer">
-            <i class="fa-solid fa-circle-check"></i> Software & Hardware Categories
-          </div>
-        </div>
-
-        <!-- Rule 2: Team Size Flexibility -->
-        <div class="rule-card">
-          <div class="rule-card-header">
-            <div class="rule-badge-num">02</div>
-            <span class="rule-card-tag"><i class="fa-solid fa-users"></i> Min 2 • Max 6</span>
-          </div>
-          <h3 class="rule-card-title">Only 2 Members Required (Max 6)</h3>
-          <p class="rule-card-desc">
-            Only <strong>2 members are required</strong> to register a team for the internal round, with flexibility to
-            add up to 6 members. Cross-branch collaboration is encouraged.
-          </p>
-          <div class="rule-card-footer">
-            <i class="fa-solid fa-circle-check"></i> 2 Required • Up to 6 Allowed
-          </div>
-        </div>
-
-        <!-- Rule 3: Mandatory Female Member -->
-        <div class="rule-card rule-card-alert">
-          <div class="rule-card-header">
-            <div class="rule-badge-num rule-badge-mandatory">03</div>
-            <span class="rule-card-tag tag-mandatory"><i class="fa-solid fa-venus"></i> Mandatory</span>
-          </div>
-          <h3 class="rule-card-title">1+ Female Member Mandatory</h3>
-          <p class="rule-card-desc">
-            As per AICTE / Ministry of Education SIH directives, every team <strong>must have at least one (1) female
-              student member</strong>.
-          </p>
-          <div class="rule-card-footer footer-mandatory">
-            <i class="fa-solid fa-triangle-exclamation"></i> Non-negotiable Central SIH Rule
-          </div>
-        </div>
-
-        <!-- Rule 4: Same College Only -->
-        <div class="rule-card">
-          <div class="rule-card-header">
-            <div class="rule-badge-num">04</div>
-            <span class="rule-card-tag"><i class="fa-solid fa-building-columns"></i> TIT Students</span>
-          </div>
-          <h3 class="rule-card-title">TIT Students Only</h3>
-          <p class="rule-card-desc">
-            All team members must be enrolled students of Tripura Institute of Technology (Diploma, B.Tech, or M.Tech).
-            No inter-college teams allowed.
-          </p>
-          <div class="rule-card-footer">
-            <i class="fa-solid fa-circle-check"></i> Enrolled TIT Students
-          </div>
-        </div>
-
-        <!-- Rule 5: SIH 6-Member Team Finalization -->
-        <div class="rule-card">
-          <div class="rule-card-header">
-            <div class="rule-badge-num">05</div>
-            <span class="rule-card-tag"><i class="fa-solid fa-ticket"></i> National SIH</span>
-          </div>
-          <h3 class="rule-card-title">Final 6 for Nationals</h3>
-          <p class="rule-card-desc">
-            Internal teams can have 2–6 members. Teams nominated by SPOC for national SIH finals must be finalized to
-            strictly 6 members on the central portal.
-          </p>
-          <div class="rule-card-footer">
-            <i class="fa-solid fa-circle-check"></i> Top 50 Teams Nominated
-          </div>
-        </div>
-
-        <!-- Rule 6: Single Team Registration -->
-        <div class="rule-card">
-          <div class="rule-card-header">
-            <div class="rule-badge-num">06</div>
-            <span class="rule-card-tag"><i class="fa-solid fa-user-check"></i> Single Team</span>
-          </div>
-          <h3 class="rule-card-title">One Student = One Team</h3>
-          <p class="rule-card-desc">
-            A student can only join <strong>one single team</strong> under one Problem Statement to avoid schedule
-            overlap and central AICTE disqualification.
-          </p>
-          <div class="rule-card-footer">
-            <i class="fa-solid fa-circle-check"></i> Unique Roll Number Policy
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- 5.6 Team Finder (Find a Team or Join a Squad) -->
-  <section class="team-finder-section" id="team-finder">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag"><i class="fa-solid fa-users"></i> Team Finder</span>
-        <h2 class="section-title">Find a Team or Teammates</h2>
-        <p class="section-subtitle">Need teammates to complete your squad, or looking for a team to join? Post your
-          requirement here or connect directly via WhatsApp.</p>
-      </div>
-
-      <!-- Clean 2-Way Choice & Filter Bar -->
-      <div class="team-finder-controls-card">
-        <div class="team-finder-top-bar">
-          <div class="team-finder-tabs">
-            <button type="button" class="team-tab-btn active" data-filter="all" onclick="filterTeamFinder('all', this)">
-              <i class="fa-solid fa-layer-group"></i> All Posts
-            </button>
-            <button type="button" class="team-tab-btn" data-filter="teams" onclick="filterTeamFinder('teams', this)">
-              <i class="fa-solid fa-user-group"></i> Teams Looking for Members
-            </button>
-            <button type="button" class="team-tab-btn" data-filter="solo" onclick="filterTeamFinder('solo', this)">
-              <i class="fa-solid fa-user-plus"></i> Students Looking for a Team
-            </button>
-          </div>
-
-          <button type="button" class="btn-3d-primary btn-post-team-request" onclick="openTeammateRequestModal()">
-            <i class="fa-solid fa-plus-circle"></i> Post a Request
-          </button>
-        </div>
-
-        <div class="team-finder-filter-bar">
-          <div class="team-search-wrap">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="team-finder-search" class="team-search-input"
-              placeholder="Search by name, skill (e.g. Python, IoT, UI/UX), module or branch..."
-              oninput="handleTeamFinderSearch(this.value)">
-          </div>
-          <div class="team-program-wrap">
-            <select id="team-finder-program" class="form-select-input team-program-select"
-              onchange="handleTeamFinderProgram(this.value)" style="font-weight: 700;">
-              <option value="all">All Modules (Degree & Diploma)</option>
-              <option value="Degree">Degree (B.Tech)</option>
-              <option value="Diploma">Diploma</option>
-            </select>
-          </div>
-          <div class="team-branch-wrap">
-            <select id="team-finder-branch" class="form-select-input team-branch-select"
-              onchange="handleTeamFinderBranch(this.value)">
-              <option value="all">All Branches</option>
-              <optgroup label="Degree (B.Tech)">
-                <option value="CSE">CSE - Computer Science & Engg</option>
-                <option value="ECE">ECE - Electronics & Comm</option>
-                <option value="EE">EE - Electrical Engg</option>
-                <option value="ME">ME - Mechanical Engg</option>
-                <option value="CE">CE - Civil Engg</option>
-              </optgroup>
-              <optgroup label="Diploma">
-                <option value="CST">CST - Computer Science & Tech</option>
-                <option value="ETCE">ETCE - Electronics & Telecom</option>
-                <option value="EE">EE - Electrical Engineering</option>
-                <option value="CE">CE - Civil Engineering</option>
-                <option value="ME">ME - Mechanical Engineering</option>
-                <option value="Architectural Assistantship">Architectural Assistantship</option>
-                <option value="Automobile Engineering">Automobile Engineering</option>
-                <option value="Food Processing Technology">Food Processing Technology</option>
-              </optgroup>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <!-- Cards Grid -->
-      <div class="team-finder-grid" id="matchmaker-cards-grid">
-        <!-- Rendered dynamically by script.js -->
-      </div>
-
-    </div>
-  </section>
-
-  <!-- 6. Resource Download Hub -->
-  <section class="resources-section" id="resources">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag"><i class="fa-solid fa-download"></i> Starter Kit</span>
-        <h2 class="section-title">Resources & Downloads</h2>
-        <p class="section-subtitle">Standardized templates and reference materials to prepare your winning pitch.</p>
-      </div>
-
-      <div class="resources-grid">
-        <div class="resource-card">
-          <div class="resource-icon">
-            <i class="fa-solid fa-file-powerpoint"></i>
-          </div>
-          <h4>SIH Idea PPT Template</h4>
-          <p>Official presentation format required for internal idea pitch evaluation.</p>
-          <a href="SIH2026-IDEA-Presentation-Format.pptx" download="SIH2026-IDEA-Presentation-Format.pptx"
-            class="btn-download"
-            style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;"
-            onclick="triggerConfettiBurst()">
-            <i class="fa-solid fa-cloud-arrow-down"></i> Download PPT (.pptx)
-          </a>
-        </div>
-
-        <div class="resource-card">
-          <div class="resource-icon" style="background: #fdf2f8; color: #db2777;">
-            <i class="fa-solid fa-file-pdf"></i>
-          </div>
-          <h4>Hackathon Rulebook</h4>
-          <p>Official guidelines, evaluation criteria, scoring rubric, and event timeline.</p>
-          <a href="SIH Internal Hackathon 2026 Rule Book - TIT.pdf"
-            download="SIH Internal Hackathon 2026 Rule Book - TIT.pdf" class="btn-download"
-            style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;"
-            onclick="triggerConfettiBurst()">
-            <i class="fa-solid fa-cloud-arrow-down"></i> Download Rulebook (.pdf)
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 8. Frequently Asked Questions (FAQ Accordion) -->
-  <section class="faq-section" id="faq">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag"><i class="fa-solid fa-circle-question"></i> Help & FAQ</span>
-        <h2 class="section-title">Frequently Asked Questions</h2>
-        <p class="section-subtitle">Quick answers to common questions about the TIT SIH Internal Hackathon.</p>
-      </div>
-
-      <div class="faq-container">
-
-        <div class="faq-item">
-          <button class="faq-question">
-            <span>Who is eligible to participate?</span>
-            <i class="fa-solid fa-chevron-down faq-icon-arrow"></i>
-          </button>
-          <div class="faq-answer">
-            <p>All regular students enrolled in Diploma, B.Tech, or M.Tech branches of <strong>Tripura Institute of
-                Technology (TIT)</strong> are eligible. Inter-college teams are not permitted.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question">
-            <span>What is the team size and female member rule?</span>
-            <i class="fa-solid fa-chevron-down faq-icon-arrow"></i>
-          </button>
-          <div class="faq-answer">
-            <p>For the campus <strong>Internal Hackathon</strong>, <strong>only 2 members are required</strong> to
-              register, and teams can include up to 6 members. Having at least <strong>1 female student member is
-                strictly mandatory</strong> in every team.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question">
-            <span>Which Problem Statements can we select?</span>
-            <i class="fa-solid fa-chevron-down faq-icon-arrow"></i>
-          </button>
-          <div class="faq-answer">
-            <p>Teams can choose <strong>any Problem Statement</strong> published on the official SIH portal (<a
-                href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener"
-                style="color: #059669; font-weight: 700;">sih.gov.in/sih2026PS</a>) across Software Edition, Hardware
-              Edition, or Open Student Innovation.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question">
-            <span>How does the Institute SPOC nomination work?</span>
-            <i class="fa-solid fa-chevron-down faq-icon-arrow"></i>
-          </button>
-          <div class="faq-answer">
-            <p>The Institute SPOC nominates top teams based on internal review scores. A maximum of <strong>50 Teams (45
-                Shortlisted + 5 Waitlisted)</strong> will be nominated to represent TIT at the national SIH 2026.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question">
-            <span>What is the 1-Month OpenAI ChatGPT Go Ignite Award?</span>
-            <i class="fa-solid fa-chevron-down faq-icon-arrow"></i>
-          </button>
-          <div class="faq-answer">
-            <p>The Special Ignite Award is an exclusive discretionary honor providing a 1-Month OpenAI ChatGPT Go
-              subscription. <strong>It will be awarded only if a standout, genuinely innovative solution is presented
-                during evaluations; otherwise, it will not be awarded.</strong></p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question">
-            <span>How do we register our squad?</span>
-            <i class="fa-solid fa-chevron-down faq-icon-arrow"></i>
-          </button>
-          <div class="faq-answer">
-            <p>Click "Register Team" on this site. The Team Leader signs in, enters squad details (Member 1 & 2
-              required, 3–6 optional), submits the public Idea PPT link, and receives an instant authenticated digital
-              team pass with a QR code.</p>
-          </div>
-        </div>
-
-      </div>
     </div>
   </section>
 
@@ -2239,6 +2110,15 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+    <!-- Photo Lightbox Modal for Wall of Fame -->
+  <div id="photo-lightbox-modal" class="lightbox-modal-backdrop" onclick="if(event.target === this) closePhotoLightbox()">
+    <div class="lightbox-container">
+      <button class="lightbox-close-button" onclick="closePhotoLightbox()" aria-label="Close Preview">&times;</button>
+      <img id="lightbox-img" src="" alt="Event Moment Preview" class="lightbox-img-element">
+      <div id="lightbox-caption" class="lightbox-caption-text"></div>
     </div>
   </div>
 

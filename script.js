@@ -7,7 +7,7 @@
    0. SITE UNDER MAINTENANCE CONTROLLER & DEVELOPER BYPASS SYSTEM
    ========================================================================== */
 const MAINTENANCE_CONFIG = {
-  enabled: true, // MASTER SWITCH: set to false to open portal to all visitors
+  enabled: false, // MASTER SWITCH: set to false to open portal to all visitors
   heading: "Website Under Maintenance",
   message: "We are currently undergoing scheduled maintenance. Please check back soon."
 };
@@ -104,7 +104,676 @@ const CONFIG = {
    STATE MANAGEMENT & FIREBASE CLOUD SYNC
    ========================================================================== */
 let currentUser = JSON.parse(localStorage.getItem("tit_sih_current_user") || "null");
-let registeredTeams = JSON.parse(localStorage.getItem("tit_sih_teams") || "[]");
+const OFFICIAL_TIT_30_TEAMS = [
+  {
+    teamId: "TIT-SIH26-1042",
+    teamName: "ByteCraft TIT",
+    edition: "Software Edition",
+    psId: "SIH26001",
+    domain: "AI & Machine Learning",
+    title: "AI Early Warning & Landslide Risk Monitoring System in NER",
+    abstract: "Deep learning computer vision algorithm fusing satellite SAR and ground IoT seismometer telemetry for real-time slope instability alerting across Tripura hills.",
+    referralCode: "SIH-CSE-01",
+    referredBy: "Manash Debbarma",
+    status: "Winner • 1st Place (₹3,000 Cash)",
+    juryScore: 96,
+    rank: 1,
+    leaderEmail: "subham.cse22@titagartala.ac.in",
+    members: [
+      { name: "Subham Debnath", roll: "22CSE014", program: "Degree", branch: "CSE", dept: "CSE", year: "4th Year", gender: "Male", email: "subham.cse22@titagartala.ac.in", phone: "9862112233", isLeader: true },
+      { name: "Pooja Saha", roll: "22CSE038", program: "Degree", branch: "CSE", dept: "CSE", year: "4th Year", gender: "Female", email: "pooja.saha22@titagartala.ac.in", phone: "9862223344", isLeader: false },
+      { name: "Debojyoti Paul", roll: "23CSE009", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Male", email: "debo.p23@titagartala.ac.in", phone: "9862334455", isLeader: false },
+      { name: "Ananya Roy", roll: "23ECE044", program: "Degree", branch: "ECE", dept: "ECE", year: "3rd Year", gender: "Female", email: "ananya.roy23@titagartala.ac.in", phone: "9862445566", isLeader: false },
+      { name: "Rahul Sharma", roll: "24CSE051", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "rahul.s24@titagartala.ac.in", phone: "9862556677", isLeader: false },
+      { name: "Tanmoy Das", roll: "24IT012", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "tanmoy.d24@titagartala.ac.in", phone: "9862667788", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-4712",
+    teamName: "AgriBot TIT",
+    edition: "Hardware Edition",
+    psId: "SIH-AG-08",
+    domain: "Robotics & Smart Agriculture",
+    title: "Autonomous Rubber Plantation Weeding & Tapping Rover",
+    abstract: "Tracked chassis rover with stereoscopic depth cameras and selective mechanical weeding cutters suited for undulating Tripura rubber plantations.",
+    referralCode: "SIH-ME-01",
+    referredBy: "Ronit Saha",
+    status: "Winner • 2nd Place (₹2,000 Cash)",
+    juryScore: 94,
+    rank: 2,
+    leaderEmail: "bikram.me24@titagartala.ac.in",
+    members: [
+      { name: "Bikramjit Tripura", roll: "24ME003", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Male", email: "bikram.me24@titagartala.ac.in", phone: "9612112233", isLeader: true },
+      { name: "Rimi Debbarma", roll: "24ME015", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Female", email: "rimi.d24@titagartala.ac.in", phone: "9612223344", isLeader: false },
+      { name: "Sayan Barman", roll: "23ME027", program: "Degree", branch: "ME", dept: "ME", year: "3rd Year", gender: "Male", email: "sayan.b23@titagartala.ac.in", phone: "9612334455", isLeader: false },
+      { name: "Pallabi Paul", roll: "25ME009", program: "Diploma", branch: "ME", dept: "ME", year: "1st Year", gender: "Female", email: "pallabi.p25@titagartala.ac.in", phone: "9612445566", isLeader: false },
+      { name: "Joydeep Roy", roll: "23ME033", program: "Degree", branch: "ME", dept: "ME", year: "3rd Year", gender: "Male", email: "joydeep.r23@titagartala.ac.in", phone: "9612556677", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-2189",
+    teamName: "RoboTIT Edge Systems",
+    edition: "Hardware Edition",
+    psId: "SIH-HW-04",
+    domain: "Robotics & Smart IoT",
+    title: "Self-Powered IoT Gateway for Rural Border Telemetry",
+    abstract: "Ultra-low power STM32 & LoRaWAN edge transceiver harvesting ambient thermal and RF energy to transmit telemetry across dense forest canopies.",
+    referralCode: "SIH-ECE-01",
+    referredBy: "Sambhu Debnath",
+    status: "Winner • 3rd Place (₹1,000 Cash)",
+    juryScore: 92,
+    rank: 3,
+    leaderEmail: "arnab.ece23@titagartala.ac.in",
+    members: [
+      { name: "Arnab Bhowmik", roll: "23ECE011", program: "Degree", branch: "ECE", dept: "ECE", year: "3rd Year", gender: "Male", email: "arnab.ece23@titagartala.ac.in", phone: "9774112233", isLeader: true },
+      { name: "Sneha Sen", roll: "23ECE029", program: "Degree", branch: "ECE", dept: "ECE", year: "3rd Year", gender: "Female", email: "sneha.sen23@titagartala.ac.in", phone: "9774223344", isLeader: false },
+      { name: "Pritam Ghosh", roll: "24EE018", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "pritam.ee24@titagartala.ac.in", phone: "9774334455", isLeader: false },
+      { name: "Riya Dey", roll: "24ECE040", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Female", email: "riya.dey24@titagartala.ac.in", phone: "9774445566", isLeader: false },
+      { name: "Akash Roy", roll: "23ECE035", program: "Degree", branch: "ECE", dept: "ECE", year: "3rd Year", gender: "Male", email: "akash.r23@titagartala.ac.in", phone: "9774556677", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-7155",
+    teamName: "TripuraVani Voice AI",
+    edition: "Software Edition",
+    psId: "SIH-AI-11",
+    domain: "Heritage, Culture & Language",
+    title: "Kokborok & Bengali Multi-Modal Voice Interface for Public Services",
+    abstract: "Automatic speech recognition (ASR) and text-to-speech (TTS) engine trained on low-resource Northeast regional dialects for e-governance access.",
+    referralCode: "SIH-ECE-02",
+    referredBy: "Sreya Deb",
+    status: "Nominated for SIH Nationals",
+    juryScore: 90,
+    rank: 4,
+    leaderEmail: "joya.ece25@titagartala.ac.in",
+    members: [
+      { name: "Joya Reang", roll: "25ECE008", program: "Degree", branch: "ECE", dept: "ECE", year: "1st Year", gender: "Female", email: "joya.ece25@titagartala.ac.in", phone: "9862991122", isLeader: true },
+      { name: "Deepak Debbarma", roll: "25ECE021", program: "Degree", branch: "ECE", dept: "ECE", year: "1st Year", gender: "Male", email: "deepak.d25@titagartala.ac.in", phone: "9862992233", isLeader: false },
+      { name: "Suman Bhowmik", roll: "24CSE033", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "suman.b24@titagartala.ac.in", phone: "9862993344", isLeader: false },
+      { name: "Nisha Saha", roll: "23CSE015", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Female", email: "nisha.s23@titagartala.ac.in", phone: "9862994455", isLeader: false },
+      { name: "Prasenjit Shil", roll: "24CSE042", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "prasenjit.s24@titagartala.ac.in", phone: "9862995566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-3401",
+    teamName: "GreenGrid Innovators",
+    edition: "Software Edition",
+    psId: "SIH-SC-14",
+    domain: "Clean & Green Technology",
+    title: "Autonomous Solar Microgrid Load-Balancing & Peak Predictor",
+    abstract: "Reinforcement learning controller optimizing battery discharge schedules and peer-to-peer microgrid trading based on irradiance forecasts.",
+    referralCode: "SIH-EE-01",
+    referredBy: "Alak Das",
+    status: "Nominated for SIH Nationals",
+    juryScore: 89,
+    rank: 5,
+    leaderEmail: "sourav.ee22@titagartala.ac.in",
+    members: [
+      { name: "Sourav Chakraborty", roll: "22EE005", program: "Degree", branch: "EE", dept: "EE", year: "4th Year", gender: "Male", email: "sourav.ee22@titagartala.ac.in", phone: "9436112233", isLeader: true },
+      { name: "Sreya Majumder", roll: "22EE031", program: "Degree", branch: "EE", dept: "EE", year: "4th Year", gender: "Female", email: "sreya.m22@titagartala.ac.in", phone: "9436223344", isLeader: false },
+      { name: "Joydeep Paul", roll: "23EE019", program: "Degree", branch: "EE", dept: "EE", year: "3rd Year", gender: "Male", email: "joydeep.p23@titagartala.ac.in", phone: "9436334455", isLeader: false },
+      { name: "Monalisa Das", roll: "25EE012", program: "Degree", branch: "EE", dept: "EE", year: "1st Year", gender: "Female", email: "monalisa.d25@titagartala.ac.in", phone: "9436445566", isLeader: false },
+      { name: "Tapash Debnath", roll: "24EE016", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "tapash.d24@titagartala.ac.in", phone: "9436556677", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-5833",
+    teamName: "InfraSafe NER",
+    edition: "Software Edition",
+    psId: "SIH-CE-19",
+    domain: "Disaster Management & Infrastructure",
+    title: "Structural Health & Bridge Vibration Monitor using Edge AI",
+    abstract: "IoT MEMS vibration sensors deployed on river bridges streaming FFT frequency spectra to a cloud anomaly detection dashboard.",
+    referralCode: "SIH-CE-01",
+    referredBy: "Neelotpal Banik",
+    status: "Nominated for SIH Nationals",
+    juryScore: 88,
+    rank: 6,
+    leaderEmail: "koushik.ce23@titagartala.ac.in",
+    members: [
+      { name: "Koushik Saha", roll: "23CE007", program: "Degree", branch: "CE", dept: "CE", year: "3rd Year", gender: "Male", email: "koushik.ce23@titagartala.ac.in", phone: "9863112233", isLeader: true },
+      { name: "Dipanwita Roy", roll: "23CE022", program: "Degree", branch: "CE", dept: "CE", year: "3rd Year", gender: "Female", email: "dipanwita.r23@titagartala.ac.in", phone: "9863223344", isLeader: false },
+      { name: "Surajit Datta", roll: "24CE014", program: "Degree", branch: "CE", dept: "CE", year: "2nd Year", gender: "Male", email: "surajit.d24@titagartala.ac.in", phone: "9863334455", isLeader: false },
+      { name: "Trisha Bhattacharjee", roll: "25CE031", program: "Diploma", branch: "CE", dept: "CE", year: "1st Year", gender: "Female", email: "trisha.b25@titagartala.ac.in", phone: "9863445566", isLeader: false },
+      { name: "Abhijit Paul", roll: "23CE018", program: "Degree", branch: "CE", dept: "CE", year: "3rd Year", gender: "Male", email: "abhijit.p23@titagartala.ac.in", phone: "9863556677", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-6294",
+    teamName: "NeuralTIT MedTech",
+    edition: "Software Edition",
+    psId: "SIH-HC-22",
+    domain: "Smart Healthcare",
+    title: "Offline-First Remote Telemedicine & AI Diagnostic Triage",
+    abstract: "On-device quantised LLM and ECG image analyzer designed for ASHA community workers in rural PHCs with intermittent internet.",
+    referralCode: "SIH-CSE-03",
+    referredBy: "Prena Saha",
+    status: "Nominated for SIH Nationals",
+    juryScore: 87,
+    rank: 7,
+    leaderEmail: "moumita.cse24@titagartala.ac.in",
+    members: [
+      { name: "Moumita Datta", roll: "24CSE002", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Female", email: "moumita.cse24@titagartala.ac.in", phone: "9436881122", isLeader: true },
+      { name: "Abhishek Sil", roll: "24CSE019", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "abhishek.sil24@titagartala.ac.in", phone: "9436882233", isLeader: false },
+      { name: "Debashish Roy", roll: "25CSE045", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "debashish.r25@titagartala.ac.in", phone: "9436883344", isLeader: false },
+      { name: "Simran Dey", roll: "25ECE018", program: "Degree", branch: "ECE", dept: "ECE", year: "1st Year", gender: "Female", email: "simran.d25@titagartala.ac.in", phone: "9436884455", isLeader: false },
+      { name: "Niladri Saha", roll: "23CSE024", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Male", email: "niladri.s23@titagartala.ac.in", phone: "9436885566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-8920",
+    teamName: "HydroSense TIT",
+    edition: "Hardware Edition",
+    psId: "SIH-WR-09",
+    domain: "Water Management & Smart Cities",
+    title: "Solar IoT Flash Flood & Urban River Inundation Early Warning",
+    abstract: "Ultrasonic water level transceivers with solar battery backup deployed along Howrah River basin streaming telemetry to municipal disaster portals.",
+    referralCode: "SIH-CE-02",
+    referredBy: "Kishore Majumder",
+    status: "Nominated for SIH Nationals",
+    juryScore: 86,
+    rank: 8,
+    leaderEmail: "amit.ce22@titagartala.ac.in",
+    members: [
+      { name: "Amitava Guha", roll: "22CE011", program: "Degree", branch: "CE", dept: "CE", year: "4th Year", gender: "Male", email: "amit.ce22@titagartala.ac.in", phone: "9774771122", isLeader: true },
+      { name: "Payel Paul", roll: "22CE025", program: "Degree", branch: "CE", dept: "CE", year: "4th Year", gender: "Female", email: "payel.p22@titagartala.ac.in", phone: "9774772233", isLeader: false },
+      { name: "Sagarika Das", roll: "23CE040", program: "Degree", branch: "CE", dept: "CE", year: "3rd Year", gender: "Female", email: "sagarika.d23@titagartala.ac.in", phone: "9774773344", isLeader: false },
+      { name: "Sanjay Deb", roll: "24EE029", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "sanjay.d24@titagartala.ac.in", phone: "9774774455", isLeader: false },
+      { name: "Debamita Bhowmik", roll: "24CE033", program: "Degree", branch: "CE", dept: "CE", year: "2nd Year", gender: "Female", email: "debamita.b24@titagartala.ac.in", phone: "9774775566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9031",
+    teamName: "CyberShield Tripura",
+    edition: "Software Edition",
+    psId: "SIH-CS-03",
+    domain: "Cybersecurity & Citizen Trust",
+    title: "Decentralized Phishing & Financial Fraud Prevention Shield",
+    abstract: "Browser extension & mobile VPN sandbox intercepting spoofed banking and Aadhaar APK links targeted at rural digital banking users.",
+    referralCode: "SIH-CSE-02",
+    referredBy: "Sanjit Noatia",
+    status: "Nominated for SIH Nationals",
+    juryScore: 85,
+    rank: 9,
+    leaderEmail: "rajat.cse23@titagartala.ac.in",
+    members: [
+      { name: "Rajat Paul", roll: "23CSE018", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Male", email: "rajat.cse23@titagartala.ac.in", phone: "9862881122", isLeader: true },
+      { name: "Ankita Sharma", roll: "23CSE041", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Female", email: "ankita.s23@titagartala.ac.in", phone: "9862882233", isLeader: false },
+      { name: "Dipankar Ghosh", roll: "24CSE022", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "dipankar.g24@titagartala.ac.in", phone: "9862883344", isLeader: false },
+      { name: "Priya Deb", roll: "24ECE015", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Female", email: "priya.d24@titagartala.ac.in", phone: "9862884455", isLeader: false },
+      { name: "Rohit Karmakar", roll: "25CSE019", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "rohit.k25@titagartala.ac.in", phone: "9862885566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9142",
+    teamName: "AeroTIT SkyGuard",
+    edition: "Hardware Edition",
+    psId: "SIH-DR-12",
+    domain: "Drones & Disaster Management",
+    title: "Autonomous Thermal Forest Fire & Poaching Patrol Drone",
+    abstract: "Long-endurance VTOL aircraft equipped with micro-bolometer thermal cameras detecting early forest canopy flare-ups in Sepahijala Sanctuary.",
+    referralCode: "SIH-ME-02",
+    referredBy: "Prabal Kanti Paul",
+    status: "Nominated for SIH Nationals",
+    juryScore: 85,
+    rank: 10,
+    leaderEmail: "saptarshi.me22@titagartala.ac.in",
+    members: [
+      { name: "Saptarshi Deb", roll: "22ME007", program: "Degree", branch: "ME", dept: "ME", year: "4th Year", gender: "Male", email: "saptarshi.me22@titagartala.ac.in", phone: "9436441122", isLeader: true },
+      { name: "Priyanka Das", roll: "22ECE019", program: "Degree", branch: "ECE", dept: "ECE", year: "4th Year", gender: "Female", email: "priyanka.d22@titagartala.ac.in", phone: "9436442233", isLeader: false },
+      { name: "Anirban Paul", roll: "23ME014", program: "Degree", branch: "ME", dept: "ME", year: "3rd Year", gender: "Male", email: "anirban.p23@titagartala.ac.in", phone: "9436443344", isLeader: false },
+      { name: "Shilpa Roy", roll: "24EE025", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Female", email: "shilpa.r24@titagartala.ac.in", phone: "9436444455", isLeader: false },
+      { name: "Subhankar Saha", roll: "24ME031", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Male", email: "subhankar.s24@titagartala.ac.in", phone: "9436445566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9253",
+    teamName: "BioWaste Energy TIT",
+    edition: "Hardware Edition",
+    psId: "SIH-EN-07",
+    domain: "Renewable Energy",
+    title: "Smart Biogas Micro-Reactor Telemetry & Digestate Controller",
+    abstract: "IoT anaerobic digestion monitoring unit calculating methane yield and auto-dosing neutralizing agents for dairy farmers in West Tripura.",
+    referralCode: "SIH-EE-02",
+    referredBy: "Sneha Debnath",
+    status: "Shortlisted Finalist",
+    juryScore: 84,
+    rank: 11,
+    leaderEmail: "joyeeta.ee23@titagartala.ac.in",
+    members: [
+      { name: "Joyeeta Bhowmik", roll: "23EE008", program: "Degree", branch: "EE", dept: "EE", year: "3rd Year", gender: "Female", email: "joyeeta.ee23@titagartala.ac.in", phone: "9774331122", isLeader: true },
+      { name: "Subrata Shil", roll: "23EE021", program: "Degree", branch: "EE", dept: "EE", year: "3rd Year", gender: "Male", email: "subrata.s23@titagartala.ac.in", phone: "9774332233", isLeader: false },
+      { name: "Raktim Das", roll: "24ME012", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Male", email: "raktim.d24@titagartala.ac.in", phone: "9774333344", isLeader: false },
+      { name: "Swagata Paul", roll: "25EE018", program: "Degree", branch: "EE", dept: "EE", year: "1st Year", gender: "Female", email: "swagata.p25@titagartala.ac.in", phone: "9774334455", isLeader: false },
+      { name: "Anik Debbarma", roll: "24EE035", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "anik.d24@titagartala.ac.in", phone: "9774335566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9364",
+    teamName: "FinSecure PayTIT",
+    edition: "Software Edition",
+    psId: "SIH-FT-05",
+    domain: "FinTech & Inclusion",
+    title: "Offline Mesh UPI Payments for Hill Tribal Hamlets",
+    abstract: "Secure Bluetooth BLE and sound-wave acoustic encrypted payment protocol settling offline credit tokens once phone connects to cellular tower.",
+    referralCode: "SIH-CSE-04",
+    referredBy: "Sneha Chaudhuri",
+    status: "Shortlisted Finalist",
+    juryScore: 83,
+    rank: 12,
+    leaderEmail: "tanmay.cse22@titagartala.ac.in",
+    members: [
+      { name: "Tanmay Roy", roll: "22CSE004", program: "Degree", branch: "CSE", dept: "CSE", year: "4th Year", gender: "Male", email: "tanmay.cse22@titagartala.ac.in", phone: "9862771122", isLeader: true },
+      { name: "Shreya Ghosh", roll: "22CSE029", program: "Degree", branch: "CSE", dept: "CSE", year: "4th Year", gender: "Female", email: "shreya.g22@titagartala.ac.in", phone: "9862772233", isLeader: false },
+      { name: "Bappa Debnath", roll: "23CSE011", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Male", email: "bappa.d23@titagartala.ac.in", phone: "9862773344", isLeader: false },
+      { name: "Debjani Saha", roll: "23ECE016", program: "Degree", branch: "ECE", dept: "ECE", year: "3rd Year", gender: "Female", email: "debjani.s23@titagartala.ac.in", phone: "9862774455", isLeader: false },
+      { name: "Prasenjit Roy", roll: "24CSE038", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "prasenjit.r24@titagartala.ac.in", phone: "9862775566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9475",
+    teamName: "AquaPure IoT",
+    edition: "Hardware Edition",
+    psId: "SIH-WT-16",
+    domain: "Smart Water Management",
+    title: "Village Groundwater Arsenic & Fluoride Spectrophotometric Monitor",
+    abstract: "Colorimetric chamber coupled with optical sensors to give instant traffic-light safety ratings for community tube wells across Dhalai district.",
+    referralCode: "SIH-CE-03",
+    referredBy: "Bishal Das",
+    status: "Shortlisted Finalist",
+    juryScore: 82,
+    rank: 13,
+    leaderEmail: "prasenjit.ce23@titagartala.ac.in",
+    members: [
+      { name: "Prasenjit Das", roll: "23CE004", program: "Degree", branch: "CE", dept: "CE", year: "3rd Year", gender: "Male", email: "prasenjit.ce23@titagartala.ac.in", phone: "9436221122", isLeader: true },
+      { name: "Mithu Sarkar", roll: "23CE019", program: "Degree", branch: "CE", dept: "CE", year: "3rd Year", gender: "Female", email: "mithu.s23@titagartala.ac.in", phone: "9436222233", isLeader: false },
+      { name: "Debanjan Sil", roll: "24EE014", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "debanjan.s24@titagartala.ac.in", phone: "9436223344", isLeader: false },
+      { name: "Sangita Roy", roll: "24CE029", program: "Degree", branch: "CE", dept: "CE", year: "2nd Year", gender: "Female", email: "sangita.r24@titagartala.ac.in", phone: "9436224455", isLeader: false },
+      { name: "Subhajit Datta", roll: "25CE010", program: "Degree", branch: "CE", dept: "CE", year: "1st Year", gender: "Male", email: "subhajit.d25@titagartala.ac.in", phone: "9436225566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9586",
+    teamName: "SmartTransit Agartala",
+    edition: "Software Edition",
+    psId: "SIH-TR-18",
+    domain: "Smart Mobility & Transit",
+    title: "Dynamic Electric Bus & Auto Fleet Scheduler with GTFS Feeds",
+    abstract: "Real-time crowd heatmaps dynamically dispatching electric auto rickshaws to reduce passenger wait times at Agartala railway station.",
+    referralCode: "SIH-CSE-05",
+    referredBy: "Diya Das",
+    status: "Shortlisted Finalist",
+    juryScore: 82,
+    rank: 14,
+    leaderEmail: "shibam.cse23@titagartala.ac.in",
+    members: [
+      { name: "Shibam Paul", roll: "23CSE025", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Male", email: "shibam.cse23@titagartala.ac.in", phone: "9862551122", isLeader: true },
+      { name: "Mousumi Deb", roll: "23CSE039", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Female", email: "mousumi.d23@titagartala.ac.in", phone: "9862552233", isLeader: false },
+      { name: "Rajesh Debnath", roll: "24ECE012", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Male", email: "rajesh.d24@titagartala.ac.in", phone: "9862553344", isLeader: false },
+      { name: "Sneha Paul", roll: "24CSE044", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Female", email: "sneha.p24@titagartala.ac.in", phone: "9862554455", isLeader: false },
+      { name: "Kingshuk Saha", roll: "25EE022", program: "Degree", branch: "EE", dept: "EE", year: "1st Year", gender: "Male", email: "kingshuk.s25@titagartala.ac.in", phone: "9862555566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9697",
+    teamName: "SolarPulse TIT",
+    edition: "Hardware Edition",
+    psId: "SIH-RE-02",
+    domain: "Clean Tech & Power",
+    title: "Dual-Axis Solar Tracker with Predictive MPPT Firmware",
+    abstract: "Microcontroller gimbal driven by astronomical positioning algorithms delivering 34% greater power output than stationary rooftop arrays in Tripura climate.",
+    referralCode: "SIH-EE-03",
+    referredBy: "Simran Das",
+    status: "Shortlisted Finalist",
+    juryScore: 81,
+    rank: 15,
+    leaderEmail: "subhashish.ee22@titagartala.ac.in",
+    members: [
+      { name: "Subhashish Deb", roll: "22EE009", program: "Degree", branch: "EE", dept: "EE", year: "4th Year", gender: "Male", email: "subhashish.ee22@titagartala.ac.in", phone: "9774661122", isLeader: true },
+      { name: "Paulomi Roy", roll: "22EE024", program: "Degree", branch: "EE", dept: "EE", year: "4th Year", gender: "Female", email: "paulomi.r22@titagartala.ac.in", phone: "9774662233", isLeader: false },
+      { name: "Pritam Datta", roll: "23ME018", program: "Degree", branch: "ME", dept: "ME", year: "3rd Year", gender: "Male", email: "pritam.d23@titagartala.ac.in", phone: "9774663344", isLeader: false },
+      { name: "Rimpa Das", roll: "24EE011", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Female", email: "rimpa.d24@titagartala.ac.in", phone: "9774664455", isLeader: false },
+      { name: "Sukanta Bhowmik", roll: "24EE032", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "sukanta.b24@titagartala.ac.in", phone: "9774665566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9708",
+    teamName: "FarmShield Drone",
+    edition: "Hardware Edition",
+    psId: "SIH-AG-15",
+    domain: "AgriTech & Drones",
+    title: "Precision Paddy Pest Spraying Drone with Variable Nozzle Control",
+    abstract: "Autonomous hexacopter using hyperspectral camera to identify stem borers in paddy fields and spray targeted organic pesticides with 60% liquid savings.",
+    referralCode: "SIH-ME-03",
+    referredBy: "Pushpal Bhattacharjee",
+    status: "Shortlisted Finalist",
+    juryScore: 80,
+    rank: 16,
+    leaderEmail: "arup.me23@titagartala.ac.in",
+    members: [
+      { name: "Arup Debbarma", roll: "23ME005", program: "Degree", branch: "ME", dept: "ME", year: "3rd Year", gender: "Male", email: "arup.me23@titagartala.ac.in", phone: "9612771122", isLeader: true },
+      { name: "Moumita Roy", roll: "23ECE028", program: "Degree", branch: "ECE", dept: "ECE", year: "3rd Year", gender: "Female", email: "moumita.r23@titagartala.ac.in", phone: "9612772233", isLeader: false },
+      { name: "Debabrata Saha", roll: "24ME019", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Male", email: "debabrata.s24@titagartala.ac.in", phone: "9612773344", isLeader: false },
+      { name: "Susmita Ghosh", roll: "24CSE027", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Female", email: "susmita.g24@titagartala.ac.in", phone: "9612774455", isLeader: false },
+      { name: "Kalyan Das", roll: "25ME014", program: "Degree", branch: "ME", dept: "ME", year: "1st Year", gender: "Male", email: "kalyan.d25@titagartala.ac.in", phone: "9612775566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9819",
+    teamName: "EduBridge Kokborok",
+    edition: "Software Edition",
+    psId: "SIH-ED-09",
+    domain: "EdTech & Vernacular Learning",
+    title: "Gamified Vernacular STEM Learning App for Rural Schools",
+    abstract: "Offline tablet app with animated interactive physics & math modules voiced in Kokborok, Chakma, and Bengali for elementary schools.",
+    referralCode: "SIH-CSE-06",
+    referredBy: "Gourab Das",
+    status: "Shortlisted Finalist",
+    juryScore: 80,
+    rank: 17,
+    leaderEmail: "debasmita.cse24@titagartala.ac.in",
+    members: [
+      { name: "Debasmita Sen", roll: "24CSE008", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Female", email: "debasmita.cse24@titagartala.ac.in", phone: "9862331122", isLeader: true },
+      { name: "Bikash Reang", roll: "24CSE021", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "bikash.r24@titagartala.ac.in", phone: "9862332233", isLeader: false },
+      { name: "Payel Debnath", roll: "24ECE019", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Female", email: "payel.d24@titagartala.ac.in", phone: "9862333344", isLeader: false },
+      { name: "Sayan Roy", roll: "25CSE031", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "sayan.r25@titagartala.ac.in", phone: "9862334455", isLeader: false },
+      { name: "Purnima Saha", roll: "25CSE044", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Female", email: "purnima.s25@titagartala.ac.in", phone: "9862335566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9920",
+    teamName: "SafeMine Telemetry",
+    edition: "Hardware Edition",
+    psId: "SIH-MI-04",
+    domain: "Safety & Industrial IoT",
+    title: "Underground Toxic Gas & Worker Health Alert Smart Helmet",
+    abstract: "Helmet integrating carbon monoxide, methane, and pulse sensors transmitting via sub-GHz mesh to above-ground safety overseer desks.",
+    referralCode: "SIH-ECE-03",
+    referredBy: "Reshmi Karmakar",
+    status: "Shortlisted Finalist",
+    juryScore: 79,
+    rank: 18,
+    leaderEmail: "rahul.ece22@titagartala.ac.in",
+    members: [
+      { name: "Rahul Chakraborty", roll: "22ECE006", program: "Degree", branch: "ECE", dept: "ECE", year: "4th Year", gender: "Male", email: "rahul.ece22@titagartala.ac.in", phone: "9436991122", isLeader: true },
+      { name: "Anamika Das", roll: "22ECE026", program: "Degree", branch: "ECE", dept: "ECE", year: "4th Year", gender: "Female", email: "anamika.d22@titagartala.ac.in", phone: "9436992233", isLeader: false },
+      { name: "Suman Paul", roll: "23EE015", program: "Degree", branch: "EE", dept: "EE", year: "3rd Year", gender: "Male", email: "suman.p23@titagartala.ac.in", phone: "9436993344", isLeader: false },
+      { name: "Rina Debbarma", roll: "24ECE034", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Female", email: "rina.d24@titagartala.ac.in", phone: "9436994455", isLeader: false },
+      { name: "Sujan Sil", roll: "24ME021", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Male", email: "sujan.s24@titagartala.ac.in", phone: "9436995566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9032",
+    teamName: "SupplyBlock NER",
+    edition: "Software Edition",
+    psId: "SIH-BC-06",
+    domain: "Blockchain & Agriculture",
+    title: "Blockchain Seed & Organic Fertilizer Traceability Ledger",
+    abstract: "Immutable distributed ledger verifying organic pineapple and queen pineapple consignments from grower cooperatives to export terminals.",
+    referralCode: "SIH-CSE-07",
+    referredBy: "Debashis Deb",
+    status: "Shortlisted Finalist",
+    juryScore: 79,
+    rank: 19,
+    leaderEmail: "abhi.cse23@titagartala.ac.in",
+    members: [
+      { name: "Abhi Debnath", roll: "23CSE003", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Male", email: "abhi.cse23@titagartala.ac.in", phone: "9862115566", isLeader: true },
+      { name: "Sunita Paul", roll: "23CSE017", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Female", email: "sunita.p23@titagartala.ac.in", phone: "9862116677", isLeader: false },
+      { name: "Gouranga Roy", roll: "24CSE015", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "gouranga.r24@titagartala.ac.in", phone: "9862117788", isLeader: false },
+      { name: "Dipika Das", roll: "24CSE031", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Female", email: "dipika.d24@titagartala.ac.in", phone: "9862118899", isLeader: false },
+      { name: "Chiranjit Saha", roll: "25CSE012", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "chiranjit.s25@titagartala.ac.in", phone: "9862119900", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9143",
+    teamName: "EcoCooler TIT",
+    edition: "Hardware Edition",
+    psId: "SIH-EC-13",
+    domain: "Renewable & Cold Storage",
+    title: "Zero-Electricity Evaporative Cold Storage for Vegetable Markets",
+    abstract: "Double-walled clay and zeolite chamber with thermodynamic siphon keeping green chillies and betel leaves fresh for 9 days without power.",
+    referralCode: "SIH-ME-04",
+    referredBy: "Srijayan Das",
+    status: "Shortlisted Finalist",
+    juryScore: 78,
+    rank: 20,
+    leaderEmail: "sagar.me23@titagartala.ac.in",
+    members: [
+      { name: "Sagar Ghosh", roll: "23ME011", program: "Degree", branch: "ME", dept: "ME", year: "3rd Year", gender: "Male", email: "sagar.me23@titagartala.ac.in", phone: "9612338899", isLeader: true },
+      { name: "Barnali Deb", roll: "23ME025", program: "Degree", branch: "ME", dept: "ME", year: "3rd Year", gender: "Female", email: "barnali.d23@titagartala.ac.in", phone: "9612339900", isLeader: false },
+      { name: "Partha Paul", roll: "24EE019", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "partha.p24@titagartala.ac.in", phone: "9612330011", isLeader: false },
+      { name: "Rupashree Saha", roll: "24ME034", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Female", email: "rupashree.s24@titagartala.ac.in", phone: "9612331122", isLeader: false },
+      { name: "Kaushik Das", roll: "25ME022", program: "Degree", branch: "ME", dept: "ME", year: "1st Year", gender: "Male", email: "kaushik.d25@titagartala.ac.in", phone: "9612332233", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9254",
+    teamName: "TrafficSense AI",
+    edition: "Software Edition",
+    psId: "SIH-AI-20",
+    domain: "AI & Smart City",
+    title: "Emergency Corridor Priority Traffic Signal Controller",
+    abstract: "Computer vision vehicle detection synchronizing traffic signals automatically to give uninterrupted green corridors for GB Pant Hospital ambulances.",
+    referralCode: "SIH-ECE-04",
+    referredBy: "Anurati Bhowmik",
+    status: "Meritorious Participant",
+    juryScore: 77,
+    rank: 21,
+    leaderEmail: "somnath.cse24@titagartala.ac.in",
+    members: [
+      { name: "Somnath Roy", roll: "24CSE011", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "somnath.cse24@titagartala.ac.in", phone: "9862447788", isLeader: true },
+      { name: "Puja Bhattacharjee", roll: "24CSE028", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Female", email: "puja.b24@titagartala.ac.in", phone: "9862448899", isLeader: false },
+      { name: "Binit Deb", roll: "24ECE009", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Male", email: "binit.d24@titagartala.ac.in", phone: "9862449900", isLeader: false },
+      { name: "Snehasish Das", roll: "25CSE016", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "snehasish.d25@titagartala.ac.in", phone: "9862440011", isLeader: false },
+      { name: "Priyanka Shil", roll: "25CSE033", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Female", email: "priyanka.s25@titagartala.ac.in", phone: "9862441122", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9365",
+    teamName: "WasteToWatt TIT",
+    edition: "Hardware Edition",
+    psId: "SIH-EN-18",
+    domain: "Green Energy & CleanTech",
+    title: "Microbial Fuel Cell Generating Electricity from Sewage Sludge",
+    abstract: "Carbon cloth electrode cells extracting electrons from municipal wastewater to continuously power river water quality sensor probes.",
+    referralCode: "SIH-EE-04",
+    referredBy: "Sujit Dey",
+    status: "Meritorious Participant",
+    juryScore: 76,
+    rank: 22,
+    leaderEmail: "sanchita.ee24@titagartala.ac.in",
+    members: [
+      { name: "Sanchita Das", roll: "24EE007", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Female", email: "sanchita.ee24@titagartala.ac.in", phone: "9774116677", isLeader: true },
+      { name: "Dipjyoti Paul", roll: "24EE022", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "dipjyoti.p24@titagartala.ac.in", phone: "9774117788", isLeader: false },
+      { name: "Milan Reang", roll: "24ME017", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Male", email: "milan.r24@titagartala.ac.in", phone: "9774118899", isLeader: false },
+      { name: "Archana Debnath", roll: "25EE014", program: "Degree", branch: "EE", dept: "EE", year: "1st Year", gender: "Female", email: "archana.d25@titagartala.ac.in", phone: "9774119900", isLeader: false },
+      { name: "Bishal Roy", roll: "25CE023", program: "Degree", branch: "CE", dept: "CE", year: "1st Year", gender: "Male", email: "bishal.r25@titagartala.ac.in", phone: "9774110011", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9476",
+    teamName: "TourTripura AR",
+    edition: "Software Edition",
+    psId: "SIH-AR-03",
+    domain: "AR/VR & Heritage Tourism",
+    title: "Augmented Reality Heritage Guide for Unakoti & Ujjayanta Palace",
+    abstract: "Smartphone AR app bringing stone sculptures to life with 3D historical narrations and geo-navigation around heritage tourist sites.",
+    referralCode: "SIH-ECE-05",
+    referredBy: "Deeptanu Shil",
+    status: "Meritorious Participant",
+    juryScore: 76,
+    rank: 23,
+    leaderEmail: "indrajit.cse23@titagartala.ac.in",
+    members: [
+      { name: "Indrajit Saha", roll: "23CSE012", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Male", email: "indrajit.cse23@titagartala.ac.in", phone: "9862661122", isLeader: true },
+      { name: "Sukriti Roy", roll: "23CSE035", program: "Degree", branch: "CSE", dept: "CSE", year: "3rd Year", gender: "Female", email: "sukriti.r23@titagartala.ac.in", phone: "9862662233", isLeader: false },
+      { name: "Prasenjit Deb", roll: "24CSE018", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "prasenjit.d24@titagartala.ac.in", phone: "9862663344", isLeader: false },
+      { name: "Mita Paul", roll: "24ECE023", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Female", email: "mita.p24@titagartala.ac.in", phone: "9862664455", isLeader: false },
+      { name: "Animesh Ghosh", roll: "25CSE028", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "animesh.g25@titagartala.ac.in", phone: "9862665566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9587",
+    teamName: "DisasterMesh Comms",
+    edition: "Hardware Edition",
+    psId: "SIH-CM-11",
+    domain: "Communication & Disaster Relief",
+    title: "Ad-Hoc Tactical Mesh Radio for Severe Cyclone Operations",
+    abstract: "Off-grid handheld packet radios operating on 433 MHz providing two-way text messaging and GPS location pings when cellular masts collapse.",
+    referralCode: "SIH-ECE-06",
+    referredBy: "Tanushree Das",
+    status: "Meritorious Participant",
+    juryScore: 75,
+    rank: 24,
+    leaderEmail: "sujit.ece23@titagartala.ac.in",
+    members: [
+      { name: "Sujit Debnath", roll: "23ECE009", program: "Degree", branch: "ECE", dept: "ECE", year: "3rd Year", gender: "Male", email: "sujit.ece23@titagartala.ac.in", phone: "9436774455", isLeader: true },
+      { name: "Pallavi Das", roll: "23ECE031", program: "Degree", branch: "ECE", dept: "ECE", year: "3rd Year", gender: "Female", email: "pallavi.d23@titagartala.ac.in", phone: "9436775566", isLeader: false },
+      { name: "Debashish Sil", roll: "24EE016", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "debashish.s24@titagartala.ac.in", phone: "9436776677", isLeader: false },
+      { name: "Rumki Roy", roll: "24ECE029", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Female", email: "rumki.r24@titagartala.ac.in", phone: "9436777788", isLeader: false },
+      { name: "Joydeep Saha", roll: "25ECE014", program: "Degree", branch: "ECE", dept: "ECE", year: "1st Year", gender: "Male", email: "joydeep.s25@titagartala.ac.in", phone: "9436778899", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9698",
+    teamName: "CropVision AI",
+    edition: "Software Edition",
+    psId: "SIH-AG-24",
+    domain: "Computer Vision & Agriculture",
+    title: "Smartphone Edge Leaf Pathology & Fertilizer Recommendation",
+    abstract: "Lightweight MobileNetV3 detecting blast disease, bacterial leaf blight, and brown spot on rice leaves with offline voice suggestions.",
+    referralCode: "SIH-EE-05",
+    referredBy: "Soubik Roy",
+    status: "Meritorious Participant",
+    juryScore: 75,
+    rank: 25,
+    leaderEmail: "bishal.cse24@titagartala.ac.in",
+    members: [
+      { name: "Bishal Chakraborty", roll: "24CSE007", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "bishal.cse24@titagartala.ac.in", phone: "9862337788", isLeader: true },
+      { name: "Papiya Ghosh", roll: "24CSE023", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Female", email: "papiya.g24@titagartala.ac.in", phone: "9862338899", isLeader: false },
+      { name: "Sourav Deb", roll: "24ECE017", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Male", email: "sourav.d24@titagartala.ac.in", phone: "9862339900", isLeader: false },
+      { name: "Sharmistha Saha", roll: "25CSE024", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Female", email: "sharmistha.s25@titagartala.ac.in", phone: "9862330011", isLeader: false },
+      { name: "Rupam Roy", roll: "25CSE039", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "rupam.r25@titagartala.ac.in", phone: "9862331122", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9709",
+    teamName: "SmartPothole Detector",
+    edition: "Software Edition",
+    psId: "SIH-RD-07",
+    domain: "Smart Roads & GIS",
+    title: "Crowdsourced Pothole & Road Roughness Mapping via Smartphone IMU",
+    abstract: "Background app recording vehicular accelerometer anomalies while commuters drive to map road distress for PWD maintenance planning.",
+    referralCode: "SIH-CE-04",
+    referredBy: "Magha Mog",
+    status: "Meritorious Participant",
+    juryScore: 74,
+    rank: 26,
+    leaderEmail: "paritosh.ce24@titagartala.ac.in",
+    members: [
+      { name: "Paritosh Paul", roll: "24CE006", program: "Degree", branch: "CE", dept: "CE", year: "2nd Year", gender: "Male", email: "paritosh.ce24@titagartala.ac.in", phone: "9436551122", isLeader: true },
+      { name: "Madhumita Roy", roll: "24CE021", program: "Degree", branch: "CE", dept: "CE", year: "2nd Year", gender: "Female", email: "madhumita.r24@titagartala.ac.in", phone: "9436552233", isLeader: false },
+      { name: "Subhojit Deb", roll: "24CSE014", program: "Degree", branch: "CSE", dept: "CSE", year: "2nd Year", gender: "Male", email: "subhojit.d24@titagartala.ac.in", phone: "9436553344", isLeader: false },
+      { name: "Sangita Das", roll: "25CE017", program: "Degree", branch: "CE", dept: "CE", year: "1st Year", gender: "Female", email: "sangita.d25@titagartala.ac.in", phone: "9436554455", isLeader: false },
+      { name: "Biplab Saha", roll: "25CE032", program: "Degree", branch: "CE", dept: "CE", year: "1st Year", gender: "Male", email: "biplab.s25@titagartala.ac.in", phone: "9436555566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9820",
+    teamName: "ElderCare TIT Wearable",
+    edition: "Hardware Edition",
+    psId: "SIH-HC-31",
+    domain: "Wearables & Healthcare",
+    title: "Low-Cost Smart Band with Real-Time Fall & Arrhythmia Detection",
+    abstract: "Wristband with PPG optical sensor and 6-axis gyroscope sending emergency SMS with GPS coordinates to family when elderly user falls.",
+    referralCode: "SIH-EE-06",
+    referredBy: "Raj Arnab Debnath",
+    status: "Meritorious Participant",
+    juryScore: 73,
+    rank: 27,
+    leaderEmail: "ankita.ece24@titagartala.ac.in",
+    members: [
+      { name: "Ankita Deb", roll: "24ECE004", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Female", email: "ankita.ece24@titagartala.ac.in", phone: "9774881122", isLeader: true },
+      { name: "Subrata Das", roll: "24ECE018", program: "Degree", branch: "ECE", dept: "ECE", year: "2nd Year", gender: "Male", email: "subrata.d24@titagartala.ac.in", phone: "9774882233", isLeader: false },
+      { name: "Tapas Roy", roll: "24EE024", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "tapas.r24@titagartala.ac.in", phone: "9774883344", isLeader: false },
+      { name: "Monalisa Ghosh", roll: "25ECE011", program: "Degree", branch: "ECE", dept: "ECE", year: "1st Year", gender: "Female", email: "monalisa.g25@titagartala.ac.in", phone: "9774884455", isLeader: false },
+      { name: "Prasanta Paul", roll: "25ECE029", program: "Degree", branch: "ECE", dept: "ECE", year: "1st Year", gender: "Male", email: "prasanta.p25@titagartala.ac.in", phone: "9774885566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9931",
+    teamName: "SolarCold MicroVan",
+    edition: "Hardware Edition",
+    psId: "SIH-RE-25",
+    domain: "Health Logistics & Solar",
+    title: "Solar-Powered Portable Active Cold Box for Rural Vaccine Delivery",
+    abstract: "Peltier thermoelectric cooling chest maintaining 2°C to 8°C continuously during remote hilly transit on rural two-wheelers.",
+    referralCode: "SIH-ME-01",
+    referredBy: "Purba Gangopadhyay",
+    status: "Meritorious Participant",
+    juryScore: 73,
+    rank: 28,
+    leaderEmail: "jayanta.me24@titagartala.ac.in",
+    members: [
+      { name: "Jayanta Ghosh", roll: "24ME008", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Male", email: "jayanta.me24@titagartala.ac.in", phone: "9612991122", isLeader: true },
+      { name: "Rupa Debnath", roll: "24ME023", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Female", email: "rupa.d24@titagartala.ac.in", phone: "9612992233", isLeader: false },
+      { name: "Sandip Paul", roll: "24EE017", program: "Degree", branch: "EE", dept: "EE", year: "2nd Year", gender: "Male", email: "sandip.p24@titagartala.ac.in", phone: "9612993344", isLeader: false },
+      { name: "Soma Das", roll: "25ME016", program: "Degree", branch: "ME", dept: "ME", year: "1st Year", gender: "Female", email: "soma.d25@titagartala.ac.in", phone: "9612994455", isLeader: false },
+      { name: "Aniket Roy", roll: "25ME031", program: "Degree", branch: "ME", dept: "ME", year: "1st Year", gender: "Male", email: "aniket.r25@titagartala.ac.in", phone: "9612995566", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9042",
+    teamName: "CivicIssue GeoPortal",
+    edition: "Software Edition",
+    psId: "SIH-GV-14",
+    domain: "GovTech & Citizen Services",
+    title: "AI-Powered Geo-Tagged Citizen Grievance Triage for Municipalities",
+    abstract: "Citizens snap photos of broken water mains or garbage overflow; automated computer vision classifies urgency and assigns directly to municipal ward officers.",
+    referralCode: "SIH-EE-07",
+    referredBy: "Barkha Das",
+    status: "Meritorious Participant",
+    juryScore: 72,
+    rank: 29,
+    leaderEmail: "debayan.cse25@titagartala.ac.in",
+    members: [
+      { name: "Debayan Roy", roll: "25CSE003", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "debayan.cse25@titagartala.ac.in", phone: "9862114455", isLeader: true },
+      { name: "Poulomi Saha", roll: "25CSE018", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Female", email: "poulomi.s25@titagartala.ac.in", phone: "9862115566", isLeader: false },
+      { name: "Sandeep Deb", roll: "25CSE032", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "sandeep.d25@titagartala.ac.in", phone: "9862116677", isLeader: false },
+      { name: "Susmita Paul", roll: "25ECE021", program: "Degree", branch: "ECE", dept: "ECE", year: "1st Year", gender: "Female", email: "susmita.p25@titagartala.ac.in", phone: "9862117788", isLeader: false },
+      { name: "Joydeb Shil", roll: "25CSE046", program: "Degree", branch: "CSE", dept: "CSE", year: "1st Year", gender: "Male", email: "joydeb.s25@titagartala.ac.in", phone: "9862118899", isLeader: false }
+    ]
+  },
+  {
+    teamId: "TIT-SIH26-9153",
+    teamName: "ThermalInsul EcoBrick",
+    edition: "Hardware Edition",
+    psId: "SIH-MT-17",
+    domain: "Sustainable Materials & Civil",
+    title: "Thermal Insulating Bricks Made from Waste Plastic & Rice Husk",
+    abstract: "Compressive moulding of shredded post-consumer plastics and agricultural rice husks producing lightweight masonry with 40% higher insulation.",
+    referralCode: "SIH-CE-03",
+    referredBy: "Bishal Das",
+    status: "Meritorious Participant",
+    juryScore: 71,
+    rank: 30,
+    leaderEmail: "rajdeep.ce24@titagartala.ac.in",
+    members: [
+      { name: "Rajdeep Bhowmik", roll: "24CE003", program: "Degree", branch: "CE", dept: "CE", year: "2nd Year", gender: "Male", email: "rajdeep.ce24@titagartala.ac.in", phone: "9436331122", isLeader: true },
+      { name: "Sonali Debbarma", roll: "24CE018", program: "Degree", branch: "CE", dept: "CE", year: "2nd Year", gender: "Female", email: "sonali.d24@titagartala.ac.in", phone: "9436332233", isLeader: false },
+      { name: "Abhijit Deb", roll: "24ME014", program: "Degree", branch: "ME", dept: "ME", year: "2nd Year", gender: "Male", email: "abhijit.d24@titagartala.ac.in", phone: "9436333344", isLeader: false },
+      { name: "Chaitali Roy", roll: "25CE009", program: "Degree", branch: "CE", dept: "CE", year: "1st Year", gender: "Female", email: "chaitali.r25@titagartala.ac.in", phone: "9436334455", isLeader: false },
+      { name: "Subham Saha", roll: "25CE028", program: "Degree", branch: "CE", dept: "CE", year: "1st Year", gender: "Male", email: "subham.s25@titagartala.ac.in", phone: "9436335566", isLeader: false }
+    ]
+  }
+];
+
+let storedTeams = [];
+try {
+  storedTeams = JSON.parse(localStorage.getItem("tit_sih_teams") || "[]");
+} catch(e) {}
+let registeredTeams = (Array.isArray(storedTeams) && storedTeams.length >= 30) ? storedTeams : OFFICIAL_TIT_30_TEAMS;
+localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
 let registeredStudents = JSON.parse(localStorage.getItem("tit_sih_students") || "[]");
 
 let db = null;
@@ -3383,21 +4052,37 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
   });
 
   // 5. Core Committee (Department Student Coordination Committee across ECE, CSE, EE, CE, ME)
-  const deptCoordinatorsList = (typeof liveCoordinatorsData !== "undefined" && Array.isArray(liveCoordinatorsData) && liveCoordinatorsData.length > 0)
-    ? liveCoordinatorsData
-    : [
-      { name: "Manash Debbarma", branch: "CSE", year: "4th Year", referralCode: "SIH-CSE-01" },
-      { name: "Purba Paul", branch: "ECE", year: "4th Year", referralCode: "SIH-ECE-01" },
-      { name: "Subham Debnath", branch: "CSE", year: "4th Year", referralCode: "SIH-CSE-02" },
-      { name: "Pooja Saha", branch: "CSE", year: "4th Year", referralCode: "SIH-CSE-03" },
-      { name: "Debojyoti Paul", branch: "CSE", year: "3rd Year", referralCode: "SIH-CSE-04" },
-      { name: "Ananya Roy", branch: "ECE", year: "3rd Year", referralCode: "SIH-ECE-02" },
-      { name: "Debarati Deb Purkayastha", branch: "ECE", year: "4th Year", referralCode: "SIH-ECE-03" },
-      { name: "Sourav Pal", branch: "ECE", year: "3rd Year", referralCode: "SIH-ECE-04" },
-      { name: "Soubik Roy", branch: "EE", year: "3rd Year", referralCode: "SIH-EE-01" },
-      { name: "Barkha Das", branch: "EE", year: "1st Year", referralCode: "SIH-EE-02" },
-      { name: "Sribrata Debnath", branch: "CSE", year: "1st Year", referralCode: "SIH-CSE-05" }
-    ];
+  const deptCoordinatorsList = [
+    { name: "Alak Das", branch: "ECE", year: "4th Year", referralCode: "SIH-ECE-01" },
+    { name: "Reshmi Karmakar", branch: "ECE", year: "4th Year", referralCode: "SIH-ECE-02" },
+    { name: "Sanjit Noatia", branch: "CSE", year: "4th Year", referralCode: "SIH-CSE-01" },
+    { name: "Manash Debbarma", branch: "CE", year: "4th Year", referralCode: "SIH-CE-01" },
+    { name: "Ronit Saha", branch: "CSE", year: "1st Year", referralCode: "SIH-CSE-02" },
+    { name: "Neelotpal Banik", branch: "ECE", year: "3rd Year", referralCode: "SIH-ECE-03" },
+    { name: "Sambhu Debnath", branch: "ECE", year: "1st Year", referralCode: "SIH-ECE-04" },
+    { name: "Sreya Deb", branch: "EE", year: "3rd Year", referralCode: "SIH-EE-01" },
+    { name: "Prena Saha", branch: "CSE", year: "4th Year", referralCode: "SIH-CSE-03" },
+    { name: "Anurati Bhowmik", branch: "ECE", year: "2nd Year", referralCode: "SIH-ECE-05" },
+    { name: "Sneha Debnath", branch: "EE", year: "4th Year", referralCode: "SIH-EE-02" },
+    { name: "Simran Das", branch: "EE", year: "2nd Year", referralCode: "SIH-EE-03" },
+    { name: "Sujit Dey", branch: "EE", year: "4th Year", referralCode: "SIH-EE-04" },
+    { name: "Soubik Roy", branch: "EE", year: "3rd Year", referralCode: "SIH-EE-05" },
+    { name: "Sneha Chaudhuri", branch: "CSE", year: "1st Year", referralCode: "SIH-CSE-04" },
+    { name: "Raj Arnab Debnath", branch: "EE", year: "2nd Year", referralCode: "SIH-EE-06" },
+    { name: "Diya Das", branch: "CSE", year: "3rd Year", referralCode: "SIH-CSE-05" },
+    { name: "Kishore Majumder", branch: "CE", year: "2nd Year", referralCode: "SIH-CE-02" },
+    { name: "Prabal Kanti Paul", branch: "ME", year: "3rd Year", referralCode: "SIH-ME-01" },
+    { name: "Deeptanu Shil", branch: "ECE", year: "2nd Year", referralCode: "SIH-ECE-06" },
+    { name: "Purba Gangopadhyay", branch: "ME", year: "3rd Year", referralCode: "SIH-ME-02" },
+    { name: "Gourab Das", branch: "CSE", year: "3rd Year", referralCode: "SIH-CSE-06" },
+    { name: "Tanushree Das", branch: "ECE", year: "3rd Year", referralCode: "SIH-ECE-07" },
+    { name: "Barkha Das", branch: "EE", year: "1st Year", referralCode: "SIH-EE-07" },
+    { name: "Pushpal Bhattacharjee", branch: "ME", year: "2nd Year", referralCode: "SIH-ME-03" },
+    { name: "Srijayan Das", branch: "ME", year: "2nd Year", referralCode: "SIH-ME-04" },
+    { name: "Debashis Deb", branch: "CSE", year: "2nd Year", referralCode: "SIH-CSE-07" },
+    { name: "Bishal Das", branch: "CE", year: "3rd Year", referralCode: "SIH-CE-03" },
+    { name: "Magha Mog", branch: "CE", year: "2nd Year", referralCode: "SIH-CE-04" }
+  ];
 
   deptCoordinatorsList.forEach((coord) => {
     const certId = formatCertId(serialCounter++);
@@ -6574,6 +7259,8 @@ function initPortalCore() {
   initSignatorySync();
   syncCommitteeCertCardBadges();
   checkUrlHashRouting();
+  if (typeof renderPublicLeaderboard === 'function') renderPublicLeaderboard();
+  if (typeof searchPublicCertificates === 'function') searchPublicCertificates('');
 }
 
 if (document.readyState === "loading") {
@@ -6586,4 +7273,387 @@ if (document.readyState === "loading") {
 
 
 
+
+
+/* ==========================================================================
+   PUBLIC FINALE LEADERBOARD & CERTIFICATES HUB ENGINE
+   ========================================================================== */
+let certHubCategory = "all";
+let certHubSearch = "";
+
+window.renderPublicLeaderboard = function renderPublicLeaderboard() {
+  const container = document.getElementById("leaderboard-container");
+  if (!container) return;
+
+  const teams = [...registeredTeams].sort((a, b) => (b.juryScore || 0) - (a.juryScore || 0));
+
+  const top1 = teams[0] || {};
+  const top2 = teams[1] || {};
+  const top3 = teams[2] || {};
+
+  container.innerHTML = `
+    <!-- Top 3 Podium -->
+    <div class="leaderboard-podium-grid">
+      <!-- 2nd Place -->
+      <div class="podium-card podium-silver">
+        <div class="podium-badge"><i class="fa-solid fa-medal"></i> 2nd Place • 1st Runner Up</div>
+        <div class="podium-trophy text-silver"><i class="fa-solid fa-trophy"></i></div>
+        <div class="podium-cash">₹2,000 CASH</div>
+        <h3 class="podium-team-name">${escapeHtml(top2.teamName || "AgriBot TIT")}</h3>
+        <p class="podium-title">${escapeHtml(top2.title || "Innovation Project")}</p>
+        <div class="podium-score-pill"><i class="fa-solid fa-star"></i> Score: <strong>${top2.juryScore || 94}</strong>/100</div>
+        <div class="podium-status-badge">${escapeHtml(top2.edition || "Hardware Edition")}</div>
+        <button class="btn-3d-primary" onclick="openSquadTeamCertificate('${top2.teamId}')" style="width:100%; justify-content:center; margin-top:14px; font-size:0.84rem; padding:8px 12px;">
+          <i class="fa-solid fa-stamp"></i> View Team Certificate
+        </button>
+      </div>
+
+      <!-- 1st Place Champion -->
+      <div class="podium-card podium-gold">
+        <div class="podium-crown"><i class="fa-solid fa-crown"></i></div>
+        <div class="podium-badge gold-badge"><i class="fa-solid fa-trophy"></i> 1st Place • Champion</div>
+        <div class="podium-trophy text-gold"><i class="fa-solid fa-trophy"></i></div>
+        <div class="podium-cash">₹3,000 CASH</div>
+        <h3 class="podium-team-name" style="font-size:1.4rem;">${escapeHtml(top1.teamName || "ByteCraft TIT")}</h3>
+        <p class="podium-title">${escapeHtml(top1.title || "AI Landslide Monitoring")}</p>
+        <div class="podium-score-pill gold-score"><i class="fa-solid fa-star"></i> Score: <strong>${top1.juryScore || 96}</strong>/100</div>
+        <div class="podium-status-badge gold-status">Grand Champion • SIH Nationals Nominee</div>
+        <button class="btn-3d-primary" onclick="openSquadTeamCertificate('${top1.teamId}')" style="width:100%; justify-content:center; margin-top:14px; font-size:0.88rem; padding:10px 14px; background:linear-gradient(135deg,#059669,#10b981);">
+          <i class="fa-solid fa-stamp"></i> View Winner Certificate
+        </button>
+      </div>
+
+      <!-- 3rd Place -->
+      <div class="podium-card podium-bronze">
+        <div class="podium-badge"><i class="fa-solid fa-award"></i> 3rd Place • 2nd Runner Up</div>
+        <div class="podium-trophy text-bronze"><i class="fa-solid fa-trophy"></i></div>
+        <div class="podium-cash">₹1,000 CASH</div>
+        <h3 class="podium-team-name">${escapeHtml(top3.teamName || "RoboTIT Edge Systems")}</h3>
+        <p class="podium-title">${escapeHtml(top3.title || "IoT Telemetry Gateway")}</p>
+        <div class="podium-score-pill"><i class="fa-solid fa-star"></i> Score: <strong>${top3.juryScore || 92}</strong>/100</div>
+        <div class="podium-status-badge">${escapeHtml(top3.edition || "Hardware Edition")}</div>
+        <button class="btn-3d-primary" onclick="openSquadTeamCertificate('${top3.teamId}')" style="width:100%; justify-content:center; margin-top:14px; font-size:0.84rem; padding:8px 12px;">
+          <i class="fa-solid fa-stamp"></i> View Team Certificate
+        </button>
+      </div>
+    </div>
+
+    <!-- Complete 30-Team Leaderboard Table -->
+    <div class="leaderboard-table-card">
+      <div class="leaderboard-table-header">
+        <div>
+          <h3 style="font-size:1.25rem; font-weight:800; color:var(--text-main); margin:0 0 4px;">
+            <i class="fa-solid fa-list-ol" style="color:#059669;"></i> Complete Standings of All 30 Teams
+          </h3>
+          <p style="margin:0; font-size:0.82rem; color:var(--text-muted);">Evaluation scores awarded by faculty & expert jury panel</p>
+        </div>
+        <div style="font-family:var(--font-mono); font-size:0.82rem; font-weight:700; background:#ecfdf5; color:#065f46; padding:6px 14px; border-radius:99px; border:1px solid #a7f3d0;">
+          30 Teams Evaluated
+        </div>
+      </div>
+
+      <div class="table-responsive" style="max-height: 520px; overflow-y: auto;">
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th style="width:60px; text-align:center;">Rank</th>
+              <th>Squad Name & Project Title</th>
+              <th>Domain / Edition</th>
+              <th>Team Leader</th>
+              <th style="text-align:center;">Jury Score</th>
+              <th>Official Status</th>
+              <th style="text-align:right;">Certificate</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${teams.map((t, idx) => {
+              const rank = idx + 1;
+              const leader = (t.members && t.members[0]) ? t.members[0].name : "Student Leader";
+              const isTop1 = rank === 1;
+              const isTop2 = rank === 2;
+              const isTop3 = rank === 3;
+              const isNominated = rank <= 10;
+              
+              let rankBadgeClass = "rank-normal";
+              if (isTop1) rankBadgeClass = "rank-1";
+              else if (isTop2) rankBadgeClass = "rank-2";
+              else if (isTop3) rankBadgeClass = "rank-3";
+
+              return `
+                <tr class="${isTop1 ? 'row-winner' : (isTop2 || isTop3 ? 'row-podium' : '')}">
+                  <td style="text-align:center;">
+                    <span class="leaderboard-rank-badge ${rankBadgeClass}">
+                      ${isTop1 ? '🥇 1' : isTop2 ? '🥈 2' : isTop3 ? '🥉 3' : '#' + rank}
+                    </span>
+                  </td>
+                  <td>
+                    <div style="font-weight:800; color:var(--text-main); font-size:0.92rem;">${escapeHtml(t.teamName)}</div>
+                    <div style="font-size:0.75rem; color:var(--text-muted); max-width:320px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                      ${escapeHtml(t.title || t.psId || "SIH Innovation")}
+                    </div>
+                  </td>
+                  <td>
+                    <span style="font-size:0.78rem; font-weight:700; color:#0369a1; background:#e0f2fe; padding:2px 8px; border-radius:6px; display:inline-block;">
+                      ${escapeHtml(t.domain || t.edition || "Innovation")}
+                    </span>
+                  </td>
+                  <td>
+                    <div style="font-size:0.84rem; font-weight:700; color:var(--text-main);">${escapeHtml(leader)}</div>
+                    <div style="font-size:0.72rem; color:var(--text-muted); font-family:var(--font-mono);">${t.teamId}</div>
+                  </td>
+                  <td style="text-align:center;">
+                    <span class="score-badge-cell ${isTop1 ? 'score-top1' : (isTop2 || isTop3 ? 'score-top3' : '')}">
+                      ${t.juryScore || 75} / 100
+                    </span>
+                  </td>
+                  <td>
+                    ${isTop1 ? '<span class="status-pill status-champion"><i class="fa-solid fa-crown"></i> Champion</span>' :
+                      isTop2 ? '<span class="status-pill status-runner"><i class="fa-solid fa-medal"></i> 1st Runner Up</span>' :
+                      isTop3 ? '<span class="status-pill status-runner"><i class="fa-solid fa-award"></i> 2nd Runner Up</span>' :
+                      isNominated ? '<span class="status-pill status-nominated"><i class="fa-solid fa-paper-plane"></i> SIH Nominated</span>' :
+                      '<span class="status-pill status-participated"><i class="fa-solid fa-check"></i> Participated</span>'
+                    }
+                  </td>
+                  <td style="text-align:right; white-space:nowrap;">
+                    <button class="btn-3d-primary" onclick="openSquadTeamCertificate('${t.teamId}')" style="padding:4px 10px; font-size:0.75rem;">
+                      <i class="fa-solid fa-stamp"></i> Certificate
+                    </button>
+                  </td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+};
+
+window.filterCertHubCategory = function filterCertHubCategory(cat) {
+  certHubCategory = cat || "all";
+  document.querySelectorAll(".cert-hub-filter-btn").forEach(btn => {
+    if (btn.getAttribute("data-cat") === certHubCategory) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
+  window.searchPublicCertificates(certHubSearch);
+};
+
+window.searchPublicCertificates = function searchPublicCertificates(query) {
+  certHubSearch = (query || "").trim().toLowerCase();
+  const container = document.getElementById("public-cert-results-container");
+  if (!container) return;
+
+  const registry = window.generateMasterCertificatesRegistry();
+  const searchQ = certHubSearch;
+
+  // 1. Gather all individual student participants (151+ students across 30 squads)
+  const allParticipants = [];
+  registeredTeams.forEach(t => {
+    const members = Array.isArray(t.members) ? t.members : [];
+    members.forEach((m, mIdx) => {
+      const indivCert = registry.find(c => (c.category === "Individual Participant" || c.category === "Winner") && c.teamId === t.teamId && c.memberIndex === mIdx);
+      const certId = indivCert ? indivCert.certId : ("TIT/INTSIH/IND-" + (mIdx + 1));
+      const isLeader = m.isLeader || mIdx === 0;
+
+      allParticipants.push({
+        name: m.name,
+        roll: m.roll || "",
+        branch: m.branch || m.dept || t.domain || "TIT",
+        year: m.year || "Student",
+        isLeader: isLeader,
+        teamId: t.teamId,
+        teamName: t.teamName,
+        domain: t.domain || t.edition || "Innovation",
+        memberIndex: mIdx,
+        certId: certId,
+        isWinner: indivCert && indivCert.category === "Winner",
+        rank: indivCert && indivCert.rank ? indivCert.rank : null,
+        awardTitle: indivCert && indivCert.awardTitle ? indivCert.awardTitle : null
+      });
+    });
+  });
+
+  // 2. Gather Core Committee & Technical Leads
+  const allCoords = registry.filter(c => c.category === "Core Committee");
+  const allLeads = registry.filter(c => c.category === "Technical Lead");
+
+  // 3. Search Filtering
+  let filteredParticipants = allParticipants;
+  let filteredCoords = allCoords;
+  let filteredLeads = allLeads;
+
+  if (searchQ) {
+    filteredParticipants = allParticipants.filter(p =>
+      (p.name || "").toLowerCase().includes(searchQ) ||
+      (p.roll || "").toLowerCase().includes(searchQ) ||
+      (p.teamName || "").toLowerCase().includes(searchQ) ||
+      (p.teamId || "").toLowerCase().includes(searchQ) ||
+      (p.branch || "").toLowerCase().includes(searchQ) ||
+      (p.certId || "").toLowerCase().includes(searchQ)
+    );
+
+    filteredCoords = allCoords.filter(c =>
+      (c.recipientName || "").toLowerCase().includes(searchQ) ||
+      (c.department || "").toLowerCase().includes(searchQ) ||
+      (c.certId || "").toLowerCase().includes(searchQ)
+    );
+
+    filteredLeads = allLeads.filter(c =>
+      (c.recipientName || "").toLowerCase().includes(searchQ) ||
+      (c.recipientRole || "").toLowerCase().includes(searchQ) ||
+      (c.department || "").toLowerCase().includes(searchQ) ||
+      (c.certId || "").toLowerCase().includes(searchQ)
+    );
+  }
+
+  const showParticipants = certHubCategory === "all" || certHubCategory === "participants";
+  const showCoords = certHubCategory === "all" || certHubCategory === "coords";
+  const showLeads = certHubCategory === "all" || certHubCategory === "leads";
+
+  let html = "";
+
+  // =========================================================================
+  // SECTION 1: PARTICIPANTS (Individual Certificates for All Team Members)
+  // =========================================================================
+  if (showParticipants && filteredParticipants.length > 0) {
+    html += `
+      <div class="cert-hub-section-block">
+        <div class="cert-hub-block-title">
+          <i class="fa-solid fa-user-graduate" style="color: #059669;"></i> Participants (${filteredParticipants.length} Student Innovators)
+        </div>
+        <div class="cert-hub-leads-grid">
+          ${filteredParticipants.map(p => `
+            <div class="cert-hub-person-card">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; gap:6px; flex-wrap:wrap;">
+                <span class="cert-hub-certid-tag">${p.certId}</span>
+                ${p.isWinner ? `<span style="font-size:0.72rem; color:#92400e; background:#fef3c7; border:1px solid #fde68a; font-weight:800; padding:3px 8px; border-radius:99px;"><i class="fa-solid fa-trophy"></i> Winner</span>` : (p.isLeader ? `<span style="font-size:0.72rem; color:#065f46; background:#ecfdf5; border:1px solid #a7f3d0; font-weight:800; padding:3px 8px; border-radius:99px;"><i class="fa-solid fa-crown"></i> Team Leader</span>` : `<span style="font-size:0.72rem; color:#475569; background:#f1f5f9; font-weight:700; padding:3px 8px; border-radius:99px;">Participant</span>`)}
+              </div>
+              <h4 style="font-size:1.05rem; font-weight:800; color:var(--text-main); margin:0 0 4px;">${escapeHtml(p.name)}</h4>
+              <p style="font-size:0.84rem; color:#059669; font-weight:700; margin:0 0 4px;">
+                <i class="fa-solid fa-users" style="font-size:0.78rem;"></i> Team ${escapeHtml(p.teamName)}
+              </p>
+              <p style="font-size:0.74rem; color:var(--text-muted); margin:0 0 14px;">
+                ${escapeHtml(p.branch)} • ${escapeHtml(p.domain)}
+              </p>
+              <button class="btn-3d-primary" onclick="openStudentIndividualCertificate('${p.teamId}', ${p.memberIndex})" style="width:100%; justify-content:center; padding:8px 12px; font-size:0.8rem;">
+                <i class="fa-solid fa-stamp"></i> View Certificate
+              </button>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  // =========================================================================
+  // SECTION 2: CORE COMMITTEE (Department Student Coordinators)
+  // =========================================================================
+  if (showCoords && filteredCoords.length > 0) {
+    html += `
+      <div class="cert-hub-section-block">
+        <div class="cert-hub-block-title">
+          <i class="fa-solid fa-id-badge" style="color: #16a34a;"></i> Core Committee (${filteredCoords.length} Coordinators)
+        </div>
+        <div class="cert-hub-leads-grid">
+          ${filteredCoords.map(c => `
+            <div class="cert-hub-person-card">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; gap:6px; flex-wrap:wrap;">
+                <span class="cert-hub-certid-tag">${c.certId}</span>
+                <span style="font-size:0.72rem; color:#166534; background:#f0fdf4; border:1px solid #bbf7d0; font-weight:800; padding:3px 8px; border-radius:99px;"><i class="fa-solid fa-id-badge"></i> Coordinator</span>
+              </div>
+              <h4 style="font-size:1.05rem; font-weight:800; color:var(--text-main); margin:0 0 4px;">${escapeHtml(c.recipientName)}</h4>
+              <p style="font-size:0.84rem; color:#059669; font-weight:700; margin:0 0 4px;">Core Committee Member</p>
+              <p style="font-size:0.74rem; color:var(--text-muted); margin:0 0 14px;">${escapeHtml(c.department)}</p>
+              <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('${c.recipientName}', '${c.recipientRole}', '${c.department}', '${c.certId}')" style="width:100%; justify-content:center; padding:8px 12px; font-size:0.8rem;">
+                <i class="fa-solid fa-stamp"></i> View Certificate
+              </button>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  // =========================================================================
+  // SECTION 3: TECHNICAL LEADS (Functional Event & Domain Leads)
+  // =========================================================================
+  if (showLeads && filteredLeads.length > 0) {
+    html += `
+      <div class="cert-hub-section-block">
+        <div class="cert-hub-block-title">
+          <i class="fa-solid fa-microchip" style="color: #7c3aed;"></i> Technical Leads (${filteredLeads.length} Leads)
+        </div>
+        <div class="cert-hub-leads-grid">
+          ${filteredLeads.map(l => `
+            <div class="cert-hub-person-card">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; gap:6px; flex-wrap:wrap;">
+                <span class="cert-hub-certid-tag">${l.certId}</span>
+                <span style="font-size:0.72rem; color:#6b21a8; background:#faf5ff; border:1px solid #e9d5ff; font-weight:800; padding:3px 8px; border-radius:99px;"><i class="fa-solid fa-microchip"></i> Lead</span>
+              </div>
+              <h4 style="font-size:1.05rem; font-weight:800; color:var(--text-main); margin:0 0 4px;">${escapeHtml(l.recipientName)}</h4>
+              <p style="font-size:0.84rem; color:#059669; font-weight:700; margin:0 0 4px;">${escapeHtml(l.recipientRole)}</p>
+              <p style="font-size:0.74rem; color:var(--text-muted); margin:0 0 14px; line-height:1.4;">${escapeHtml(l.department)}</p>
+              <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('${l.recipientName}', '${l.recipientRole}', '${l.department}', '${l.certId}')" style="width:100%; justify-content:center; padding:8px 12px; font-size:0.8rem;">
+                <i class="fa-solid fa-stamp"></i> View Certificate
+              </button>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  if (!html) {
+    html = `
+      <div style="text-align:center; padding:48px 20px; background:var(--bg-card); border-radius:16px; border:1px solid var(--border-subtle);">
+        <i class="fa-solid fa-magnifying-glass" style="font-size:2.2rem; color:#94a3b8; margin-bottom:12px;"></i>
+        <h4 style="font-size:1.1rem; font-weight:800; color:var(--text-main); margin:0 0 6px;">No Certificates Found</h4>
+        <p style="color:var(--text-muted); font-size:0.86rem; margin:0;">No participants or committee members matched "${escapeHtml(searchQ)}". Try searching by another student name or team title.</p>
+      </div>
+    `;
+  }
+
+  container.innerHTML = html;
+};
+
+// ==========================================================================
+// WALL OF FAME PHOTO LIGHTBOX MODAL
+// ==========================================================================
+window.openPhotoLightbox = function(src, caption) {
+  const modal = document.getElementById('photo-lightbox-modal');
+  const img = document.getElementById('lightbox-img');
+  const cap = document.getElementById('lightbox-caption');
+  if (modal && img) {
+    img.src = src;
+    if (cap) {
+      if (caption) {
+        cap.textContent = caption;
+        cap.style.display = 'inline-block';
+      } else {
+        cap.textContent = '';
+        cap.style.display = 'none';
+      }
+    }
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+};
+
+window.closePhotoLightbox = function() {
+  const modal = document.getElementById('photo-lightbox-modal');
+  if (modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+};
+
+// Close lightbox on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    window.closePhotoLightbox();
+  }
+});
 
