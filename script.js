@@ -768,11 +768,61 @@ const OFFICIAL_TIT_30_TEAMS = [
   }
 ];
 
+
+// ==========================================================================
+// NON-PARTICIPATING TEAMS EXCLUSION FILTER (e.g. TerraNex - TIT-SIH26-6579)
+// ==========================================================================
+function isNonParticipatingTeam(team) {
+  if (!team) return false;
+  const id = String(team.teamId || "").trim().toLowerCase();
+  const name = String(team.teamName || "").trim().toLowerCase();
+  const title = String(team.title || "").trim().toLowerCase();
+  const leader = String((team.members && team.members[0] ? team.members[0].name : (team.leaderName || "")) || "").trim().toLowerCase();
+  
+  return (
+    id === "tit-sih26-6579" ||
+    id.includes("6579") ||
+    name === "terranex" ||
+    name.includes("terranex") ||
+    leader.includes("koushiki") ||
+    title.includes("urban parcel mapping") ||
+    title.includes("cadastral feature")
+  );
+}
+
+function purgeNonParticipatingTeams() {
+  try {
+    let teams = JSON.parse(localStorage.getItem("tit_sih_teams") || "[]");
+    if (Array.isArray(teams)) {
+      const initialLen = teams.length;
+      teams = teams.filter(t => !isNonParticipatingTeam(t));
+      if (teams.length !== initialLen) {
+        localStorage.setItem("tit_sih_teams", JSON.stringify(teams));
+      }
+    }
+    if (typeof registeredTeams !== "undefined" && Array.isArray(registeredTeams)) {
+      registeredTeams = registeredTeams.filter(t => !isNonParticipatingTeam(t));
+    }
+  } catch (e) {}
+
+  if (typeof isFirebaseActive !== "undefined" && isFirebaseActive && typeof db !== "undefined" && db) {
+    db.collection("teams").doc("TIT-SIH26-6579").delete().catch(() => {});
+    db.collection("teams").where("teamName", "==", "TerraNex").get().then(snapshot => {
+      snapshot.forEach(doc => doc.ref.delete().catch(() => {}));
+    }).catch(() => {});
+  }
+}
+purgeNonParticipatingTeams();
+
 let storedTeams = [];
 try {
   storedTeams = JSON.parse(localStorage.getItem("tit_sih_teams") || "[]");
+  if (Array.isArray(storedTeams)) {
+    storedTeams = storedTeams.filter(t => !isNonParticipatingTeam(t));
+  }
 } catch(e) {}
 let registeredTeams = (Array.isArray(storedTeams) && storedTeams.length >= 30) ? storedTeams : OFFICIAL_TIT_30_TEAMS;
+registeredTeams = registeredTeams.filter(t => !isNonParticipatingTeam(t));
 // Normalize scores to be out of 20
 registeredTeams.forEach(t => {
   if (t && t.juryScore !== undefined && t.juryScore !== null && Number(t.juryScore) > 20) {
@@ -1322,8 +1372,13 @@ function startFirebaseRealtimeListeners() {
         cloudTeams.push(doc.data());
       });
 
-      // Always sync the exact array from cloud (even when teams are deleted or collection is empty)
-      registeredTeams = cloudTeams;
+      // Filter out non-participating teams and purge from Firestore if present
+      cloudTeams.forEach(t => {
+        if (isNonParticipatingTeam(t) && db) {
+          if (t.teamId) db.collection("teams").doc(t.teamId).delete().catch(() => {});
+        }
+      });
+      registeredTeams = cloudTeams.filter(t => !isNonParticipatingTeam(t));
       localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
       renderStudentDashboard();
 
@@ -3855,9 +3910,9 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
         map.set(key, t);
       }
     });
-    allTeams = Array.from(map.values());
+    allTeams = Array.from(map.values()).filter(t => !isNonParticipatingTeam(t));
   } catch (e) {
-    allTeams = (typeof registeredTeams !== "undefined" && Array.isArray(registeredTeams)) ? registeredTeams : [];
+    allTeams = (typeof registeredTeams !== "undefined" && Array.isArray(registeredTeams)) ? registeredTeams.filter(t => !isNonParticipatingTeam(t)) : [];
   }
 
   // Identify Winner teams if explicitly set or top scored, or default top 3
@@ -4155,6 +4210,10 @@ window.openPublicCommitteeCertificate = (name, role, dept, certId) => {
 };
 
 window.openStudentIndividualCertificate = (teamId, memberIndex) => {
+  if (isNonParticipatingTeam({ teamId: teamId })) {
+    alert("❌ This team did not participate in the SIH 2026 Internal Hackathon and is not eligible for certificates.");
+    return;
+  }
   const registry = window.generateMasterCertificatesRegistry();
   const targetIndex = memberIndex !== undefined ? memberIndex : 0;
 
@@ -4213,6 +4272,10 @@ window.openStudentIndividualCertificate = (teamId, memberIndex) => {
 };
 
 window.openSquadTeamCertificate = (teamId) => {
+  if (isNonParticipatingTeam({ teamId: teamId })) {
+    alert("❌ Team TerraNex (TIT-SIH26-6579) did not participate in the SIH 2026 Internal Hackathon and is not eligible for certificates.");
+    return;
+  }
   const registry = window.generateMasterCertificatesRegistry();
 
   // Check if winner team (001, 002, 003)
@@ -7566,6 +7629,7 @@ function syncCommitteeCertCardBadges() {
 
 // Hook initialization on DOM ready
 function initPortalCore() {
+  purgeNonParticipatingTeams();
   initTeammateBoard();
   initSignatorySync();
   syncCommitteeCertCardBadges();
@@ -7596,7 +7660,7 @@ window.renderPublicLeaderboard = function renderPublicLeaderboard() {
   const container = document.getElementById("leaderboard-container");
   if (!container) return;
 
-  const teams = [...registeredTeams].sort((a, b) => (b.juryScore || 0) - (a.juryScore || 0));
+  const teams = [...registeredTeams].filter(t => !isNonParticipatingTeam(t)).sort((a, b) => (Number(b.juryScore) || 0) - (Number(a.juryScore) || 0));
 
   const top1 = teams[0] || {};
   const top2 = teams[1] || {};
@@ -7772,7 +7836,7 @@ window.searchPublicCertificates = function searchPublicCertificates(query) {
   const searchQ = certHubSearch;
 
   // 1. Prepare Teams for Participants Section
-  let filteredTeams = registeredTeams.map((t, idx) => {
+  let filteredTeams = registeredTeams.filter(t => !isNonParticipatingTeam(t)).map((t, idx) => {
     const members = Array.isArray(t.members) ? t.members : [];
     const teamCert = registry.find(c => c.category === "Team Squad" && c.teamId === t.teamId);
     const certId = teamCert ? teamCert.certId : ("TIT/INTSIH/SQ-" + t.teamId);
