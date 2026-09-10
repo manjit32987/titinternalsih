@@ -3407,23 +3407,19 @@ let signatoryState = {
 window._principalCanvasObj = null;
 window._secretaryCanvasObj = null;
 
-// Official High-Resolution Calligraphy SVG E-Signatures
+// Official High-Resolution Calligraphy SVG E-Signatures (Encoded in clean Base64 to prevent HTML tag attribute escaping)
 const PRESET_SIGNATURES = {
-  principalSvg: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 85" width="320" height="85">
-    <path d="M25 45 C45 20, 60 15, 65 38 C70 58, 48 72, 38 62 C30 52, 42 22, 60 20 C75 18, 88 50, 95 62 M82 38 L110 38 M120 22 L115 65 M125 42 Q140 28 152 42 T175 42 M182 32 L185 62 M195 42 C205 32, 220 32, 228 48 C235 62, 248 38, 260 42 C272 46, 280 60, 292 48" fill="none" stroke="%230b2545" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M30 68 Q160 58 295 65" fill="none" stroke="%230b2545" stroke-width="2.2" stroke-linecap="round"/>
-    <circle cx="285" cy="64" r="2.5" fill="%230b2545"/>
-    <circle cx="295" cy="65" r="2.5" fill="%230b2545"/>
-    <text x="210" y="78" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" fill="%23059669" letter-spacing="1">TIT/SPOC/VERIFIED-ESIGN</text>
-  </svg>`,
-  secretarySvg: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 85" width="320" height="85">
-    <path d="M28 58 L42 18 M32 36 Q60 22 75 48 M45 42 Q70 65 92 40 M98 48 Q108 30 118 48 T138 48 M142 22 L142 62 M145 42 Q158 28 170 42 T192 42 M198 45 Q212 26 228 45 T255 45 M262 30 L262 62 M268 45 Q282 32 295 45" fill="none" stroke="%230b2545" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M35 68 Q165 56 290 64" fill="none" stroke="%230b2545" stroke-width="2.2" stroke-linecap="round"/>
-    <circle cx="282" cy="63" r="2.5" fill="%230b2545"/>
-    <circle cx="292" cy="64" r="2.5" fill="%230b2545"/>
-    <text x="210" y="78" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" fill="%23059669" letter-spacing="1">TIT/TECH/VERIFIED-ESIGN</text>
-  </svg>`
+  principalSvg: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMjAgODUiIHdpZHRoPSIzMjAiIGhlaWdodD0iODUiPgogIDxwYXRoIGQ9Ik0yNSA0NSBDNDUgMjAsIDYwIDE1LCA2NSAzOCBDNzAgNTgsIDQ4IDcyLCAzOCA2MiBDMzAgNTIsIDQyIDIyLCA2MCAyMCBDNzUgMTgsIDg4IDUwLCA5NSA2MiBNODIgMzggTDExMCAzOCBNMTIwIDIyIEwxMTUgNjUgTTEyNSA0MiBRMTQwIDI4IDE1MiA0MiBUMTc1IDQyIE0xODIgMzIgTDE4NSA2MiBNMTk1IDQyIEMyMDUgMzIsIDIyMCAzMiwgMjI4IDQ4IEMyMzUgNjIsIDI0OCAzOCwgMjYwIDQyIEMyNzIgNDYsIDI4MCA2MCwgMjkyIDQ4IiBmaWxsPSJub25lIiBzdHJva2U9IiMwYjI1NDUiIHN0cm9rZS13aWR0aD0iMi42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8cGF0aCBkPSJNMzAgNjggUTE2MCA1OCAyOTUgNjUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBiMjU0NSIgc3Ryb2tlLXdpZHRoPSIyLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxjaXJjbGUgY3g9IjI4NSIgY3k9IjY0IiByPSIyLjUiIGZpbGw9IiMwYjI1NDUiLz4KICA8Y2lyY2xlIGN4PSIyOTUiIGN5PSI2NSIgcj0iMi41IiBmaWxsPSIjMGIyNTQ1Ii8+CiAgPHRleHQgeD0iMjEwIiB5PSI3OCIgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsIG1vbm9zcGFjZSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMDU5NjY5IiBsZXR0ZXItc3BhY2luZz0iMSI+VElUL1NQT0MvVkVSSUZJRUQtRVNJR048L3RleHQ+Cjwvc3ZnPg==",
+  secretarySvg: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMjAgODUiIHdpZHRoPSIzMjAiIGhlaWdodD0iODUiPgogIDxwYXRoIGQ9Ik0yOCA1OCBMNDIgMTggTTMyIDM2IFE2MCAyMiA3NSA0OCBNNDUgNDIgUTcwIDY1IDkyIDQwIE05OCA0OCBRMTA4IDMwIDExOCA0OCBUMTM4IDQ4IE0xNDIgMjIgTDE0MiA2MiBNMTQ1IDQyIFExNTggMjggMTcwIDQyIFQxOTIgNDIgTTE5OCA0NSBRMjEyIDI2IDIyOCA0NSBUMjU1IDQ1IE0yNjIgMzAgTDI2MiA2MiBNMjY4IDQ1IFEyODIgMzIgMjk1IDQ1IiBmaWxsPSJub25lIiBzdHJva2U9IiMwYjI1NDUiIHN0cm9rZS13aWR0aD0iMi42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8cGF0aCBkPSJNMzUgNjggUTE2NSA1NiAyOTAgNjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBiMjU0NSIgc3Ryb2tlLXdpZHRoPSIyLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxjaXJjbGUgY3g9IjI4MiIgY3k9IjYzIiByPSIyLjUiIGZpbGw9IiMwYjI1NDUiLz4KICA8Y2lyY2xlIGN4PSIyOTIiIGN5PSI2NCIgcj0iMi41IiBmaWxsPSIjMGIyNTQ1Ii8+CiAgPHRleHQgeD0iMjEwIiB5PSI3OCIgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsIG1vbm9zcGFjZSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMDU5NjY5IiBsZXR0ZXItc3BhY2luZz0iMSI+VElUL1RFQ0gvVkVSSUZJRUQtRVNJR048L3RleHQ+Cjwvc3ZnPg=="
 };
+
+function sanitizeSigSrc(src, defaultType = "principal") {
+  if (!src) return "";
+  if (typeof src === "string" && (src.includes("<svg") || src.includes("data:image/svg+xml;utf8"))) {
+    return defaultType === "secretary" || src.includes("TIT/TECH") ? PRESET_SIGNATURES.secretarySvg : PRESET_SIGNATURES.principalSvg;
+  }
+  return src;
+}
 
 function getSignatoryState() {
   try {
@@ -3431,14 +3427,30 @@ function getSignatoryState() {
     if (raw) {
       const parsed = JSON.parse(raw);
       signatoryState = { ...signatoryState, ...parsed };
+      if (signatoryState.principalSignature) {
+        signatoryState.principalSignature = sanitizeSigSrc(signatoryState.principalSignature, "principal");
+      }
+      if (signatoryState.secretarySignature) {
+        signatoryState.secretarySignature = sanitizeSigSrc(signatoryState.secretarySignature, "secretary");
+      }
     }
   } catch (e) { }
   return signatoryState;
 }
 
 function saveSignatoryState(newState) {
+  if (newState.principalSignature) {
+    newState.principalSignature = sanitizeSigSrc(newState.principalSignature, "principal");
+  }
+  if (newState.secretarySignature) {
+    newState.secretarySignature = sanitizeSigSrc(newState.secretarySignature, "secretary");
+  }
   signatoryState = { ...signatoryState, ...newState };
-  localStorage.setItem("tit_sih_cert_signatures", JSON.stringify(signatoryState));
+  try {
+    localStorage.setItem("tit_sih_cert_signatures", JSON.stringify(signatoryState));
+  } catch (err) {
+    console.warn("[TIT SIH] LocalStorage save note:", err);
+  }
 
   if (typeof firebase !== "undefined" && db && isFirebaseActive) {
     db.collection("settings").doc("certificate_signatures").set(signatoryState, { merge: true }).catch((err) => {
@@ -3460,7 +3472,15 @@ function initSignatorySync() {
           const cloudState = doc.data();
           if (cloudState) {
             signatoryState = { ...signatoryState, ...cloudState };
-            localStorage.setItem("tit_sih_cert_signatures", JSON.stringify(signatoryState));
+            if (signatoryState.principalSignature) {
+              signatoryState.principalSignature = sanitizeSigSrc(signatoryState.principalSignature, "principal");
+            }
+            if (signatoryState.secretarySignature) {
+              signatoryState.secretarySignature = sanitizeSigSrc(signatoryState.secretarySignature, "secretary");
+            }
+            try {
+              localStorage.setItem("tit_sih_cert_signatures", JSON.stringify(signatoryState));
+            } catch (e) { }
             renderSignatoryGatewayUI();
             updateCertModalStatus();
           }
@@ -3656,23 +3676,58 @@ window.handleSignatureUpload = (type, event) => {
 
   const reader = new FileReader();
   reader.onload = (e) => {
-    const dataUrl = e.target.result;
-    const dateStr = new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
-    if (type === "principal") {
-      saveSignatoryState({
-        principalSigned: true,
-        principalSignature: dataUrl,
-        principalSignedAt: dateStr
-      });
-      alert("✅ Prof. Bijoy Kumar Upadhyaya's signature image uploaded and authenticated.");
-    } else {
-      saveSignatoryState({
-        secretarySigned: true,
-        secretarySignature: dataUrl,
-        secretarySignedAt: dateStr
-      });
-      alert("✅ Prof. Kaberi Majumdar's signature image uploaded and authenticated.");
-    }
+    const rawData = e.target.result;
+    const img = new Image();
+    img.onload = () => {
+      // Auto-scale down to crisp bounds (max 500x180) to prevent storage quota limits
+      const maxW = 500;
+      const maxH = 180;
+      let w = img.naturalWidth || img.width;
+      let h = img.naturalHeight || img.height;
+      const scale = Math.min(maxW / w, maxH / h, 1);
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(w * scale));
+      canvas.height = Math.max(1, Math.round(h * scale));
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL("image/png");
+
+      const dateStr = new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+      if (type === "principal") {
+        saveSignatoryState({
+          principalSigned: true,
+          principalSignature: dataUrl,
+          principalSignedAt: dateStr
+        });
+        alert("✅ Prof. Bijoy Kumar Upadhyaya's signature image uploaded and authenticated.");
+      } else {
+        saveSignatoryState({
+          secretarySigned: true,
+          secretarySignature: dataUrl,
+          secretarySignedAt: dateStr
+        });
+        alert("✅ Prof. Kaberi Majumdar's signature image uploaded and authenticated.");
+      }
+    };
+    img.onerror = () => {
+      const dateStr = new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+      if (type === "principal") {
+        saveSignatoryState({
+          principalSigned: true,
+          principalSignature: rawData,
+          principalSignedAt: dateStr
+        });
+        alert("✅ Prof. Bijoy Kumar Upadhyaya's signature image uploaded and authenticated.");
+      } else {
+        saveSignatoryState({
+          secretarySigned: true,
+          secretarySignature: rawData,
+          secretarySignedAt: dateStr
+        });
+        alert("✅ Prof. Kaberi Majumdar's signature image uploaded and authenticated.");
+      }
+    };
+    img.src = rawData;
   };
   reader.readAsDataURL(file);
 };
@@ -3750,7 +3805,8 @@ function renderSignatoryGatewayUI() {
       pBadge.innerHTML = `<i class="fa-solid fa-circle-check"></i> Signed (${escapeHtml(state.principalSignedAt || "Verified")})`;
       if (pCard) pCard.classList.add("signed-border");
       if (pPreview) {
-        pPreview.innerHTML = `<img src="${state.principalSignature}" alt="Principal Signature Preview" style="max-height: 48px; max-width: 180px; object-fit: contain;">`;
+        const pSrc = sanitizeSigSrc(state.principalSignature, "principal");
+        pPreview.innerHTML = `<img src="${pSrc}" alt="Principal Signature Preview" style="max-height: 48px; max-width: 180px; object-fit: contain;">`;
       }
     } else {
       pBadge.className = "sig-status-badge pending";
@@ -3771,12 +3827,13 @@ function renderSignatoryGatewayUI() {
       sBadge.innerHTML = `<i class="fa-solid fa-circle-check"></i> Signed (${escapeHtml(state.secretarySignedAt || "Verified")})`;
       if (sCard) sCard.classList.add("signed-border");
       if (sPreview) {
-        sPreview.innerHTML = `<img src="${state.secretarySignature}" alt="Secretary Signature Preview" style="max-height: 48px; max-width: 180px; object-fit: contain;">`;
+        const sSrc = sanitizeSigSrc(state.secretarySignature, "secretary");
+        sPreview.innerHTML = `<img src="${sSrc}" alt="Secretary Signature Preview" style="max-height: 48px; max-width: 180px; object-fit: contain;">`;
       }
     } else {
       sBadge.className = "sig-status-badge pending";
       sBadge.innerHTML = `<i class="fa-solid fa-clock"></i> Pending`;
-      if (sCard) pCard && sCard.classList.remove("signed-border");
+      if (sCard) sCard.classList.remove("signed-border");
       if (sPreview) {
         sPreview.innerHTML = `<span style="font-size: 0.76rem; color: #94a3b8; font-style: italic;">No signature saved yet</span>`;
       }
@@ -4525,8 +4582,8 @@ window.renderCertificateSheet = (type, data) => {
   }
 
   // Dynamic Signatures Html
-  const principalSigSrc = state.principalSignature || (state.isReleased ? PRESET_SIGNATURES.principalSvg : "");
-  const secretarySigSrc = state.secretarySignature || (state.isReleased ? PRESET_SIGNATURES.secretarySvg : "");
+  const principalSigSrc = sanitizeSigSrc(state.principalSignature, "principal") || (state.isReleased ? PRESET_SIGNATURES.principalSvg : "");
+  const secretarySigSrc = sanitizeSigSrc(state.secretarySignature, "secretary") || (state.isReleased ? PRESET_SIGNATURES.secretarySvg : "");
 
   const principalSigHtml = principalSigSrc
     ? `<img src="${principalSigSrc}" alt="Signature of Principal In-charge" class="cert-sig-img" />`
