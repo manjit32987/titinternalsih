@@ -1425,19 +1425,8 @@ function clearAdminInputs() {
   });
 }
 
-window.openAuthModal = (mode = "student", studentTab = "login") => {
-  if (mode === "admin") {
-    openDedicatedAdminModal();
-    return;
-  }
-  if (mode === "login" || mode === "signup" || mode === "reset") {
-    studentTab = mode;
-    mode = "student";
-  }
-  const modal = document.getElementById("auth-modal");
-  if (!modal) return;
-  switchStudentAuthTab(studentTab);
-  modal.classList.add("active");
+window.openAuthModal = () => {
+  openAdminModal();
 };
 
 window.closeAuthModal = () => {
@@ -2060,47 +2049,19 @@ function updateNavAuthState() {
 
   if (!navAuthContainer) return;
 
-  if (currentUser) {
-    // Logged In State
-    const initials = currentUser.name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .substring(0, 2)
-      .toUpperCase();
+  // Post-Event Mode: Only Faculty & Jury Admin Login is active
+  navAuthContainer.innerHTML = `
+    <button class="btn-nav-register btn-nav-auth" onclick="openAdminModal()" title="Faculty & Jury Admin Portal" style="background: #0f172a; border: 1.5px solid #334155; color: #ffffff; padding: 7px 16px; font-weight: 800; display: inline-flex; align-items: center; gap: 7px; border-radius: 8px;">
+      <i class="fa-solid fa-user-shield" style="color: #10b981;"></i> <span class="nav-auth-btn-text">Admin Login</span>
+    </button>
+  `;
 
-    navAuthContainer.innerHTML = `
-      <div class="user-profile-badge" onclick="navigateToStudentDashboard()" title="${escapeHtml(currentUser.name)} (${escapeHtml(currentUser.roll)} - ${escapeHtml(currentUser.dept)}) - Click to open Dashboard">
-        <span class="user-avatar-circle">${initials}</span>
-        <span class="user-name-text">${escapeHtml(currentUser.name.split(" ")[0])} (${escapeHtml(currentUser.dept)})</span>
-      </div>
-      <button class="btn-nav-logout" onclick="handleLogout()" title="Sign Out">
-        <i class="fa-solid fa-arrow-right-from-bracket"></i>
-      </button>
-    `;
-
-    const mobBottomDash = document.getElementById("mob-bottom-dash-item");
-    if (navDashLink) navDashLink.style.display = "block";
-    if (mobDashLink) mobDashLink.style.display = "block";
-    if (mobBottomDash) mobBottomDash.style.display = "flex";
-    if (mobAuthLink) {
-      mobAuthLink.innerHTML = `<a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); handleLogout();" style="color:#dc2626;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout (${escapeHtml(currentUser.name)})</a>`;
-    }
-  } else {
-    // Logged Out State: Unified Single Button
-    navAuthContainer.innerHTML = `
-      <button class="btn-nav-register btn-nav-auth" onclick="openAuthModal('student', 'login')" title="Sign In / Register">
-        <i class="fa-solid fa-user-lock"></i> <span class="nav-auth-btn-text">Sign In</span>
-      </button>
-    `;
-
-    const mobBottomDash = document.getElementById("mob-bottom-dash-item");
-    if (navDashLink) navDashLink.style.display = "none";
-    if (mobDashLink) mobDashLink.style.display = "none";
-    if (mobBottomDash) mobBottomDash.style.display = "none";
-    if (mobAuthLink) {
-      mobAuthLink.innerHTML = `<a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); openAuthModal('student', 'login');"><i class="fa-solid fa-user-lock"></i> Sign In / Register</a>`;
-    }
+  const mobBottomDash = document.getElementById("mob-bottom-dash-item");
+  if (navDashLink) navDashLink.style.display = "none";
+  if (mobDashLink) mobDashLink.style.display = "none";
+  if (mobBottomDash) mobBottomDash.style.display = "none";
+  if (mobAuthLink) {
+    mobAuthLink.innerHTML = `<a href="#" class="mobile-nav-link" onclick="closeMobileMenu(); openAdminModal();"><i class="fa-solid fa-user-shield" style="color: #10b981;"></i> Admin Login</a>`;
   }
 }
 
