@@ -7330,7 +7330,7 @@ body.dark-theme .viz-crosstab-table tr:hover td {
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
   box-sizing: border-box;
   color: #3b3b38;
-  padding: 46px 64px 44px 64px;
+  padding: 42px 64px 72px 64px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -7345,25 +7345,25 @@ body.dark-theme .viz-crosstab-table tr:hover td {
   align-items: center;
   position: relative;
   z-index: 2;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .cert-header-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   text-align: left;
 }
 
 .cert-header-logo {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
 }
 
 .cert-inst-title {
   font-family: 'Bookman Old Style', Georgia, 'Times New Roman', serif;
-  font-size: 1.05rem;
+  font-size: 1.0rem;
   font-weight: 700;
   color: #000000;
   line-height: 1.15;
@@ -7373,7 +7373,7 @@ body.dark-theme .viz-crosstab-table tr:hover td {
 
 .cert-inst-sub {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.65rem;
+  font-size: 0.64rem;
   font-weight: 700;
   color: #000000;
   letter-spacing: 0.6px;
@@ -7387,13 +7387,13 @@ body.dark-theme .viz-crosstab-table tr:hover td {
 }
 
 .cert-header-sih-img {
-  height: 48px;
+  height: 44px;
   width: auto;
   object-fit: contain;
 }
 
 .cert-header-iic-img {
-  height: 46px;
+  height: 42px;
   width: auto;
   object-fit: contain;
 }
@@ -7407,32 +7407,32 @@ body.dark-theme .viz-crosstab-table tr:hover td {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 4px 0;
+  padding: 2px 0;
 }
 
 .cert-main-title {
   font-family: 'Bookman Old Style', Georgia, 'Times New Roman', serif;
-  font-size: 1.7rem;
+  font-size: 1.62rem;
   font-weight: 900;
   color: #1c355e;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  margin: 6px 0 4px 0;
+  margin: 4px 0 2px 0;
 }
 
 .cert-present-text {
   font-family: 'Bookman Old Style', Georgia, 'Times New Roman', serif;
-  font-size: 0.95rem;
+  font-size: 0.90rem;
   color: #3b3b38;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .cert-recipient-name {
   font-family: 'Bookman Old Style', Georgia, 'Space Grotesk', serif;
-  font-size: 1.75rem;
+  font-size: 1.65rem;
   font-weight: 800;
   color: #0f172a;
-  padding-bottom: 2px;
+  padding-bottom: 1px;
   display: block;
   text-align: center;
   letter-spacing: 0.3px;
@@ -7442,39 +7442,39 @@ body.dark-theme .viz-crosstab-table tr:hover td {
   width: 72%;
   height: 2px;
   background: #0f172a;
-  margin: 4px auto 10px auto;
+  margin: 3px auto 8px auto;
 }
 
 .cert-desc-para {
   font-family: 'Bookman Old Style', Georgia, 'Times New Roman', serif;
-  font-size: 0.86rem;
-  line-height: 1.48;
+  font-size: 0.84rem;
+  line-height: 1.42;
   color: #3b3b38;
   max-width: 620px;
-  margin: 0 auto 6px auto;
+  margin: 0 auto 5px auto;
   text-align: justify;
   text-justify: inter-word;
 }
 
 .cert-highlight-note {
   font-family: 'Bookman Old Style', Georgia, 'Times New Roman', serif;
-  font-size: 0.98rem;
+  font-size: 0.92rem;
   font-weight: 800;
   color: #1c355e;
-  margin: 8px auto 10px auto;
+  margin: 6px auto 8px auto;
   text-align: center;
   max-width: 600px;
   line-height: 1.3;
 }
 
-/* Signatures */
+/* Signatures - positioned with clean clearance above footer */
 .cert-signatures {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   padding: 0 16px;
   margin-top: 2px;
-  margin-bottom: 0px;
+  margin-bottom: 12px;
   position: relative;
   z-index: 2;
 }
@@ -7488,26 +7488,26 @@ body.dark-theme .viz-crosstab-table tr:hover td {
 }
 
 .cert-sig-img-wrap {
-  height: 44px;
+  height: 38px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
   width: 100%;
 }
 
 .cert-sig-img {
-  max-height: 42px;
+  max-height: 36px;
   max-width: 180px;
   object-fit: contain;
 }
 
 .cert-sig-pending-placeholder {
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   font-weight: 700;
   color: #64748b;
   border: 1px dashed #cbd5e1;
-  padding: 3px 8px;
+  padding: 2px 7px;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.85);
   font-style: italic;
@@ -7520,12 +7520,12 @@ body.dark-theme .viz-crosstab-table tr:hover td {
   width: 175px;
   height: 1.5px;
   background: #0f172a;
-  margin: 0 auto 4px auto;
+  margin: 0 auto 3px auto;
 }
 
 .cert-sig-name {
   font-family: 'Bookman Old Style', Georgia, 'Times New Roman', serif;
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   font-weight: 700;
   color: #0f172a;
   margin-bottom: 1px;
@@ -7533,29 +7533,29 @@ body.dark-theme .viz-crosstab-table tr:hover td {
 
 .cert-sig-role {
   font-family: 'Bookman Old Style', Georgia, 'Times New Roman', serif;
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   color: #3b3b38;
   line-height: 1.2;
 }
 
 .cert-sig-inst {
   font-family: 'Bookman Old Style', Georgia, 'Times New Roman', serif;
-  font-size: 0.70rem;
+  font-size: 0.68rem;
   color: #475569;
 }
 
-/* Certificate Footer */
+/* Certificate Footer - lifted safely above ornamental border pattern */
 .cert-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: 'Bookman Old Style', Georgia, 'Times New Roman', serif;
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: #262624;
-  padding: 0 14px;
-  margin-top: 4px;
-  margin-bottom: 0px;
+  padding: 0 16px;
+  margin-top: 0px;
+  margin-bottom: 2px;
   position: relative;
   z-index: 2;
 }
@@ -7838,7 +7838,7 @@ body.dark-theme .viz-crosstab-table tr:hover td {
     max-height: 296mm !important;
     min-height: 296mm !important;
     box-sizing: border-box !important;
-    padding: 40px 56px 44px 56px !important;
+    padding: 38px 56px 72px 56px !important;
     margin: 0 !important;
     page-break-after: avoid !important;
     page-break-before: avoid !important;
