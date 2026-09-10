@@ -9,7 +9,7 @@
 const MAINTENANCE_CONFIG = {
   enabled: true, // MASTER SWITCH: set to false to open portal to all visitors
   devPasscode: "TIT_DEV_2026",
-  spocPasscode: "TIT_SIH_2026#SPOC",
+  spocPasscode: "TIT_SIH_0000#SPOC",
   title: "TIT SIH 2026 • Upgrades in Progress",
   heading: "System Upgrades in Progress",
   subheading: "Institution Innovation Council (IIC) • Tripura Institute of Technology",
