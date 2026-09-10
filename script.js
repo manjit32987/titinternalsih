@@ -1,4 +1,4 @@
-/**
+﻿/**
  * TIT IIC - SIH INTERNAL HACKATHON 2026
  * Full Dynamic Logic Engine with Google Firebase Cloud Firestore Integration
  */
@@ -7,7 +7,7 @@
    0. SITE UNDER MAINTENANCE CONTROLLER & DEVELOPER BYPASS SYSTEM
    ========================================================================== */
 const MAINTENANCE_CONFIG = {
-  enabled: false, // MASTER SWITCH: set to false to open portal to all visitors
+  enabled: true, // MASTER SWITCH: set to false to open portal to all visitors
   devPasscode: "TIT_DEV_2026",
   spocPasscode: "TIT_SIH_2026#SPOC",
   title: "TIT SIH 2026 • Upgrades in Progress",
@@ -3587,18 +3587,18 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
   const deptCoordinatorsList = (typeof liveCoordinatorsData !== "undefined" && Array.isArray(liveCoordinatorsData) && liveCoordinatorsData.length > 0)
     ? liveCoordinatorsData
     : [
-        { name: "Manash Debbarma", branch: "CSE", year: "4th Year", referralCode: "SIH-CSE-01" },
-        { name: "Purba Paul", branch: "ECE", year: "4th Year", referralCode: "SIH-ECE-01" },
-        { name: "Subham Debnath", branch: "CSE", year: "4th Year", referralCode: "SIH-CSE-02" },
-        { name: "Pooja Saha", branch: "CSE", year: "4th Year", referralCode: "SIH-CSE-03" },
-        { name: "Debojyoti Paul", branch: "CSE", year: "3rd Year", referralCode: "SIH-CSE-04" },
-        { name: "Ananya Roy", branch: "ECE", year: "3rd Year", referralCode: "SIH-ECE-02" },
-        { name: "Debarati Deb Purkayastha", branch: "ECE", year: "4th Year", referralCode: "SIH-ECE-03" },
-        { name: "Sourav Pal", branch: "ECE", year: "3rd Year", referralCode: "SIH-ECE-04" },
-        { name: "Soubik Roy", branch: "EE", year: "3rd Year", referralCode: "SIH-EE-01" },
-        { name: "Barkha Das", branch: "EE", year: "1st Year", referralCode: "SIH-EE-02" },
-        { name: "Sribrata Debnath", branch: "CSE", year: "1st Year", referralCode: "SIH-CSE-05" }
-      ];
+      { name: "Manash Debbarma", branch: "CSE", year: "4th Year", referralCode: "SIH-CSE-01" },
+      { name: "Purba Paul", branch: "ECE", year: "4th Year", referralCode: "SIH-ECE-01" },
+      { name: "Subham Debnath", branch: "CSE", year: "4th Year", referralCode: "SIH-CSE-02" },
+      { name: "Pooja Saha", branch: "CSE", year: "4th Year", referralCode: "SIH-CSE-03" },
+      { name: "Debojyoti Paul", branch: "CSE", year: "3rd Year", referralCode: "SIH-CSE-04" },
+      { name: "Ananya Roy", branch: "ECE", year: "3rd Year", referralCode: "SIH-ECE-02" },
+      { name: "Debarati Deb Purkayastha", branch: "ECE", year: "4th Year", referralCode: "SIH-ECE-03" },
+      { name: "Sourav Pal", branch: "ECE", year: "3rd Year", referralCode: "SIH-ECE-04" },
+      { name: "Soubik Roy", branch: "EE", year: "3rd Year", referralCode: "SIH-EE-01" },
+      { name: "Barkha Das", branch: "EE", year: "1st Year", referralCode: "SIH-EE-02" },
+      { name: "Sribrata Debnath", branch: "CSE", year: "1st Year", referralCode: "SIH-CSE-05" }
+    ];
 
   deptCoordinatorsList.forEach((coord) => {
     const certId = formatCertId(serialCounter++);
@@ -3632,7 +3632,7 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
 window.openPublicCommitteeCertificate = (name, role, dept, certId) => {
   const registry = window.generateMasterCertificatesRegistry();
   const searchName = String(name || "").trim().toLowerCase();
-  
+
   // Find matching leadership entry in registry (priority to exact certId, then exact role category)
   let match = null;
   if (certId) {
@@ -3665,7 +3665,7 @@ window.openPublicCommitteeCertificate = (name, role, dept, certId) => {
 window.openStudentIndividualCertificate = (teamId, memberIndex) => {
   const registry = window.generateMasterCertificatesRegistry();
   const targetIndex = memberIndex !== undefined ? memberIndex : 0;
-  
+
   // Find item by lookup key or teamId + memberIndex
   const match = registry.find(
     (c) =>
@@ -3722,7 +3722,7 @@ window.openStudentIndividualCertificate = (teamId, memberIndex) => {
 
 window.openSquadTeamCertificate = (teamId) => {
   const registry = window.generateMasterCertificatesRegistry();
-  
+
   // Check if winner team (001, 002, 003)
   const winnerMatch = registry.find(
     (c) => c.category === "Winner" && (c.teamId === teamId || c.teamName === teamId)
@@ -4459,18 +4459,18 @@ window.renderAdminConsole = function renderAdminConsole() {
               </thead>
               <tbody>
                 ${filteredTeams.length === 0
-                  ? `<tr><td colspan="8" style="text-align: center; padding: 36px; color: #64748b;">No registered teams matching the filter criteria. <br><button class="btn-3d-primary" onclick="resetAdminFilters()" style="margin-top: 10px; padding: 6px 12px; font-size: 0.8rem;"><i class="fa-solid fa-rotate"></i> Reset Filters</button></td></tr>`
-                  : filteredTeams.map((t) => {
-                    const membersList = (Array.isArray(t.members) ? t.members : []).filter(Boolean);
-                    const femalesInTeam = membersList.filter((m) => normGender(m.gender) === "Female").length;
-                    const leader = membersList[0] || {};
-                    const leaderBranch = normBranch(leader.branch || leader.dept);
-                    const leaderYear = normYear(leader.year, leader.roll, leader.email);
-                    const leaderProg = normProgram(leader.program, leader.branch);
-                    const isNominated = (t.status || "").includes("Nominated");
-                    const isShortlisted = (t.status || "").includes("Shortlisted");
+          ? `<tr><td colspan="8" style="text-align: center; padding: 36px; color: #64748b;">No registered teams matching the filter criteria. <br><button class="btn-3d-primary" onclick="resetAdminFilters()" style="margin-top: 10px; padding: 6px 12px; font-size: 0.8rem;"><i class="fa-solid fa-rotate"></i> Reset Filters</button></td></tr>`
+          : filteredTeams.map((t) => {
+            const membersList = (Array.isArray(t.members) ? t.members : []).filter(Boolean);
+            const femalesInTeam = membersList.filter((m) => normGender(m.gender) === "Female").length;
+            const leader = membersList[0] || {};
+            const leaderBranch = normBranch(leader.branch || leader.dept);
+            const leaderYear = normYear(leader.year, leader.roll, leader.email);
+            const leaderProg = normProgram(leader.program, leader.branch);
+            const isNominated = (t.status || "").includes("Nominated");
+            const isShortlisted = (t.status || "").includes("Shortlisted");
 
-                    return `
+            return `
                       <tr style="${isNominated ? 'background: #f0fdf4;' : (isShortlisted ? 'background: #f8fafc;' : '')}">
                         <td>
                           <strong style="color: #059669; font-family: var(--font-mono); font-size: 0.88rem;">${t.teamId || "N/A"}</strong>
@@ -4535,8 +4535,8 @@ window.renderAdminConsole = function renderAdminConsole() {
                         </td>
                       </tr>
                     `;
-                  }).join('')
-                }
+          }).join('')
+        }
               </tbody>
             </table>
           </div>
@@ -4545,22 +4545,22 @@ window.renderAdminConsole = function renderAdminConsole() {
     } else {
       // MASTER CERTIFICATES REGISTRY VIEW
 
-      const winnerCerts  = masterCerts.filter(c => c.category === 'Winner');
-      const teamCerts    = masterCerts.filter(c => c.category === 'Team Participation');
-      const indivCerts   = masterCerts.filter(c => c.category === 'Individual Participant');
-      const leadCerts    = masterCerts.filter(c => c.category === 'Technical Lead');
+      const winnerCerts = masterCerts.filter(c => c.category === 'Winner');
+      const teamCerts = masterCerts.filter(c => c.category === 'Team Participation');
+      const indivCerts = masterCerts.filter(c => c.category === 'Individual Participant');
+      const leadCerts = masterCerts.filter(c => c.category === 'Technical Lead');
       const facultyCerts = masterCerts.filter(c => c.category === 'SIH Cell & Faculty');
-      const coreCerts    = masterCerts.filter(c => c.category === 'Core Committee');
+      const coreCerts = masterCerts.filter(c => c.category === 'Core Committee');
 
       // Outer wrapper + view-mode toggle bar
       html += `
         <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:18px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
           <div style="display:flex; gap:8px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9; justify-content:space-between; align-items:center; flex-wrap:wrap;">
             <div style="display:flex; gap:6px;">
-              <button onclick="switchCertViewMode('squads')" style="padding:7px 14px; font-size:0.82rem; font-weight:700; border-radius:8px; border:2px solid ${adminCertViewMode==='squads'?'#059669':'#e2e8f0'}; background:${adminCertViewMode==='squads'?'#ecfdf5':'#fff'}; color:${adminCertViewMode==='squads'?'#065f46':'#64748b'}; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+              <button onclick="switchCertViewMode('squads')" style="padding:7px 14px; font-size:0.82rem; font-weight:700; border-radius:8px; border:2px solid ${adminCertViewMode === 'squads' ? '#059669' : '#e2e8f0'}; background:${adminCertViewMode === 'squads' ? '#ecfdf5' : '#fff'}; color:${adminCertViewMode === 'squads' ? '#065f46' : '#64748b'}; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
                 <i class="fa-solid fa-layer-group"></i> Squad Groups
               </button>
-              <button onclick="switchCertViewMode('table')" style="padding:7px 14px; font-size:0.82rem; font-weight:700; border-radius:8px; border:2px solid ${adminCertViewMode==='table'?'#059669':'#e2e8f0'}; background:${adminCertViewMode==='table'?'#ecfdf5':'#fff'}; color:${adminCertViewMode==='table'?'#065f46':'#64748b'}; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+              <button onclick="switchCertViewMode('table')" style="padding:7px 14px; font-size:0.82rem; font-weight:700; border-radius:8px; border:2px solid ${adminCertViewMode === 'table' ? '#059669' : '#e2e8f0'}; background:${adminCertViewMode === 'table' ? '#ecfdf5' : '#fff'}; color:${adminCertViewMode === 'table' ? '#065f46' : '#64748b'}; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
                 <i class="fa-solid fa-table-list"></i> Full Table
               </button>
             </div>
@@ -4584,7 +4584,7 @@ window.renderAdminConsole = function renderAdminConsole() {
                 <div style="background:#fffbeb; border:2px solid #fde68a; border-radius:10px; padding:14px;">
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                     <strong style="color:#059669; font-family:var(--font-mono); font-size:0.8rem; background:#ecfdf5; padding:2px 7px; border-radius:4px; border:1px solid #a7f3d0;">${c.certId}</strong>
-                    <span style="font-size:0.85rem;">${c.recipientRole.includes('1st')?'&#127947;':c.recipientRole.includes('2nd')?'&#129352;':'&#129353;'}</span>
+                    <span style="font-size:0.85rem;">${c.recipientRole.includes('1st') ? '&#127947;' : c.recipientRole.includes('2nd') ? '&#129352;' : '&#129353;'}</span>
                   </div>
                   <div style="font-weight:800; color:#0f172a; font-size:0.9rem;">${escapeHtml(c.recipientName)}</div>
                   <div style="font-size:0.73rem; color:#64748b; margin:2px 0 10px;">${escapeHtml(c.recipientRole)}</div>
@@ -4607,10 +4607,10 @@ window.renderAdminConsole = function renderAdminConsole() {
             </div>
             <div style="display:flex; flex-direction:column; gap:12px;">
               ${teamCerts.length === 0
-                ? '<div style="text-align:center; padding:24px; color:#64748b; background:#f8fafc; border-radius:8px; font-size:0.86rem;">No team certificates found. Load Demo Teams to preview.</div>'
-                : teamCerts.map(tc => {
-                    const members = indivCerts.filter(ic => ic.teamId === tc.teamId);
-                    return `
+            ? '<div style="text-align:center; padding:24px; color:#64748b; background:#f8fafc; border-radius:8px; font-size:0.86rem;">No team certificates found. Load Demo Teams to preview.</div>'
+            : teamCerts.map(tc => {
+              const members = indivCerts.filter(ic => ic.teamId === tc.teamId);
+              return `
                       <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:14px;">
                         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; ${members.length > 0 ? 'margin-bottom:12px;' : ''}">
                           <strong style="color:#059669; font-family:var(--font-mono); font-size:0.76rem; background:#ecfdf5; padding:2px 7px; border-radius:4px; border:1px solid #a7f3d0; white-space:nowrap;">${tc.certId}</strong>
@@ -4639,8 +4639,8 @@ window.renderAdminConsole = function renderAdminConsole() {
                         ` : ''}
                       </div>
                     `;
-                  }).join('')
-              }
+            }).join('')
+          }
             </div>
           </div>
         `;
@@ -4784,24 +4784,24 @@ window.renderAdminConsole = function renderAdminConsole() {
               </thead>
               <tbody>
                 ${filteredCerts.length === 0
-                  ? `<tr><td colspan="7" style="text-align: center; padding: 36px; color: #64748b;">No issued certificates match your filter criteria.<br><button class="btn-3d-primary" onclick="filterAdminCertificates('', 'ALL', 'ALL')" style="margin-top: 10px; padding: 6px 12px; font-size: 0.8rem;"><i class="fa-solid fa-rotate"></i> Reset Certificate Filters</button></td></tr>`
-                  : filteredCerts.map((c) => {
-                    const isWinnerCat = c.category === "Winner";
-                    const isTeamCat   = c.category === "Team Participation";
-                    const isIndivCat  = c.category === "Individual Participant";
-                    const isLeadCat   = c.category === "Technical Lead";
-                    const isFacultyCat = c.category === "SIH Cell & Faculty";
-                    const isCoreCat   = c.category === "Core Committee";
+            ? `<tr><td colspan="7" style="text-align: center; padding: 36px; color: #64748b;">No issued certificates match your filter criteria.<br><button class="btn-3d-primary" onclick="filterAdminCertificates('', 'ALL', 'ALL')" style="margin-top: 10px; padding: 6px 12px; font-size: 0.8rem;"><i class="fa-solid fa-rotate"></i> Reset Certificate Filters</button></td></tr>`
+            : filteredCerts.map((c) => {
+              const isWinnerCat = c.category === "Winner";
+              const isTeamCat = c.category === "Team Participation";
+              const isIndivCat = c.category === "Individual Participant";
+              const isLeadCat = c.category === "Technical Lead";
+              const isFacultyCat = c.category === "SIH Cell & Faculty";
+              const isCoreCat = c.category === "Core Committee";
 
-                    let badgeBg = "#f1f5f9", badgeCol = "#475569";
-                    if (isWinnerCat)   { badgeBg = "#fef3c7"; badgeCol = "#92400e"; }
-                    else if (isTeamCat)    { badgeBg = "#e0f2fe"; badgeCol = "#0369a1"; }
-                    else if (isIndivCat)   { badgeBg = "#ecfdf5"; badgeCol = "#065f46"; }
-                    else if (isLeadCat)    { badgeBg = "#faf5ff"; badgeCol = "#6b21a8"; }
-                    else if (isFacultyCat) { badgeBg = "#fff1f2"; badgeCol = "#9f1239"; }
-                    else if (isCoreCat)    { badgeBg = "#f0fdf4"; badgeCol = "#166534"; }
+              let badgeBg = "#f1f5f9", badgeCol = "#475569";
+              if (isWinnerCat) { badgeBg = "#fef3c7"; badgeCol = "#92400e"; }
+              else if (isTeamCat) { badgeBg = "#e0f2fe"; badgeCol = "#0369a1"; }
+              else if (isIndivCat) { badgeBg = "#ecfdf5"; badgeCol = "#065f46"; }
+              else if (isLeadCat) { badgeBg = "#faf5ff"; badgeCol = "#6b21a8"; }
+              else if (isFacultyCat) { badgeBg = "#fff1f2"; badgeCol = "#9f1239"; }
+              else if (isCoreCat) { badgeBg = "#f0fdf4"; badgeCol = "#166534"; }
 
-                    return `
+              return `
                       <tr style="${isWinnerCat ? 'background:#fffbeb;' : ''}">
                         <td>
                           <strong style="color:#059669; font-family:var(--font-mono); font-size:0.86rem; background:#ecfdf5; padding:2px 6px; border-radius:4px; border:1px solid #a7f3d0; display:inline-block;">${c.certId}</strong>
@@ -4822,9 +4822,9 @@ window.renderAdminConsole = function renderAdminConsole() {
                         </td>
                         <td style="text-align:center;">
                           ${isSigned
-                            ? `<span style="color:#059669; font-weight:700; font-size:0.74rem; background:#ecfdf5; padding:2px 8px; border-radius:12px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-circle-check"></i> Authorized</span>`
-                            : `<span style="color:#d97706; font-weight:700; font-size:0.74rem; background:#fffbeb; padding:2px 8px; border-radius:12px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-clock"></i> Pending Sign</span>`
-                          }
+                  ? `<span style="color:#059669; font-weight:700; font-size:0.74rem; background:#ecfdf5; padding:2px 8px; border-radius:12px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-circle-check"></i> Authorized</span>`
+                  : `<span style="color:#d97706; font-weight:700; font-size:0.74rem; background:#fffbeb; padding:2px 8px; border-radius:12px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-clock"></i> Pending Sign</span>`
+                }
                         </td>
                         <td style="text-align:right; white-space:nowrap;">
                           <button class="btn-3d-primary" onclick="openCertificateByCertId('${c.certId}')" style="padding:5px 10px; font-size:0.75rem;">
@@ -4833,8 +4833,8 @@ window.renderAdminConsole = function renderAdminConsole() {
                         </td>
                       </tr>
                     `;
-                  }).join('')
-                }
+            }).join('')
+          }
               </tbody>
             </table>
           </div>
@@ -5037,7 +5037,7 @@ window.saveJuryScore = (teamId, score) => {
     team.juryScore = score ? Number(score) : null;
     localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
     if (typeof isFirebaseActive !== "undefined" && isFirebaseActive && typeof db !== "undefined" && db) {
-      db.collection("teams").doc(team.teamId).update({ juryScore: team.juryScore }).catch(() => {});
+      db.collection("teams").doc(team.teamId).update({ juryScore: team.juryScore }).catch(() => { });
     }
   }
 };
@@ -5145,7 +5145,7 @@ window.exportTeamsToCSV = window.exportToCSV = () => {
   const link = document.createElement("a");
   const url = URL.createObjectURL(blob);
   link.setAttribute("href", url);
-  link.setAttribute("download", `TIT_SIH_2026_ALL_Registered_Teams_${new Date().toISOString().slice(0,10)}.csv`);
+  link.setAttribute("download", `TIT_SIH_2026_ALL_Registered_Teams_${new Date().toISOString().slice(0, 10)}.csv`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -6709,7 +6709,7 @@ let currentCertSearch = "";
 
 window.filterCertDirectory = (cat) => {
   currentCertCategory = cat || "all";
-  
+
   // Update active tab buttons
   const filterBtns = document.querySelectorAll("#cert-filter-bar .branch-filter-btn");
   filterBtns.forEach(btn => {
