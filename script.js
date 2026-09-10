@@ -4093,10 +4093,10 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
       category: "Technical Lead",
       certType: "appreciation",
       recipientName: coord.name,
-      recipientRole: `Technical Lead & Coordinator (${coord.year || "Student Lead"})`,
+      recipientRole: "Technical Lead",
       teamId: "TECH-LEAD",
       teamName: "Technical Leads & Department Coordinators",
-      department: `Dept. of ${coord.branch || "Engineering"}, TIT`,
+      department: `Dept. of ${coord.branch || "Engineering"} (${coord.year || "Student Coordinator"}), TIT`,
       programYear: coord.year || "Technical Lead",
       rollNo: coord.roll || "Awaited",
       referralCode: ref,
@@ -4134,14 +4134,16 @@ window.openPublicCommitteeCertificate = (name, role, dept, certId) => {
   }
 
   const finalCertId = match ? match.certId : (certId || "TIT/INTSIH/APP-001");
-  const finalRole = match ? match.recipientRole : role;
+  const finalRole = match ? match.recipientRole : (role && role.toLowerCase().includes("technical lead") ? "Technical Lead" : role);
   const finalDept = match ? match.department : dept;
+  const finalCategory = match ? match.category : ((finalRole && finalRole.toLowerCase().includes("technical lead")) ? "Technical Lead" : "Core Committee");
 
   renderCertificateSheet("appreciation", {
     name: name,
     role: finalRole,
     dept: finalDept,
     certId: finalCertId,
+    category: finalCategory,
     issuedDate: "09/09/2026"
   });
 };
@@ -4389,9 +4391,18 @@ window.renderCertificateSheet = (type, data) => {
   } else if (type === "appreciation") {
     mainTitle = "CERTIFICATE OF APPRECIATION";
     recipientHeading = escapeHtml(data.name);
-    para1Text = `in sincere recognition and appreciation for exemplary leadership, dedicated guidance, and vital contributions as <strong>${escapeHtml(data.role)}</strong> in the <strong>SIH INTERNAL HACKATHON 2026 – TIT</strong> in recognition of outstanding problem-solving abilities, technical excellence, and remarkable teamwork demonstrated throughout the hackathon.`;
-    para2Text = `The dedication, commitment, and ability to transform innovative ideas into an effective solution are truly commendable. Your invaluable efforts and mentorship have inspired student innovators and elevated institutional excellence.`;
-    highlightNote = "Heartiest Gratitude and Recognition for Outstanding Service!";
+    const isTechLead = (data.category === "Technical Lead") || 
+                       (data.role && (data.role.toLowerCase() === "technical lead" || data.role.toLowerCase().includes("technical lead")));
+
+    if (isTechLead) {
+      para1Text = `in sincere recognition and appreciation for exemplary technical leadership, dedicated guidance, and vital contributions as <strong>Technical Lead</strong> in the <strong>SIH INTERNAL HACKATHON 2026 – TIT</strong> in recognition of outstanding technical expertise, problem-solving proficiency, and remarkable mentorship demonstrated throughout the hackathon.`;
+      para2Text = `Your technical acumen, tireless dedication to troubleshooting complex challenges, and commitment to fostering innovation have played a pivotal role in the success of the competing squads and elevated institutional excellence.`;
+      highlightNote = "Heartiest Gratitude and Recognition for Outstanding Technical Service!";
+    } else {
+      para1Text = `in sincere recognition and appreciation for exemplary leadership, dedicated guidance, and vital contributions as <strong>${escapeHtml(data.role)}</strong> in the <strong>SIH INTERNAL HACKATHON 2026 – TIT</strong> in recognition of outstanding problem-solving abilities, technical excellence, and remarkable teamwork demonstrated throughout the hackathon.`;
+      para2Text = `The dedication, commitment, and ability to transform innovative ideas into an effective solution are truly commendable. Your invaluable efforts and mentorship have inspired student innovators and elevated institutional excellence.`;
+      highlightNote = "Heartiest Gratitude and Recognition for Outstanding Service!";
+    }
   } else if (type === "participation_team") {
     mainTitle = "CERTIFICATE OF PARTICIPATION";
     recipientHeading = `Team ${escapeHtml(data.teamName)}`;
@@ -4464,21 +4475,21 @@ window.renderCertificateSheet = (type, data) => {
       <div class="cert-signatures">
         <div class="cert-sig-block">
           <div class="cert-sig-img-wrap">
-            ${principalSigHtml}
+            ${secretarySigHtml}
           </div>
           <div class="cert-sig-line"></div>
-          <div class="cert-sig-name">Prof. Bijoy Kumar Upadhyaya</div>
-          <div class="cert-sig-role">Principal In-charge</div>
+          <div class="cert-sig-name">Prof. Kaberi Majumdar</div>
+          <div class="cert-sig-role">Secretary, Technical Committee</div>
           <div class="cert-sig-inst">Tripura Institute of Technology</div>
         </div>
 
         <div class="cert-sig-block">
           <div class="cert-sig-img-wrap">
-            ${secretarySigHtml}
+            ${principalSigHtml}
           </div>
           <div class="cert-sig-line"></div>
-          <div class="cert-sig-name">Prof. Kaberi Majumdar</div>
-          <div class="cert-sig-role">Secretary, Technical Comittee</div>
+          <div class="cert-sig-name">Prof. Bijoy Kumar Upadhyaya</div>
+          <div class="cert-sig-role">Principal In-charge</div>
           <div class="cert-sig-inst">Tripura Institute of Technology</div>
         </div>
       </div>
@@ -4839,6 +4850,11 @@ window.renderAdminConsole = function renderAdminConsole() {
           <span style="background: ${adminCurrentTab === 'teams' ? '#ecfdf5' : '#f1f5f9'}; color: ${adminCurrentTab === 'teams' ? '#059669' : '#64748b'}; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">${allTeamsList.length}</span>
         </button>
 
+        <button onclick="switchAdminTab('scores')" style="padding: 10px 18px; font-size: 0.9rem; font-weight: 800; border: none; background: transparent; cursor: pointer; border-bottom: 3px solid ${adminCurrentTab === 'scores' ? '#059669' : 'transparent'}; color: ${adminCurrentTab === 'scores' ? '#064e3b' : '#64748b'}; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease;">
+          <i class="fa-solid fa-trophy" style="color: ${adminCurrentTab === 'scores' ? '#059669' : '#94a3b8'};"></i> Fill Scores & Leaderboard
+          <span style="background: ${adminCurrentTab === 'scores' ? '#ecfdf5' : '#f1f5f9'}; color: ${adminCurrentTab === 'scores' ? '#059669' : '#64748b'}; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">Live Ranks</span>
+        </button>
+
         <button onclick="switchAdminTab('certificates')" style="padding: 10px 18px; font-size: 0.9rem; font-weight: 800; border: none; background: transparent; cursor: pointer; border-bottom: 3px solid ${adminCurrentTab === 'certificates' ? '#059669' : 'transparent'}; color: ${adminCurrentTab === 'certificates' ? '#064e3b' : '#64748b'}; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease;">
           <i class="fa-solid fa-certificate" style="color: ${adminCurrentTab === 'certificates' ? '#059669' : '#94a3b8'};"></i> Master Certificates Registry
           <span style="background: ${adminCurrentTab === 'certificates' ? '#ecfdf5' : '#f1f5f9'}; color: ${adminCurrentTab === 'certificates' ? '#059669' : '#64748b'}; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">${masterCerts.length} Issued</span>
@@ -4991,9 +5007,14 @@ window.renderAdminConsole = function renderAdminConsole() {
                           </span>
                         </td>
                         <td style="text-align: center;">
-                          <input type="number" min="0" max="100" value="${t.juryScore !== undefined && t.juryScore !== null ? t.juryScore : ''}" placeholder="Score" 
-                            onchange="saveJuryScore('${t.teamId}', this.value)"
-                            style="width: 58px; padding: 4px 6px; font-size: 0.82rem; font-weight: 800; text-align: center; border: 1px solid #cbd5e1; border-radius: 6px;">
+                          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                            <input type="number" min="0" max="100" id="team-score-${t.teamId}" class="admin-table-score-input" data-team-id="${t.teamId}" value="${t.juryScore !== undefined && t.juryScore !== null ? t.juryScore : ''}" placeholder="Score" 
+                              onchange="saveJuryScore('${t.teamId}', this.value)"
+                              style="width: 64px; padding: 4px 6px; font-size: 0.85rem; font-weight: 800; text-align: center; border: 2px solid #a7f3d0; border-radius: 6px; background: #f0fdf4;">
+                            <button class="btn-3d-primary" onclick="saveSingleScoreWithFeedback('${t.teamId}', document.getElementById('team-score-${t.teamId}'), this)" style="padding: 3px 8px; font-size: 0.7rem; line-height: 1.2;">
+                              <i class="fa-solid fa-check"></i> Save
+                            </button>
+                          </div>
                         </td>
                         <td>
                           <select class="admin-status-select" onchange="updateTeamStatus('${t.teamId}', this.value)" style="font-weight:700; font-size:0.78rem; ${isNominated ? 'border-color:#10b981; color:#064e3b; background:#f0fdf4;' : ''}">
@@ -5023,6 +5044,189 @@ window.renderAdminConsole = function renderAdminConsole() {
         }
               </tbody>
             </table>
+          </div>
+        </div>
+      `;
+    } else if (adminCurrentTab === "scores") {
+      // =========================================================================
+      // DEDICATED LIVE LEADERBOARD & SCORECARD MANAGER VIEW
+      // =========================================================================
+      const sortedTeamsForScoring = [...allTeamsList].sort((a, b) => (Number(b.juryScore) || 0) - (Number(a.juryScore) || 0));
+      const sTop1 = sortedTeamsForScoring[0] || {};
+      const sTop2 = sortedTeamsForScoring[1] || {};
+      const sTop3 = sortedTeamsForScoring[2] || {};
+
+      html += `
+        <!-- Live Podium Quick Preview Banner -->
+        <div style="background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); border-radius: 14px; padding: 20px; color: #ffffff; margin-bottom: 22px; box-shadow: 0 4px 14px rgba(6,78,59,0.15);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+            <div>
+              <div style="font-size: 0.8rem; font-weight: 800; color: #34d399; text-transform: uppercase; letter-spacing: 0.5px;">
+                <i class="fa-solid fa-trophy"></i> Live Leaderboard Podium Standings
+              </div>
+              <h3 style="font-size: 1.35rem; font-weight: 900; margin: 4px 0 0 0; color: #ffffff;">
+                Top 3 Winning Squads (Calculated from Current Scores)
+              </h3>
+              <p style="margin: 4px 0 0 0; font-size: 0.8rem; color: #a7f3d0;">
+                Scores entered below immediately re-rank the live Leaderboard on the homepage and update the top 3 podium champions.
+              </p>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button class="btn-3d-primary" onclick="saveAllScores()" style="padding: 10px 18px; font-size: 0.88rem; background: #10b981; border-color: #059669; font-weight: 900;">
+                <i class="fa-solid fa-floppy-disk"></i> Update All Scores & Refresh Leaderboard
+              </button>
+              <button class="btn-3d-outline" onclick="jumpToPublicLeaderboard()" style="padding: 10px 14px; font-size: 0.84rem; background: rgba(255,255,255,0.15); color: #ffffff; border-color: rgba(255,255,255,0.3);">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> View Live Leaderboard
+              </button>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;">
+            <!-- 1st Place Champion -->
+            <div style="background: rgba(255,255,255,0.1); border: 2px solid #fbbf24; border-radius: 12px; padding: 14px 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <span style="background: #fbbf24; color: #78350f; font-size: 0.72rem; font-weight: 900; padding: 2px 8px; border-radius: 99px;">
+                  🥇 1ST PLACE • CHAMPION
+                </span>
+                <strong style="color: #fef08a; font-size: 1.15rem; font-family: var(--font-mono);">${sTop1.juryScore || 0}/100</strong>
+              </div>
+              <h4 style="font-size: 1.1rem; font-weight: 900; margin: 8px 0 2px 0; color: #ffffff;">${escapeHtml(sTop1.teamName || "Squad")}</h4>
+              <div style="font-size: 0.76rem; color: #d1fae5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(sTop1.title || sTop1.domain || "Innovation")}</div>
+              <div style="margin-top: 8px; font-size: 0.72rem; color: #a7f3d0;">
+                Leader: <strong>${escapeHtml((sTop1.members && sTop1.members[0]) ? sTop1.members[0].name : "Student")}</strong> (${sTop1.teamId})
+              </div>
+            </div>
+
+            <!-- 2nd Place Runner Up -->
+            <div style="background: rgba(255,255,255,0.08); border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 14px 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <span style="background: #e2e8f0; color: #1e293b; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 99px;">
+                  🥈 2ND PLACE • 1ST RUNNER UP
+                </span>
+                <strong style="color: #ffffff; font-size: 1.15rem; font-family: var(--font-mono);">${sTop2.juryScore || 0}/100</strong>
+              </div>
+              <h4 style="font-size: 1.05rem; font-weight: 800; margin: 8px 0 2px 0; color: #ffffff;">${escapeHtml(sTop2.teamName || "Squad")}</h4>
+              <div style="font-size: 0.76rem; color: #d1fae5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(sTop2.title || sTop2.domain || "Innovation")}</div>
+              <div style="margin-top: 8px; font-size: 0.72rem; color: #a7f3d0;">
+                Leader: <strong>${escapeHtml((sTop2.members && sTop2.members[0]) ? sTop2.members[0].name : "Student")}</strong> (${sTop2.teamId})
+              </div>
+            </div>
+
+            <!-- 3rd Place Runner Up -->
+            <div style="background: rgba(255,255,255,0.08); border: 1.5px solid #fdba74; border-radius: 12px; padding: 14px 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <span style="background: #ffedd5; color: #9a3412; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 99px;">
+                  🥉 3RD PLACE • 2ND RUNNER UP
+                </span>
+                <strong style="color: #fed7aa; font-size: 1.15rem; font-family: var(--font-mono);">${sTop3.juryScore || 0}/100</strong>
+              </div>
+              <h4 style="font-size: 1.05rem; font-weight: 800; margin: 8px 0 2px 0; color: #ffffff;">${escapeHtml(sTop3.teamName || "Squad")}</h4>
+              <div style="font-size: 0.76rem; color: #d1fae5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(sTop3.title || sTop3.domain || "Innovation")}</div>
+              <div style="margin-top: 8px; font-size: 0.72rem; color: #a7f3d0;">
+                Leader: <strong>${escapeHtml((sTop3.members && sTop3.members[0]) ? sTop3.members[0].name : "Student")}</strong> (${sTop3.teamId})
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Score Input Table Card -->
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9;">
+            <div>
+              <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin: 0 0 4px 0;">
+                <i class="fa-solid fa-pen-to-square" style="color: #059669;"></i> Live Squad Scorecard & Ranking Table
+              </h3>
+              <p style="margin: 0; font-size: 0.8rem; color: #64748b;">
+                Enter points (0 to 100). Click <strong>Update</strong> on any row or click <strong>Update All Scores</strong> to save and re-rank the live Leaderboard.
+              </p>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button class="btn-3d-primary" onclick="saveAllScores()" style="padding: 8px 16px; font-size: 0.82rem; background: #059669;">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Update All Scores & Reflect on Leaderboard
+              </button>
+            </div>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th style="width: 70px; text-align: center;">Rank</th>
+                  <th style="min-width: 180px;">Squad & Target Challenge</th>
+                  <th>Track Edition</th>
+                  <th>Squad Leader</th>
+                  <th style="width: 150px; text-align: center;">Jury Score (0 - 100)</th>
+                  <th>Projected Standing</th>
+                  <th style="text-align: right; width: 110px;">Quick Save</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${sortedTeamsForScoring.map((t, idx) => {
+                  const rank = idx + 1;
+                  const leader = (t.members && t.members[0]) ? t.members[0].name : "Leader";
+                  const is1st = rank === 1;
+                  const is2nd = rank === 2;
+                  const is3rd = rank === 3;
+                  const isTop10 = rank <= 10;
+                  
+                  return `
+                    <tr style="${is1st ? 'background: #fefce8;' : (is2nd || is3rd ? 'background: #f8fafc;' : '')}">
+                      <td style="text-align: center;">
+                        <span style="font-weight: 900; font-size: 0.88rem; padding: 3px 8px; border-radius: 6px; display: inline-block; ${is1st ? 'background:#fef08a; color:#854d0e;' : (is2nd ? 'background:#e2e8f0; color:#334155;' : (is3rd ? 'background:#fed7aa; color:#9a3412;' : 'background:#f1f5f9; color:#64748b;'))}">
+                          ${is1st ? '🥇 1' : (is2nd ? '🥈 2' : (is3rd ? '🥉 3' : '#' + rank))}
+                        </span>
+                      </td>
+                      <td>
+                        <strong style="color: #0f172a; font-size: 0.94rem;">${escapeHtml(t.teamName || "Squad")}</strong>
+                        <div style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">
+                          <span style="font-family: var(--font-mono); color: #059669; font-weight: 700;">${t.teamId}</span> • ${escapeHtml(t.psId || "Innovation")}
+                        </div>
+                      </td>
+                      <td>
+                        <span class="badge" style="background:${(t.edition || '').includes('Software') ? '#e0f2fe' : '#fef3c7'}; color:${(t.edition || '').includes('Software') ? '#0369a1' : '#92400e'}; padding:3px 8px; border-radius:4px; font-weight:700; font-size:0.72rem;">
+                          ${t.edition || 'Software Edition'}
+                        </span>
+                      </td>
+                      <td>
+                        <div style="font-weight: 700; color: #1e293b; font-size: 0.86rem;">${escapeHtml(leader)}</div>
+                        <div style="font-size: 0.72rem; color: #64748b;">${escapeHtml(t.domain || "Innovation")}</div>
+                      </td>
+                      <td style="text-align: center;">
+                        <div style="display: inline-flex; align-items: center; gap: 4px;">
+                          <input type="number" min="0" max="100" id="live-score-${t.teamId}" class="admin-live-score-input" data-team-id="${t.teamId}" 
+                            value="${t.juryScore !== undefined && t.juryScore !== null ? t.juryScore : ''}" placeholder="0-100"
+                            style="width: 68px; padding: 6px 6px; font-size: 0.95rem; font-weight: 900; text-align: center; border: 2px solid ${is1st ? '#eab308' : '#cbd5e1'}; border-radius: 8px; background: #ffffff;"
+                            onkeydown="if(event.key==='Enter') saveSingleScoreWithFeedback('${t.teamId}', this, document.getElementById('btn-save-${t.teamId}'))">
+                          <span style="font-size: 0.78rem; font-weight: 700; color: #64748b;">/ 100</span>
+                        </div>
+                      </td>
+                      <td>
+                        ${is1st ? '<span class="status-pill status-champion" style="font-size:0.75rem;"><i class="fa-solid fa-crown"></i> 1st Champion (₹3,000)</span>' :
+                          is2nd ? '<span class="status-pill status-runner" style="font-size:0.75rem;"><i class="fa-solid fa-medal"></i> 1st Runner Up (₹2,000)</span>' :
+                          is3rd ? '<span class="status-pill status-runner" style="font-size:0.75rem;"><i class="fa-solid fa-award"></i> 2nd Runner Up (₹1,000)</span>' :
+                          isTop10 ? '<span class="status-pill status-nominated" style="font-size:0.75rem;"><i class="fa-solid fa-paper-plane"></i> SIH Nominated (Top 10)</span>' :
+                          '<span class="status-pill status-participated" style="font-size:0.75rem;"><i class="fa-solid fa-check"></i> Finalist</span>'
+                        }
+                      </td>
+                      <td style="text-align: right;">
+                        <button id="btn-save-${t.teamId}" class="btn-3d-primary" onclick="saveSingleScoreWithFeedback('${t.teamId}', document.getElementById('live-score-${t.teamId}'), this)" style="padding: 6px 12px; font-size: 0.78rem;">
+                          <i class="fa-solid fa-check"></i> Update
+                        </button>
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+
+          <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div style="font-size: 0.82rem; color: #059669; font-weight: 700;">
+              <i class="fa-solid fa-circle-check"></i> Real-time sync: All updates reflect immediately on public #leaderboard
+            </div>
+            <button class="btn-3d-primary" onclick="saveAllScores()" style="padding: 9px 20px; font-size: 0.86rem; background: #059669;">
+              <i class="fa-solid fa-floppy-disk"></i> Update All Scores & Refresh Leaderboard
+            </button>
           </div>
         </div>
       `;
@@ -5513,15 +5717,110 @@ window.deleteTeamByAdmin = (teamId) => {
   }
 };
 
+
+// ==========================================================================
+// ADMIN LIVE LEADERBOARD & SCORING HELPERS
+// ==========================================================================
+window.showAdminToast = (msg) => {
+  let toast = document.getElementById("admin-live-toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "admin-live-toast";
+    toast.style.cssText = "position:fixed; bottom:24px; right:24px; background:#064e3b; color:#ecfdf5; padding:12px 20px; border-radius:10px; font-weight:700; font-size:0.88rem; box-shadow:0 10px 25px rgba(0,0,0,0.3); z-index:999999; display:flex; align-items:center; gap:10px; border:1px solid #10b981; transition:all 0.3s ease;";
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#34d399; font-size:1.1rem;"></i> ${msg}`;
+  toast.style.opacity = "1";
+  toast.style.transform = "translateY(0)";
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(20px)";
+  }, 3500);
+};
+
+window.saveSingleScoreWithFeedback = (teamId, inputElem, btnElem) => {
+  const val = inputElem ? inputElem.value.trim() : "";
+  const numVal = (val !== "" && !isNaN(val)) ? Number(val) : null;
+  
+  if (numVal !== null && (numVal < 0 || numVal > 100)) {
+    alert("Score must be between 0 and 100.");
+    return;
+  }
+  
+  saveJuryScore(teamId, numVal);
+  
+  if (btnElem) {
+    const origHtml = btnElem.innerHTML;
+    btnElem.innerHTML = `<i class="fa-solid fa-check"></i> Saved!`;
+    btnElem.style.background = "#059669";
+    btnElem.style.color = "#ffffff";
+    setTimeout(() => {
+      btnElem.innerHTML = origHtml;
+      btnElem.style.background = "";
+      btnElem.style.color = "";
+    }, 1800);
+  }
+  
+  const teams = (typeof registeredTeams !== "undefined" && Array.isArray(registeredTeams)) ? registeredTeams : [];
+  const team = teams.find(t => t && (t.teamId === teamId || t.teamName === teamId));
+  const teamName = team ? team.teamName : teamId;
+  showAdminToast(`✅ Score for "${teamName}" saved (${numVal !== null ? numVal : 'N/A'}/100)! Leaderboard updated.`);
+};
+
+window.saveAllScores = () => {
+  const inputs = document.querySelectorAll(".admin-live-score-input, .admin-table-score-input");
+  let updatedCount = 0;
+  const teams = (typeof registeredTeams !== "undefined" && Array.isArray(registeredTeams)) ? registeredTeams : [];
+
+  inputs.forEach(input => {
+    const teamId = input.getAttribute("data-team-id");
+    const val = input.value.trim();
+    if (teamId) {
+      const team = teams.find(t => t && (t.teamId === teamId || t.teamName === teamId));
+      if (team) {
+        team.juryScore = (val !== "" && !isNaN(val)) ? Number(val) : null;
+        updatedCount++;
+      }
+    }
+  });
+
+  localStorage.setItem("tit_sih_teams", JSON.stringify(teams));
+  if (typeof renderPublicLeaderboard === "function") renderPublicLeaderboard();
+  if (typeof searchPublicCertificates === "function") searchPublicCertificates();
+  renderAdminConsole();
+  showAdminToast(`🏆 Scores updated for all ${updatedCount} squads! The Leaderboard & Podium have been refreshed.`);
+};
+
+window.jumpToPublicLeaderboard = () => {
+  closeAdminModal();
+  setTimeout(() => {
+    const elem = document.getElementById("leaderboard");
+    if (elem) {
+      elem.scrollIntoView({ behavior: "smooth" });
+    } else {
+      window.location.hash = "#leaderboard";
+    }
+  }, 200);
+};
+
 // Score Saving Helper
 window.saveJuryScore = (teamId, score) => {
   const teams = (typeof registeredTeams !== "undefined" && Array.isArray(registeredTeams)) ? registeredTeams : [];
   const team = teams.find((t) => t && (t.teamId === teamId || t.teamName === teamId));
   if (team) {
-    team.juryScore = score ? Number(score) : null;
-    localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
+    team.juryScore = (score !== "" && score !== null && !isNaN(score)) ? Number(score) : null;
+    localStorage.setItem("tit_sih_teams", JSON.stringify(teams));
     if (typeof isFirebaseActive !== "undefined" && isFirebaseActive && typeof db !== "undefined" && db) {
       db.collection("teams").doc(team.teamId).update({ juryScore: team.juryScore }).catch(() => { });
+    }
+    // Update live leaderboard immediately
+    if (typeof renderPublicLeaderboard === "function") {
+      renderPublicLeaderboard();
+    }
+    // Update public certificates if open
+    if (typeof searchPublicCertificates === "function") {
+      searchPublicCertificates();
     }
   }
 };
