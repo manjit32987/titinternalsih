@@ -3992,9 +3992,9 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
     });
   });
 
-  // 3. Technical Leads (Student Event Head & Domain Technical Leads)
-  const technicalLeads = [
-    { name: "Manjit Chakraborty", role: "Event Head & Convener", dept: "Dept. of Electronics & Communication Engineering (Final Year)" },
+  // 3. Core Committee (Event Head, Technical Lead, Design Lead, Outreach Lead, PR Head, Content Lead, Query Lead)
+  const coreCommittee = [
+    { name: "Manjit Chakraborty", role: "Event Head", dept: "Dept. of Electronics & Communication Engineering (Final Year)" },
     { name: "Arindam Deb", role: "Technical & Platform Lead", dept: "Dept. of Electrical Engineering (4th Year)" },
     { name: "Sania Debbarma", role: "Design & Creative Media Lead", dept: "Dept. of Computer Science & Engineering (4th Year)" },
     { name: "Nikita Choudhury", role: "Outreach & Registrations Lead", dept: "Dept. of Electronics & Communication Engineering (4th Year)" },
@@ -4003,24 +4003,24 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
     { name: "Rinku Kr. Chanda", role: "Query Resolution Lead", dept: "Dept. of Electronics & Communication Engineering (4th Year)" }
   ];
 
-  technicalLeads.forEach((lead) => {
+  coreCommittee.forEach((member) => {
     const certId = formatCertId(serialCounter++);
     registry.push({
       serialNumber: serialCounter - 1,
       certId: certId,
-      category: "Technical Lead",
+      category: "Core Committee",
       certType: "appreciation",
-      recipientName: lead.name,
-      recipientRole: lead.role,
-      teamId: "TECH-LEAD",
-      teamName: "Technical & Functional Organizing Leads",
-      department: lead.dept,
-      programYear: "Technical & Organizing Lead",
+      recipientName: member.name,
+      recipientRole: member.role,
+      teamId: "CORE-COMM",
+      teamName: "Core Organizing Committee",
+      department: member.dept,
+      programYear: "Core Organizing Committee",
       rollNo: "N/A",
       psId: "ORGANIZING",
       domain: "Hackathon Architecture, Platform & Operations",
       issuedDate: "09/09/2026",
-      lookupKey: `TECHLEAD_${lead.name.toLowerCase().replace(/\s+/g, "_")}`
+      lookupKey: `CORE_${member.name.toLowerCase().replace(/\s+/g, "_")}`
     });
   });
 
@@ -4051,8 +4051,8 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
     });
   });
 
-  // 5. Core Committee (Department Student Coordination Committee across ECE, CSE, EE, CE, ME)
-  const deptCoordinatorsList = [
+  // 5. Technical Leads (Department Leads & Student Coordinators across ECE, CSE, EE, CE, ME)
+  const technicalLeadsList = [
     { name: "Alak Das", branch: "ECE", year: "4th Year", referralCode: "SIH-ECE-01" },
     { name: "Reshmi Karmakar", branch: "ECE", year: "4th Year", referralCode: "SIH-ECE-02" },
     { name: "Sanjit Noatia", branch: "CSE", year: "4th Year", referralCode: "SIH-CSE-01" },
@@ -4084,26 +4084,26 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
     { name: "Magha Mog", branch: "CE", year: "2nd Year", referralCode: "SIH-CE-04" }
   ];
 
-  deptCoordinatorsList.forEach((coord) => {
+  technicalLeadsList.forEach((coord) => {
     const certId = formatCertId(serialCounter++);
     const ref = coord.referralCode || `COORD-${coord.branch || "TIT"}`;
     registry.push({
       serialNumber: serialCounter - 1,
       certId: certId,
-      category: "Core Committee",
+      category: "Technical Lead",
       certType: "appreciation",
       recipientName: coord.name,
-      recipientRole: `Department Student Coordinator (${coord.year || "Coordinator"})`,
-      teamId: "CORE-COMM",
-      teamName: "Department Student Coordination Committee",
+      recipientRole: `Technical Lead & Coordinator (${coord.year || "Student Lead"})`,
+      teamId: "TECH-LEAD",
+      teamName: "Technical Leads & Department Coordinators",
       department: `Dept. of ${coord.branch || "Engineering"}, TIT`,
-      programYear: coord.year || "Student Coordinator",
+      programYear: coord.year || "Technical Lead",
       rollNo: coord.roll || "Awaited",
       referralCode: ref,
       psId: "OUTREACH",
-      domain: "Department Student Coordination & Hackathon Outreach",
+      domain: "Technical Coordination & Domain Lead",
       issuedDate: "09/09/2026",
-      lookupKey: `CORE_${coord.name.toLowerCase().replace(/\s+/g, "_")}`
+      lookupKey: `TECHLEAD_${coord.name.toLowerCase().replace(/\s+/g, "_")}`
     });
   });
 
@@ -7625,24 +7625,24 @@ window.searchPublicCertificates = function searchPublicCertificates(query) {
   }
 
   // =========================================================================
-  // SECTION 2: CORE COMMITTEE (Department Student Coordinators)
+  // SECTION 2: CORE COMMITTEE (Event Head, Technical Lead, Outreach Lead, etc.)
   // =========================================================================
   if (showCoords && filteredCoords.length > 0) {
     html += `
       <div class="cert-hub-section-block">
         <div class="cert-hub-block-title">
-          <i class="fa-solid fa-id-badge" style="color: #16a34a;"></i> Core Committee (${filteredCoords.length} Coordinators)
+          <i class="fa-solid fa-id-badge" style="color: #059669;"></i> Core Committee (${filteredCoords.length} Members)
         </div>
         <div class="cert-hub-leads-grid">
           ${filteredCoords.map(c => `
             <div class="cert-hub-person-card">
               <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; gap:6px; flex-wrap:wrap;">
                 <span class="cert-hub-certid-tag">${c.certId}</span>
-                <span style="font-size:0.72rem; color:#166534; background:#f0fdf4; border:1px solid #bbf7d0; font-weight:800; padding:3px 8px; border-radius:99px;"><i class="fa-solid fa-id-badge"></i> Coordinator</span>
+                <span style="font-size:0.72rem; color:#065f46; background:#ecfdf5; border:1px solid #a7f3d0; font-weight:800; padding:3px 8px; border-radius:99px;"><i class="fa-solid fa-id-badge"></i> Core Committee</span>
               </div>
               <h4 style="font-size:1.05rem; font-weight:800; color:var(--text-main); margin:0 0 4px;">${escapeHtml(c.recipientName)}</h4>
-              <p style="font-size:0.84rem; color:#059669; font-weight:700; margin:0 0 4px;">Core Committee Member</p>
-              <p style="font-size:0.74rem; color:var(--text-muted); margin:0 0 14px;">${escapeHtml(c.department)}</p>
+              <p style="font-size:0.84rem; color:#059669; font-weight:700; margin:0 0 4px;">${escapeHtml(c.recipientRole)}</p>
+              <p style="font-size:0.74rem; color:var(--text-muted); margin:0 0 14px; line-height:1.4;">${escapeHtml(c.department)}</p>
               <button class="btn-3d-primary" onclick="openPublicCommitteeCertificate('${c.recipientName}', '${c.recipientRole}', '${c.department}', '${c.certId}')" style="width:100%; justify-content:center; padding:8px 12px; font-size:0.8rem;">
                 <i class="fa-solid fa-stamp"></i> View Certificate
               </button>
@@ -7654,7 +7654,7 @@ window.searchPublicCertificates = function searchPublicCertificates(query) {
   }
 
   // =========================================================================
-  // SECTION 3: TECHNICAL LEADS (Functional Event & Domain Leads)
+  // SECTION 3: TECHNICAL LEADS (Department Leads & Student Coordinators)
   // =========================================================================
   if (showLeads && filteredLeads.length > 0) {
     html += `
@@ -7667,7 +7667,7 @@ window.searchPublicCertificates = function searchPublicCertificates(query) {
             <div class="cert-hub-person-card">
               <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; gap:6px; flex-wrap:wrap;">
                 <span class="cert-hub-certid-tag">${l.certId}</span>
-                <span style="font-size:0.72rem; color:#6b21a8; background:#faf5ff; border:1px solid #e9d5ff; font-weight:800; padding:3px 8px; border-radius:99px;"><i class="fa-solid fa-microchip"></i> Lead</span>
+                <span style="font-size:0.72rem; color:#6b21a8; background:#faf5ff; border:1px solid #e9d5ff; font-weight:800; padding:3px 8px; border-radius:99px;"><i class="fa-solid fa-microchip"></i> Technical Lead</span>
               </div>
               <h4 style="font-size:1.05rem; font-weight:800; color:var(--text-main); margin:0 0 4px;">${escapeHtml(l.recipientName)}</h4>
               <p style="font-size:0.84rem; color:#059669; font-weight:700; margin:0 0 4px;">${escapeHtml(l.recipientRole)}</p>
