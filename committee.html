@@ -869,8 +869,8 @@
           <button class="btn-3d-secondary" onclick="closeCertificateModal()" style="padding: 8px 16px; font-size: 0.85rem;">
             Close
           </button>
-          <button class="btn-3d-primary" id="btn-print-certificate" onclick="printCertificate()" style="padding: 8px 20px; font-size: 0.85rem;">
-            <i class="fa-solid fa-print"></i> Print / Save PDF
+          <button class="btn-3d-primary" id="btn-download-certificate" onclick="downloadCertificatePNG()" style="padding: 8px 22px; font-size: 0.88rem; background: #059669; border-color: #047857; font-weight: 800;">
+            <i class="fa-solid fa-download"></i> Download PNG Certificate
           </button>
         </div>
       </div>
@@ -1055,8 +1055,11 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
+  <!-- HTML to Canvas Renderer for Certificate PNG Generation -->
+  <script src="html2canvas.min.js"></script>
+
   <!-- Scripts -->
-  <script src="script.js?v=2026.9.4"></script>
+  <script src="script.js?v=2026.9.5"></script>
 </body>
 
 </html>

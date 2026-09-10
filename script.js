@@ -3882,8 +3882,84 @@ window.closeCertificateModal = () => {
   if (modal) modal.classList.remove("active");
 };
 
+window.downloadCertificatePNG = async function () {
+  const certSheet = document.querySelector(".cert-sheet");
+  if (!certSheet) return;
+
+  const btn = document.getElementById("btn-download-certificate") || document.getElementById("btn-print-certificate");
+  let origHtml = "";
+  if (btn) {
+    origHtml = btn.innerHTML;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Generating High-Res PNG...`;
+    btn.disabled = true;
+  }
+
+  try {
+    // If html2canvas is not yet available, load it
+    if (typeof html2canvas === "undefined") {
+      await new Promise((resolve, reject) => {
+        const s = document.createElement("script");
+        s.src = "html2canvas.min.js";
+        s.onload = resolve;
+        s.onerror = () => {
+          const sCdn = document.createElement("script");
+          sCdn.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+          sCdn.onload = resolve;
+          sCdn.onerror = () => reject(new Error("Could not load html2canvas renderer"));
+          document.head.appendChild(sCdn);
+        };
+        document.head.appendChild(s);
+      });
+    }
+
+    // High-resolution 2x retina canvas capture of the entire certificate sheet
+    const canvas = await html2canvas(certSheet, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: "#fffef7",
+      logging: false,
+      scrollX: 0,
+      scrollY: -window.scrollY
+    });
+
+    const nameElem = certSheet.querySelector(".cert-recipient-name");
+    let recipientName = nameElem ? nameElem.textContent.trim() : "Student";
+    recipientName = recipientName.replace(/[^a-zA-Z0-9_-]/g, "_").substring(0, 40);
+
+    const filename = `TIT_SIH2026_Certificate_${recipientName}.png`;
+
+    const dataUrl = canvas.toDataURL("image/png");
+    const downloadLink = document.createElement("a");
+    downloadLink.download = filename;
+    downloadLink.href = dataUrl;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+
+    if (btn) {
+      btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Downloaded!`;
+      btn.style.background = "#059669";
+      btn.style.color = "#ffffff";
+      setTimeout(() => {
+        btn.innerHTML = origHtml;
+        btn.disabled = false;
+        btn.style.background = "";
+        btn.style.color = "";
+      }, 2500);
+    }
+  } catch (err) {
+    console.error("Certificate PNG download error:", err);
+    alert("Download failed: " + err.message);
+    if (btn) {
+      btn.innerHTML = origHtml;
+      btn.disabled = false;
+    }
+  }
+};
+
 window.printCertificate = () => {
-  window.print();
+  window.downloadCertificatePNG();
 };
 
 /* ==========================================================================
