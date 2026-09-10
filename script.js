@@ -769,6 +769,16 @@ const OFFICIAL_TIT_30_TEAMS = [
 ];
 
 
+let storedTeams = [];
+try {
+  storedTeams = JSON.parse(localStorage.getItem("tit_sih_teams") || "[]");
+} catch(e) {}
+let registeredTeams = (Array.isArray(storedTeams) && storedTeams.length >= 30) ? storedTeams : OFFICIAL_TIT_30_TEAMS;
+let registeredStudents = JSON.parse(localStorage.getItem("tit_sih_students") || "[]");
+
+let db = null;
+let isFirebaseActive = false;
+
 // ==========================================================================
 // NON-PARTICIPATING TEAMS EXCLUSION FILTER (e.g. TerraNex - TIT-SIH26-6579)
 // ==========================================================================
@@ -800,40 +810,27 @@ function purgeNonParticipatingTeams() {
         localStorage.setItem("tit_sih_teams", JSON.stringify(teams));
       }
     }
-    if (typeof registeredTeams !== "undefined" && Array.isArray(registeredTeams)) {
+    if (Array.isArray(registeredTeams)) {
       registeredTeams = registeredTeams.filter(t => !isNonParticipatingTeam(t));
     }
   } catch (e) {}
 
-  if (typeof isFirebaseActive !== "undefined" && isFirebaseActive && typeof db !== "undefined" && db) {
+  if (isFirebaseActive && db) {
     db.collection("teams").doc("TIT-SIH26-6579").delete().catch(() => {});
     db.collection("teams").where("teamName", "==", "TerraNex").get().then(snapshot => {
       snapshot.forEach(doc => doc.ref.delete().catch(() => {}));
     }).catch(() => {});
   }
 }
-purgeNonParticipatingTeams();
 
-let storedTeams = [];
-try {
-  storedTeams = JSON.parse(localStorage.getItem("tit_sih_teams") || "[]");
-  if (Array.isArray(storedTeams)) {
-    storedTeams = storedTeams.filter(t => !isNonParticipatingTeam(t));
-  }
-} catch(e) {}
-let registeredTeams = (Array.isArray(storedTeams) && storedTeams.length >= 30) ? storedTeams : OFFICIAL_TIT_30_TEAMS;
-registeredTeams = registeredTeams.filter(t => !isNonParticipatingTeam(t));
-// Normalize scores to be out of 20
+// Purge TerraNex and normalize scores
+purgeNonParticipatingTeams();
 registeredTeams.forEach(t => {
   if (t && t.juryScore !== undefined && t.juryScore !== null && Number(t.juryScore) > 20) {
     t.juryScore = Number((Number(t.juryScore) / 5).toFixed(1));
   }
 });
 localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
-let registeredStudents = JSON.parse(localStorage.getItem("tit_sih_students") || "[]");
-
-let db = null;
-let isFirebaseActive = false;
 
 /* ==========================================================================
    PRODUCTION SECURITY & VALIDATION HELPERS
