@@ -141,7 +141,7 @@ const OFFICIAL_TIT_30_TEAMS = [
   {
     "teamId": "TIT-SIH26-1093",
     "abstract": "",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "title": "High Altitude Performance Optimization and Robust Design of Anti-Drone System",
     "createdAt": "7 Sept 2026",
     "psId": "SIH26050",
@@ -264,7 +264,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     "teamId": "TIT-SIH26-1348",
     "abstract": "",
     "title": "Solar-Powered Smart Mini Cold Storage System for Fresh Vegetables in North Eastern Region (NER)",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "pptLink": "https://docs.google.com/presentation/d/1tZ_kejcX-JqLvITsxNy_ONr61_LlhsNd/edit?usp=drivesdk&ouid=112805734361209825189&rtpof=true&sd=true",
     "createdAt": "7 Sept 2026",
     "psId": "SIH26005",
@@ -276,7 +276,7 @@ const OFFICIAL_TIT_30_TEAMS = [
   {
     "teamId": "TIT-SIH26-1377",
     "referredBy": "Sambhu Debnath (ECE)",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "members": [
       {
         "branch": "CSE",
@@ -404,7 +404,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     "abstract": "",
     "psId": "SIH26001",
     "leaderEmail": "barkha.das2008@gmail.com",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "teamName": "Hackathon Masters",
     "teamId": "TIT-SIH26-1387",
     "juryScore": 11.6
@@ -442,7 +442,7 @@ const OFFICIAL_TIT_30_TEAMS = [
       }
     ],
     "teamName": "Team Catalyst",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "leaderEmail": "dipalidaschoudhury788@gmail.com",
     "juryScore": 8.3,
     "teamId": "TIT-SIH26-1813",
@@ -457,7 +457,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     "createdAt": "5 Sept 2026",
     "referredBy": "Prena saha (CSE)",
     "referralCode": "SIHIN1008",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "members": [
       {
         "phone": "8413850636",
@@ -503,7 +503,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     "juryScore": 9
   },
   {
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "title": "Solar-powered Smart Mini Cold Storage System for Fresh Vegetables in North Eastern Region (NER)",
     "teamId": "TIT-SIH26-2471",
     "teamName": "Aarambh",
@@ -543,7 +543,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     "juryScore": 8.6
   },
   {
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "abstract": "",
     "title": "AI-Powered Mobile Urban Intelligence Platform Using Public Transport Fleet",
     "createdAt": "5 Sept 2026",
@@ -658,7 +658,7 @@ const OFFICIAL_TIT_30_TEAMS = [
       }
     ],
     "createdAt": "5 Sept 2026",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "teamId": "TIT-SIH26-3194",
     "psId": "SIH26023",
     "abstract": "",
@@ -734,7 +734,7 @@ const OFFICIAL_TIT_30_TEAMS = [
         "branch": "ETCE"
       }
     ],
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "title": "Smart Community Health Monitoring and Early Warning System For Water-Borne Diseases in North East India",
     "abstract": "",
     "leaderEmail": "c.soumyajit2008@gmail.com",
@@ -820,7 +820,7 @@ const OFFICIAL_TIT_30_TEAMS = [
         "isLeader": false
       }
     ],
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "teamId": "TIT-SIH26-3568",
     "abstract": "",
     "juryScore": 11
@@ -888,7 +888,7 @@ const OFFICIAL_TIT_30_TEAMS = [
       }
     ],
     "createdAt": "5 Sept 2026",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "referralCode": "SIHIN1016",
     "psId": "SIH26049",
     "referredBy": "SIMRAN DAS (EE)",
@@ -977,7 +977,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     "edition": "Hardware Edition",
     "lastModifiedAt": "7 Sept 2026",
     "referredBy": "Sreya Deb (EE)",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "teamName": "Steel Troupe",
     "title": "A field-deployable AI-powered Smart Farming Assistant that helps farmers detect crop diseases, pests, nutrient deficiencies, and irrigation needs at an early stage, while improving resilience against droughts, floods, heat waves, and other agricultural risks common in India. The solution should enable higher yields, lower input costs, more efficient water usage, and faster response to emerging threats through real-time on-device intelligence.",
     "domain": "",
@@ -992,7 +992,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     "teamId": "TIT-SIH26-4936",
     "referralCode": "SIHIN1012",
     "leaderEmail": "paulsushanta1973@gmail.com",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "members": [
       {
         "isLeader": true,
@@ -1147,7 +1147,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     "teamId": "TIT-SIH26-5188",
     "edition": "Software Edition",
     "referredBy": "Direct Registration",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "createdAt": "5 Sept 2026",
     "psId": "26093",
     "juryScore": 12
@@ -1228,7 +1228,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     ],
     "abstract": "",
     "psId": "SIH26022",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "title": "Design and develop a smart, solar-powered drying and compact packaging system to support home-based agarbatti manufacturing by rural women artisans",
     "createdAt": "7 Sept 2026",
     "teamId": "TIT-SIH26-5365",
@@ -1280,7 +1280,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     "abstract": "",
     "referralCode": "SIHIN1008",
     "lastModifiedAt": "9 Sep 2026",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "title": "AI-Based early warning and landslide Risk Monitoring System in NER",
     "edition": "Software Edition",
     "teamId": "TIT-SIH26-5417",
@@ -1291,7 +1291,7 @@ const OFFICIAL_TIT_30_TEAMS = [
   {
     "teamId": "TIT-SIH26-5992",
     "abstract": "",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "referralCode": "SIHIN1020",
     "title": "Al-Based Smart Logistics and Accessibility Intelligence Platform for North Eastern Region (NER)",
     "teamName": "TechMinds",
@@ -1378,7 +1378,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     "domain": "",
     "teamName": "Parallel Minds",
     "edition": "Software Edition",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "referredBy": "Diya Das (CSE)",
     "abstract": "",
     "teamId": "TIT-SIH26-5999",
@@ -1461,7 +1461,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     "pptLink": "https://rajatchakraborty735-rgb.github.io/ppt/",
     "teamId": "TIT-SIH26-6152",
     "abstract": "",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "referralCode": "NONE",
     "createdAt": "2 Sept 2026",
     "teamName": "Last Not Least",
@@ -1501,7 +1501,7 @@ const OFFICIAL_TIT_30_TEAMS = [
   {
     "domain": "",
     "pptLink": "https://docs.google.com/presentation/d/1lAf_SQDeWnlnvnda9teSTAtZMbQc4uBP/edit?usp=sharing&ouid=102708982829763840908&rtpof=true&sd=true/edit?usp=sharing&ouid=102708982829763840908&rtpof=true&sd=true",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "members": [
       {
         "roll": "2367080013",
@@ -1589,7 +1589,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     "referredBy": "Purba Gangopadhyay (ME)",
     "teamId": "TIT-SIH26-6435",
     "referralCode": "SIHIN1021",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "title": "Development of an AI-Based Virtual Camera Tracking System for Coarse Alignment of Mobile Free Space Optical Communication (FSOC) Terminals.",
     "members": [
       {
@@ -1748,13 +1748,13 @@ const OFFICIAL_TIT_30_TEAMS = [
       }
     ],
     "leaderEmail": "deeptanushil0@gmail.com",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "teamId": "TIT-SIH26-6672",
     "juryScore": 16
   },
   {
     "teamId": "TIT-SIH26-7757",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "teamName": "TEAM ELITE",
     "members": [
       {
@@ -1818,7 +1818,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     "referredBy": "Direct Registration",
     "leaderEmail": "sanghasaar45@gmail.com",
     "edition": "Hardware Edition",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "pptLink": "https://1drv.ms/p/c/054b69ba5ca6f801/IQDewz942AwdRbwrTIyOi2xLAR1idIrv0v07n_tfcnsYJX4?e=TYLyI7",
     "createdAt": "5 Sept 2026",
     "title": "Developing a cost effective solution for detecting the breakage of low voltage AC distribution overhead conductors",
@@ -1976,7 +1976,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     ],
     "psId": "SIH26022",
     "teamId": "TIT-SIH26-8110",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "lastModifiedAt": "8 Sept 2026",
     "referredBy": "Deeptanu Shil (ECE)",
     "title": "Design and develop a smart solar power drying and compact packaging system to support home basded agarbatti manufacturing by rural women artisans",
@@ -2061,7 +2061,7 @@ const OFFICIAL_TIT_30_TEAMS = [
         "branch": "CSE"
       }
     ],
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "abstract": "",
     "pptLink": "https://drive.google.com/file/d/1oiEw7QC0h3gDn8_HDF2ZB8OtgIedVbV5/view?usp=sharing",
     "title": "A deployable AI-powered autonomous drone that aids search-and-rescue operations by detecting people and hazards, thereby improving responder safety and reducing victim discovery time.",
@@ -2077,7 +2077,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     "createdAt": "5 Sep 2026",
     "abstract": "",
     "teamId": "TIT-SIH26-8248",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "referralCode": "SIHIN1017",
     "referredBy": "RAJ ARNAB DEBNATH (EE)",
     "members": [
@@ -2234,7 +2234,7 @@ const OFFICIAL_TIT_30_TEAMS = [
         "roll": "2567080006"
       }
     ],
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "teamId": "TIT-SIH26-9006",
     "juryScore": 10
   },
@@ -2249,7 +2249,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     "pptLink": "https://drive.google.com/file/d/1uc3196Bicq3unrrUYNThxc07Pdbb7Sre/view?usp=drivesdk",
     "teamId": "TIT-SIH26-9515",
     "referralCode": "SIHIN1024",
-    "status": "Shortlisted for Internal Hackathon",
+    "status": "Nominated for SIH Finals",
     "psId": "SIH25009",
     "domain": "",
     "members": [
@@ -5539,10 +5539,13 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
     allTeams = (typeof registeredTeams !== "undefined" && Array.isArray(registeredTeams)) ? registeredTeams.filter(t => !isNonParticipatingTeam(t)) : [];
   }
 
-  // Identify Winner teams if explicitly set or top scored, or default top 3
-  const winner1st = allTeams.find(t => (t.status || "").toLowerCase().includes("1st") || (t.status || "").toLowerCase().includes("first")) || allTeams[0];
-  const winner2nd = allTeams.find(t => (t.status || "").toLowerCase().includes("2nd") || (t.status || "").toLowerCase().includes("second")) || (allTeams[1] !== winner1st ? allTeams[1] : allTeams[0]);
-  const winner3rd = allTeams.find(t => (t.status || "").toLowerCase().includes("3rd") || (t.status || "").toLowerCase().includes("third")) || (allTeams[2] !== winner2nd && allTeams[2] !== winner1st ? allTeams[2] : allTeams[0]);
+  // Identify Winner teams based on highest juryScore
+  syncScoresToTeams(allTeams);
+  allTeams.sort((a, b) => (Number(b.juryScore) || 0) - (Number(a.juryScore) || 0));
+
+  const winner1st = allTeams[0] || {};
+  const winner2nd = allTeams[1] || {};
+  const winner3rd = allTeams[2] || {};
 
   // 1. Serial 001 - 1st Place Winner
   registry.push({
@@ -5616,7 +5619,7 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
     const is2nd = team === winner2nd || (team.status || "").toLowerCase().includes("2nd");
     const is3rd = team === winner3rd || (team.status || "").toLowerCase().includes("3rd");
 
-    const position = is1st ? "FIRST PLACE" : (is2nd ? "SECOND PLACE" : (is3rd ? "THIRD PLACE" : ((team.status || "").toLowerCase().includes("shortlist") ? "FINALIST" : "PARTICIPANT")));
+    const position = is1st ? "FIRST PLACE • SIH NOMINATED" : (is2nd ? "SECOND PLACE • SIH NOMINATED" : (is3rd ? "THIRD PLACE • SIH NOMINATED" : "SIH NOMINATED"));
     const leader = (team.members && team.members[0]) || {};
 
     // A. Team Squad Certificate
@@ -5627,7 +5630,7 @@ window.generateMasterCertificatesRegistry = function generateMasterCertificatesR
       category: "Team Participation",
       certType: "participation_team",
       recipientName: `Team ${team.teamName || "Squad"}`,
-      recipientRole: "Participating Squad",
+      recipientRole: is1st ? "1st Place Champion • SIH Nominated" : (is2nd ? "1st Runner Up • SIH Nominated" : (is3rd ? "2nd Runner Up • SIH Nominated" : "Nominated Squad for SIH Finals")),
       teamId: team.teamId || "N/A",
       teamName: team.teamName || "Squad",
       edition: team.edition || "Software Edition",
@@ -6932,11 +6935,10 @@ window.renderAdminConsole = function renderAdminConsole() {
                         </div>
                       </td>
                       <td>
-                        ${is1st ? '<span class="status-pill status-champion" style="font-size:0.75rem;"><i class="fa-solid fa-crown"></i> 1st Champion (₹3,000)</span>' :
-                          is2nd ? '<span class="status-pill status-runner" style="font-size:0.75rem;"><i class="fa-solid fa-medal"></i> 1st Runner Up (₹2,000)</span>' :
-                          is3rd ? '<span class="status-pill status-runner" style="font-size:0.75rem;"><i class="fa-solid fa-award"></i> 2nd Runner Up (₹1,000)</span>' :
-                          isTop10 ? '<span class="status-pill status-nominated" style="font-size:0.75rem;"><i class="fa-solid fa-paper-plane"></i> SIH Nominated (Top 10)</span>' :
-                          '<span class="status-pill status-participated" style="font-size:0.75rem;"><i class="fa-solid fa-check"></i> Finalist</span>'
+                        ${is1st ? '<span class="status-pill status-champion" style="font-size:0.75rem;"><i class="fa-solid fa-crown"></i> 1st Champion (₹3,000) &bull; Nominated</span>' :
+                          is2nd ? '<span class="status-pill status-runner" style="font-size:0.75rem;"><i class="fa-solid fa-medal"></i> 1st Runner Up (₹2,000) &bull; Nominated</span>' :
+                          is3rd ? '<span class="status-pill status-runner" style="font-size:0.75rem;"><i class="fa-solid fa-award"></i> 2nd Runner Up (₹1,000) &bull; Nominated</span>' :
+                          '<span class="status-pill status-nominated" style="font-size:0.75rem;"><i class="fa-solid fa-paper-plane"></i> SIH Nominated</span>'
                         }
                       </td>
                       <td style="text-align: right;">
@@ -9569,11 +9571,10 @@ window.renderPublicLeaderboard = function renderPublicLeaderboard() {
                     </span>
                   </td>
                   <td>
-                    ${isTop1 ? '<span class="status-pill status-champion"><i class="fa-solid fa-crown"></i> Champion</span>' :
-                      isTop2 ? '<span class="status-pill status-runner"><i class="fa-solid fa-medal"></i> 1st Runner Up</span>' :
-                      isTop3 ? '<span class="status-pill status-runner"><i class="fa-solid fa-award"></i> 2nd Runner Up</span>' :
-                      isNominated ? '<span class="status-pill status-nominated"><i class="fa-solid fa-paper-plane"></i> SIH Nominated</span>' :
-                      '<span class="status-pill status-participated"><i class="fa-solid fa-check"></i> Participated</span>'
+                    ${isTop1 ? '<span class="status-pill status-champion"><i class="fa-solid fa-crown"></i> 1st Champion &bull; Nominated</span>' :
+                      isTop2 ? '<span class="status-pill status-runner"><i class="fa-solid fa-medal"></i> 1st Runner Up &bull; Nominated</span>' :
+                      isTop3 ? '<span class="status-pill status-runner"><i class="fa-solid fa-award"></i> 2nd Runner Up &bull; Nominated</span>' :
+                      '<span class="status-pill status-nominated"><i class="fa-solid fa-paper-plane"></i> SIH Nominated</span>'
                     }
                   </td>
                   <td style="text-align:right; white-space:nowrap;">
