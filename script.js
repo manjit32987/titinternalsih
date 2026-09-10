@@ -116,7 +116,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-CSE-01",
     referredBy: "Manash Debbarma",
     status: "Winner • 1st Place (₹3,000 Cash)",
-    juryScore: 96,
+    juryScore: 19.2,
     rank: 1,
     leaderEmail: "subham.cse22@titagartala.ac.in",
     members: [
@@ -139,7 +139,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-ME-01",
     referredBy: "Ronit Saha",
     status: "Winner • 2nd Place (₹2,000 Cash)",
-    juryScore: 94,
+    juryScore: 18.8,
     rank: 2,
     leaderEmail: "bikram.me24@titagartala.ac.in",
     members: [
@@ -161,7 +161,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-ECE-01",
     referredBy: "Sambhu Debnath",
     status: "Winner • 3rd Place (₹1,000 Cash)",
-    juryScore: 92,
+    juryScore: 18.4,
     rank: 3,
     leaderEmail: "arnab.ece23@titagartala.ac.in",
     members: [
@@ -183,7 +183,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-ECE-02",
     referredBy: "Sreya Deb",
     status: "Nominated for SIH Nationals",
-    juryScore: 90,
+    juryScore: 18.0,
     rank: 4,
     leaderEmail: "joya.ece25@titagartala.ac.in",
     members: [
@@ -205,7 +205,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-EE-01",
     referredBy: "Alak Das",
     status: "Nominated for SIH Nationals",
-    juryScore: 89,
+    juryScore: 17.8,
     rank: 5,
     leaderEmail: "sourav.ee22@titagartala.ac.in",
     members: [
@@ -227,7 +227,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-CE-01",
     referredBy: "Neelotpal Banik",
     status: "Nominated for SIH Nationals",
-    juryScore: 88,
+    juryScore: 17.6,
     rank: 6,
     leaderEmail: "koushik.ce23@titagartala.ac.in",
     members: [
@@ -249,7 +249,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-CSE-03",
     referredBy: "Prena Saha",
     status: "Nominated for SIH Nationals",
-    juryScore: 87,
+    juryScore: 17.4,
     rank: 7,
     leaderEmail: "moumita.cse24@titagartala.ac.in",
     members: [
@@ -271,7 +271,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-CE-02",
     referredBy: "Kishore Majumder",
     status: "Nominated for SIH Nationals",
-    juryScore: 86,
+    juryScore: 17.2,
     rank: 8,
     leaderEmail: "amit.ce22@titagartala.ac.in",
     members: [
@@ -293,7 +293,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-CSE-02",
     referredBy: "Sanjit Noatia",
     status: "Nominated for SIH Nationals",
-    juryScore: 85,
+    juryScore: 17.0,
     rank: 9,
     leaderEmail: "rajat.cse23@titagartala.ac.in",
     members: [
@@ -315,7 +315,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-ME-02",
     referredBy: "Prabal Kanti Paul",
     status: "Nominated for SIH Nationals",
-    juryScore: 85,
+    juryScore: 17.0,
     rank: 10,
     leaderEmail: "saptarshi.me22@titagartala.ac.in",
     members: [
@@ -337,7 +337,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-EE-02",
     referredBy: "Sneha Debnath",
     status: "Shortlisted Finalist",
-    juryScore: 84,
+    juryScore: 16.8,
     rank: 11,
     leaderEmail: "joyeeta.ee23@titagartala.ac.in",
     members: [
@@ -359,7 +359,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-CSE-04",
     referredBy: "Sneha Chaudhuri",
     status: "Shortlisted Finalist",
-    juryScore: 83,
+    juryScore: 16.6,
     rank: 12,
     leaderEmail: "tanmay.cse22@titagartala.ac.in",
     members: [
@@ -381,7 +381,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-CE-03",
     referredBy: "Bishal Das",
     status: "Shortlisted Finalist",
-    juryScore: 82,
+    juryScore: 16.4,
     rank: 13,
     leaderEmail: "prasenjit.ce23@titagartala.ac.in",
     members: [
@@ -403,7 +403,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-CSE-05",
     referredBy: "Diya Das",
     status: "Shortlisted Finalist",
-    juryScore: 82,
+    juryScore: 16.4,
     rank: 14,
     leaderEmail: "shibam.cse23@titagartala.ac.in",
     members: [
@@ -425,7 +425,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-EE-03",
     referredBy: "Simran Das",
     status: "Shortlisted Finalist",
-    juryScore: 81,
+    juryScore: 16.2,
     rank: 15,
     leaderEmail: "subhashish.ee22@titagartala.ac.in",
     members: [
@@ -447,7 +447,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-ME-03",
     referredBy: "Pushpal Bhattacharjee",
     status: "Shortlisted Finalist",
-    juryScore: 80,
+    juryScore: 16.0,
     rank: 16,
     leaderEmail: "arup.me23@titagartala.ac.in",
     members: [
@@ -469,7 +469,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-CSE-06",
     referredBy: "Gourab Das",
     status: "Shortlisted Finalist",
-    juryScore: 80,
+    juryScore: 16.0,
     rank: 17,
     leaderEmail: "debasmita.cse24@titagartala.ac.in",
     members: [
@@ -491,7 +491,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-ECE-03",
     referredBy: "Reshmi Karmakar",
     status: "Shortlisted Finalist",
-    juryScore: 79,
+    juryScore: 15.8,
     rank: 18,
     leaderEmail: "rahul.ece22@titagartala.ac.in",
     members: [
@@ -513,7 +513,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-CSE-07",
     referredBy: "Debashis Deb",
     status: "Shortlisted Finalist",
-    juryScore: 79,
+    juryScore: 15.8,
     rank: 19,
     leaderEmail: "abhi.cse23@titagartala.ac.in",
     members: [
@@ -535,7 +535,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-ME-04",
     referredBy: "Srijayan Das",
     status: "Shortlisted Finalist",
-    juryScore: 78,
+    juryScore: 15.6,
     rank: 20,
     leaderEmail: "sagar.me23@titagartala.ac.in",
     members: [
@@ -557,7 +557,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-ECE-04",
     referredBy: "Anurati Bhowmik",
     status: "Meritorious Participant",
-    juryScore: 77,
+    juryScore: 15.4,
     rank: 21,
     leaderEmail: "somnath.cse24@titagartala.ac.in",
     members: [
@@ -579,7 +579,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-EE-04",
     referredBy: "Sujit Dey",
     status: "Meritorious Participant",
-    juryScore: 76,
+    juryScore: 15.2,
     rank: 22,
     leaderEmail: "sanchita.ee24@titagartala.ac.in",
     members: [
@@ -601,7 +601,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-ECE-05",
     referredBy: "Deeptanu Shil",
     status: "Meritorious Participant",
-    juryScore: 76,
+    juryScore: 15.2,
     rank: 23,
     leaderEmail: "indrajit.cse23@titagartala.ac.in",
     members: [
@@ -623,7 +623,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-ECE-06",
     referredBy: "Tanushree Das",
     status: "Meritorious Participant",
-    juryScore: 75,
+    juryScore: 15.0,
     rank: 24,
     leaderEmail: "sujit.ece23@titagartala.ac.in",
     members: [
@@ -645,7 +645,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-EE-05",
     referredBy: "Soubik Roy",
     status: "Meritorious Participant",
-    juryScore: 75,
+    juryScore: 15.0,
     rank: 25,
     leaderEmail: "bishal.cse24@titagartala.ac.in",
     members: [
@@ -667,7 +667,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-CE-04",
     referredBy: "Magha Mog",
     status: "Meritorious Participant",
-    juryScore: 74,
+    juryScore: 14.8,
     rank: 26,
     leaderEmail: "paritosh.ce24@titagartala.ac.in",
     members: [
@@ -689,7 +689,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-EE-06",
     referredBy: "Raj Arnab Debnath",
     status: "Meritorious Participant",
-    juryScore: 73,
+    juryScore: 14.6,
     rank: 27,
     leaderEmail: "ankita.ece24@titagartala.ac.in",
     members: [
@@ -711,7 +711,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-ME-01",
     referredBy: "Purba Gangopadhyay",
     status: "Meritorious Participant",
-    juryScore: 73,
+    juryScore: 14.6,
     rank: 28,
     leaderEmail: "jayanta.me24@titagartala.ac.in",
     members: [
@@ -733,7 +733,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-EE-07",
     referredBy: "Barkha Das",
     status: "Meritorious Participant",
-    juryScore: 72,
+    juryScore: 14.4,
     rank: 29,
     leaderEmail: "debayan.cse25@titagartala.ac.in",
     members: [
@@ -755,7 +755,7 @@ const OFFICIAL_TIT_30_TEAMS = [
     referralCode: "SIH-CE-03",
     referredBy: "Bishal Das",
     status: "Meritorious Participant",
-    juryScore: 71,
+    juryScore: 14.2,
     rank: 30,
     leaderEmail: "rajdeep.ce24@titagartala.ac.in",
     members: [
@@ -773,6 +773,12 @@ try {
   storedTeams = JSON.parse(localStorage.getItem("tit_sih_teams") || "[]");
 } catch(e) {}
 let registeredTeams = (Array.isArray(storedTeams) && storedTeams.length >= 30) ? storedTeams : OFFICIAL_TIT_30_TEAMS;
+// Normalize scores to be out of 20
+registeredTeams.forEach(t => {
+  if (t && t.juryScore !== undefined && t.juryScore !== null && Number(t.juryScore) > 20) {
+    t.juryScore = Number((Number(t.juryScore) / 5).toFixed(1));
+  }
+});
 localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
 let registeredStudents = JSON.parse(localStorage.getItem("tit_sih_students") || "[]");
 
@@ -4682,7 +4688,13 @@ window.renderAdminConsole = function renderAdminConsole() {
         }
       });
       allTeamsList = Array.from(map.values());
+      allTeamsList.forEach(t => {
+        if (t && t.juryScore !== undefined && t.juryScore !== null && Number(t.juryScore) > 20) {
+          t.juryScore = Number((Number(t.juryScore) / 5).toFixed(1));
+        }
+      });
       registeredTeams = allTeamsList;
+      localStorage.setItem("tit_sih_teams", JSON.stringify(registeredTeams));
     } catch (e) {
       allTeamsList = (typeof registeredTeams !== "undefined" && Array.isArray(registeredTeams)) ? registeredTeams : [];
     }
@@ -5008,7 +5020,7 @@ window.renderAdminConsole = function renderAdminConsole() {
                         </td>
                         <td style="text-align: center;">
                           <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-                            <input type="number" min="0" max="100" id="team-score-${t.teamId}" class="admin-table-score-input" data-team-id="${t.teamId}" value="${t.juryScore !== undefined && t.juryScore !== null ? t.juryScore : ''}" placeholder="Score" 
+                            <input type="number" min="0" max="20" step="0.1" id="team-score-${t.teamId}" class="admin-table-score-input" data-team-id="${t.teamId}" value="${t.juryScore !== undefined && t.juryScore !== null ? t.juryScore : ''}" placeholder="0-20" 
                               onchange="saveJuryScore('${t.teamId}', this.value)"
                               style="width: 64px; padding: 4px 6px; font-size: 0.85rem; font-weight: 800; text-align: center; border: 2px solid #a7f3d0; border-radius: 6px; background: #f0fdf4;">
                             <button class="btn-3d-primary" onclick="saveSingleScoreWithFeedback('${t.teamId}', document.getElementById('team-score-${t.teamId}'), this)" style="padding: 3px 8px; font-size: 0.7rem; line-height: 1.2;">
@@ -5088,7 +5100,7 @@ window.renderAdminConsole = function renderAdminConsole() {
                 <span style="background: #fbbf24; color: #78350f; font-size: 0.72rem; font-weight: 900; padding: 2px 8px; border-radius: 99px;">
                   🥇 1ST PLACE • CHAMPION
                 </span>
-                <strong style="color: #fef08a; font-size: 1.15rem; font-family: var(--font-mono);">${sTop1.juryScore || 0}/100</strong>
+                <strong style="color: #fef08a; font-size: 1.15rem; font-family: var(--font-mono);">${sTop1.juryScore || 0}/20</strong>
               </div>
               <h4 style="font-size: 1.1rem; font-weight: 900; margin: 8px 0 2px 0; color: #ffffff;">${escapeHtml(sTop1.teamName || "Squad")}</h4>
               <div style="font-size: 0.76rem; color: #d1fae5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(sTop1.title || sTop1.domain || "Innovation")}</div>
@@ -5103,7 +5115,7 @@ window.renderAdminConsole = function renderAdminConsole() {
                 <span style="background: #e2e8f0; color: #1e293b; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 99px;">
                   🥈 2ND PLACE • 1ST RUNNER UP
                 </span>
-                <strong style="color: #ffffff; font-size: 1.15rem; font-family: var(--font-mono);">${sTop2.juryScore || 0}/100</strong>
+                <strong style="color: #ffffff; font-size: 1.15rem; font-family: var(--font-mono);">${sTop2.juryScore || 0}/20</strong>
               </div>
               <h4 style="font-size: 1.05rem; font-weight: 800; margin: 8px 0 2px 0; color: #ffffff;">${escapeHtml(sTop2.teamName || "Squad")}</h4>
               <div style="font-size: 0.76rem; color: #d1fae5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(sTop2.title || sTop2.domain || "Innovation")}</div>
@@ -5118,7 +5130,7 @@ window.renderAdminConsole = function renderAdminConsole() {
                 <span style="background: #ffedd5; color: #9a3412; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 99px;">
                   🥉 3RD PLACE • 2ND RUNNER UP
                 </span>
-                <strong style="color: #fed7aa; font-size: 1.15rem; font-family: var(--font-mono);">${sTop3.juryScore || 0}/100</strong>
+                <strong style="color: #fed7aa; font-size: 1.15rem; font-family: var(--font-mono);">${sTop3.juryScore || 0}/20</strong>
               </div>
               <h4 style="font-size: 1.05rem; font-weight: 800; margin: 8px 0 2px 0; color: #ffffff;">${escapeHtml(sTop3.teamName || "Squad")}</h4>
               <div style="font-size: 0.76rem; color: #d1fae5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(sTop3.title || sTop3.domain || "Innovation")}</div>
@@ -5137,7 +5149,7 @@ window.renderAdminConsole = function renderAdminConsole() {
                 <i class="fa-solid fa-pen-to-square" style="color: #059669;"></i> Live Squad Scorecard & Ranking Table
               </h3>
               <p style="margin: 0; font-size: 0.8rem; color: #64748b;">
-                Enter points (0 to 100). Click <strong>Update</strong> on any row or click <strong>Update All Scores</strong> to save and re-rank the live Leaderboard.
+                Enter points (0 to 20). Click <strong>Update</strong> on any row or click <strong>Update All Scores</strong> to save and re-rank the live Leaderboard.
               </p>
             </div>
             <div style="display: flex; gap: 8px; align-items: center;">
@@ -5155,7 +5167,7 @@ window.renderAdminConsole = function renderAdminConsole() {
                   <th style="min-width: 180px;">Squad & Target Challenge</th>
                   <th>Track Edition</th>
                   <th>Squad Leader</th>
-                  <th style="width: 150px; text-align: center;">Jury Score (0 - 100)</th>
+                  <th style="width: 150px; text-align: center;">Jury Score (0 - 20)</th>
                   <th>Projected Standing</th>
                   <th style="text-align: right; width: 110px;">Quick Save</th>
                 </tr>
@@ -5193,11 +5205,11 @@ window.renderAdminConsole = function renderAdminConsole() {
                       </td>
                       <td style="text-align: center;">
                         <div style="display: inline-flex; align-items: center; gap: 4px;">
-                          <input type="number" min="0" max="100" id="live-score-${t.teamId}" class="admin-live-score-input" data-team-id="${t.teamId}" 
-                            value="${t.juryScore !== undefined && t.juryScore !== null ? t.juryScore : ''}" placeholder="0-100"
+                          <input type="number" min="0" max="20" step="0.1" id="live-score-${t.teamId}" class="admin-live-score-input" data-team-id="${t.teamId}" 
+                            value="${t.juryScore !== undefined && t.juryScore !== null ? t.juryScore : ''}" placeholder="0-20"
                             style="width: 68px; padding: 6px 6px; font-size: 0.95rem; font-weight: 900; text-align: center; border: 2px solid ${is1st ? '#eab308' : '#cbd5e1'}; border-radius: 8px; background: #ffffff;"
                             onkeydown="if(event.key==='Enter') saveSingleScoreWithFeedback('${t.teamId}', this, document.getElementById('btn-save-${t.teamId}'))">
-                          <span style="font-size: 0.78rem; font-weight: 700; color: #64748b;">/ 100</span>
+                          <span style="font-size: 0.78rem; font-weight: 700; color: #64748b;">/ 20</span>
                         </div>
                       </td>
                       <td>
@@ -5743,8 +5755,8 @@ window.saveSingleScoreWithFeedback = (teamId, inputElem, btnElem) => {
   const val = inputElem ? inputElem.value.trim() : "";
   const numVal = (val !== "" && !isNaN(val)) ? Number(val) : null;
   
-  if (numVal !== null && (numVal < 0 || numVal > 100)) {
-    alert("Score must be between 0 and 100.");
+  if (numVal !== null && (numVal < 0 || numVal > 20)) {
+    alert("Score must be between 0 and 20.");
     return;
   }
   
@@ -5765,7 +5777,7 @@ window.saveSingleScoreWithFeedback = (teamId, inputElem, btnElem) => {
   const teams = (typeof registeredTeams !== "undefined" && Array.isArray(registeredTeams)) ? registeredTeams : [];
   const team = teams.find(t => t && (t.teamId === teamId || t.teamName === teamId));
   const teamName = team ? team.teamName : teamId;
-  showAdminToast(`✅ Score for "${teamName}" saved (${numVal !== null ? numVal : 'N/A'}/100)! Leaderboard updated.`);
+  showAdminToast(`✅ Score for "${teamName}" saved (${numVal !== null ? numVal : 'N/A'}/20)! Leaderboard updated.`);
 };
 
 window.saveAllScores = () => {
@@ -5950,7 +5962,7 @@ window.loadDemoTeams = () => {
       referralCode: "SIH-CSE-01",
       referredBy: "Manash Debbarma",
       status: "Nominated for SIH Finals",
-      juryScore: 94,
+      juryScore: 18.8,
       createdAt: "02 Sep 2026",
       leaderEmail: "subham.cse22@titagartala.ac.in",
       members: [
@@ -5996,7 +6008,7 @@ window.loadDemoTeams = () => {
       referralCode: "SIH-EE-01",
       referredBy: "Alak Das",
       status: "Shortlisted for Internal Hackathon",
-      juryScore: 88,
+      juryScore: 17.6,
       createdAt: "04 Sep 2026",
       leaderEmail: "sourav.ee22@titagartala.ac.in",
       members: [
@@ -6018,7 +6030,7 @@ window.loadDemoTeams = () => {
       referralCode: "SIH-ME-01",
       referredBy: "Ronit Saha",
       status: "Nominated for SIH Finals",
-      juryScore: 92,
+      juryScore: 18.4,
       createdAt: "04 Sep 2026",
       leaderEmail: "bikram.me24@titagartala.ac.in",
       members: [
@@ -6040,7 +6052,7 @@ window.loadDemoTeams = () => {
       referralCode: "SIH-CE-01",
       referredBy: "Neelotpal Banik",
       status: "Shortlisted for Internal Hackathon",
-      juryScore: 86,
+      juryScore: 17.2,
       createdAt: "05 Sep 2026",
       leaderEmail: "koushik.ce23@titagartala.ac.in",
       members: [
@@ -6061,7 +6073,7 @@ window.loadDemoTeams = () => {
       pptLink: "https://drive.google.com/file/d/sample-neuraltit-med/view",
       referralCode: "NONE",
       status: "Under Review by IIC Panel",
-      juryScore: 84,
+      juryScore: 16.8,
       createdAt: "05 Sep 2026",
       leaderEmail: "moumita.cse24@titagartala.ac.in",
       members: [
@@ -6083,7 +6095,7 @@ window.loadDemoTeams = () => {
       referralCode: "SIH-ECE-02",
       referredBy: "Sreya Deb",
       status: "Shortlisted for Internal Hackathon",
-      juryScore: 89,
+      juryScore: 17.8,
       createdAt: "06 Sep 2026",
       leaderEmail: "joya.ece25@titagartala.ac.in",
       members: [
@@ -6105,7 +6117,7 @@ window.loadDemoTeams = () => {
       referralCode: "SIH-CE-02",
       referredBy: "Prena Saha",
       status: "Under Review by IIC Panel",
-      juryScore: 82,
+      juryScore: 16.4,
       createdAt: "06 Sep 2026",
       leaderEmail: "amit.ce22@titagartala.ac.in",
       members: [
@@ -7600,7 +7612,7 @@ window.renderPublicLeaderboard = function renderPublicLeaderboard() {
         <div class="podium-cash">₹2,000 CASH</div>
         <h3 class="podium-team-name">${escapeHtml(top2.teamName || "AgriBot TIT")}</h3>
         <p class="podium-title">${escapeHtml(top2.title || "Innovation Project")}</p>
-        <div class="podium-score-pill"><i class="fa-solid fa-star"></i> Score: <strong>${top2.juryScore || 94}</strong>/100</div>
+        <div class="podium-score-pill"><i class="fa-solid fa-star"></i> Score: <strong>${top2.juryScore !== undefined && top2.juryScore !== null ? top2.juryScore : 18.8}</strong>/20</div>
         <div class="podium-status-badge">${escapeHtml(top2.edition || "Hardware Edition")}</div>
         <button class="btn-3d-primary" onclick="openSquadTeamCertificate('${top2.teamId}')" style="width:100%; justify-content:center; margin-top:14px; font-size:0.84rem; padding:8px 12px;">
           <i class="fa-solid fa-stamp"></i> View Team Certificate
@@ -7615,7 +7627,7 @@ window.renderPublicLeaderboard = function renderPublicLeaderboard() {
         <div class="podium-cash">₹3,000 CASH</div>
         <h3 class="podium-team-name" style="font-size:1.4rem;">${escapeHtml(top1.teamName || "ByteCraft TIT")}</h3>
         <p class="podium-title">${escapeHtml(top1.title || "AI Landslide Monitoring")}</p>
-        <div class="podium-score-pill gold-score"><i class="fa-solid fa-star"></i> Score: <strong>${top1.juryScore || 96}</strong>/100</div>
+        <div class="podium-score-pill gold-score"><i class="fa-solid fa-star"></i> Score: <strong>${top1.juryScore !== undefined && top1.juryScore !== null ? top1.juryScore : 19.2}</strong>/20</div>
         <div class="podium-status-badge gold-status">Grand Champion • SIH Nationals Nominee</div>
         <button class="btn-3d-primary" onclick="openSquadTeamCertificate('${top1.teamId}')" style="width:100%; justify-content:center; margin-top:14px; font-size:0.88rem; padding:10px 14px; background:linear-gradient(135deg,#059669,#10b981);">
           <i class="fa-solid fa-stamp"></i> View Winner Certificate
@@ -7629,7 +7641,7 @@ window.renderPublicLeaderboard = function renderPublicLeaderboard() {
         <div class="podium-cash">₹1,000 CASH</div>
         <h3 class="podium-team-name">${escapeHtml(top3.teamName || "RoboTIT Edge Systems")}</h3>
         <p class="podium-title">${escapeHtml(top3.title || "IoT Telemetry Gateway")}</p>
-        <div class="podium-score-pill"><i class="fa-solid fa-star"></i> Score: <strong>${top3.juryScore || 92}</strong>/100</div>
+        <div class="podium-score-pill"><i class="fa-solid fa-star"></i> Score: <strong>${top3.juryScore !== undefined && top3.juryScore !== null ? top3.juryScore : 18.4}</strong>/20</div>
         <div class="podium-status-badge">${escapeHtml(top3.edition || "Hardware Edition")}</div>
         <button class="btn-3d-primary" onclick="openSquadTeamCertificate('${top3.teamId}')" style="width:100%; justify-content:center; margin-top:14px; font-size:0.84rem; padding:8px 12px;">
           <i class="fa-solid fa-stamp"></i> View Team Certificate
@@ -7702,7 +7714,7 @@ window.renderPublicLeaderboard = function renderPublicLeaderboard() {
                   </td>
                   <td style="text-align:center;">
                     <span class="score-badge-cell ${isTop1 ? 'score-top1' : (isTop2 || isTop3 ? 'score-top3' : '')}">
-                      ${t.juryScore || 75} / 100
+                      ${t.juryScore !== undefined && t.juryScore !== null ? t.juryScore : 15} / 20
                     </span>
                   </td>
                   <td>
