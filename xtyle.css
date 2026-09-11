@@ -7765,6 +7765,28 @@ body.dark-theme .viz-crosstab-table tr:hover td {
   max-width: 540px;
 }
 
+/* Mobile Optimization for Certificate Modal & Preview */
+@media (max-width: 820px) {
+  #certificate-modal .modal-container {
+    padding: 16px 10px 20px !important;
+    width: 96% !important;
+    max-width: 96% !important;
+    overflow-x: hidden !important;
+  }
+
+  .cert-print-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: hidden;
+  }
+
+  .cert-sheet {
+    flex-shrink: 0;
+  }
+}
+
 /* Print Overrides for Certificate Engine */
 @media print {
   body > *:not(#certificate-modal):not(#team-pass-modal) {

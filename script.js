@@ -3900,6 +3900,50 @@ window.closeCertificateModal = () => {
   if (modal) modal.classList.remove("active");
 };
 
+window.fitCertificateSheetMobile = function () {
+  const modal = document.getElementById("certificate-modal");
+  if (!modal || !modal.classList.contains("active")) return;
+  const wrap = modal.querySelector(".cert-print-wrap");
+  const sheet = modal.querySelector(".cert-sheet");
+  if (!wrap || !sheet) return;
+
+  const container = modal.querySelector(".modal-container");
+  const availWidth = container ? (container.clientWidth - 20) : (window.innerWidth - 28);
+
+  if (availWidth < 794) {
+    const scale = Math.min(1, Math.max(0.30, availWidth / 794));
+    sheet.style.width = "794px";
+    sheet.style.minWidth = "794px";
+    sheet.style.maxWidth = "794px";
+    sheet.style.height = "1123px";
+    sheet.style.minHeight = "1123px";
+    sheet.style.maxHeight = "1123px";
+    sheet.style.transform = `scale(${scale})`;
+    sheet.style.transformOrigin = "top center";
+    sheet.style.margin = "0 auto";
+    wrap.style.height = `${Math.round(1123 * scale) + 12}px`;
+    wrap.style.overflow = "hidden";
+    wrap.style.display = "flex";
+    wrap.style.justifyContent = "center";
+  } else {
+    sheet.style.width = "100%";
+    sheet.style.maxWidth = "794px";
+    sheet.style.minWidth = "";
+    sheet.style.height = "";
+    sheet.style.minHeight = "1123px";
+    sheet.style.maxHeight = "";
+    sheet.style.transform = "none";
+    sheet.style.transformOrigin = "top center";
+    sheet.style.margin = "";
+    wrap.style.height = "auto";
+    wrap.style.overflow = "visible";
+  }
+};
+
+window.addEventListener("resize", () => {
+  if (typeof fitCertificateSheetMobile === "function") fitCertificateSheetMobile();
+});
+
 window.downloadCertificatePNG = async function () {
   const certSheet = document.querySelector(".cert-sheet");
   if (!certSheet) return;
@@ -3908,7 +3952,7 @@ window.downloadCertificatePNG = async function () {
   let origHtml = "";
   if (btn) {
     origHtml = btn.innerHTML;
-    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Generating High-Res PNG...`;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Generating A4 Retina PNG...`;
     btn.disabled = true;
   }
 
@@ -3930,16 +3974,55 @@ window.downloadCertificatePNG = async function () {
       });
     }
 
-    // High-resolution 2x retina canvas capture of the entire certificate sheet
-    const canvas = await html2canvas(certSheet, {
+    // Isolate capture in an off-screen fixed 794x1123 reference container
+    // This guarantees an identical, perfect 1:1.414 A4 ratio on mobile, tablet, and desktop!
+    const offscreenHost = document.createElement("div");
+    offscreenHost.style.position = "fixed";
+    offscreenHost.style.left = "-9999px";
+    offscreenHost.style.top = "0";
+    offscreenHost.style.width = "794px";
+    offscreenHost.style.height = "1123px";
+    offscreenHost.style.zIndex = "-9999";
+    offscreenHost.style.background = "#fffef7";
+    offscreenHost.style.overflow = "hidden";
+    offscreenHost.style.margin = "0";
+    offscreenHost.style.padding = "0";
+    offscreenHost.style.boxSizing = "border-box";
+
+    const cloneSheet = certSheet.cloneNode(true);
+    cloneSheet.style.width = "794px";
+    cloneSheet.style.minWidth = "794px";
+    cloneSheet.style.maxWidth = "794px";
+    cloneSheet.style.height = "1123px";
+    cloneSheet.style.minHeight = "1123px";
+    cloneSheet.style.maxHeight = "1123px";
+    cloneSheet.style.transform = "none";
+    cloneSheet.style.margin = "0";
+    cloneSheet.style.boxShadow = "none";
+    cloneSheet.style.boxSizing = "border-box";
+
+    offscreenHost.appendChild(cloneSheet);
+    document.body.appendChild(offscreenHost);
+
+    // Brief delay to allow cloned layout and font metrics to settle
+    await new Promise((r) => setTimeout(r, 80));
+
+    // High-resolution 2x retina canvas capture of the fixed A4 container (1588x2246 px)
+    const canvas = await html2canvas(cloneSheet, {
+      width: 794,
+      height: 1123,
       scale: 2,
       useCORS: true,
       allowTaint: true,
       backgroundColor: "#fffef7",
       logging: false,
       scrollX: 0,
-      scrollY: -window.scrollY
+      scrollY: 0,
+      windowWidth: 794,
+      windowHeight: 1123
     });
+
+    document.body.removeChild(offscreenHost);
 
     const nameElem = certSheet.querySelector(".cert-recipient-name");
     let recipientName = nameElem ? nameElem.textContent.trim() : "Student";
@@ -4664,6 +4747,11 @@ window.renderCertificateSheet = (type, data) => {
 
   updateCertModalStatus();
   modal.classList.add("active");
+  if (typeof fitCertificateSheetMobile === "function") {
+    fitCertificateSheetMobile();
+    setTimeout(fitCertificateSheetMobile, 50);
+    setTimeout(fitCertificateSheetMobile, 200);
+  }
 };
 
 function checkUrlHashRouting() {
